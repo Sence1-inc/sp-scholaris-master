@@ -7,13 +7,43 @@ services:
     ports:
       - 3000:3000
     volumes:
-      - ./frontend:/app
+      - ./frontend:/app/frontend
       - node_modules:/frontend/node_modules
     environment:
       PORT: 3000
       ESLINT_NO_DEV_ERRORS: "true"
     stdin_open: true
     tty: true
+  backend:
+    build: ./backend
+    container_name: backend_container
+    command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 5001 -b '0.0.0.0'"
+    ports:
+      - 5001:5001
+    volumes:
+      - ./backend:/app/backend
+    depends_on:
+      - db
+    links:
+      - db
+    environment:
+      DB_USER: root
+      DB_NAME: app
+      DB_PASSWORD: password
+      DB_HOST: db
+    # dont terminate docker after running bin/dev
+    tty: true
+  db: 
+    image: mysql:8.2.0
+    container_name: db_mysql_container
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: password
+        MYSQL_DATABASE: app
+        MYSQL_USER: user
+        MYSQL_PASSWORD: password
+    ports:
+        - "3307:3306"
 
 volumes:
   node_modules:
