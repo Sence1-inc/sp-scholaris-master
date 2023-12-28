@@ -19,6 +19,7 @@ default: &default
   host: <%= ENV['DB_HOST'] %>
 
 development:
+  adapter: mysql2
   <<: *default
   database: app
   username: <%= ENV['DB_USER'] %>

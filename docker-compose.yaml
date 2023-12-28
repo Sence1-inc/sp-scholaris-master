@@ -22,6 +22,7 @@ services:
       - 5001:5001
     volumes:
       - ./backend:/app/backend
+      - ./backend/db/init.sql:/app/backend/init.sql
     depends_on:
       - db
     links:
@@ -31,6 +32,7 @@ services:
       DB_NAME: app
       DB_PASSWORD: password
       DB_HOST: db
+      BACKEND_DATABASE_PASSWORD: prodpassword
     # dont terminate docker after running bin/dev
     tty: true
   db: 
@@ -38,10 +40,10 @@ services:
     container_name: db_mysql_container
     restart: always
     environment:
-        MYSQL_ROOT_PASSWORD: password
-        MYSQL_DATABASE: app
-        MYSQL_USER: user
-        MYSQL_PASSWORD: password
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: app
+      MYSQL_USER: root
+      MYSQL_PASSWORD: password
     ports:
         - "3307:3306"
 
