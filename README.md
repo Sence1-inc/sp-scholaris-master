@@ -85,7 +85,7 @@ _make sure that your github global details are set to avoid any roadblocks_
    ```
 4. Open Docker, build the docker, and up the containers
    ```
-   docker build
+   docker compose build
    docker compose up
    ```
 5. Run migration files
@@ -94,7 +94,6 @@ _make sure that your github global details are set to avoid any roadblocks_
    ```
 6. Check if there are no errors on both http://localhost:5001 and http://localhost:3000
 7. Happy coding!
-_more details to add_
 
 #### Migration
 1. Create migration file
