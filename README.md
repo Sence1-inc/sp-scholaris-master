@@ -90,6 +90,16 @@ _make sure that your github global details are set to avoid any roadblocks_
    ```
 _more details to add_
 
+#### Migration
+1. Create migration file
+   ```
+   docker compose run backend rails generate migration YourMigrationName
+   ```
+2. Run migration file
+   ```
+   docker compose run backend rake db:migrate
+   ```
+
 <p align="right">(<a href="#back">back to top</a>)</p>
 
 ---
