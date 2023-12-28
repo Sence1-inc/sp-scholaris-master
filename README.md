@@ -67,7 +67,7 @@ Once setup is complete, check the guides to start with the development.
 _here are some guides when starting with the project_
 _make sure that your github global details are set to avoid any roadblocks_
 
-#### Github
+#### Installation
 1. Clone the SP Repository
    ```
    git clone https://github.com/sence1-sp/sp-scholaris-main.git
@@ -92,6 +92,8 @@ _make sure that your github global details are set to avoid any roadblocks_
    ```
    docker compose run backend rake db:migrate
    ```
+6. Check if there are no errors on both http://localhost:5001 and http://localhost:3000
+7. Happy coding!
 _more details to add_
 
 #### Migration
