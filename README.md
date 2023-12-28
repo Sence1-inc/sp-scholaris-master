@@ -79,13 +79,14 @@ _make sure that your github global details are set to avoid any roadblocks_
    git fetch origin [main-branch]
    git checkout -b [branch-id]
    ```
-3. Download all packages (npm node)
+3. Download all packages (npm node). Make sure your are in the correct folder.
    ```
+   // run in the frontend folder
    npm install
    ```
 4. Open Docker, build the docker, and up the containers
    ```
-   docker compose build
+   docker compose build 
    docker compose up
    ```
 5. Run migration files
