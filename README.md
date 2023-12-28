@@ -88,6 +88,10 @@ _make sure that your github global details are set to avoid any roadblocks_
    docker build
    docker compose up
    ```
+5. Run migration files
+   ```
+   docker compose run backend rake db:migrate
+   ```
 _more details to add_
 
 #### Migration
