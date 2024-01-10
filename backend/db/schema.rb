@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2023_12_28_034253) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_10_075252) do
   create_table "benefits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "benefit_name"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
@@ -61,6 +61,24 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_28_034253) do
     t.timestamp "deleted_at"
     t.index ["scholarship_id"], name: "index_logs_on_scholarship_id"
     t.index ["user_id"], name: "index_logs_on_user_id"
+  end
+
+  create_table "newsletter_logs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "email", null: false
+    t.bigint "newsletter_id"
+    t.timestamp "sent_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.index ["email"], name: "index_newsletter_logs_on_email", unique: true
+    t.index ["newsletter_id"], name: "index_newsletter_logs_on_newsletter_id"
+  end
+
+  create_table "newsletters", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "subject", null: false
+    t.text "content", null: false
+    t.text "user_type", null: false
+    t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
   end
 
   create_table "provinces", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -185,6 +203,16 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_28_034253) do
     t.index ["user_id"], name: "index_student_profiles_on_user_id"
   end
 
+  create_table "subscribers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "email", null: false
+    t.string "user_type", null: false
+    t.timestamp "subscribed_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.timestamp "unsubscribed_at"
+    t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.index ["email"], name: "index_subscribers_on_email", unique: true
+  end
+
   create_table "user_scholarships", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "scholarship_id"
     t.bigint "user_id", null: false
@@ -214,6 +242,7 @@ ActiveRecord::Schema[7.1].define(version: 2023_12_28_034253) do
   add_foreign_key "course_scholarship_schools", "courses", name: "fk_course_scholarship_schools_courses"
   add_foreign_key "course_scholarship_schools", "scholarships", name: "fk_course_scholarship_schools_scholarships"
   add_foreign_key "course_scholarship_schools", "schools", name: "fk_course_scholarship_schools_schools"
+  add_foreign_key "newsletter_logs", "newsletters"
   add_foreign_key "scholarship_benefits", "benefits", name: "fk_scholarship_benefits_benefits"
   add_foreign_key "scholarship_benefits", "benefits", name: "fk_scholarships_benefits"
   add_foreign_key "scholarship_benefits", "scholarships", name: "fk_scholarship_benefits_scholarships"
