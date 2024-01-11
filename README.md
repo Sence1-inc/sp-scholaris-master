@@ -70,31 +70,25 @@ _make sure that your github global details are set to avoid any roadblocks_
 #### Installation
 1. Clone the SP Repository
    ```
-   git clone https://github.com/sence1-sp/sp-scholaris-main.git
+   git clone https://github.com/sence1-sp/sp-scholaris-master.git
    ```
-2. Check Branch, Pull Latest from the origin branch, and Branch-out to your tasks
-   ```
-   git status
-   git fetch origin
-   git fetch origin [main-branch]
-   git checkout -b [branch-id]
-   ```
-3. Download all packages (npm node). Make sure your are in the correct folder.
+2. Download all packages (npm node). Make sure your are in the correct folder.
    ```
    // run in the frontend folder
    npm install
    ```
-4. Open Docker, build the docker, and up the containers
+3. Open Docker, build the docker, and up the containers
    ```
+   // make sure to run this in the root folder
    docker compose build 
    docker compose up
    ```
-5. Run migration files
+4. Run migration files
    ```
    docker compose run backend rake db:migrate
    ```
-6. Check if there are no errors on both http://localhost:5001 and http://localhost:3000
-7. Happy coding!
+5. Check if there are no errors on both http://localhost:5001 and http://localhost:3000
+6. Happy coding!
 
 #### Migration
 1. Create migration file
