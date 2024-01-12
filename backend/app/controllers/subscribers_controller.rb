@@ -3,10 +3,14 @@ class SubscribersController < ApplicationController
   
   def create
     @subscriber = Subscriber.new(subscriber_params)
-    if @subscriber.save
-      render json: { email: @subscriber.email, user_type: @subscriber.user_type, message: "Subscription successful. Welcome to our newsletter!" }, status: :created
+    if EmailValidator.valid?(subscriber_params[:email])
+      if @subscriber.save
+        render json: { email: @subscriber.email, user_type: @subscriber.user_type, message: "Subscription successful. Welcome to our newsletter!" }, status: :created
+      else
+        render json: { error: "Subscription failed", details: @subscriber.errors.full_messages }, status: :unprocessable_entity
+      end
     else
-      render json: { error: "Subscription failed", details: @subscriber.errors.full_messages }, status: :unprocessable_entity
+      render json: { error: "Subscription failed", details: "The email '#{subscriber_params[:email]}' is not valid." }, status: 400
     end
   end
 
