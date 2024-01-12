@@ -1,4 +1,6 @@
 class SubscribersController < ApplicationController
+  skip_before_action :verify_authenticity_token
+  
   def create
     @subscriber = Subscriber.new(subscriber_params)
     if @subscriber.save
