@@ -1,5 +1,5 @@
 
-.btn{
+.button{
     background-color: #F36B3B;
     color: #FFF;
     border: none;
@@ -11,4 +11,11 @@
 
 .btn:hover{
     background-color: #e06031;
+}
+
+@media (max-width: 768px) {
+    .button{
+        padding: 12px 50px;
+        font-size: 16px;
+    }
 }

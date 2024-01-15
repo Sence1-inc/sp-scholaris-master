@@ -34,7 +34,9 @@
 .filter-options{
     display: flex;
     column-gap: 75px;
+    row-gap: 20px;
     justify-content: center;
+    flex-wrap: wrap;
 }
 
 .filter__input-group{
@@ -65,4 +67,18 @@
     color: #484848;
 
     cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .filter-body{
+        padding: 20px;
+        row-gap: 30px;
+    }
+    .filter__input-group label{
+        font-size: 16px;
+    }
+
+    .filter-reset{
+        font-size: 18px;
+    }
 }

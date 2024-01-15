@@ -1,7 +1,12 @@
-import './SearchInput.css'
+import React from 'react';
+import './SearchInput.css';
 
-export default function SearchInput(){
-    return(
-        <input className="search-input" type="text" name="" id="" placeholder="Search Keywords"/>
-    )
-}
+interface SearchInputProps {}
+
+const SearchInput: React.FC<SearchInputProps> = () => {
+  return (
+    <input className="search-input" type="text" name="" id="" placeholder="Search Keywords" />
+  );
+};
+
+export default SearchInput;
