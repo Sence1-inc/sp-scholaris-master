@@ -1,0 +1,14 @@
+
+.search-input{
+    padding: 30px;
+    width: 100%;
+
+    border-radius: 16px;
+    border: 1px solid #000;
+    
+    box-shadow: -6px -6px 1.9px 0 rgba(0, 0, 0, 0.1) inset;
+
+    font-size: 24px;
+    font-weight: 200;
+    color: #484848;
+}

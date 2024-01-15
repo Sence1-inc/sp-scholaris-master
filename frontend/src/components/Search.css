@@ -1,0 +1,37 @@
+
+
+.section{
+    max-width: 1040px;
+    padding: 120px 0;
+    margin: 0 auto;
+
+    display: flex;
+    flex-direction: column;
+    row-gap: 71px;
+}
+
+.section .section-header{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+}
+
+.section .section-header h3{
+    font-size: 48px;
+    color: #F36B3B;
+
+    margin: 0;
+}
+
+.section .section-header p{
+    font-size: 56px;
+    color: #002147;
+    font-weight: 700;
+
+    margin: 0;
+}
+
+.section .section__search-input{
+    display: flex;
+    column-gap: 40px;
+}
