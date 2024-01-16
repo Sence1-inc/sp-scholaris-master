@@ -5,7 +5,7 @@ interface SearchInputProps {}
 
 const SearchInput: React.FC<SearchInputProps> = () => {
   return (
-    <input className="search-input" type="text" name="" id="" placeholder="Search Keywords" />
+    <input className="search-input" type="text" placeholder="Search Keywords" />
   );
 };
 
