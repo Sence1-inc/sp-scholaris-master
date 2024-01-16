@@ -45,11 +45,23 @@ module Api
       end
 
       def soft_del
-        Subscriber.soft_delete(@subscriber)
+        if Subscriber.is_unsubscribed(@subscriber)
+          Subscriber.soft_delete(@subscriber)
+          render json: {message: "Unsubscribed successfully.", status: :ok}
+        else
+          render json: {message: "Already unsubscribed", status: :unprocessable_entity}
+        end
+        
       end
     
       def restore
-        Subscriber.restore(@subscriber)
+        if !Subscriber.is_unsubscribed(@subscriber)
+          Subscriber.restore(@subscriber)
+          render json: {message: "Subscriber restored", status: :ok}
+        else
+          render json: {message: "Already subscribed", status: :unprocessable_entity}
+        end
+
       end
     
       private
