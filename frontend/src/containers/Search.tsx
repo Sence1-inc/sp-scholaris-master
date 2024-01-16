@@ -1,7 +1,7 @@
 import React from 'react';
-import Filter from './Filter/Filter';
-import Button from './Button/Button';
-import SearchInput from './SearchInput/SearchInput';
+import Filter from '../components/Filter/Filter';
+import Button from '../components/Button/Button';
+import SearchInput from '../components/SearchInput/SearchInput';
 
 import './Search.css';
 

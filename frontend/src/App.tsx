@@ -1,7 +1,8 @@
 import React from 'react';
 import logo from './logo.svg';
-import Search from './components/Search';
+import Search from './containers/Search';
 import './App.css';
+import './assets/styles.css'
 
 function App() {
   return (
