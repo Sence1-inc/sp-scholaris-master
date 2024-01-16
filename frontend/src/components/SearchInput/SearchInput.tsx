@@ -1,11 +1,15 @@
+// SearchInput.tsx
+
 import React from 'react';
 import './SearchInput.css';
 
-interface SearchInputProps {}
+interface SearchInputProps {
+  placeholder: string;
+}
 
-const SearchInput: React.FC<SearchInputProps> = () => {
+const SearchInput: React.FC<SearchInputProps> = ({ placeholder }) => {
   return (
-    <input className="search-input" type="text" placeholder="Search Keywords" />
+    <input className="search-input" type="text" placeholder={placeholder} />
   );
 };
 

@@ -15,7 +15,7 @@ const Search: React.FC<SearchProps> = () => {
         <p>Search Your Scholarship!</p>
       </div>
       <div className="section__search-input">
-        <SearchInput />
+        <SearchInput placeholder='Search Keyword'/>
         <Button>Search</Button>
       </div>
       <Filter />
