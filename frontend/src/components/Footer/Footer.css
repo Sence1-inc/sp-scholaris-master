@@ -1,0 +1,28 @@
+#footer {
+    width: 100%;
+    background-color: var(--primary-color);
+    color: #ffffff;
+}
+
+#footer ul {
+    display: flex;
+    gap: 15px;
+    list-style-type: none;
+}
+
+#footer ul li {
+    color: #ffffff
+}
+
+.footer__container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+    justify-content: space-between;
+    align-items: center;
+}
+
+footer p {
+    font-size: 16px;
+}

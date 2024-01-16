@@ -1,14 +1,14 @@
 import React from 'react';
-import './NavBar.css'
+import './Navbar.css'
 
-function NavBar() {
+function Navbar() {
   return (
-    <nav id="navBar">
-        <div className="navBar__logo">
+    <nav id="navbar">
+        <div className="navbar__logo">
             <img src="" alt="" />
             <h1>Scholaris</h1>
         </div>
-        <div className="navBar__menu-main">
+        <div className="navbar__menu-main">
             <ul>
                 <li>Newsletter</li>
                 <li>Survey</li>
@@ -18,4 +18,4 @@ function NavBar() {
   );
 }
 
-export default NavBar;
+export default Navbar;
