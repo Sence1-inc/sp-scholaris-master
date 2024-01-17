@@ -10,9 +10,16 @@
     list-style-type: none;
 }
 
-#footer ul li {
-    color: #ffffff
+#footer ul li a {
+    font-family: 'Outfit', 'sans-serif';
+    color: var(--white);
+    text-decoration: none;
 }
+
+#footer ul li a:hover {
+    color: var(--secondary-color);
+}
+
 
 .footer__container {
     display: flex;

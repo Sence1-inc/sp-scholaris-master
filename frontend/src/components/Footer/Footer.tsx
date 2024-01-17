@@ -1,19 +1,19 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import './Footer.css';
 
 function Footer() {
     return (
-        <footer id="footer">
-            <div className="footer__container">
+        <footer id='footer'>
+            <div className='footer__container'>
                 <div>
-                    <div className="NavFooter">
+                    <div className='NavFooter'>
                         <ul>
-                            <li>Newsletter</li>
-                            <li>Survey</li>
-                            <li>Listing</li>
-                            <li>Terms and Condition</li>
-                            <li>Privacy Policy</li>
-                            <li>Welcome Page</li>
+                            <li><Link to='/newsletter'>Newsletter</Link></li>
+                            <li><Link to='/newsletter'>Listing</Link></li>
+                            <li><Link to='/terms-and-condition'>Terms and Condition</Link></li>
+                            <li><Link to='/privacy-policy'>Privacy Policy</Link></li>
+                            <li><Link to='/'>Welcome Page</Link></li>
                         </ul>
                     </div>
                 </div>

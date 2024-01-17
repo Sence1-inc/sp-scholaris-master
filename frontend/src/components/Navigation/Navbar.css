@@ -24,6 +24,11 @@
     text-transform: uppercase;
 }
 
+#navbar .navbar__logo h1 a {
+    color: var(--white);
+    text-decoration: none;
+}
+
 
 #navbar .navbar__menu-main {
     display: flex;
@@ -44,6 +49,13 @@
     font-size: 1rem;
     font-weight: 600;
     text-transform: uppercase;
-    color: var(--secondary-color);
+}
 
+#navbar .navbar__menu-main li a {
+    color: var(--white);
+    text-decoration: none;
+}
+
+#navbar .navbar__menu-main li a:hover {
+    color: var(--secondary-color);
 }

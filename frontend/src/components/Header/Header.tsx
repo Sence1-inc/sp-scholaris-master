@@ -4,7 +4,7 @@ import './Header.css';
 
 function Header() {
     return (
-        <header id="header">
+        <header id='header'>
             <Navbar />
         </header>
     )

@@ -1,9 +1,14 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import WelcomePage from './pages/WelcomePage/WelcomePage';
 
 function App() {
   return (
-    <WelcomePage />
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<WelcomePage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
