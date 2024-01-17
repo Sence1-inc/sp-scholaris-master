@@ -45,7 +45,7 @@ module Api
       end
 
       def soft_del
-        if Subscriber.is_unsubscribed(@subscriber)
+        if Subscriber.is_soft_deleted(@subscriber)
           Subscriber.soft_delete(@subscriber)
           render json: {message: "Unsubscribed successfully.", status: :ok}
         else
@@ -55,7 +55,7 @@ module Api
       end
     
       def restore
-        if !Subscriber.is_unsubscribed(@subscriber)
+        if !Subscriber.is_soft_deleted(@subscriber)
           Subscriber.restore(@subscriber)
           render json: {message: "Subscriber restored", status: :ok}
         else
