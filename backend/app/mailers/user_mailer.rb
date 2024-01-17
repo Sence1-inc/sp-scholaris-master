@@ -1,11 +1,15 @@
 class UserMailer < ApplicationMailer
-    default to: -> { Admin.pluck(:email) },
-          from: 'notification@example.com'
+  default from: 'roan.dino@sence1.com'
 
-    def newsletter
-        @user = params[:user]
-        @user_type = params[:user_type]
-        @url  = 'http://example.com/login'
-        mail(to: @user.email, subject: 'Latest News', content: 'This is the content of the newsletter. It can include HTML for formatting.', user_type: @user_type)
-    end
+  def send_to_providers(subject, content)
+    @content = content
+
+    mail(to: Subscriber.where(unsubscribed_at: nil).pluck(:email), subject: subject)
+  end
+
+  def send_to_students(subject, content)
+    @content = content
+
+    mail(to: Subscriber.where(unsubscribed_at: nil).pluck(:email), subject: subject)
+  end
 end
