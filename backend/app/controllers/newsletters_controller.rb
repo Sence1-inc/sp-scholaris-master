@@ -1,4 +1,5 @@
 class NewslettersController < ApplicationController
+  skip_before_action :verify_authenticity_token
   before_action :set_newsletter, only: %i[ show edit update destroy ]
 
   # GET /newsletters or /newsletters.json
@@ -21,16 +22,18 @@ class NewslettersController < ApplicationController
 
   # POST /newsletters or /newsletters.json
   def create
-    @newsletter = Newsletter.new(newsletter_params)
+    newsletter = NewsletterService.new(newsletter_params)
 
-    respond_to do |format|
-      if @newsletter.save
-        format.html { redirect_to newsletter_url(@newsletter), notice: "Newsletter was successfully created." }
-        format.json { render :show, status: :created, location: @newsletter }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @newsletter.errors, status: :unprocessable_entity }
-      end
+    if newsletter.send_newsletter
+      render json: {
+        id: newsletter.id,
+        subject: newsletter.subject,
+        content: newsletter.content,
+        user_type: newsletter.user_type,
+        message: "Newsletter sent successfully to #{newsletter.subscribers_count} subscribers."
+      }, status: :ok
+    else
+      render json: { error: 'Failed to send newsletter.' }, status: :unprocessable_entity
     end
   end
 
@@ -65,6 +68,6 @@ class NewslettersController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def newsletter_params
-      params.fetch(:newsletter, {})
+      params.require(:newsletter).permit(:subject, :content, :user_type)
     end
 end
