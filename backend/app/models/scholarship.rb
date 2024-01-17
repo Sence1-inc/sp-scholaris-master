@@ -1,4 +1,5 @@
 class Scholarship < ApplicationRecord
+  belongs_to :scholarship_provider
   has_and_belongs_to_many :courses, join_table: "course_scholarship_schools"
   has_and_belongs_to_many :schools, join_table: "course_scholarship_schools"
   has_and_belongs_to_many :benefits, join_table: "scholarship_benefits"
@@ -16,6 +17,7 @@ class Scholarship < ApplicationRecord
                          params[:location], params[:location], params[:location]) if params[:location].present?
     results = results.where("start_date >= ?", params[:start_date]) if params[:start_date].present?
     results = results.where("due_date <= ?", params[:due_date]) if params[:due_date].present?
+    results = results.joins(:scholarship_provider).where("provider_name = ?", params[:provider]) if params[:provider].present?
 
     results
   }
