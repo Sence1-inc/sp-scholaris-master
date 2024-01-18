@@ -1,6 +1,7 @@
 module Api
   module V1
     class SubscribersController < ApplicationController
+      before_action :set_subscriber, only: %i[ show edit update destroy soft_del restore]
       skip_before_action :verify_authenticity_token
     
       # GET /subscribers
@@ -42,9 +43,34 @@ module Api
       # DELETE /subscribers/{id}
       def destroy
       end
+
+      def soft_del
+        if Subscriber.is_soft_deleted(@subscriber)
+          Subscriber.soft_delete(@subscriber)
+          render json: {message: "Unsubscribed successfully.", status: :ok}
+        else
+          render json: {message: "Already unsubscribed", status: :unprocessable_entity}, status: 422
+        end
+        
+      end
+    
+      def restore
+        if !Subscriber.is_soft_deleted(@subscriber)
+          Subscriber.restore(@subscriber)
+          render json: {message: "Subscriber restored", status: :ok}
+        else
+          render json: {message: "Already subscribed", status: :unprocessable_entity}, status: 422
+        end
+
+      end
     
       private
     
+      def set_subscriber
+        @subscriber = Subscriber.find(params[:id])
+      end
+  
+      # Only allow a list of trusted parameters through.
       def subscriber_params
         params.require(:subscriber).permit(:email, :user_type)
       end
