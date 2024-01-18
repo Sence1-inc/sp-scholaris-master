@@ -8,7 +8,7 @@ class NewsletterService
   end
 
   def send_newsletter
-    @subscribers = Subscriber.where(unsubscribed_at: nil)
+    @subscribers = Subscriber.where(deleted_at: nil)
     has_no_user_type = @subscribers.where.not(user_type: user_type).count.zero?
 
     if user_type == 'provider' && !has_no_user_type
