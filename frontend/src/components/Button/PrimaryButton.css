@@ -1,39 +1,29 @@
 #button {
-    width: 100%;
+    width: auto;
     text-decoration: none;
 }
 
-.button__welcome-primary {
+.button__primary {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    max-width: 340px;
+    max-width: fit-content;
     width: 100%;
     background-color: var(--secondary-color);
     border: none;
     border-radius: 16px;
-    padding: 20px;
-    box-shadow: 5px 9px 0px 0px rgba(0, 0, 0, 0.25);
+    padding: 15px 30px;
 }
 
-.button__welcome-primary:hover {
-    background-color: var(--secondary-color-darker);
-    box-shadow: 3px 6px 0px 0px rgba(33, 33, 33, 0.25);
-}
-
-.button__welcome-primary img {
-    margin: 50px 0 25px;
-}
-
-.button__welcome-primary p {
+.button__primary p {
     font-family: 'Roboto', sans-serif;
-    font-size: 2.25rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--white);
 }
 
-.button__welcome-primary span {
+.button__primary span {
     width: auto;
     background-color: rgba(255, 255, 255, 0.19);
     border-radius: 8px;
@@ -42,43 +32,36 @@
     font-size: 1rem;
     font-weight: 300;
     color: var(--white);
+    box-shadow: none;
 }
 
 @media screen and (max-width: 768px) {
-    .button__welcome-primary {
+    .button__primary {
         padding: 15px;
         max-width: 100%;
     }
 
-    .button__welcome-primary p {
-        font-size: 1.5rem;
+    .button__primary p {
+        font-size: 1rem;
         word-break: break-all;
     }
 
-    .button__welcome-primary img {
-        width: 50%;
-    }
-
-    .button__welcome-primary span {
+    .button__primary span {
         font-size: 0.875rem;
         padding: 7px;
     }
 }
 
 @media screen and (max-width: 390px) {
-    .button__welcome-primary {
+    .button__primary {
         gap: 15px;
     }
 
-    .button__welcome-primary p {
-        font-size: 1rem;
+    .button__primary p {
+        font-size: 0.875rem;
     }
 
-    .button__welcome-primary img {
-        margin: 20px 0 10px;
-    }
-
-    .button__welcome-primary span {
+    .button__primary span {
         font-size: 0.65rem;
     }
 }
