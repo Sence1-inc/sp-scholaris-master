@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :subscribers
       post 'subscribers/soft_delete', to: 'subscribers#soft_del'
       post 'subscribers/restore', to: 'subscribers#restore'
+      resources :scholarships
     end
   end
 end
