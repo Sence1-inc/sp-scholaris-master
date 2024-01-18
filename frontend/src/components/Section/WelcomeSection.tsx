@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PrimaryButton from '../Button/PrimaryButton';
-import WelcomeImageBG from '../../public/images/welcome-icon.png';
 
 import './WelcomeSection.css';
 
