@@ -1,5 +1,6 @@
 
 #navbar {
+    position: relative;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -58,4 +59,53 @@
 
 #navbar .navbar__menu-main li a:hover {
     color: var(--secondary-color);
+}
+
+#navbar .navbar__menu-hamburger {
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    justify-content: space-around;
+    flex-flow: column nowrap;
+    z-index: 10;
+}
+
+#navbar .navbar__menu-hamburger .burger {
+    width: 2rem;
+    height: 0.25rem;
+    border-radius: 10px;
+    background-color: var(--white);
+}
+
+#navbar .navbar__menu-hamburger:hover .burger {
+    background-color: var(--secondary-color);
+}
+
+#navbar .navbar__menu-hamburger {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    #navbar .navbar__menu-hamburger {
+        display: flex;
+        z-index: 10;
+    }
+
+    #navbar .navbar__menu-main {
+        display: none;
+    }
+
+    #navbar .navbar__menu-main.open {
+        position: absolute;
+        top: 15vh;
+        right: 1px;
+        display: flex;
+        background-color: var(--primary-color);
+    }
+
+    #navbar .navbar__menu-main.open ul {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 20px;
+    }
 }

@@ -1,6 +1,6 @@
 .content__welcome-intro {
     background-color: var(--white);
-    padding: 80px 0;
+    padding: 130px 0;
 }
 
 .content__welcome-intro .container {
@@ -30,6 +30,25 @@
 }
 
 .content__welcome-annotations p {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: 300;
+}
+
+@media screen and (max-width: 768px) {
+    .content__welcome-intro .container > img {
+        max-width: 100%;
+    }
+
+    .content__welcome-intro {
+        padding: 130px 20px;
+    }
+
+    .content__welcome-selection {
+        padding: 130px 20px;
+    }
+
+    .content__welcome-buttons {
+        max-width: 100%;
+        gap: 1.25rem;
+    }    
 }

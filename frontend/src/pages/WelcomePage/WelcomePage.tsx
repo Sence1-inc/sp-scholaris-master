@@ -1,5 +1,4 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import WelcomeButton from '../../components/Button/WelcomeButton';
@@ -10,6 +9,22 @@ import WelcomeImage from '../../public/images/welcome-icon.png';
 import './WelcomePage.css';
 
 function WelcomePage() {
+  const [windowWidthSize, setWindowWidthSize] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleWindowWidthResize = () => {
+      setWindowWidthSize(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleWindowWidthResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowWidthResize);
+    };
+  }, []);
+
+  console.log(windowWidthSize)
+
   return (
     <>
       <Header />
@@ -25,8 +40,8 @@ function WelcomePage() {
       <div id='welcome' className='content__welcome-selection'>
         <div className='container'>
           <div>
-            <h3 className='text-center mb-2'>Dream, Achieve, Succeed: Your Journey<br />Begins with <span className='color-secondary'>Scholaris</span>.</h3>
-            <p className='text-center'>Begin your journey now. Are you an aspiring student or <br />a scholarship-granting organization?</p>
+            <h3 className='text-center mb-2'>Dream, Achieve, Succeed: Your Journey{windowWidthSize > 768 && <br />}Begins with <span className='color-secondary'>Scholaris</span>.</h3>
+            <p className='text-center'>Begin your journey now. Are you an aspiring student or{windowWidthSize > 768 && <br />}a scholarship-granting organization?</p>
             <div className='content__welcome-buttons'>
               <WelcomeButton label='Student' icon={UserIcon} desc='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet purus nulla.' url='/user'/>
               <WelcomeButton label='Organization' icon={SchoolIcon} desc='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet purus nulla.' url='/organization'/>

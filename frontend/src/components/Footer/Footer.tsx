@@ -5,7 +5,7 @@ import './Footer.css';
 function Footer() {
     return (
         <footer id='footer'>
-            <div className='footer__container'>
+            <div className='container'>
                 <div>
                     <div className='NavFooter'>
                         <ul>
