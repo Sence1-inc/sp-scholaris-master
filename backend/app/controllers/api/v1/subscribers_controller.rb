@@ -49,7 +49,7 @@ module Api
           Subscriber.soft_delete(@subscriber)
           render json: {message: "Unsubscribed successfully.", status: :ok}
         else
-          render json: {message: "Already unsubscribed", status: :unprocessable_entity}
+          render json: {message: "Already unsubscribed", status: :unprocessable_entity}, status: 422
         end
         
       end
@@ -59,7 +59,7 @@ module Api
           Subscriber.restore(@subscriber)
           render json: {message: "Subscriber restored", status: :ok}
         else
-          render json: {message: "Already subscribed", status: :unprocessable_entity}
+          render json: {message: "Already subscribed", status: :unprocessable_entity}, status: 422
         end
 
       end
