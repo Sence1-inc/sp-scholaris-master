@@ -30,7 +30,7 @@ class NewslettersController < ApplicationController
         subject: newsletter.subject,
         content: newsletter.content,
         user_type: newsletter.user_type,
-        message: "Newsletter sent successfully to #{newsletter.subscribers_count} subscribers."
+        message: "Newsletter sent successfully to #{subscribers_count} subscribers."
       }, status: :ok
     else
       render json: { error: 'Failed to send newsletter.' }, status: :unprocessable_entity
