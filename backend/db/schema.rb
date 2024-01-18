@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_17_075028) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_18_032746) do
   create_table "benefits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "benefit_name"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
