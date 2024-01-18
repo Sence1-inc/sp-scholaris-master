@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  scholarship_name: MyString
+  start_date: 2024-01-16 02:44:06
+  due_date: 2024-01-16 02:44:06
+  application_link: MyString
+  school_year: MyString
+  scholarship_provider_id: 1
+  requirement_id: 1
+  eligibility_id: 1
+  scholarship_type_id: 1
+
+two:
+  scholarship_name: MyString
+  start_date: 2024-01-16 02:44:06
+  due_date: 2024-01-16 02:44:06
+  application_link: MyString
+  school_year: MyString
+  scholarship_provider_id: 1
+  requirement_id: 1
+  eligibility_id: 1
+  scholarship_type_id: 1
