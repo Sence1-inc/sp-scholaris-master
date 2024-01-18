@@ -1,13 +1,7 @@
 #header {
     display: block;
     width: 100%;
-    padding: 0;
+    padding: 0 20px;
     margin: 0;
     background-color: var(--primary-color);
-}
-
-@media screen and (max-width: 768px) {
-    #header {
-        padding: 0 20px;
-    }
 }

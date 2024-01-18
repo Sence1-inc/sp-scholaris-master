@@ -97,7 +97,7 @@
 
     #navbar .navbar__menu-main.open {
         position: absolute;
-        top: 15vh;
+        top: 10vh;
         right: 1px;
         display: flex;
         background-color: var(--primary-color);

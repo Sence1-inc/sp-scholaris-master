@@ -1,6 +1,6 @@
 .content__welcome-intro {
     background-color: var(--white);
-    padding: 130px 0;
+    padding: 130px 20px;
 }
 
 .content__welcome-intro .container {
@@ -13,7 +13,7 @@
 
 .content__welcome-selection {
     background-color: var(--accent-color);
-    padding: 130px 0;
+    padding: 130px 20px;
 }
 
 .content__welcome-buttons {
@@ -37,14 +37,6 @@
 @media screen and (max-width: 768px) {
     .content__welcome-intro .container > img {
         max-width: 100%;
-    }
-
-    .content__welcome-intro {
-        padding: 130px 20px;
-    }
-
-    .content__welcome-selection {
-        padding: 130px 20px;
     }
 
     .content__welcome-buttons {

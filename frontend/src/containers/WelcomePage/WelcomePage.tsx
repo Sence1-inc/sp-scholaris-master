@@ -43,8 +43,8 @@ function WelcomePage() {
             <h3 className='text-center mb-2'>Dream, Achieve, Succeed: Your Journey{windowWidthSize > 768 && <br />}Begins with <span className='color-secondary'>Scholaris</span>.</h3>
             <p className='text-center'>Begin your journey now. Are you an aspiring student or{windowWidthSize > 768 && <br />}a scholarship-granting organization?</p>
             <div className='content__welcome-buttons'>
-              <WelcomeButton label='Student' icon={UserIcon} desc='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet purus nulla.' url='/user'/>
-              <WelcomeButton label='Organization' icon={SchoolIcon} desc='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet purus nulla.' url='/organization'/>
+              <WelcomeButton label='Student' icon={UserIcon} desc='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet purus nulla.' url='/student'/>
+              <WelcomeButton label='Organization' icon={SchoolIcon} desc='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet purus nulla.' url='/provider'/>
             </div>
             <div className='content__welcome-annotations'>
               <p className='text-center'>Please select from the button options above to get started with Scholaris.</p><br/>

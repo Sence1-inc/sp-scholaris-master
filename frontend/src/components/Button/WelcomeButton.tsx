@@ -13,7 +13,7 @@ function WelcomeButton(props: Props) {
     const { label, icon, desc, url  } = props
 
     return (
-        <Link to={`${url}`} id='button'>
+        <Link to={`${url}`} id='welcomeButton'>
             <button className='button__welcome-primary'>
                 { icon && <img src={`${icon}`} alt='' /> }
                 <p>{label}</p>
