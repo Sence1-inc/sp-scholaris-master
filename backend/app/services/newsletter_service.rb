@@ -36,20 +36,20 @@ class NewsletterService
     subscribers.each do |subscriber|
       NewsletterLog.create(
         newsletter: newsletter,
-        email: subscriber
+        email: subscriber.email
       )
     end
   end
 
   def send_to_providers
-    UserMailer.with(subject: subject, content: content, user_type: user_type)
+    UserMailer.with(subject: subject, content: content)
               .send_to_providers(@subject, @content).deliver_now
 
     @subscribers_count = ActionMailer::Base.deliveries.size
   end
 
   def send_to_students
-    UserMailer.with(subject: subject, content: content, user_type: user_type)
+    UserMailer.with(subject: subject, content: content)
               .send_to_students.deliver_now
 
     @subscribers_count = ActionMailer::Base.deliveries.size
