@@ -3,13 +3,15 @@ class UserMailer < ApplicationMailer
 
   def send_to_providers(subject, content)
     @content = content
+    providers = Subscriber.where(user_type: "provider").where(deleted_at: nil)
 
-    mail(to: Subscriber.where(user_type: "provider").where(deleted_at: nil).pluck(:email), subject: subject)
+    mail(to: providers.pluck(:email), subject: subject) if providers.any?
   end
 
   def send_to_students(subject, content)
     @content = content
+    students = Subscriber.where(user_type: "students").where(deleted_at: nil)
 
-    mail(to: Subscriber.where(user_type: "student").where(deleted_at: nil).pluck(:email), subject: subject)
+    mail(to: students.pluck(:email), subject: subject) if students.any?
   end
 end
