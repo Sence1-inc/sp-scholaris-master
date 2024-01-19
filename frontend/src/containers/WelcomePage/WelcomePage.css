@@ -1,0 +1,46 @@
+.content__welcome-intro {
+    background-color: var(--white);
+    padding: 130px 20px;
+}
+
+.content__welcome-intro .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+}
+
+.content__welcome-selection {
+    background-color: var(--accent-color);
+    padding: 130px 20px;
+}
+
+.content__welcome-buttons {
+    display: flex;
+    justify-content: space-between;
+    max-width: 720px;
+    margin: 50px auto;
+}
+
+.content__welcome-annotations {
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.content__welcome-annotations p {
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+@media screen and (max-width: 768px) {
+    .content__welcome-intro .container > img {
+        max-width: 100%;
+    }
+
+    .content__welcome-buttons {
+        max-width: 100%;
+        gap: 1.25rem;
+    }    
+}
