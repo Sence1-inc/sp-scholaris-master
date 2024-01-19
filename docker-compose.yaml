@@ -25,6 +25,7 @@ services:
       - ./backend/db/init.sql:/app/backend/init.sql
     depends_on:
       - db
+      - mailhog
     links:
       - db
     environment:
@@ -46,6 +47,10 @@ services:
       MYSQL_PASSWORD: password
     ports:
         - "3307:3306"
-
+  mailhog:
+      container_name: mailhog_container
+      image: mailhog/mailhog
+      ports:
+        - "8025:8025"
 volumes:
   node_modules:

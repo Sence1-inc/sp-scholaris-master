@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_01_17_075028) do
+ActiveRecord::Schema[7.1].define(version: 2024_01_18_055521) do
   create_table "benefits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "benefit_name"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
@@ -69,7 +69,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_01_17_075028) do
     t.timestamp "sent_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
-    t.index ["email"], name: "index_newsletter_logs_on_email", unique: true
+    t.index ["email"], name: "index_newsletter_logs_on_email"
     t.index ["newsletter_id"], name: "index_newsletter_logs_on_newsletter_id"
   end
 
