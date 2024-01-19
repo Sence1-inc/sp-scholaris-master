@@ -27,15 +27,12 @@
 }
 
 @media (max-width: 768px) {
-<<<<<<<< HEAD:frontend/src/components/Section/Search/Search.css
     .section{
         padding: 60px 20px;
 
         row-gap: 40px;
     }
 
-========
->>>>>>>> 09d4cc9 (arrage files by their folder):frontend/src/containers/Search.css
     .section .section-header h3{
         font-size: 38px;
     }
