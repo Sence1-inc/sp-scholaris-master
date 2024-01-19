@@ -12,7 +12,7 @@ function PrimaryButton(props: Props) {
     const { label, icon, url  } = props
 
     return (
-        <Link to={`${url}`} id='button'>
+        <Link to={`${url}`} className='button'>
             <button className='button__primary'>
                 { icon && <img src={`${icon}`} alt='' /> }
                 <p>{label}</p>
