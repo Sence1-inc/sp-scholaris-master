@@ -1,0 +1,51 @@
+.section .section-header{
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+
+    text-align: center;
+}
+
+.section .section-header h3{
+    font-size: 48px;
+    color: #F36B3B;
+
+    margin: 0;
+}
+
+.section .section-header p{
+    font-size: 56px;
+    color: #002147;
+    font-weight: 700;
+
+    margin: 0;
+}
+
+.section .section__search-input{
+    display: flex;
+    column-gap: 40px;
+}
+
+@media (max-width: 768px) {
+<<<<<<<< HEAD:frontend/src/components/Section/Search/Search.css
+    .section{
+        padding: 60px 20px;
+
+        row-gap: 40px;
+    }
+
+========
+>>>>>>>> 09d4cc9 (arrage files by their folder):frontend/src/containers/Search.css
+    .section .section-header h3{
+        font-size: 38px;
+    }
+
+    .section .section-header p{
+        font-size: 42px;
+    }
+
+    .section__search-input{
+        flex-direction: column;
+        row-gap: 12px;
+    }
+}
