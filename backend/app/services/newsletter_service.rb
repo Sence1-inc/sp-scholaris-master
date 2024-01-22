@@ -9,11 +9,11 @@ class NewsletterService
 
   def send_newsletter
     @subscribers = Subscriber.where(deleted_at: nil)
-    has_no_user_type = @subscribers.where.not(user_type: user_type).count.zero?
+    has_no_subscriber = @subscribers.where(user_type: user_type).count.zero?
 
-    if user_type == 'provider' && !has_no_user_type
+    if user_type == 'provider' && !has_no_subscriber
       send_to_providers
-    elsif user_type == 'student' && !has_no_user_type
+    elsif user_type == 'student' && !has_no_subscriber
       send_to_students
     else
       return false
@@ -33,7 +33,7 @@ class NewsletterService
       user_type: @user_type
     )
 
-    @subscribers.where(user_type: user_type).each do |subscriber|
+    @subscribers.where(user_type: user_type, deleted_at: nil).each do |subscriber|
       NewsletterLog.create(
         newsletter: newsletter,
         email: subscriber.email
