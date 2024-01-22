@@ -1,7 +1,7 @@
 import './Feature.css';
 import Feature from './Feature';
 
-const FeatureGuides = ({features}: AppProps) => {
+const FeatureGuides = ({features}: FeaturesProps) => {
     return (
         <section className="featureGuides">
             <div className="container">

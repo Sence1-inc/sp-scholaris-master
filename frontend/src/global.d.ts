@@ -1,10 +1,10 @@
 /* eslint--disable no-var */
 
-interface AppProps {
-    features: Feature[];
+interface FeaturePropsProps {
+    features: FeatureProps[];
 }
 
-interface Feature {
+interface FeatureProps {
     title: string;
     desc: string;
     image: string;

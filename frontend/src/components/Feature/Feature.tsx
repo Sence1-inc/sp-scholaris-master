@@ -1,6 +1,6 @@
 import './Feature.css';
 
-const Feature = ({title, desc, image, isEven}: Feature) => {
+const Feature = ({title, desc, image, isEven}: FeatureProps) => {
     return (
         <div className={`featureGuides__feature ${isEven ? '' : 'd-flex-row-rev'}`}>
             <div className="featureGuides__feature-text">
