@@ -13,7 +13,7 @@ interface NewsletterProps {
 
 const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content, description_content, consent_content}) => {
   return (
-    <div className="section newsletter">
+    <section className="section newsletter">
         <h2 className='newsletter-subheader'>{title_content}</h2>
       <div className="section-header">
         <h3>{subtitle_content}</h3>
@@ -27,7 +27,7 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         </p>}
 
       </div>
-    </div>
+    </section>
   );
 };
 
