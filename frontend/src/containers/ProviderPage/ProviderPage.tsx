@@ -1,5 +1,5 @@
 
-import FeatureGuides from './../../components/FeatureGuides';
+import FeatureGuides from '../../components/Feature/FeatureGuides';
 import features from './ProviderContent';
 
 const ProviderPage = () => {
