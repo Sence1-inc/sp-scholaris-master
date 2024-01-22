@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
 import './TermsAndConditionsPage.css'
 
@@ -36,6 +37,7 @@ const TermsAndConditionsPage: React.FC = () => {
 
         <p>Thank you for using Scholaris!</p>
       </div>
+      <Footer />
     </>
   );
 };

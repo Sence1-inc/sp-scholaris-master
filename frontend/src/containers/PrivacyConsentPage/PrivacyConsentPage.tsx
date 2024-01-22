@@ -1,4 +1,5 @@
 import React from 'react';
+import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
 import './PrivacyConsentPage.css'
 
@@ -100,7 +101,7 @@ const PrivacyConsentPage: React.FC = () => {
         </div>
         <p>You may also lodge a complaint with the National Privacy Commission (NPC). For further details, please refer to the NPC website: <a href="https://privacy.gov.ph">https://privacy.gov.ph</a></p>
       </div>
-      
+      <Footer />
     </>
   );
 };

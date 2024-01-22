@@ -11,8 +11,8 @@ function Footer() {
                         <ul>
                             <li><Link to='/newsletter'>Newsletter</Link></li>
                             <li><Link to='/newsletter'>Listing</Link></li>
-                            <li><Link to='/terms-and-condition'>Terms and Condition</Link></li>
-                            <li><Link to='/privacy-policy'>Privacy Policy</Link></li>
+                            <li><Link to='/terms-and-conditions'>Terms and Condition</Link></li>
+                            <li><Link to='/privacy-consent'>Privacy Policy</Link></li>
                             <li><Link to='/'>Welcome Page</Link></li>
                         </ul>
                     </div>
