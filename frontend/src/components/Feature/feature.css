@@ -1,6 +1,6 @@
 
 .featureGuides {
-    background: var(--tertiary-color);
+    background: var(--accent-color);
     padding-top: 120px;
     padding-bottom: 260px;
     display: flex;
@@ -30,14 +30,14 @@
     row-gap: 20px;
 }
 
-.featureGuides__feature-desc {
+/* .featureGuides__feature-desc {
     color: #191919;
     font-family: var(--content-font);
     font-size: 20px;
     font-style: normal;
     font-weight: 300;
     line-height: normal;
-}
+} */
 
 @media screen and (max-width: 1024px) {
     .featureGuides {

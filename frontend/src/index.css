@@ -74,6 +74,10 @@ p {
   margin-bottom: 1.25rem;
 }
 
+.d-flex-row-rev {
+  flex-direction: row-reverse;
+}
+
 @media screen and (max-width: 768px) {
   h2 {
     font-size: 2.875rem;

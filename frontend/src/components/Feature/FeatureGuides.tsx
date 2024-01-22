@@ -1,4 +1,4 @@
-
+import './Feature.css';
 import Feature from './Feature';
 
 const FeatureGuides = ({features}: AppProps) => {
