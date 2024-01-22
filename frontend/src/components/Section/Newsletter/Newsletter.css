@@ -35,6 +35,9 @@
     font-weight: 400;
 }
 
+.newsletter-text__small{
+    font-size: 12px;
+}
 
 @media (max-width: 768px) {
     .section .newsletter-subheader{
@@ -50,6 +53,10 @@
 
     .newsletter-input__container{
         row-gap: 12px;
+    }
+
+    .newsletter-text__small{
+        font-size: 10px;
     }
 
 }

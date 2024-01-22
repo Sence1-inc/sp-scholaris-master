@@ -17,6 +17,9 @@ const Newsletter: React.FC<NewsletterProps> = () => {
       <div className="newsletter-input__container">
         <SearchInput placeholder={'Enter your email'}/>
         <Button>Subscribe</Button>
+        <p className='newsletter-text__small'>
+            By subscribing to the newsletter, you have read this form and understand its content and voluntarily give your consent for the collection, use, processing, storage and retention of your personal data or information to Scholaris for the purpose(s) described in the Privacy Data document.
+        </p>
       </div>
     </div>
   );
