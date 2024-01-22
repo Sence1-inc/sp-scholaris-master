@@ -12,4 +12,4 @@ const Feature = ({title, desc, image, isEven}: Feature) => {
     )
 }
 
-export default Feature;
+export default Feature; 
