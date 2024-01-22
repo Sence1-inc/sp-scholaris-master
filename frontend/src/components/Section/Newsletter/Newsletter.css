@@ -15,6 +15,10 @@
     text-align: center;
 }
 
+.newsletter-subheadder__orange{
+    color: var(--secondary-color);
+}
+
 .newsletter-input__container{
     display: flex;
     flex-direction: column;
@@ -41,7 +45,7 @@
 
 @media (max-width: 768px) {
     .section .newsletter-subheader{
-        font-size: 42px;
+        font-size: 36px;
     }
     .section .newsletter-input{
         row-gap: 12px;
