@@ -1,6 +1,6 @@
 /* eslint--disable no-var */
 
-interface FeaturePropsProps {
+interface FeaturesProps {
     features: FeatureProps[];
 }
 
