@@ -1,6 +1,6 @@
 /* eslint--disable no-var */
 
-interface FeaturesProps {
+export interface FeaturesProps {
     features: FeatureProps[];
 }
 
