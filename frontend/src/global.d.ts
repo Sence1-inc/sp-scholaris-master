@@ -8,5 +8,6 @@ interface Feature {
     title: string;
     desc: string;
     image: string;
+    isEven?: boolean; /* to swicth images and text */
 }
 

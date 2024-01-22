@@ -4,7 +4,6 @@ import WelcomePage from './containers/WelcomePage/WelcomePage';
 import TeaserStudent from './containers/TeaserPage/TeaserStudent';
 import TeaserProvider from './containers/TeaserPage/TeaserProvider';
 
-
 function App() {
   return (
     <Routes>
