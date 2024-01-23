@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import WelcomeButton from '../../components/Button/WelcomeButton';
+import WelcomeButton from '../../components/Button/WelcomeButtonProps';
 import AngleDownIcon from '../../public/images/angles-down-solid.svg';
 import UserIcon from '../../public/images/users-solid.svg';
 import SchoolIcon from '../../public/images/school-solid.svg';
@@ -9,7 +9,7 @@ import WelcomeImage from '../../public/images/welcome-icon.png';
 import './WelcomePage.css';
 
 function WelcomePage() {
-  const [windowWidthSize, setWindowWidthSize] = useState(window.innerWidth);
+  const [windowWidthSize, setWindowWidthSize] = useState<number>(window.innerWidth);
 
   useEffect(() => {
     const handleWindowWidthResize = () => {

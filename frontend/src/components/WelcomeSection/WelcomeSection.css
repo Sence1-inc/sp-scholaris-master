@@ -1,8 +1,8 @@
 .section__welcome {
-    background: url('../../public/images/banner-bg.png') center no-repeat;
-    background-size: cover;
-    height: max-content;
-    padding: 200px 0;
+  background: url('../../public/images/banner-bg.png') center no-repeat;
+  background-size: cover;
+  height: max-content;
+  padding: 200px 0;
 }
 
 .section__welcome h2 {
@@ -34,24 +34,24 @@
 }
 
 .section__buttons {
-    margin-top: 200px;
+    margin-top: 154px;
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
 @media screen and (max-width: 768px) {
-    .section__welcome {
-        height: fit-content;
-        padding: 100px 20px;
-    }
+  .section__welcome {
+    height: fit-content;
+    padding: 100px 20px;
+  }
 
-    .section__welcome h2 {
-        font-size: 2rem;
-    }
-    
-    .section__welcome h3 {
-        font-size: 1.25rem;
-        margin: 0 auto 70px;
-    }
+  .section__welcome h2 {
+    font-size: 2rem;
+  }
+  
+  .section__welcome h3 {
+    font-size: 1.25rem;
+    margin: 0 auto 70px;
+  }
 }

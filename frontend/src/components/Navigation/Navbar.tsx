@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './Navbar.css'
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState<boolean>(false);;
 
   return (
     <nav id='navbar'>
@@ -14,7 +14,6 @@ function Navbar() {
         <div className={`navbar__menu-main ${isOpen && 'open'}` }>
             <ul>
                 <li><Link to='/newsletter'>Newsletter</Link></li>
-                <li><Link to='/survey'>Survey</Link></li>
             </ul>
         </div>
         <div className="navbar__menu-hamburger" onClick={() => isOpen ? setIsOpen(false) : setIsOpen(true)}>
