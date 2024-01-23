@@ -1,0 +1,45 @@
+.content_privacy-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+p {
+  line-height: 1.5;
+  margin: 18px 0;
+}
+
+h3 {
+  margin: 36px 0;
+}
+
+h4 {
+  margin: 24px 0;
+  font-size: 1.5rem;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px;
+}
+
+a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+.content_container-contact {
+  padding-left: 36px;
+}
+
+.content_contact-info {
+  margin: 0;
+}
