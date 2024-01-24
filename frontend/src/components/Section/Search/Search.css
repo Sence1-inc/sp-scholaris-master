@@ -6,7 +6,7 @@
     text-align: center;
 }
 
-.search .section-header h3{
+.search .section-header h2{
     font-size: 48px;
     color: #F36B3B;
 
@@ -42,7 +42,7 @@
         row-gap: 40px;
     }
 
-    .search .section-header h3{
+    .search .section-header h2{
         font-size: 38px;
     }
 
