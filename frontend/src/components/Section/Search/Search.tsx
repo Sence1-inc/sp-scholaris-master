@@ -12,8 +12,8 @@ const Search: React.FC<SearchProps> = () => {
     <section className="search">
       <div className="container-1040">
       <div className="section-header">
-        <h2 className='color-secondary'>Scholaris</h2>
-        <p>Step into a world of opportunities</p>
+        <h3 className='color-secondary'>Scholaris</h3>
+        <h2>Step into a world of opportunities</h2>
       </div>
       <div className="section__search-input">
         <SearchInput placeholder='Search Keywords'/>
