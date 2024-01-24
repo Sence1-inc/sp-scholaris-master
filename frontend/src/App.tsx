@@ -5,6 +5,7 @@ import TeaserStudent from './containers/TeaserPage/TeaserStudent';
 import TeaserProvider from './containers/TeaserPage/TeaserProvider';
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage';
 import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage';
+import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage';
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route path='/provider' element={<TeaserProvider />} />
       <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
       <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
+      <Route path="*" element={<PageNotFoundPage />} />
     </Routes>
   );
 }
