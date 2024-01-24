@@ -9,17 +9,19 @@ interface SearchProps {}
 
 const Search: React.FC<SearchProps> = () => {
   return (
-    <div className="section">
+    <section className="search">
+      <div className="container-1040">
       <div className="section-header">
-        <h3>Get Started</h3>
-        <p>Search Your Scholarship!</p>
+        <h3 className='color-secondary'>Scholaris</h3>
+        <p>Step into a world of opportunities</p>
       </div>
       <div className="section__search-input">
         <SearchInput placeholder='Search Keywords'/>
         <Button>Search</Button>
       </div>
       <Filter />
-    </div>
+      </div>
+    </section>
   );
 };
 
