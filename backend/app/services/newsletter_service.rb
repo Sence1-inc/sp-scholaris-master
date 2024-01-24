@@ -1,5 +1,5 @@
 class NewsletterService
-  attr_reader :id, :subject, :content, :user_type, :subscribers_count
+  attr_reader :id, :subject, :content, :user_type
 
   def initialize(params)
     @subject = params[:subject]
@@ -46,14 +46,20 @@ class NewsletterService
   end
 
   def send_to_providers
-    UserMailer.with(subject: subject, content: content)
-              .send_to_providers(@subject, @content)
-              .deliver_now
+    @subscribers.each do |subscriber|
+      @subscriber_id = subscriber.id
+      UserMailer.with(subject: subject, content: content)
+                .send_to_providers(@subject, @content, @subscriber_id)
+                .deliver_now
+    end
   end
 
   def send_to_students
-    UserMailer.with(subject: subject, content: content)
-              .send_to_students(@subject, @content)
-              .deliver_now
+    @subscribers.each do |subscriber|
+      @subscriber_id = subscriber.id
+      UserMailer.with(subject: subject, content: content)
+                .send_to_students(@subject, @content, @subscriber_id)
+                .deliver_now
+    end
   end
 end

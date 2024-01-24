@@ -2,5 +2,10 @@
 <body>
   <h1><%= @subject %></h1>
   <div><%= raw @content %></div>
+  <%= form_tag(api_v1_subscribers_soft_delete_path, method: 'post') do %>
+    <%= csrf_meta_tags %>
+    <%= hidden_field_tag :id, @subscriber_id %>
+    <%= submit_tag "Unsubscribe", class: 'unsubscribe-button' %>
+  <% end %>
 </body>
 </html>
