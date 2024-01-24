@@ -12,7 +12,7 @@ const Search: React.FC<SearchProps> = () => {
     <section className="search">
       <div className="container-1040">
       <div className="section-header">
-        <h3 className='color-secondary'>Scholaris</h3>
+        <h2 className='color-secondary'>Scholaris</h2>
         <p>Step into a world of opportunities</p>
       </div>
       <div className="section__search-input">
