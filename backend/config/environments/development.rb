@@ -83,4 +83,6 @@ config.action_mailer.smtp_settings = {
   port: 1025,
 }
 
+config.hosts << "backend:5001"
+
 end
