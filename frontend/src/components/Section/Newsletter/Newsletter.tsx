@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../../Button/Button';
 import SearchInput from '../../SearchInput/SearchInput';
+import { Link } from 'react-router-dom';
 
 import './Newsletter.css';
 
@@ -8,10 +9,9 @@ interface NewsletterProps {
   title_content:string,
   subtitle_content:string,
   description_content:string,
-  consent_content?:string
 }
 
-const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content, description_content, consent_content}) => {
+const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content, description_content}) => {
   return (
     <section className="newsletter">
       <div className='container-1040'>
@@ -22,10 +22,11 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
       </div>
       <div className="newsletter-input__container">
         <SearchInput placeholder={'Enter your email'}/>
-        <Button>Subscribe</Button>
-        {consent_content && <p className='newsletter-text__small'>
-        {consent_content}
-        </p>}
+        <Button>SUBSCRIBE</Button>
+        <p className='newsletter-text__small'>
+        By subscribing to the newsletter, I have read this form and understand its content and voluntarily give my consent for the collection, use, processing, storage and retention of my personal data or information to Sence1 for the purpose(s) described in the 
+        <Link to={'/privacy-consent'}>Privacy Policy</Link> document
+        </p>
 
       </div>
       </div>
