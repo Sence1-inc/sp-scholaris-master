@@ -1,16 +1,16 @@
 class UserMailer < ApplicationMailer
   default from: 'roan.dino@sence1.com'
 
-  def send_to_providers(subject, content)
+  def send_to_providers(subject, content, subscriber_id)
     @content = content
-    providers = Subscriber.where(user_type: "provider", deleted_at: nil)
+    providers = Subscriber.where(user_type: PROVIDER_TYPE, deleted_at: nil)
 
     mail(to: providers.pluck(:email), subject: subject) if providers.any?
   end
 
-  def send_to_students(subject, content)
+  def send_to_students(subject, content, subscriber_id)
     @content = content
-    students = Subscriber.where(user_type: "student", deleted_at: nil)
+    students = Subscriber.where(user_type: STUDENT_TYPE, deleted_at: nil)
 
     mail(to: students.pluck(:email), subject: subject) if students.any?
   end
