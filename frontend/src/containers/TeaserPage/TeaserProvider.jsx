@@ -3,7 +3,7 @@ import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import WelcomeSection from '../../components/Section/WelcomeSection';
 import FeatureGuides from '../../components/Feature/FeatureGuides';
-import features from './ProviderContent';
+import features from '../../data/ProviderContent';
 
 function HomePage() {
   return (
