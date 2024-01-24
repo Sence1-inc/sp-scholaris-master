@@ -7,6 +7,7 @@
     border-radius: 16px;
     font-size: 24px;
     font-weight: 700;
+    text-transform: capitalize;
 
     cursor: pointer;
 }

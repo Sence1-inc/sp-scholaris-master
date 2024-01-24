@@ -11,7 +11,7 @@ function HomePage() {
       <WelcomeSection />
       <Newsletter title_content={<>
             Hear the latest from{' '}
-            <span className='newsletter-subheadder__orange'>Scholaris</span>
+            <span className='newsletter-subheader__orange'>Scholaris</span>
           </>} subtitle_content={'Sign up for our newsletter'} description_content={'Get the latest news about exciting new features'} />
       <Footer />
     </>
