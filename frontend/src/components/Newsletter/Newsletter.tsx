@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import Button from '../../Button/Button';
-import SearchInput from '../../SearchInput/SearchInput';
+import Button from '../Button/Button';
+import SearchInput from '../SearchInput/SearchInput';
 import { Link } from 'react-router-dom';
 
 import './Newsletter.css';
 import axios, { AxiosResponse } from 'axios';
-import { PROVIDER_TYPE } from '../../../constants/constants';
-import { PROVIDER_NEWSLETTER_DATA, STUDENT_NEWSLETTER_DATA } from '../../../data/firstNewsletterData';
+import { PROVIDER_TYPE } from '../../constants/constants';
+import { PROVIDER_NEWSLETTER_DATA, STUDENT_NEWSLETTER_DATA } from '../../data/firstNewsletterData';
 
 interface SubscriberData {
   email: string;

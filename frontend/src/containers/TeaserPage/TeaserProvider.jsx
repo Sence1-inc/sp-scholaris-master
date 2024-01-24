@@ -1,10 +1,10 @@
 import React from 'react';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import WelcomeSection from '../../components/Section/WelcomeSection';
 import FeatureGuides from '../../components/Feature/FeatureGuides';
 import { FEATURES, PROVIDER_WELCOME_SUBHEADER } from '../../data/ProviderContent';
-import Newsletter from '../../components/Section/Newsletter/Newsletter';
+import WelcomeSection from '../../components/WelcomeSection/WelcomeSection';
+import Newsletter from '../../components/Newsletter/Newsletter';
 import { PROVIDER_TYPE } from '../../constants/constants';
 
 function HomePage() {

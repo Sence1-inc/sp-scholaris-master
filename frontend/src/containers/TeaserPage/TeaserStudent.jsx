@@ -1,10 +1,10 @@
 import React from 'react';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import WelcomeSection from '../../components/Section/WelcomeSection';
 import Search from '../../components/Section/Search/Search';
-import Newsletter from '../../components/Section/Newsletter/Newsletter';
 import { STUDENT_WELCOME_SUBHEADER, STUDENT_WELCOME_THIRD_LEVEL_HEADING } from '../../data/StudentContent';
+import WelcomeSection from '../../components/WelcomeSection/WelcomeSection';
+import Newsletter from '../../components/Newsletter/Newsletter';
 
 
 function HomePage() {
