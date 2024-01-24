@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
 import { Link } from 'react-router-dom';
-
 import './Newsletter.css';
 import axios, { AxiosResponse } from 'axios';
 
