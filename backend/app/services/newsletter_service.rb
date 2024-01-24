@@ -11,9 +11,9 @@ class NewsletterService
     @subscribers = Subscriber.where(deleted_at: nil)
     has_no_subscriber = @subscribers.where(user_type: user_type).count.zero?
 
-    if user_type == 'provider' && !has_no_subscriber
+    if user_type == PROVIDER_TYPE && !has_no_subscriber
       send_to_providers
-    elsif user_type == 'student' && !has_no_subscriber
+    elsif user_type == STUDENT_TYPE && !has_no_subscriber
       send_to_students
     else
       return false
