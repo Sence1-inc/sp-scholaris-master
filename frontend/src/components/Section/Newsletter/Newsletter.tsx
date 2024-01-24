@@ -25,7 +25,7 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         <Button>SUBSCRIBE</Button>
         <p className='newsletter-text__small'>
         By subscribing to the newsletter, I have read this form and understand its content and voluntarily give my consent for the collection, use, processing, storage and retention of my personal data or information to Sence1 for the purpose(s) described in the 
-        <Link to={'/privacy-consent'}>Privacy Policy</Link> document
+        <Link to={'/privacy-consent'}> Privacy Policy</Link> document
         </p>
 
       </div>
