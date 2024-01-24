@@ -74,15 +74,6 @@ p {
   margin-bottom: 1.25rem;
 }
 
-.section{
-  max-width: 1040px;
-  padding: 120px 40px;
-  margin: 0 auto;
-
-  display: flex;
-  flex-direction: column;
-  row-gap: 71px;
-}
 
 .section-header{
   text-align: center;
@@ -90,6 +81,10 @@ p {
 
 .section-header h3{
   color: var(--secondary-color);
+}
+
+.container-1040 {
+  max-width: 1040px;
 }
 
 
@@ -107,9 +102,7 @@ p {
     font-size: 1rem;
   }
 
-  .section{
-    padding: 60px 20px;
-
+  .section .container-1040{
     row-gap: 40px;
 }
 }
