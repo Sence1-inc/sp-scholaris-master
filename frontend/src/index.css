@@ -74,6 +74,20 @@ p {
   margin-bottom: 1.25rem;
 }
 
+
+.section-header{
+  text-align: center;
+}
+
+.section-header h3{
+  color: var(--secondary-color);
+}
+
+.container-1040 {
+  max-width: 1040px;
+}
+
+
 @media screen and (max-width: 768px) {
   h2 {
     font-size: 2.875rem;
@@ -87,4 +101,8 @@ p {
   p {
     font-size: 1rem;
   }
+
+  .section .container-1040{
+    row-gap: 40px;
+}
 }
