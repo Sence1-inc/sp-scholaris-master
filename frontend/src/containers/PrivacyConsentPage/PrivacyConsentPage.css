@@ -4,35 +4,35 @@
   padding: 80px 20px;
 }
 
-p {
+.content_privacy-body-text {
   line-height: 1.5;
   margin: 18px 0;
 }
 
-h3 {
+.content_privacy-body-subheader {
   margin: 36px 0;
 }
 
-h4 {
+.content_privacy-third-level-heading {
   margin: 24px 0;
   font-size: 1.5rem;
 }
 
-ul {
+.content_privacy-data-protection-list {
   list-style-type: none;
   padding: 0;
 }
 
-li {
+.content_privacy-data-protection-list li {
   margin-bottom: 10px;
 }
 
-a {
+.content_privacy-npc-link {
   color: #007bff;
   text-decoration: none;
 }
 
-a:hover {
+.content_privacy-npc-link:hover {
   text-decoration: underline;
 }
 
