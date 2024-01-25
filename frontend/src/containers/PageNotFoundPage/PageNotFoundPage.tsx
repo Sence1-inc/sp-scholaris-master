@@ -11,9 +11,9 @@ const PageNotFoundPage = () => {
     <div>
       <Header />
       <div className='container'>
-        <h4>Oops! Page not found.</h4>
-        <img src={image} className='container_image' />
-        <h4 className='container_text'>We are sorry, the page you requested was not found.</h4>
+        <h4 className='container_404-subheading'>Oops! Page not found.</h4>
+        <img src={image} className='container_404-image' />
+        <h3 className='container_404-text'>We are sorry, the page you requested was not found.</h3>
         <PrimaryButton label='Go to Home' url='/'></PrimaryButton>
       </div>
       <Footer />

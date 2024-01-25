@@ -7,13 +7,20 @@
   text-align: center;
 }
 
-.container_image {
+.container_404-image {
   height: 50%;
   width: 50%;
   background-position: center;
   background-repeat: no-repeat;
 }
 
-.container_text {
+.container_404-text {
   margin-bottom: 80px;
+  margin-top: 24px;
+  font-size: 2rem;
+}
+
+.container_404-subheading {
+  margin: 24px 0;
+  font-size: 1.5rem;
 }
