@@ -85,6 +85,4 @@ config.action_mailer.smtp_settings = {
 
 config.hosts << "backend:5001"
 
-config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-
 end
