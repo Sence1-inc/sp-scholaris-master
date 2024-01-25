@@ -75,8 +75,15 @@ p {
 }
 
 
+.section-header{
+  text-align: center;
+}
 
-.container-1040{
+.section-header h3{
+  color: var(--secondary-color);
+}
+
+.container-1040 {
   max-width: 1040px;
 }
 
@@ -94,4 +101,8 @@ p {
   p {
     font-size: 1rem;
   }
+
+  .section .container-1040{
+    row-gap: 40px;
+}
 }

@@ -10,7 +10,7 @@ interface ButtonProps {
 
 const Button: React.FC<ButtonProps> = ({ children, url }) => {
   return (
-    <Link to={`${url}`} >
+    <Link to={`${url}`}>
       <button className='button'>
         {children}
       </button>

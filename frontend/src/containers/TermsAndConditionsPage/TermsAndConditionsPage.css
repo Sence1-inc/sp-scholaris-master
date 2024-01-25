@@ -1,0 +1,17 @@
+.content_tc-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+span {
+  font-weight: bold;
+}
+
+.content_container-contact {
+  padding-left: 36px;
+}
+
+.content_contact-info {
+  margin: 0;
+}
