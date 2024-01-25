@@ -16,7 +16,7 @@
 
 .featureGuides__feature {
     display: flex;
-    justify-content: space-between;
+    column-gap: 111px;  
 }
 
 .featureGuides__feature-img {
