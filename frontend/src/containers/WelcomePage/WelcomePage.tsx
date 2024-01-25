@@ -40,8 +40,8 @@ function WelcomePage() {
       <div id='welcome' className='content__welcome-selection'>
         <div className='container'>
           <div>
-            <h3 className='text-center mb-2'><span className='color-secondary'>Scholaris</span> - Match potential with scholarship opportunities <span className='color-secondary'>Scholaris</span>.</h3>
-            <p className='text-center'>Scholaris connects students and scholarship-granting organizations to discover scholarship opportunities, ensuring no student is left behind.</p>
+            <h3 className='text-center mb-2'><span className='color-secondary'>Scholaris</span> - Match potential <br /> with scholarship opportunities</h3>
+            <p className='text-center'>Scholaris connects students and scholarship-granting <br /> organizations to discover scholarship opportunities, <br /> ensuring no student is left behind.</p>
             <div className='content__welcome-buttons'>
               <WelcomeButton label='Student' icon={UserIcon} desc='Aspiring scholar' url='/student'/>
               <WelcomeButton label='SGO' icon={SchoolIcon} desc='Student-granting organization' url='/provider'/>
