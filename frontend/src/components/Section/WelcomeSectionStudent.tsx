@@ -11,7 +11,7 @@ function WelcomeSection() {
             <h2 className='mb-2'>Welcome to <span className='color-secondary'>Scholaris</span></h2>
             <h3>Are you looking for the right scholarship? Scholaris is a platform where students can discover a wide range of scholarship opportunities. Our search engine can help you find scholarships that cater to your specific needs, whether you’re a high school or college student, an athlete, or a musician.</h3>
             <div className='section__buttons'>
-                <PrimaryButton label='Get Started' />
+                <PrimaryButton label='Search Scholarships' />
             </div>
         </div>
       </section>
