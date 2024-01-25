@@ -1,0 +1,45 @@
+.content_privacy-body {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 80px 20px;
+}
+
+.content_privacy-body-text {
+  line-height: 1.5;
+  margin: 18px 0;
+}
+
+.content_privacy-body-subheader {
+  margin: 36px 0;
+}
+
+.content_privacy-third-level-heading {
+  margin: 24px 0;
+  font-size: 1.5rem;
+}
+
+.content_privacy-data-protection-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.content_privacy-data-protection-list li {
+  margin-bottom: 10px;
+}
+
+.content_privacy-npc-link {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.content_privacy-npc-link:hover {
+  text-decoration: underline;
+}
+
+.content_container-contact {
+  padding-left: 36px;
+}
+
+.content_contact-info {
+  margin: 0;
+}

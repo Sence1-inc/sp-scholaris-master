@@ -31,20 +31,20 @@ function WelcomePage() {
       <div className='content__welcome-intro'>
         <div className='container'>
           <img src={WelcomeImage} alt='' />
-          <h2>Welcome to <span className='color-secondary'>Scholaris</span>!</h2>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet purus nulla. Suspendisse egestas erat eu lectus semper, quis sollicitudin diam blandit. Sed rhoncus, nisi ac sollicitudin ultricies, ante turpis fermentum elit, id euismod dolor augue mollis dui. Integer efficitur diam sed tellus feugiat, et posuere tortor vestibulum. </p>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet purus nulla. Suspendisse egestas erat eu lectus semper, quis sollicitudin diam blandit. Sed rhoncus, nisi ac sollicitudin ultricies, ante turpis fermentum elit, id euismod dolor augue mollis dui. Integer efficitur diam sed tellus feugiat, et posuere tortor vestibulum. </p>
+          <h2>Discover <span className='color-secondary'>Scholaris</span>!</h2>
+          <p>Scholaris functions as a centralized hub where students can explore an extensive array of scholarships aligned with their academic accomplishments, talents, and individual circumstances. Scholarship-granting organizations can also showcase their offerings, contributing to a diverse pool of scholarships that are easily searchable. </p>
+          <p>This approach of consolidating scholarships from various organizations enhances accessibility and guarantees that every deserving student is given an opportunity. </p>
           <a href='#welcome'><img src={AngleDownIcon} alt='' /></a>
         </div>
       </div>
       <div id='welcome' className='content__welcome-selection'>
         <div className='container'>
           <div>
-            <h3 className='text-center mb-2'>Dream, Achieve, Succeed: Your Journey{windowWidthSize > 768 && <br />}Begins with <span className='color-secondary'>Scholaris</span>.</h3>
-            <p className='text-center'>Begin your journey now. Are you an aspiring student or{windowWidthSize > 768 && <br />}a scholarship-granting organization?</p>
+            <h3 className='text-center mb-2'><span className='color-secondary'>Scholaris</span> - Match potential <br /> with scholarship opportunities</h3>
+            <p className='text-center'>Scholaris connects students and scholarship-granting <br /> organizations to discover scholarship opportunities, <br /> ensuring no student is left behind.</p>
             <div className='content__welcome-buttons'>
-              <WelcomeButton label='Student' icon={UserIcon} desc='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet purus nulla.' url='/student'/>
-              <WelcomeButton label='Organization' icon={SchoolIcon} desc='Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet purus nulla.' url='/provider'/>
+              <WelcomeButton label='Student' icon={UserIcon} desc='Aspiring scholar' url='/student'/>
+              <WelcomeButton label='SGO' icon={SchoolIcon} desc='Student-granting organization' url='/provider'/>
             </div>
             <div className='content__welcome-annotations'>
               <p className='text-center'>Please select from the button options above to get started with Scholaris.</p><br/>
