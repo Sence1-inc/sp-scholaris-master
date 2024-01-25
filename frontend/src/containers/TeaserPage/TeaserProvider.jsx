@@ -3,7 +3,6 @@ import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import WelcomeSection from '../../components/Section/WelcomeSection';
 import Newsletter from '../../components/Section/Newsletter/Newsletter';
-import { Link } from 'react-router-dom';
 
 function HomePage() {
   return (
