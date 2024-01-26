@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom';
 
 import './Newsletter.css';
 import axios, { AxiosResponse } from 'axios';
-import { PROVIDER_TYPE } from '../../constants/constants';
 
 interface SubscriberData {
   email: string;

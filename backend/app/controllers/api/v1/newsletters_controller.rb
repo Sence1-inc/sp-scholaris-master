@@ -25,17 +25,11 @@ module Api
       # POST /newsletters or /newsletters.json
       def create
         newsletter = NewsletterService.new(newsletter_params)
-    
+      
         if newsletter.send_newsletter
-          render json: {
-            id: newsletter.id,
-            subject: newsletter.subject,
-            content: newsletter.content,
-            user_type: newsletter.user_type,
-            message: "Newsletter sent successfully to subscribers."
-          }, status: :ok
+          render_success_response(newsletter)
         else
-          render json: { error: 'Failed to send newsletter.' }, status: :unprocessable_entity
+          render_error_response
         end
       end
     
@@ -62,16 +56,29 @@ module Api
         end
       end
     
-      private
-        # Use callbacks to share common setup or constraints between actions.
-        def set_newsletter
-          @newsletter = Newsletter.find(params[:id])
-        end
-    
-        # Only allow a list of trusted parameters through.
-        def newsletter_params
-          params.require(:newsletter).permit(:subject, :content, :user_type)
-        end
+      private 
+
+      def set_newsletter
+        @newsletter = Newsletter.find(params[:id])
+      end
+  
+      def newsletter_params
+        params.require(:newsletter).permit(:subject, :content, :user_type, :email)
+      end
+
+      def render_success_response(newsletter_service)
+        render json: {
+          id: newsletter_service.id,
+          subject: newsletter_service.subject,
+          content: newsletter_service.content,
+          user_type: newsletter_service.user_type,
+          message: "Newsletter sent successfully to subscribers."
+        }, status: :ok
+      end
+      
+      def render_error_response
+        render json: { error: 'Failed to send newsletter.' }, status: :unprocessable_entity
+      end
     end
   end
 end
