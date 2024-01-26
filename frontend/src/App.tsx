@@ -7,7 +7,6 @@ import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPa
 import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage';
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage';
 
-
 function App() {
   return (
     <Routes>

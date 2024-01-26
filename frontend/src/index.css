@@ -33,6 +33,11 @@ body {
   margin: 0 auto;
 }
 
+.container-1040 {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
 h2 {
   font-family: 'Outfit', 'sans-serif';
   font-size: 4rem;
@@ -74,6 +79,9 @@ p {
   margin-bottom: 1.25rem;
 }
 
+.d-flex-row-rev {
+  flex-direction: row-reverse;
+}
 
 .section-header{
   text-align: center;
@@ -86,7 +94,6 @@ p {
 .container-1040 {
   max-width: 1040px;
 }
-
 
 @media screen and (max-width: 768px) {
   h2 {
