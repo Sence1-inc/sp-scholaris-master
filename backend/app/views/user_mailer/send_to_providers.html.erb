@@ -1,6 +1,6 @@
 <html>
 <body>
-  <h1><%= @subject %></h1>
+  <h1>Hello <%= @email %>!</h1>
   <div><%= raw @content %></div>
   <%= form_tag(api_v1_subscribers_soft_delete_url, method: 'post') do %>
     <%= csrf_meta_tags %>

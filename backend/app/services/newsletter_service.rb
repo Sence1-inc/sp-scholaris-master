@@ -75,18 +75,16 @@ class NewsletterService
 
   def send_to_providers
     @subscribers.each do |subscriber|
-      @subscriber_id = subscriber.id
       UserMailer.with(subject: subject, content: content)
-                .send_to_providers(@subject, @content, @subscriber_id)
+                .send_to_providers(@subject, @content, subscriber.email, subscriber.id)
                 .deliver_now
     end
   end
 
   def send_to_students
     @subscribers.each do |subscriber|
-      @subscriber_id = subscriber.id
       UserMailer.with(subject: subject, content: content)
-                .send_to_students(@subject, @content, @subscriber_id)
+                .send_to_students(@subject, @content, subscriber.email, subscriber.id)
                 .deliver_now
     end
   end
