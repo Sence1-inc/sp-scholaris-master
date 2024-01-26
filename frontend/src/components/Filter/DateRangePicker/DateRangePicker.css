@@ -1,0 +1,18 @@
+.rdrCalendarWrapper{
+    position: absolute;
+    top: calc(100% + 10px);
+    z-index: 99;
+    border: 2px solid #002147;
+    border-radius: 16px;
+}
+
+.rdrCalendarWrapper .rdrDateDisplayWrapper{
+    border-radius: 16px 16px 0 0;
+}
+
+
+@media (max-width: 786px) {
+    .rdrCalendarWrapper{
+        left: -75%;
+    }
+}
