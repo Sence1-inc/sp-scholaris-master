@@ -1,9 +1,9 @@
 import './Feature.css';
 import Feature from './Feature';
 
-const FeatureGuides = ({features}: FeaturesProps) => {
+const FeatureGuides = ({features}: FeaturesProps, contentType?: string) => {
     return (
-        <section className="featureGuides">
+        <section className={`featureGuides ` + `${contentType}`}>
             <div className="container-1040">
                 <h2>Feature Guides</h2>
                 {features.map((feature:FeatureProps, index: number)=>{

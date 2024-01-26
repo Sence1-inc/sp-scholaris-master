@@ -14,6 +14,10 @@
     row-gap: 40px;
 }
 
+.featureGuides.studentFeature .container-1040 {
+    row-gap: 120px;
+}
+
 .featureGuides__feature {
     display: flex;
     column-gap: 111px;  
