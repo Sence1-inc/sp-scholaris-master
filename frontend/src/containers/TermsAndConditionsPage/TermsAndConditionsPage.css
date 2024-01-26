@@ -4,6 +4,16 @@
   padding: 80px 20px;
 }
 
+.content_tc-body-text {
+  line-height: 1.5;
+  margin: 18px 0;
+}
+
+.content_tc-subheader {
+  margin: 24px 0;
+  font-size: 1.5rem;
+}
+
 span {
   font-weight: bold;
 }
