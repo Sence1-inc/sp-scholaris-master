@@ -67,3 +67,7 @@ group :test do
 end
 
 gem 'kaminari'
+
+group :development, :test do
+  gem 'rspec-rails'
+end

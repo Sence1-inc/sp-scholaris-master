@@ -14,7 +14,7 @@ services:
       ESLINT_NO_DEV_ERRORS: "true"
     stdin_open: true
     tty: true
-  backend:
+  backend: &backend
     build: ./backend
     container_name: backend_container
     command: bash -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 5001 -b '0.0.0.0'"
@@ -52,5 +52,8 @@ services:
       image: mailhog/mailhog
       ports:
         - "8025:8025"
+  test:
+    <<: *backend
+    command: ["bundle", "exec", "rspec"]
 volumes:
   node_modules:
