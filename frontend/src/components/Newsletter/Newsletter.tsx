@@ -6,7 +6,6 @@ import { Link } from 'react-router-dom';
 import './Newsletter.css';
 import axios, { AxiosResponse } from 'axios';
 import { PROVIDER_TYPE } from '../../constants/constants';
-import { PROVIDER_NEWSLETTER_DATA, STUDENT_NEWSLETTER_DATA } from '../../data/firstNewsletterData';
 
 interface SubscriberData {
   email: string;
@@ -51,8 +50,6 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         user_type: user_type,
       };
 
-      const newsletterData: NewsletterData = user_type === PROVIDER_TYPE ? PROVIDER_NEWSLETTER_DATA : STUDENT_NEWSLETTER_DATA;
-
       const response: AxiosResponse<SuccessResponse | ErrorResponse> = await axios.post(
         `api/v1/subscribers`,
         newSubscriberData
@@ -62,11 +59,6 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         const successData = response.data as SuccessResponse;
         setSuccessMessage(successData.message);
         setErrorMessage('');
-
-        await axios.post(
-          `api/v1/newsletters`,
-          newsletterData
-        );
       } else {
         const errorData = response.data as ErrorResponse;
         setErrorMessage(`Error: ${errorData.error}. ${errorData.details.join(' ')}`);
