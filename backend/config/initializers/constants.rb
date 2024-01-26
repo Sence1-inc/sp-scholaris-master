@@ -3,13 +3,13 @@ STUDENT_TYPE = 'student'.freeze
 
 STUDENT_NEWSLETTER_SUBJECT = "Thank you for subscribing!".freeze
 STUDENT_NEWSLETTER_CONTENT = "
-  <h1>Thank You for Subscribing to the Scholaris Newsletter!</h1>
+  <h1>Thank You for Subscribing to the <span class='color-secondary'>Scholaris</span> Newsletter!</h1>
   <p>
     Stay ahead of the competition with exclusive access to the latest scholarships, application tips, and other exciting news delivered straight to your inbox.
   </p>
 
   <p>
-    Scholaris will revolutionize how students discover life-changing scholarships. Stay tuned for the following features in store for aspiring scholars like you:
+    <span class='color-secondary'>Scholaris</span> will revolutionize how students discover life-changing scholarships. Stay tuned for the following features in store for aspiring scholars like you:
   </p>
 
   <ul>
@@ -28,16 +28,16 @@ STUDENT_NEWSLETTER_CONTENT = "
   </ul>
 
   <p>
-    Stay tuned for what's ahead in the next few months for Scholaris. We look forward to being part of your academic success story. Welcome to the Scholaris community!
+    Stay tuned for what's ahead in the next few months for <span class='color-secondary'>Scholaris</span>. We look forward to being part of your academic success story. Welcome to the <span class='color-secondary'>Scholaris</span> community!
   </p> 
 ".freeze
 
 PROVIDER_NEWSLETTER_SUBJECT = "Thank you for subscribing!".freeze
 PROVIDER_NEWSLETTER_CONTENT = "
-  <h1>Thank You for Signing Up for Scholaris!</h1>
+  <h1>Thank You for Signing Up for <span class='color-secondary'>Scholaris</span>!</h1>
 
   <p>
-    Scholaris is a service that will revolutionize the way scholarship programs are implemented. This service will aid you in finding the best candidate for your scholarships, matching their inclinations, aptitudes, and competencies that suit your organization’s vision.
+    <span class='color-secondary'>Scholaris</span> is a service that will revolutionize the way scholarship programs are implemented. This service will aid you in finding the best candidate for your scholarships, matching their inclinations, aptitudes, and competencies that suit your organization’s vision.
   </p>
 
   <p>
@@ -56,6 +56,6 @@ PROVIDER_NEWSLETTER_CONTENT = "
   </p>
 
   <p>
-    Stay tuned for what's ahead in the next few months for Scholaris. We are proud that you will become part of something revolutionary for the education scene!
+    Stay tuned for what's ahead in the next few months for <span class='color-secondary'>Scholaris</span>. We are proud that you will become part of something revolutionary for the education scene!
   </p>
 ".freeze
