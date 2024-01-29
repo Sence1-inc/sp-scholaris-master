@@ -44,6 +44,7 @@
     ]
   },
   "devDependencies": {
+    "@types/react-date-range": "^1.4.9",
     "react-router-dom": "^6.21.2"
   }
 }

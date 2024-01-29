@@ -17,9 +17,10 @@ const options: Option[] = [
 
 const Filter: React.FC<FilterProps> = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  const handleDropdownToggle = (dropdownName: string) => {
-    setActiveDropdown((prev) => (prev === dropdownName ? null : dropdownName));
-  };
+  
+  const handleDropdownToggle = (dropdownName: string): void => {
+    setActiveDropdown((prev: string | null) => (prev === dropdownName ? null : dropdownName));
+};
 
   return (
     <div className="filter container-1040">
