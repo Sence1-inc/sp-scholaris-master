@@ -5,7 +5,6 @@ import WelcomeSection from '../../components/Section/WelcomeSection';
 import FeatureGuides from '../../components/Feature/FeatureGuides';
 import features from '../../data/ProviderContent';
 import Newsletter from '../../components/Section/Newsletter/Newsletter';
-import { Link } from 'react-router-dom';
 
 function HomePage() {
   return (

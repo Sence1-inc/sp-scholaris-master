@@ -1,19 +1,25 @@
 
-.button{
-    background-color: #F36B3B;
-    color: #FFF;
-    border: none;
+.search .button__primary{
     padding: 30px 70px;
     border-radius: 16px;
-    font-size: 24px;
     font-weight: 700;
     text-transform: capitalize;
 
     cursor: pointer;
 }
 
-.newsletter .button{
+.search .button__primary p, .newsletter .button__primary p{
+    font-size: 24px;
+}
+
+.newsletter .button__primary{
     width: 100%;
+    padding: 30px 70px;
+    font-size: 24px;
+    border-radius: 16px;
+    font-weight: 700;
+    text-transform: capitalize;
+    max-width: 100%;
 }
 
 .btn:hover{
@@ -21,8 +27,11 @@
 }
 
 @media (max-width: 768px) {
-    .button{
+    .search .button__primary, .newsletter .button__primary{
         padding: 12px 50px;
+        width: 100%;
+    }
+    .search .button__primary p, .newsletter .button__primary p{
         font-size: 16px;
     }
 }
