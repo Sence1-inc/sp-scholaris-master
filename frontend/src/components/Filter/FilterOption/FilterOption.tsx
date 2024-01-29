@@ -55,7 +55,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
       {isVisible && type !== 'date' && (
         <div className="dropdown-options">
           {type === "search" && (
-            <div className="dropdown__options-container">
+            <>
               <input type="text" onChange={handleInputChange} value={searchTerm} />
               {filteredOptions.map((option) => (
                 <div
@@ -66,7 +66,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
                   {option.label}
                 </div>
               ))}
-            </div>
+            </>
           )}
           {type !== "search" && options.map((option) => (
             <div
