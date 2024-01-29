@@ -6,10 +6,18 @@
     border-radius: 16px;
 }
 
-.rdrCalendarWrapper .rdrDateDisplayWrapper{
+/* .rdrCalendarWrapper .rdrDateDisplayWrapper{
     border-radius: 16px 16px 0 0;
+} */
+
+.rdrDateDisplayItem{
+    border-color: #002147;
 }
 
+
+.rdrDateDisplayWrapper {
+    display: none !important;
+  }
 
 @media (max-width: 786px) {
     .rdrCalendarWrapper{

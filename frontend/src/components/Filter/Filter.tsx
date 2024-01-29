@@ -13,11 +13,17 @@ const options: Option[] = [
   { label: "option1" },
   { label: "option2" },
   { label: "option3" },
+  { label: "option4" },
+  { label: "option5" },
+  { label: "option6" },
+  { label: "option7" },
+  { label: "option8" },
+  { label: "Option9" },
 ];
 
 const Filter: React.FC<FilterProps> = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
-  
+
   const handleDropdownToggle = (dropdownName: string): void => {
     setActiveDropdown((prev: string | null) => (prev === dropdownName ? null : dropdownName));
 };

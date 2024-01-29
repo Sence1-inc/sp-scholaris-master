@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { DateRange, RangeKeyDict } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
@@ -11,22 +11,36 @@ interface DateRangeItem {
 }
 
 const DateRangePicker: React.FC = () => {
-  const [dateRange, setDateRange] = useState<DateRangeItem[]>([
+  const storedDateRange = localStorage.getItem('selectedDateRange');
+  const initialDateRange: DateRangeItem[] = storedDateRange ? JSON.parse(storedDateRange) : [
     {
       startDate: new Date(),
-      endDate: new Date(),
+      endDate: new Date(), 
       key: 'selection',
     },
-  ]);
+  ];
+
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRangeItem[]>(initialDateRange);
 
   const handleSelect = (ranges: RangeKeyDict) => {
-    setDateRange([ranges.selection as DateRangeItem]);
+    console.log(selectedDateRange)
+    const newDateRange: DateRangeItem[] = [ranges.selection as DateRangeItem];
+    setSelectedDateRange(newDateRange);
   };
+
+  useEffect(() => {
+    localStorage.setItem('selectedDateRange', JSON.stringify(selectedDateRange, (_, value) => {
+      if (value instanceof Date) {
+        return value.toISOString(); // Convert Date objects to ISO string
+      }
+      return value;
+    }));
+  }, [selectedDateRange]);
 
   return (
     <div>
       <DateRange
-        ranges={dateRange}
+        ranges={selectedDateRange}
         onChange={(ranges: RangeKeyDict) => handleSelect(ranges)}
       />
     </div>
@@ -34,3 +48,5 @@ const DateRangePicker: React.FC = () => {
 };
 
 export default DateRangePicker;
+
+

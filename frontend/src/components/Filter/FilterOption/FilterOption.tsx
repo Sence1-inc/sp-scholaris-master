@@ -22,21 +22,30 @@ const FilterOption: React.FC<FilterOptionProps> = ({
   isVisible,
   onToggleVisibility,
 }) => {
-  const [selectedOption, setSelectedOption] = useState<Option | null>(null);
+  const [selectedOption, setSelectedOption] = useState<Option | null | string>(null);
+  const [searchTerm, setSearchTerm] = useState<string>('');
 
   const handleOptionClick = (option: Option) => {
     setSelectedOption(option);
     onToggleVisibility();
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
   const toggleDropdown = () => {
     onToggleVisibility();
   };
 
+  const filteredOptions = options.filter(option =>
+    option.label.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="dropdown">
       <div className="dropdown-header" onClick={toggleDropdown}>
-        {selectedOption ? selectedOption.label : children}{" "}
+        {typeof selectedOption === 'string' ? selectedOption : (selectedOption ? selectedOption.label : children)}{" "}
         <img className={isVisible ? 'rotateArrow' : ''} src={DropdownArrow} alt="Dropdown arrow" />
       </div>
       {
@@ -45,8 +54,21 @@ const FilterOption: React.FC<FilterOptionProps> = ({
 
       {isVisible && type !== 'date' && (
         <div className="dropdown-options">
-          {type === "search" && <input type="text" />}
-          {options.map((option) => (
+          {type === "search" && (
+            <div className="dropdown__options-container">
+              <input type="text" onChange={handleInputChange} value={searchTerm} />
+              {filteredOptions.map((option) => (
+                <div
+                  className="dropdown-option"
+                  key={option.label}
+                  onClick={() => handleOptionClick(option)}
+                >
+                  {option.label}
+                </div>
+              ))}
+            </div>
+          )}
+          {type !== "search" && options.map((option) => (
             <div
               className="dropdown-option"
               key={option.label}
