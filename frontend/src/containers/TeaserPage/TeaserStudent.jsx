@@ -5,6 +5,7 @@ import Search from '../../components/Section/Search/Search';
 import { STUDENT_WELCOME_SUBHEADER, STUDENT_WELCOME_THIRD_LEVEL_HEADING } from '../../data/StudentContent';
 import WelcomeSection from '../../components/WelcomeSection/WelcomeSection';
 import Newsletter from '../../components/Newsletter/Newsletter';
+import Search from '../../components/Search/Search';
 
 
 function HomePage() {

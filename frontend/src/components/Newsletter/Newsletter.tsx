@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Button from '../Button/Button';
-import SearchInput from '../SearchInput/SearchInput';
+import Input from '../Input/Input';
 import { Link } from 'react-router-dom';
 
 import './Newsletter.css';
@@ -82,10 +82,10 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         <p>{description_content}</p>
       </div>
       <div className="newsletter-input__container">
-        <SearchInput placeholder={'Enter your email'} handleEmailChange={handleEmailChange} />
+        <Input placeholder={'Enter your email'} handleEmailChange={handleEmailChange} />
         {errorMessage && <p style={{ color: 'red', margin: 0 }}>{errorMessage}</p>}
         {successMessage && <p style={{ color: 'green', margin: 0 }}>{successMessage}</p>}
-        <Button handleSubscribe={handleSubscribe}>SUBSCRIBE</Button>
+        <Button handleClick={handleSubscribe}>SUBSCRIBE</Button>
         <p className='newsletter-text__small'>
         By subscribing to the newsletter, I have read this form and understand its content and voluntarily give my consent for the collection, use, processing, storage and retention of my personal data or information to Sence1 for the purpose(s) described in the 
         <Link to={'/privacy-consent'}> Privacy Policy</Link> document
