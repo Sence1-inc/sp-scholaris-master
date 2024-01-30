@@ -1,5 +1,5 @@
 
-const features:FeatureProps[] = [
+export const FEATURES: FeatureProps[] = [
     {
         title: 'Seamless Scholarship Management',
         desc: 'Effortlessly upload and manage scholarship details with our user-friendly interface. Whether you prefer hands-on manual editing or the efficiency of bulk uploads through CSV files, Scholaris ensures a seamless experience, saving you time and effort.',
@@ -22,4 +22,4 @@ const features:FeatureProps[] = [
     }
 ]
 
-export default features;
+export const PROVIDER_WELCOME_SUBHEADER: string = `<h3>Scholaris offers a platform that enhances the visibility of scholarship listings to aspiring scholars. We bring together Scholarship Granting Organizations and scholars in a synergistic way.</h3>`

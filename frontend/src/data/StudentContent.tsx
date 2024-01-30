@@ -1,0 +1,2 @@
+export const STUDENT_WELCOME_SUBHEADER: string = `<h3>Are you looking for the right scholarship?</h3>`
+export const STUDENT_WELCOME_THIRD_LEVEL_HEADING: string = `<h4>Scholaris is a platform where students can discover a wide range of scholarship opportunities. Our search engine can help you find scholarships that cater to your specific needs, whether you’re a high school or college student, an athlete, or a musician.</h4>`
