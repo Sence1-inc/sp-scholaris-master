@@ -59,4 +59,13 @@
     font-size: 1.25rem;
     margin: 0 auto 70px;
   }
+
+  .section__welcome h4 {
+    font-size: 1rem;
+    margin-top: 0;
+  }
+
+  .section__buttons {
+    margin-top: 70px;
+}
 }
