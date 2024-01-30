@@ -29,9 +29,9 @@ interface SuccessResponse {
 }
 
 interface NewsletterProps {
-  title_content:string;
-  subtitle_content:string;
-  description_content:string;
+  title_content: React.ReactNode | string;
+  subtitle_content: React.ReactNode | string;
+  description_content: React.ReactNode | string;
   user_type: string;
 }
 
