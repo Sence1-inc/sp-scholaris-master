@@ -1,7 +1,6 @@
 import React from 'react';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import Search from '../../components/Section/Search/Search';
 import { STUDENT_WELCOME_SUBHEADER, STUDENT_WELCOME_THIRD_LEVEL_HEADING } from '../../data/StudentContent';
 import WelcomeSection from '../../components/WelcomeSection/WelcomeSection';
 import Newsletter from '../../components/Newsletter/Newsletter';
