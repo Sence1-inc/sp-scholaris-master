@@ -1,7 +1,7 @@
 .content__welcome-intro {
   background-color: var(--white);
   padding: 80px 20px;
-  height: calc(100vh - 85px);
+  height: max-content;
 }
 
 .content__welcome-intro .container {
@@ -23,6 +23,11 @@
 .content__welcome-selection {
   background-color: var(--accent-color);
   padding: 130px 20px;
+}
+
+.content__welcome-selection .container {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .content__welcome-buttons {

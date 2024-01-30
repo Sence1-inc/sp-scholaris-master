@@ -2,7 +2,12 @@
   background: url('../../public/images/banner-bg.png') center no-repeat;
   background-size: cover;
   height: max-content;
-  padding: 200px 0;
+  padding: 150px 0;
+}
+
+.section__welcome .container {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 
 .section__welcome h2 {
