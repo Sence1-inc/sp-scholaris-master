@@ -3,6 +3,10 @@
   text-decoration: none;
 }
 
+.button:hover {
+  text-decoration: none;
+}
+
 .button__primary {
   display: flex;
   flex-direction: column;
@@ -18,6 +22,7 @@
 }
 
 .button__primary p {
+  margin: 0;
   font-family: 'Roboto', sans-serif;
   font-size: 1.25rem;
   font-weight: 700;

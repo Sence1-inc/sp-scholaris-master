@@ -7,7 +7,7 @@ import Newsletter from '../../components/Newsletter/Newsletter';
 import Search from '../../components/Search/Search';
 
 
-function HomePage() {
+const HomePage: React.FC = () => {
   return (
     <>
       <Header />

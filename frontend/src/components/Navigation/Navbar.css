@@ -4,12 +4,13 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 
   width: 100%;
   max-width: 1200px;
 
   margin: 0 auto;
-  padding: 30px 0;
+  padding: 20px 0;
 }
 
 #navbar .navbar__logo {
@@ -19,11 +20,11 @@
   color: var(--secondary-color);
 }
 
-#navbar .navbar__logo h1 {
+/* #navbar .navbar__logo h1 {
   font-size: 2rem;
   font-weight: 700;
   text-transform: uppercase;
-}
+} */
 
 #navbar .navbar__logo h1 a {
   color: var(--white);
@@ -47,6 +48,7 @@
 }
 
 #navbar .navbar__menu-main li {
+  margin: 0;
   font-size: 1rem;
   font-weight: 600;
   text-transform: uppercase;

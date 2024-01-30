@@ -6,8 +6,13 @@
 
 #footer ul {
   display: flex;
+  align-items: center;
   gap: 15px;
   list-style-type: none;
+}
+
+#footer ul li {
+  margin: 0;
 }
 
 #footer ul li a {
@@ -17,9 +22,8 @@
 }
 
 #footer ul li a:hover {
-    color: var(--secondary-color);
+  color: var(--secondary-color);
 }
-
 
 #footer .container {
   display: flex;
@@ -32,6 +36,7 @@
 
 footer p {
   font-size: 1rem;
+  margin: 0;
 }
 
 @media screen and (max-width: 1020px) {

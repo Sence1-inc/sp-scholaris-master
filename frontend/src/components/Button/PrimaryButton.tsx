@@ -8,9 +8,7 @@ export interface PrimaryButtonProps extends React.ButtonHTMLAttributes<HTMLButto
   url?: string,
 }
 
-function PrimaryButton(props: PrimaryButtonProps) {
-  const { label, icon, url  } = props
-
+const PrimaryButton: React.FC<PrimaryButtonProps> = ({ label, icon, url }: PrimaryButtonProps) => {
   return (
     <Link to={`${url}`} className='button'>
       <button className='button__primary'>

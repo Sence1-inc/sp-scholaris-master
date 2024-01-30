@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import WelcomeButton from '../../components/Button/WelcomeButtonProps';
+import WelcomeButton from '../../components/Button/WelcomeButton';
 import AngleDownIcon from '../../public/images/angles-down-solid.svg';
 import UserIcon from '../../public/images/users-solid.svg';
 import SchoolIcon from '../../public/images/school-solid.svg';
 import WelcomeImage from '../../public/images/welcome-icon.png';
 import './WelcomePage.css';
 
-function WelcomePage() {
+const WelcomePage: React.FC = () => {
   const [windowWidthSize, setWindowWidthSize] = useState<number>(window.innerWidth);
 
   useEffect(() => {
@@ -22,8 +22,6 @@ function WelcomePage() {
       window.removeEventListener('resize', handleWindowWidthResize);
     };
   }, []);
-
-  console.log(windowWidthSize)
 
   return (
     <>
@@ -43,7 +41,7 @@ function WelcomePage() {
             <h3 className='text-center mb-2'><span className='color-secondary'>Scholaris</span> - Match potential <br /> with scholarship opportunities</h3>
             <p className='text-center'>Scholaris connects students and scholarship-granting <br /> organizations to discover scholarship opportunities, <br /> ensuring no student is left behind.</p>
             <div className='content__welcome-buttons'>
-              <WelcomeButton label='Student' icon={UserIcon} desc='Aspiring Scholar' url='/student'/>
+              <WelcomeButton label='Student' icon={UserIcon} desc='Aspiring Student' url='/student'/>
               <WelcomeButton label='SGO' icon={SchoolIcon} desc='Scholarship-Granting Organization' url='/provider'/>
             </div>
             <div className='content__welcome-annotations'>

@@ -7,7 +7,7 @@ import WelcomeSection from '../../components/WelcomeSection/WelcomeSection';
 import Newsletter from '../../components/Newsletter/Newsletter';
 import { PROVIDER_TYPE } from '../../constants/constants';
 
-function HomePage() {
+const HomePage: React.FC = () => {
   return (
     <>
       <Header />

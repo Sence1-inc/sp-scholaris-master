@@ -2,16 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './WelcomeButton.css';
 
-export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface PrimaryButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   label: string,
   icon?: string,
   desc?: string,
   url?: string,
 }
 
-function WelcomeButtonProps(props: Props) {
-  const { label, icon, desc, url  } = props
-
+const WelcomeButton: React.FC<PrimaryButtonProps> = ({ label, icon, desc, url  }: PrimaryButtonProps) => {
   return (
     <Link to={`${url}`} className='button__welcome'>
       <button className='button__welcome-primary'>
@@ -23,4 +21,4 @@ function WelcomeButtonProps(props: Props) {
   )
 }
 
-export default WelcomeButtonProps;
+export default WelcomeButton;

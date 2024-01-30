@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../Navigation/Navbar';
 import './Header.css';
 
-function Header() {
+const Header: React.FC = () => {
   return (
     <header id='header'>
       <Navbar />

@@ -1,6 +1,7 @@
 .content__welcome-intro {
   background-color: var(--white);
-  padding: 130px 20px;
+  padding: 80px 20px;
+  height: calc(100vh - 85px);
 }
 
 .content__welcome-intro .container {
@@ -8,7 +9,15 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+}
+
+.content__welcome-intro .container h2 {
+  margin-bottom: 50px;
+}
+
+
+.content__welcome-intro .container p {
+  margin: 0 0 30px;
 }
 
 .content__welcome-selection {
@@ -40,6 +49,7 @@
   }
 
   .content__welcome-buttons {
+    flex-direction: column;
     max-width: 100%;
     gap: 1.25rem;
   }    

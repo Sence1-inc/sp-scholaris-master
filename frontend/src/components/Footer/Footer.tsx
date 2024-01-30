@@ -1,19 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import './Footer.css';
 
-function Footer() {
+interface LocationTypes {
+  pathname: string
+}
+
+const Footer: React.FC = () => {
+  const location = useLocation() as LocationTypes;
+
   return (
     <footer id='footer'>
       <div className='container'>
         <div>
           <div className='NavFooter'>
             <ul>
-              <li><Link to='/newsletter'>Newsletter</Link></li>
-              <li><Link to='/newsletter'>Listing</Link></li>
+              <li><Link to='/listings'>Listings</Link></li>
               <li><Link to='/terms-and-conditions'>Terms and Condition</Link></li>
               <li><Link to='/privacy-consent'>Privacy Policy</Link></li>
-              <li><Link to='/'>Welcome Page</Link></li>
+              { location.pathname !== '/' &&  <li><Link to='/'>Welcome Page</Link></li>}
             </ul>
           </div>
         </div>
