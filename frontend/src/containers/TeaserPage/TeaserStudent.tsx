@@ -1,8 +1,6 @@
 import React from 'react';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import FeatureGuides from '../../components/Feature/FeatureGuides';
-import { FEATURES } from '../../data/ProviderContent';
 import WelcomeSection from '../../components/WelcomeSection/WelcomeSection';
 import Newsletter from '../../components/Newsletter/Newsletter';
 import { STUDENT_TYPE } from '../../constants/constants';
@@ -19,7 +17,6 @@ const HomePage: React.FC = () => {
             <span className='newsletter-subheader__orange'>Scholaris</span>
           </>} subtitle_content={'Sign up for our newsletter'} 
           description_content={'Get the latest news about exciting new features'} />
-      <FeatureGuides features={FEATURES} />
       <Search />
       <Footer />
     </>
