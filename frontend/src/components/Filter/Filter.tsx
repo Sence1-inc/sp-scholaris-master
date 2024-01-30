@@ -29,7 +29,7 @@ const Filter: React.FC<FilterProps> = () => {
 };
 
   return (
-    <div className="filter container-1040">
+    <div className="filter">
       <div className="filter-header">
         <h4>Filters</h4>
       </div>

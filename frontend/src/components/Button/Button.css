@@ -1,5 +1,5 @@
 
-.search .button__primary{
+.search .button__primary, .search-results .button__primary{
     padding: 30px 70px;
     border-radius: 16px;
     font-weight: 700;
@@ -7,6 +7,7 @@
 
     cursor: pointer;
 }
+
 
 .search .button__primary p, .newsletter .button__primary p{
     font-size: 24px;
