@@ -20,12 +20,6 @@
   color: var(--secondary-color);
 }
 
-/* #navbar .navbar__logo h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  text-transform: uppercase;
-} */
-
 #navbar .navbar__logo h1 a {
   color: var(--white);
   text-decoration: none;
