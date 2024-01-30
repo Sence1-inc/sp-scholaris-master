@@ -1,17 +1,17 @@
 import React from 'react';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
-import { STUDENT_WELCOME_SUBHEADER, STUDENT_WELCOME_THIRD_LEVEL_HEADING } from '../../data/StudentContent';
 import WelcomeSection from '../../components/WelcomeSection/WelcomeSection';
 import Newsletter from '../../components/Newsletter/Newsletter';
 import Search from '../../components/Search/Search';
+import { PROVIDER_WELCOME_SUBHEADER } from '../../data/ProviderContent';
 
 
-function HomePage() {
+const HomePage: React.FC = () => {
   return (
     <>
       <Header />
-      <WelcomeSection subheader={STUDENT_WELCOME_SUBHEADER} third_level_header={STUDENT_WELCOME_THIRD_LEVEL_HEADING} />
+      <WelcomeSection subheader={PROVIDER_WELCOME_SUBHEADER} />
       <Search/>
       <Newsletter user_type='student' title_content={<>
             Hear the latest from{' '}
