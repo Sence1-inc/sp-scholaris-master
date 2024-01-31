@@ -15,7 +15,11 @@
 }
 
 .featureGuides.studentFeatures .container-1040 {
-    row-gap: 100px;
+    row-gap: 120px;
+}
+
+.featureGuides.studentFeatures h2 {
+    margin-bottom: -5px;
 }
 
 .featureGuides__feature {
