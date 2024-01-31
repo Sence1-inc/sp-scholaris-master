@@ -18,7 +18,7 @@ const HomePage: React.FC = () => {
             <span className='newsletter-subheader__orange'>Scholaris</span>
           </>} subtitle_content={'Sign up for our newsletter'} 
           description_content={'Get the latest news about exciting new features'} />
-      <FeatureGuides features={FEATURES} />
+      <FeatureGuides features={FEATURES} contentType='providerFeatures'/>
       <Footer />
     </>
   );

@@ -2,6 +2,7 @@
 
 interface FeaturesProps {
     features: FeatureProps[];
+    contentType?: string;
 }
 
 interface FeatureProps {
