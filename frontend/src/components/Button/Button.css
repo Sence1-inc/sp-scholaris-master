@@ -28,7 +28,7 @@
 }
 
 @media (max-width: 768px) {
-    .search .button__primary, .newsletter .button__primary{
+    .search .button__primary, .newsletter .button__primary, .search-results .button__primary{
         padding: 12px 50px;
         width: 100%;
     }

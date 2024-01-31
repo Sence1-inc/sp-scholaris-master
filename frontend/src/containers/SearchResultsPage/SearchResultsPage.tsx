@@ -16,26 +16,39 @@ export default function SearchResultsPage() {
           <h3>Search Result</h3>
           <div className="search__input-container">
             <div className="search__input-group">
-            <SearchInput placeholder="Search Keywords" />
-            <Button>Search</Button>
+              <SearchInput placeholder="Search Keywords" />
+              <Button>Search</Button>
             </div>
             <Filter />
           </div>
           <div className="search__results-container">
             <div className="search__results-header">
-                <h4>
-                    Scholarship Details
-                </h4>
-                <p>Actions</p>
+              <h4>Scholarship Details</h4>
+              <p>Actions</p>
             </div>
-            <div className="search__results-content">
-                <p className="search__results-item">Tulong Dunong Scholarship <span>Ched Scholarship</span> </p>
+            <ul>
+              <li className="search__results-content">
+                <p className="search__results-item">
+                  Tulong Dunong Scholarship <span>Ched Scholarship</span>{" "}
+                </p>
                 <div>
-                    <Link to={'/'} className="seach__results-link">View</Link>
+                  <Link to={"/"} className="seach__results-link">
+                    View
+                  </Link>
                 </div>
-            </div>
+              </li>
+            </ul>
           </div>
-          <div className="search__results-pagination"></div>
+          <div className="search__results-pagination">
+            <p>
+              Results: <span></span>
+            </p>
+            <p className="disabled">Previous</p>
+            <p>
+              Page: <span></span>
+            </p>
+            <p>Next</p>
+          </div>
         </div>
       </section>
       <Footer />
