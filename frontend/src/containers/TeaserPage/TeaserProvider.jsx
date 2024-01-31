@@ -12,7 +12,7 @@ function HomePage() {
     <>
       <Header />
       <WelcomeSection />
-      <FeatureGuides features={features} />
+      <FeatureGuides features={features} contentType='providerFeatures'/>
       <Newsletter title_content={'Stay Updated from our Newsletters'} subtitle_content={'Join Now, Stay Informed'} description_content={'Unlock Exclusive Updates for a Brighter Tomorrow.'} />
       <Footer />
     </>

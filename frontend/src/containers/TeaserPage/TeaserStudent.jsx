@@ -11,7 +11,7 @@ function HomePage() {
     <>
       <Header />
       <WelcomeSection />
-      <FeatureGuides features={features} contentType={'studentFeature'}/>
+      <FeatureGuides features={features} contentType='studentFeatures'/>
       <Newsletter title_content={<>
             Hear the latest from{' '}
             <span className='newsletter-subheader__orange'>Scholaris</span>
