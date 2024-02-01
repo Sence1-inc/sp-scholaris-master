@@ -4,15 +4,10 @@ import "./FilterOption.css";
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { DateRange, RangeKeyDict } from "react-date-range";
+import { DateRangeItem } from "../Filter";
 
 interface Option {
   label: string;
-}
-
-interface DateRangeItem {
-  startDate: Date;
-  endDate: Date;
-  key: string;
 }
 
 interface FilterOptionProps {
@@ -21,6 +16,10 @@ interface FilterOptionProps {
   options?: Option[];
   isVisible: boolean;
   onToggleVisibility: () => void;
+  selectedOption?: Option | null | string;
+  handleOptionClick: (option: Option) => void;
+  selectedDateRange?: DateRangeItem[];
+  handleSelect?: (ranges: RangeKeyDict) => void;
 }
 
 const FilterOption: React.FC<FilterOptionProps> = ({
@@ -29,14 +28,12 @@ const FilterOption: React.FC<FilterOptionProps> = ({
   options = [],
   isVisible,
   onToggleVisibility,
+  handleOptionClick,
+  selectedOption,
+  selectedDateRange,
+  handleSelect
 }) => {
-  const [selectedOption, setSelectedOption] = useState<Option | null | string>(null);
   const [searchTerm, setSearchTerm] = useState<string>('');
-
-  const handleOptionClick = (option: Option) => {
-    setSelectedOption(option);
-    onToggleVisibility();
-  };
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -50,21 +47,6 @@ const FilterOption: React.FC<FilterOptionProps> = ({
     option.label.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const initialDateRange: DateRangeItem[] = [
-    {
-      startDate: new Date(),
-      endDate: new Date(), 
-      key: 'selection',
-    },
-  ];
-
-  const [selectedDateRange, setSelectedDateRange] = useState<DateRangeItem[]>(initialDateRange);
-
-  const handleSelect = (ranges: RangeKeyDict) => {
-    const newDateRange: DateRangeItem[] = [ranges.selection as DateRangeItem];
-    setSelectedDateRange(newDateRange);
-  };
-
   return (
     <div className="dropdown">
       <div className="dropdown-header" onClick={toggleDropdown}>
@@ -72,7 +54,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
         <img className={isVisible ? 'rotateArrow' : ''} src={DropdownArrow} alt="Dropdown arrow" />
       </div>
       {
-        isVisible && type === 'date' && <div><DateRange ranges={selectedDateRange} onChange={(ranges: RangeKeyDict) => handleSelect(ranges)}/></div>
+        isVisible && type === 'date' && handleSelect && <div><DateRange ranges={selectedDateRange} onChange={(ranges) => handleSelect(ranges)}/></div>
       }
 
       {isVisible && type !== 'date' && (
@@ -80,10 +62,10 @@ const FilterOption: React.FC<FilterOptionProps> = ({
           {type === "search" && (
             <>
               <input type="text" onChange={handleInputChange} value={searchTerm} />
-              {filteredOptions.map((option) => (
+              {filteredOptions.map((option, index) => (
                 <div
                   className="dropdown-option"
-                  key={option.label}
+                  key={option.label + index}
                   onClick={() => handleOptionClick(option)}
                 >
                   {option.label}
@@ -91,10 +73,10 @@ const FilterOption: React.FC<FilterOptionProps> = ({
               ))}
             </>
           )}
-          {type !== "search" && options.map((option) => (
+          {type !== "search" && options.map((option, index) => (
             <div
               className="dropdown-option"
-              key={option.label}
+              key={option.label + index}
               onClick={() => handleOptionClick(option)}
             >
               {option.label}
