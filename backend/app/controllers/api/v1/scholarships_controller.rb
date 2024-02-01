@@ -9,7 +9,12 @@ module Api
     
         if @scholarships.present?
           @scholarships = @scholarships.page(params[:page]).per(params[:limit] || 10)
-          render json: @scholarships
+          render json: @scholarships.as_json(
+            :only => [:id, :scholarship_name, :start_date, :due_date],
+            :include => {
+              :scholarship_provider => { :only => [:id, :provider_name] }
+            }
+          )
         else
           render json: { message: 'No scholarships found' }, status: :not_found
         end
