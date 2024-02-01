@@ -15,8 +15,9 @@ class Scholarship < ApplicationRecord
     results = results.joins(schools: :city).joins(schools: :province).joins(schools: :region)
                   .where("cities.city_name = ? OR provinces.province_name = ? OR regions.region_name = ?",
                          params[:location], params[:location], params[:location]) if params[:location].present?
-    results = results.where("start_date >= ?", params[:start_date]) if params[:start_date].present?
-    results = results.where("due_date <= ?", params[:due_date]) if params[:due_date].present?
+    results = results.where("start_date >= ?", DateTime.parse(params[:start_date])) if params[:start_date].present?
+    results = results.where("due_date <= ?", DateTime.parse(params[:due_date])) if params[:due_date].present?
+    results = results.where("scholarship_name LIKE ?", "%#{params[:name]}%") if params[:name].present?
     results = results.joins(:scholarship_provider).where("provider_name = ?", params[:provider]) if params[:provider].present?
 
     results
