@@ -1,4 +1,3 @@
-
 export const FEATURES: FeatureProps[] = [
     {
         title: 'Seamless Scholarship Management',
