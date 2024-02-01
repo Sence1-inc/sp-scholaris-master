@@ -25,9 +25,25 @@ module Api
       # POST /subscribers
       def create
         @subscriber = Subscriber.new(subscriber_params)
+        @subject = (subscriber_params[:user_type] == PROVIDER_TYPE) ? PROVIDER_NEWSLETTER_SUBJECT : STUDENT_NEWSLETTER_SUBJECT
+        @content = (subscriber_params[:user_type] == PROVIDER_TYPE) ? PROVIDER_NEWSLETTER_CONTENT : STUDENT_NEWSLETTER_CONTENT
+
         if EmailValidator.valid?(subscriber_params[:email])
           if @subscriber.save
-            render json: { email: @subscriber.email, user_type: @subscriber.user_type, message: "Subscription successful. Welcome to our newsletter!" }, status: :created
+            newsletter_params = {
+              email: @subscriber.email,
+              subject: @subject,
+              content: @content,
+              user_type: @subscriber.user_type,
+            }
+
+          newsletter_service = NewsletterService.new(newsletter_params).send_newsletter
+
+          render json: {
+              email: @subscriber.email,
+              user_type: @subscriber.user_type,
+              message: "Subscription successful. Welcome to our newsletter! Newsletter sent successfully."
+            }, status: :created
           else
             render json: { error: "Subscription failed", details: @subscriber.errors.full_messages }, status: :unprocessable_entity
           end

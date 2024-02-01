@@ -8,8 +8,8 @@ import SchoolIcon from '../../public/images/school-solid.svg';
 import WelcomeImage from '../../public/images/welcome-icon.png';
 import './WelcomePage.css';
 
-function WelcomePage() {
-  const [windowWidthSize, setWindowWidthSize] = useState(window.innerWidth);
+const WelcomePage: React.FC = () => {
+  const [windowWidthSize, setWindowWidthSize] = useState<number>(window.innerWidth);
 
   useEffect(() => {
     const handleWindowWidthResize = () => {
@@ -22,8 +22,6 @@ function WelcomePage() {
       window.removeEventListener('resize', handleWindowWidthResize);
     };
   }, []);
-
-  console.log(windowWidthSize)
 
   return (
     <>
@@ -43,8 +41,8 @@ function WelcomePage() {
             <h3 className='text-center mb-2'><span className='color-secondary'>Scholaris</span> - Match potential <br /> with scholarship opportunities</h3>
             <p className='text-center'>Scholaris connects students and scholarship-granting <br /> organizations to discover scholarship opportunities, <br /> ensuring no student is left behind.</p>
             <div className='content__welcome-buttons'>
-              <WelcomeButton label='Student' icon={UserIcon} desc='Aspiring scholar' url='/student'/>
-              <WelcomeButton label='SGO' icon={SchoolIcon} desc='Student-granting organization' url='/provider'/>
+              <WelcomeButton label='Student' icon={UserIcon} desc='Aspiring Student' url='/student'/>
+              <WelcomeButton label='SGO' icon={SchoolIcon} desc='Scholarship-Granting Organization' url='/provider'/>
             </div>
             <div className='content__welcome-annotations'>
               <p className='text-center'>Please select from the button options above to get started with Scholaris.</p><br/>

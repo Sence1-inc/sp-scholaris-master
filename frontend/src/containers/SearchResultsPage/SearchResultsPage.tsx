@@ -1,7 +1,7 @@
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
 import Filter from "../../components/Filter/Filter";
-import SearchInput from "../../components/SearchInput/SearchInput";
+import Input from "../../components/Input/Input";
 import Button from "../../components/Button/Button";
 import { Link } from "react-router-dom";
 
@@ -18,7 +18,7 @@ export default function SearchResultsPage() {
           <h3>Search Result</h3>
           <div className="search__input-container">
             <div className="search__input-group">
-              <SearchInput placeholder="Search Keywords" />
+              <Input placeholder="Search Keywords" />
               <Button>Search</Button>
             </div>
             <Filter />

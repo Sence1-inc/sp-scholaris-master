@@ -6,23 +6,23 @@ import TeaserProvider from './containers/TeaserPage/TeaserProvider';
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage';
 import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage';
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage';
-import SearchResultsPage from './containers/SearchResultsPage/SearchResultsPage';
-import ScrollToTop from './ScrollToTop';
+import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 
-function App() {
+
+  
+const App: React.FC = () => {
   return (
-      <>
-      <ScrollToTop/>
+    <div className='App'>
+      <ScrollToTop />
       <Routes>
         <Route path='/' element={<WelcomePage />} />
         <Route path='/student' element={<TeaserStudent />} />
         <Route path='/provider' element={<TeaserProvider />} />
-        <Route path='/search-result' element={<SearchResultsPage/>}/>
         <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
         <Route path="*" element={<PageNotFoundPage />} />
       </Routes>
-      </>
+    </div>
   );
 }
 
