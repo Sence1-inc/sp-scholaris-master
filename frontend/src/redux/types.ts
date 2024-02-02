@@ -10,5 +10,5 @@ export type Scholarship = {
 }
 
 export type Params = {
-    [key: string]: string | null | Date
+    [key: string]: string | null | Date | number
   }

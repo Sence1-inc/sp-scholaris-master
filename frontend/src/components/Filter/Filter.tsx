@@ -2,9 +2,11 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { RangeKeyDict } from "react-date-range";
 import { initializeParams } from "../../redux/reducers/SearchParamsReducer";
-import { useAppDispatch } from "../../redux/store";
 import "./Filter.css";
 import FilterOption from "./FilterOption/FilterOption";
+import { useAppDispatch } from '../../redux/store';
+import useGetScholarships from "../../hooks/useGetScholarships";
+import {format} from 'date-fns';
 
 interface FilterProps {}
 
@@ -13,7 +15,7 @@ interface Option {
 }
 
 interface Params {
-  [key: string]: string | null | Date
+  [key: string]: string | null | Date | number | number
 }
 
 export interface DateRangeItem {
@@ -23,7 +25,8 @@ export interface DateRangeItem {
 }
 
 const Filter: React.FC<FilterProps> = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
+  const { getScholarships } = useGetScholarships();
   const initialDateRange: DateRangeItem[] = [
     {
       startDate: new Date(),
@@ -36,7 +39,7 @@ const Filter: React.FC<FilterProps> = () => {
   const [courses, setCourses] = useState<Option[] | []>([])
   const [schools, setSchools] = useState<Option[] | []>([])
   const [providers, setProviders] = useState<Option[] | []>([])
-  const [params, setParams] = useState<Params | null>(null)
+  const [params, setParams] = useState<Params>({})
   const [selectedDateRange, setSelectedDateRange] = useState<DateRangeItem[]>(initialDateRange);
 
   const handleOptionClick = (option: Option) => {
@@ -80,15 +83,17 @@ const Filter: React.FC<FilterProps> = () => {
     setSelectedDateRange(newDateRange);
     setParams((prevParams) => ({
       ...prevParams,
-      start_date: selectedDateRange[0].startDate,
-      due_date: selectedDateRange[0].endDate,
+      start_date: format(selectedDateRange[0].startDate, "LLLL dd, yyyy"),
+      due_date: format(selectedDateRange[0].endDate, "LLLL dd, yyyy"),
     }));
   };
 
   useEffect(() => {
-    if (params) {
-      dispatch(initializeParams(params))
-    }
+    getScholarships(false)
+  }, [selectedDateRange])
+
+  useEffect(() => {
+    dispatch(initializeParams(params))
   }, [params])
 
   return (
@@ -99,7 +104,6 @@ const Filter: React.FC<FilterProps> = () => {
       <FilterOption
         selectedDateRange={selectedDateRange}
         handleSelect={handleSelect}
-        handleOptionClick={handleOptionClick}
         type="date"
         isVisible={activeDropdown === "date"}
         onToggleVisibility={() => handleDropdownToggle("date")}
@@ -115,7 +119,6 @@ const Filter: React.FC<FilterProps> = () => {
         Benefits
       </FilterOption>
       <FilterOption
-        // selectedOption={{'benefit': params.benefit}}
         handleOptionClick={handleOptionClick}
         options={courses}
         isVisible={activeDropdown === "course"}
@@ -124,7 +127,6 @@ const Filter: React.FC<FilterProps> = () => {
         Course
       </FilterOption>
       <FilterOption
-        // selectedOption={params}
         handleOptionClick={handleOptionClick}
         options={schools}
         type="search"
@@ -134,7 +136,6 @@ const Filter: React.FC<FilterProps> = () => {
         School
       </FilterOption>
       <FilterOption
-        // selectedOption={params}
         handleOptionClick={handleOptionClick}
         options={providers}
         isVisible={activeDropdown === "provider"}

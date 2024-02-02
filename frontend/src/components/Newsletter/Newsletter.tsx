@@ -82,7 +82,7 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         <p>{description_content}</p>
       </div>
       <div className="newsletter-input__container">
-        <Input placeholder={'Enter your email'} handleEmailChange={handleEmailChange} />
+        <Input placeholder={'Enter your email'} handleChange={handleEmailChange} />
         {errorMessage && <p style={{ color: 'red', margin: 0 }}>{errorMessage}</p>}
         {successMessage && <p style={{ color: 'green', margin: 0 }}>{successMessage}</p>}
         <Button handleClick={handleSubscribe}>SUBSCRIBE</Button>

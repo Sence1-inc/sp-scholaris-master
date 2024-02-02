@@ -1,29 +1,53 @@
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import Filter from "../../components/Filter/Filter";
-import Input from "../../components/Input/Input";
-import Button from "../../components/Button/Button";
 import { Link } from "react-router-dom";
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 import viewSvg from '../../public/images/view.svg'
-
 import "./SearchResultsPage.css";
 import { useEffect, useState } from "react";
-import { useAppSelector } from "../../redux/store";
+import { useAppDispatch, useAppSelector } from "../../redux/store";
 import { Scholarship } from "../../redux/types";
 import Search from "../../components/Search/Search";
+import useGetScholarships from "../../hooks/useGetScholarships";
+import { initializeParams } from "../../redux/reducers/SearchParamsReducer";
 
 interface Results {
   scholarships: Scholarship[]
 }
 
 export default function SearchResultsPage() {
+  const dispatch = useAppDispatch()
+  const { getScholarships } = useGetScholarships()
   const result = useAppSelector((state) => state.scholarships) as Results
-  const [scholarships, setScholarships] = useState<Scholarship[]>()
+  const [scholarships, setScholarships] = useState<Scholarship[]>([])
+  const [page, setPage] = useState<number>(1)
+  const params = useAppSelector((state) => state.searchParams);
 
   useEffect(() => {
     setScholarships(result.scholarships);
   }, [result.scholarships]);
+
+  useEffect(() => {
+    getScholarships(false)
+  }, [params.params]);
+
+  const handleNext = () => {
+    if (scholarships.length == 10) {
+      setPage(page + 1)
+      dispatch(initializeParams({ ...params.params, "page": page + 1 }))
+    }
+  }
+
+  const handlePrevious = () => {
+    if (page >= 1) {
+      setPage(page - 1)
+      dispatch(initializeParams({ ...params.params, "page": page - 1 }))
+    }
+  }
+
+  useEffect(() => {
+    getScholarships(false)
+  }, [page])
 
   return (
     <>
@@ -40,8 +64,8 @@ export default function SearchResultsPage() {
               <p>Provider</p>
               <p>Actions</p>
             </div>
-            {scholarships && scholarships.map((scholarship, index) => {
-              return (
+            {scholarships.length > 0 ? (
+              scholarships.map((scholarship, index) => (
                 <ul key={index}>
                   <li className="search__results-content">
                     <p className="search__results-item">
@@ -56,25 +80,32 @@ export default function SearchResultsPage() {
                     <p className="search__results-item">
                       {scholarship.scholarship_provider.provider_name}
                     </p>
-                      <Link to={"/"} className="seach__results-link">
-                        View 
-                        <img src={viewSvg} alt="View icon" />
-                      </Link>
+                    <Link to={"/"} className="seach__results-link">
+                      View
+                      <img src={viewSvg} alt="View icon" />
+                    </Link>
                   </li>
                 </ul>
-              )
-            })}
-            
+              ))
+            ) : (
+              <ul>
+                <li className="search__results-content">
+                  <p className="search__results-item">No scholarship found.</p>
+                </li>
+              </ul>
+            )}
+
+
           </div>
           <div className="search__results-pagination">
             <p>
-              Results: <span></span>
+              Results: <span>{scholarships.length}</span>
             </p>
-            <p className="disabled">Previous</p>
+            <p className={page === 1 ? "disabled" : ""} onClick={handlePrevious}>Previous</p>
             <p>
-              Page: <span></span>
+              Page: <span>{page}</span>
             </p>
-            <p>Next</p>
+            <p className={scholarships.length < 10 ? "disabled" : ""} onClick={handleNext}>Next</p>
           </div>
         </div>
       </section>

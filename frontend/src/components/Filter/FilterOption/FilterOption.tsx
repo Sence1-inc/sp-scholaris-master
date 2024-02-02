@@ -17,7 +17,7 @@ interface FilterOptionProps {
   isVisible: boolean;
   onToggleVisibility: () => void;
   selectedOption?: Option | null | string;
-  handleOptionClick: (option: Option) => void;
+  handleOptionClick?: (option: Option) => void;
   selectedDateRange?: DateRangeItem[];
   handleSelect?: (ranges: RangeKeyDict) => void;
 }
@@ -66,7 +66,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
                 <div
                   className="dropdown-option"
                   key={option.label + index}
-                  onClick={() => handleOptionClick(option)}
+                  onClick={() => handleOptionClick && handleOptionClick(option)}
                 >
                   {option.label}
                 </div>
@@ -77,7 +77,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
             <div
               className="dropdown-option"
               key={option.label + index}
-              onClick={() => handleOptionClick(option)}
+              onClick={() => handleOptionClick &&  handleOptionClick(option)}
             >
               {option.label}
             </div>
