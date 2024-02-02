@@ -39,8 +39,8 @@ export default function SearchResultsPage() {
   }
 
   const handlePrevious = () => {
-    if (page >= 1) {
-      setPage(page - 1)
+    if (page >= 2) {
+      setPage(prevPage => prevPage - 1)
       dispatch(initializeParams({ ...params.params, "page": page - 1 }))
     }
   }
