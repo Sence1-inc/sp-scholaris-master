@@ -50,7 +50,7 @@ section.search-results .container-1040{
 }
 
 .search__results-header p:first-child{
-    width: 290px;
+    min-width: 290px;
 }
 
 .search__results-header p:last-child{
@@ -72,6 +72,9 @@ section.search-results .container-1040{
     flex-direction: column;
     justify-content: center;
     height: 76px;
+    padding: 0 20px;
+    width: 100%;
+    text-align: center;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -86,7 +89,7 @@ section.search-results .container-1040{
 }
 
 .search__results-content .search__results-item:first-child{
-    width: 290px;
+    min-width: 290px;
 }
 
 
@@ -118,6 +121,7 @@ section.search-results .container-1040{
     text-decoration: underline;
     font-size: 16px;
     font-weight: 600;
+    cursor: pointer;
 }
 
 .search__results-pagination p.disabled{
