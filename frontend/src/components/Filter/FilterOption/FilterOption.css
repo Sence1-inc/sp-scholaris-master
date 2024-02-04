@@ -15,6 +15,19 @@
     border-radius: 16px;
 }
 
+.dropdown .dropdown-reset{
+    color: #fff;
+    background-color: #002147;
+    transition: background-color 0.13s linear;
+}
+
+.dropdown .dropdown-reset:hover{
+    color: #fff;
+    background-color: rgba(0, 33, 71, 0.8);
+    border-color: rgba(0, 33, 71, 0.2);
+    transition: all 0.13s linear;
+}
+
 .dropdown-options::-webkit-scrollbar{
     width: 5px;
 }
@@ -77,9 +90,6 @@
     border-radius: 16px;
 }
 
-/* .rdrCalendarWrapper .rdrDateDisplayWrapper{
-    border-radius: 16px 16px 0 0;
-} */
 
 .rdrDateDisplayItem{
     border-color: #002147;

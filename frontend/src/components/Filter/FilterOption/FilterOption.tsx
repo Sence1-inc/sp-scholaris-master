@@ -14,8 +14,8 @@ interface FilterOptionProps {
   children: React.ReactNode;
   type?: string;
   options?: Option[];
-  isVisible: boolean;
-  onToggleVisibility: () => void;
+  isVisible?: boolean;
+  onToggleVisibility?: () => void;
   selectedOption?: Option | null | string;
   handleOptionClick?: (option: Option) => void;
   selectedDateRange?: DateRangeItem[];
@@ -40,7 +40,9 @@ const FilterOption: React.FC<FilterOptionProps> = ({
   };
 
   const toggleDropdown = () => {
-    onToggleVisibility();
+    if (onToggleVisibility) {
+      onToggleVisibility();
+    }
   };
 
   const filteredOptions = options.filter(option =>
@@ -49,9 +51,9 @@ const FilterOption: React.FC<FilterOptionProps> = ({
 
   return (
     <div className="dropdown">
-      <div className="dropdown-header" onClick={toggleDropdown}>
+      <div className={`dropdown-header ${type === 'reset' && "dropdown-reset"}`} onClick={toggleDropdown}>
         {typeof selectedOption === 'string' ? selectedOption : (selectedOption ? selectedOption.label : children)}{" "}
-        <img className={isVisible ? 'rotateArrow' : ''} src={DropdownArrow} alt="Dropdown arrow" />
+        {type !== 'reset' &&  <img className={isVisible ? 'rotateArrow' : ''} src={DropdownArrow} alt="Dropdown arrow" />}
       </div>
       {
         isVisible && type === 'date' && handleSelect && <div><DateRange ranges={selectedDateRange} onChange={(ranges) => handleSelect(ranges)}/></div>

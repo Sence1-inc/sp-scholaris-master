@@ -143,6 +143,9 @@ const Filter: React.FC<FilterProps> = () => {
       >
         Provider
       </FilterOption>
+      <FilterOption type="reset">
+        Reset
+      </FilterOption>
     </div>
   );
 };
