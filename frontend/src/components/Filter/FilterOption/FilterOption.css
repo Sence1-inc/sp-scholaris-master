@@ -23,7 +23,7 @@
 
 .dropdown .dropdown-reset:hover{
     color: #fff;
-    background-color: rgba(0, 33, 71, 0.8);
+    background-color: rgba(0, 33, 71, 0.88);
     border-color: rgba(0, 33, 71, 0.2);
     transition: all 0.13s linear;
 }
