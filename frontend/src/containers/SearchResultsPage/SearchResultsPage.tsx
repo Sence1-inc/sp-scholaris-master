@@ -1,8 +1,6 @@
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import { Link, useSearchParams } from "react-router-dom";
-import { format } from 'date-fns';
-import viewSvg from '../../public/images/view.svg'
+import { useSearchParams } from "react-router-dom";
 import "./SearchResultsPage.css";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
@@ -48,12 +46,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}
     }
   }, [params.params]);
 
-  // useEffect(() => {
-  //   if (!hasPagination) {
-  //     dispatch(initializeParams({ "limit": 5 }))
-  //   }
-  // }, [hasPagination])
-
   const handleNext = () => {
     if (scholarships.length == 10) {
       setPage(page + 1)
@@ -69,8 +61,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}
   }
 
   useEffect(() => {
-    console.log("urlParams useeffect", provider)
-
     const initialData = {
       params: {...params.params, 
         ...(course && { course: course}), 
