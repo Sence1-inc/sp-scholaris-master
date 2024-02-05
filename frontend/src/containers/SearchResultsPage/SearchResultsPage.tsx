@@ -10,6 +10,7 @@ import { Scholarship } from "../../redux/types";
 import Search from "../../components/Search/Search";
 import useGetScholarships from "../../hooks/useGetScholarships";
 import { initializeParams } from "../../redux/reducers/SearchParamsReducer";
+import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
 
 interface Results {
   scholarships: Scholarship[]
@@ -76,6 +77,7 @@ export default function SearchResultsPage() {
       <Header />
       <section className="search-results">
         <div className="container-1040">
+          <Breadcrumbs />
           <h3>Search Result</h3>
           <Search withHeader={false} />
           <div className="search__results-container">
