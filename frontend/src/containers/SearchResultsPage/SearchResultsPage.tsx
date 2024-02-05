@@ -11,14 +11,19 @@ import Search from "../../components/Search/Search";
 import useGetScholarships from "../../hooks/useGetScholarships";
 import { initializeParams } from "../../redux/reducers/SearchParamsReducer";
 import Breadcrumbs from "../../components/Breadcrumbs/Breadcrumbs";
+import Table from "../../components/Table/Table";
 
 interface Results {
   scholarships: Scholarship[]
 }
 
-export default function SearchResultsPage() {
+interface SearchResultsPageProps {
+  isASection: boolean;
+}
+
+export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}) => {
   const dispatch = useAppDispatch()
-  const { getScholarships } = useGetScholarships()
+  const {getScholarships} = useGetScholarships()
   const [searchParams] = useSearchParams()
   const course = searchParams.get("course")
   const school = searchParams.get("school")
@@ -37,8 +42,17 @@ export default function SearchResultsPage() {
   }, [result.scholarships]);
 
   useEffect(() => {
-    getScholarships()
+    console.log('wew', params)
+    if (!isASection) {
+      getScholarships()
+    }
   }, [params.params]);
+
+  // useEffect(() => {
+  //   if (!hasPagination) {
+  //     dispatch(initializeParams({ "limit": 5 }))
+  //   }
+  // }, [hasPagination])
 
   const handleNext = () => {
     if (scholarships.length == 10) {
@@ -80,57 +94,7 @@ export default function SearchResultsPage() {
           <Breadcrumbs />
           <h3>Search Result</h3>
           <Search withHeader={false} />
-          <div className="search__results-container">
-            <div className="search__results-header">
-              <p>Scholarship Details</p>
-              <p>Application Start Date</p>
-              <p>Application Due Date</p>
-              <p>Provider</p>
-              <p>Actions</p>
-            </div>
-            {scholarships.length > 0 ? (
-              scholarships.map((scholarship, index) => (
-                <ul key={index}>
-                  <li className="search__results-content">
-                    <p className="search__results-item">
-                      {scholarship.scholarship_name}
-                    </p>
-                    <p className="search__results-item">
-                      {format(new Date(scholarship.start_date), 'MMM dd, yyyy')}
-                    </p>
-                    <p className="search__results-item">
-                      {format(new Date(scholarship.due_date), 'MMM dd, yyyy')}
-                    </p>
-                    <p className="search__results-item">
-                      {scholarship.scholarship_provider.provider_name}
-                    </p>
-                    <Link to={"/"} className="seach__results-link">
-                      View
-                      <img src={viewSvg} alt="View icon" />
-                    </Link>
-                  </li>
-                </ul>
-              ))
-            ) : (
-              <ul>
-                <li className="search__results-content">
-                  <p className="search__results-item">No scholarship found.</p>
-                </li>
-              </ul>
-            )}
-
-
-          </div>
-          <div className="search__results-pagination">
-            <p>
-              Results: <span>{scholarships.length}</span>
-            </p>
-            <p className={page === 1 ? "disabled" : ""} onClick={handlePrevious}>Previous</p>
-            <p>
-              Page: <span>{page}</span>
-            </p>
-            <p className={scholarships.length < 10 ? "disabled" : ""} onClick={handleNext}>Next</p>
-          </div>
+          <Table page={page} hasPagination={true} handleNext={handleNext} handlePrevious={handlePrevious} scholarships={scholarships} />
         </div>
       </section>
       <Footer />

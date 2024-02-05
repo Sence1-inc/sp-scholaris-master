@@ -6,6 +6,7 @@ import './Search.css';
 import useGetScholarships from '../../hooks/useGetScholarships';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer';
+import Table from '../Table/Table';
 
 interface SearchProps {
   withHeader: boolean;
@@ -37,6 +38,7 @@ const Search: React.FC<SearchProps> = ({withHeader}) => {
           <Button handleClick={(e) => handleSearch(e)}>Search</Button>
         </div>
         <Filter/>
+        <Table hasPagination={false} scholarships={[]} />
       </div>) : (
         <div className="search__input-container">
           <div className="search__input-group">

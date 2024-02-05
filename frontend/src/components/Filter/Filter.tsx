@@ -5,8 +5,8 @@ import { initializeParams } from "../../redux/reducers/SearchParamsReducer";
 import "./Filter.css";
 import FilterOption from "./FilterOption/FilterOption";
 import { useAppDispatch } from '../../redux/store';
-import useGetScholarships from "../../hooks/useGetScholarships";
 import {format} from 'date-fns';
+import useGetScholarships from "../../hooks/useGetScholarships";
 
 interface FilterProps {}
 
@@ -26,6 +26,7 @@ export interface DateRangeItem {
 
 const Filter: React.FC<FilterProps> = () => {
   const dispatch = useAppDispatch()
+  const { getScholarships } = useGetScholarships()
   const initialDateRange: DateRangeItem[] = [
     {
       startDate: new Date(),
@@ -39,7 +40,7 @@ const Filter: React.FC<FilterProps> = () => {
   const [schools, setSchools] = useState<Option[] | []>([])
   const [providers, setProviders] = useState<Option[] | []>([])
   const [params, setParams] = useState<Params>({})
-  const [selectedDateRange, setSelectedDateRange] = useState<DateRangeItem[]>(initialDateRange);
+  const [selectedDateRange, setSelectedDateRange] = useState<DateRangeItem[] | []>(initialDateRange);
 
   const handleOptionClick = (option: Option) => {
     const key: string | null = activeDropdown
@@ -56,6 +57,11 @@ const Filter: React.FC<FilterProps> = () => {
       label: item[label],
     }));
   };
+
+  const handleReset = () => {
+    setSelectedDateRange(initialDateRange)
+    setParams({});
+  }
 
   useEffect(() => {
     const getData = async () => {
@@ -80,13 +86,12 @@ const Filter: React.FC<FilterProps> = () => {
   const handleSelect = (ranges: RangeKeyDict) => {
     const newDateRange: DateRangeItem[] = [ranges.selection as DateRangeItem];
     setSelectedDateRange(newDateRange);
-    setParams((prevParams) => ({
+    setParams((prevParams: Params) => ({
       ...prevParams,
       start_date: format(ranges.selection.startDate as Date, "LLLL dd, yyyy"),
       due_date: format(ranges.selection.endDate as Date, "LLLL dd, yyyy"),
     }));
   };
-
 
   useEffect(() => {
     dispatch(initializeParams(params))
@@ -139,7 +144,7 @@ const Filter: React.FC<FilterProps> = () => {
       >
         Provider
       </FilterOption>
-      <FilterOption type="reset">
+      <FilterOption type="reset" handleReset={handleReset}>
         Reset
       </FilterOption>
     </div>
