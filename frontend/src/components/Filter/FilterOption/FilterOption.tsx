@@ -5,6 +5,8 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { DateRange, RangeKeyDict } from "react-date-range";
 import { DateRangeItem } from "../Filter";
+import { useAppDispatch } from "../../../redux/store";
+import { initializeParams } from "../../../redux/reducers/SearchParamsReducer";
 
 interface Option {
   label: string;
@@ -34,6 +36,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
   handleSelect
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>('');
+  const dispatch = useAppDispatch()
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -42,6 +45,10 @@ const FilterOption: React.FC<FilterOptionProps> = ({
   const toggleDropdown = () => {
     if (onToggleVisibility) {
       onToggleVisibility();
+    }
+
+    if (type === 'reset') {
+      dispatch(initializeParams({}))
     }
   };
 
