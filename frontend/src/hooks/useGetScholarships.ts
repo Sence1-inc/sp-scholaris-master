@@ -3,7 +3,8 @@ import axiosInstance from '../axiosConfig';
 import { Scholarship } from '../redux/types';
 import { useAppDispatch, useAppSelector } from '../redux/store';
 import { initializeScholarships } from '../redux/reducers/ScholarshipsReducer';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom'; 
+import queryString from 'query-string';
 
 interface ErrorResponse {
   error: string;
@@ -15,15 +16,16 @@ const useGetScholarships = () => {
   const navigate = useNavigate();
   const params = useAppSelector((state) => state.searchParams);
 
-  const getScholarships = async (isRedirected: boolean) => {
+  const getScholarships = async () => {
     try {
       const response: AxiosResponse<Scholarship[] | ErrorResponse> = await axiosInstance.get(
-        `api/v1/scholarships`, params // Pass parameters properly
+        `api/v1/scholarships`, params
       );
 
       if (response.status === 200) {
+        const queryParams = queryString.stringify(params.params);
         dispatch(initializeScholarships(response.data as Scholarship[]));
-        isRedirected && navigate('/search-result');
+        navigate(`/search-result?${queryParams}`);
       } 
     } catch (error) {
       dispatch(initializeScholarships([]))

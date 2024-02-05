@@ -16,9 +16,9 @@ const Search: React.FC<SearchProps> = ({withHeader}) => {
   const params = useAppSelector((state) => state.searchParams);
   const { getScholarships } = useGetScholarships();
 
-  const handleSearch:  (e: React.MouseEvent<HTMLButtonElement>, isRedirected: boolean) => void  = async (e, isRedirected) => {
+  const handleSearch:  (e: React.MouseEvent<HTMLButtonElement>) => void  = async (e) => {
     e.preventDefault()
-    getScholarships(isRedirected)
+    getScholarships()
   }
 
   const handleChange  = async (value: string) => {
@@ -34,14 +34,14 @@ const Search: React.FC<SearchProps> = ({withHeader}) => {
         </div>
         <div className="section__search-input">
           <Input handleChange={(e) => handleChange(e.target.value)} placeholder='Search Scholarship Name'/>
-          <Button handleClick={(e) => handleSearch(e, true)}>Search</Button>
+          <Button handleClick={(e) => handleSearch(e)}>Search</Button>
         </div>
         <Filter/>
       </div>) : (
         <div className="search__input-container">
           <div className="search__input-group">
             <Input handleChange={(e) => handleChange(e.target.value)} placeholder="Search Scholarship Name" />
-            <Button handleClick={(e) => handleSearch(e, false)}>Search</Button>
+            <Button handleClick={(e) => handleSearch(e)}>Search</Button>
           </div>
           <Filter/>
         </div>

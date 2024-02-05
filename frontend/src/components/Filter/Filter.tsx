@@ -83,14 +83,11 @@ const Filter: React.FC<FilterProps> = () => {
     setSelectedDateRange(newDateRange);
     setParams((prevParams) => ({
       ...prevParams,
-      start_date: format(selectedDateRange[0].startDate, "LLLL dd, yyyy"),
-      due_date: format(selectedDateRange[0].endDate, "LLLL dd, yyyy"),
+      start_date: format(ranges.selection.startDate as Date, "LLLL dd, yyyy"),
+      due_date: format(ranges.selection.endDate as Date, "LLLL dd, yyyy"),
     }));
   };
 
-  useEffect(() => {
-    getScholarships(false)
-  }, [selectedDateRange])
 
   useEffect(() => {
     dispatch(initializeParams(params))
