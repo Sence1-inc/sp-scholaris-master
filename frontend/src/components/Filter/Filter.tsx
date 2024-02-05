@@ -26,7 +26,6 @@ export interface DateRangeItem {
 
 const Filter: React.FC<FilterProps> = () => {
   const dispatch = useAppDispatch()
-  const { getScholarships } = useGetScholarships();
   const initialDateRange: DateRangeItem[] = [
     {
       startDate: new Date(),
