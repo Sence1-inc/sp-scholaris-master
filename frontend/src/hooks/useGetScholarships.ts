@@ -11,12 +11,16 @@ interface ErrorResponse {
   details: string[];
 }
 
+interface useGetScholarshipsProps {
+  isRedirected?: boolean
+}
+
 const useGetScholarships = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const params = useAppSelector((state) => state.searchParams);
 
-  const getScholarships = async () => {
+  const getScholarships = async (isRedirected = true) => {
     try {
       const response: AxiosResponse<Scholarship[] | ErrorResponse> = await axiosInstance.get(
         `api/v1/scholarships`, params
@@ -25,7 +29,7 @@ const useGetScholarships = () => {
       if (response.status === 200) {
         const queryParams = queryString.stringify(params.params);
         dispatch(initializeScholarships(response.data as Scholarship[]));
-        navigate(`/scholarships?${queryParams}`);
+        isRedirected && navigate(`/scholarships?${queryParams}`);
       } 
     } catch (error) {
       dispatch(initializeScholarships([]))

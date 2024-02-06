@@ -40,10 +40,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}
   }, [result.scholarships]);
 
   useEffect(() => {
-    console.log('wew', params)
-    if (!isASection) {
-      getScholarships()
-    }
+    getScholarships()
   }, [params.params]);
 
   const handleNext = () => {

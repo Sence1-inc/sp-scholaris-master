@@ -1,8 +1,7 @@
 import { format } from 'date-fns';
-import React, { Component } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import { Scholarship } from '../../redux/types';
-import Search from '../Search/Search'
 import viewSvg from '../../public/images/view.svg'
 
 interface TableProps {
@@ -13,10 +12,7 @@ interface TableProps {
   handleNext?: () => void;
 }
 
-
-
 export const Table: React.FC<TableProps> = ({hasPagination, scholarships, page, handlePrevious, handleNext}) => {
-
     return (
       <>
         <div className="search__results-container">

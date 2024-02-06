@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import store from "../store";
-import { Params, Scholarship } from "../types";
+import { Scholarship } from "../types";
 
 interface Scholarships {
   scholarships: Scholarship[];

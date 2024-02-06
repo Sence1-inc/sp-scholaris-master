@@ -7,15 +7,27 @@ import useGetScholarships from '../../hooks/useGetScholarships';
 import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer';
 import Table from '../Table/Table';
+import { Scholarship } from '../../redux/types';
 
 interface SearchProps {
   withHeader: boolean;
 }
 
+interface Scholarships {
+  scholarship: Scholarship[]
+}
+
 const Search: React.FC<SearchProps> = ({withHeader}) => {
   const dispatch = useAppDispatch()
-  const params = useAppSelector((state) => state.searchParams);
+  const params = useAppSelector((state) => state.searchParams)
+  const scholarships = useAppSelector(state => state.scholarships)
   const { getScholarships } = useGetScholarships();
+
+  const data: any = scholarships
+  
+  useEffect(() => {
+    getScholarships(false)
+  }, [])
 
   const handleSearch:  (e: React.MouseEvent<HTMLButtonElement>) => void  = async (e) => {
     e.preventDefault()
@@ -38,7 +50,7 @@ const Search: React.FC<SearchProps> = ({withHeader}) => {
           <Button handleClick={(e) => handleSearch(e)}>Search</Button>
         </div>
         <Filter/>
-        <Table hasPagination={false} scholarships={[]} />
+        <Table hasPagination={false} scholarships={data.scholarships as Scholarship[]} />
       </div>) : (
         <div className="search__input-container">
           <div className="search__input-group">
