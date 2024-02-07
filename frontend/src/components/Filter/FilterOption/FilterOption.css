@@ -15,6 +15,19 @@
     border-radius: 16px;
 }
 
+.dropdown .dropdown-reset{
+    color: #fff;
+    background-color: #002147;
+    transition: background-color 0.13s linear;
+}
+
+.dropdown .dropdown-reset:hover{
+    color: #fff;
+    background-color: rgba(0, 33, 71, 0.88);
+    border-color: rgba(0, 33, 71, 0.2);
+    transition: all 0.13s linear;
+}
+
 .dropdown-options::-webkit-scrollbar{
     width: 5px;
 }
@@ -50,15 +63,23 @@
     scroll-padding: 10px 5px;
 }
 
+.dropdown-options input{
+    outline: #002147;
+}
+
 .dropdown-option:hover{
     cursor: pointer;
     font-weight: 600;
     transition: font-weight 0.1s ease-in-out;
 }
 
+.dropdown-header img{
+    transition: all 0.4s ease;
+}
+
 .rotateArrow{
     transform: rotate(180deg);
-    transition: all 0.5s ease;
+    transition: all 0.4s ease;
 }
 
 .rdrCalendarWrapper{
@@ -69,9 +90,6 @@
     border-radius: 16px;
 }
 
-/* .rdrCalendarWrapper .rdrDateDisplayWrapper{
-    border-radius: 16px 16px 0 0;
-} */
 
 .rdrDateDisplayItem{
     border-color: #002147;

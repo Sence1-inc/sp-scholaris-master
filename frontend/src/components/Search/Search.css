@@ -26,6 +26,17 @@
     column-gap: 40px;
 }
 
+.search__input-group{
+    display: flex;
+    column-gap: 40px;
+}
+
+.search__input-container{
+    display: flex;
+    flex-direction: column;
+    row-gap: 27px;
+}
+
 .search .container-1040{
     max-width: 1040px;
     padding: 120px 0px;

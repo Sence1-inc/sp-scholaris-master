@@ -8,6 +8,10 @@ Rails.application.routes.draw do
       post 'subscribers/restore', to: 'subscribers#restore'
       resources :scholarships
       resources :newsletters
+      resources :benefits
+      resources :schools
+      resources :scholarship_providers
+      resources :courses
     end
   end
 end

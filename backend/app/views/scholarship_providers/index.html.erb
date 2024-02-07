@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Scholarship providers</h1>
+
+<div id="scholarship_providers">
+  <% @scholarship_providers.each do |scholarship_provider| %>
+    <%= render scholarship_provider %>
+    <p>
+      <%= link_to "Show this scholarship provider", scholarship_provider %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New scholarship provider", new_scholarship_provider_path %>

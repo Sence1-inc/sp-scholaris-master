@@ -1,0 +1,129 @@
+
+.search__results-container{
+    margin: 16px 0;
+}
+
+.search__input-group{
+    display: flex;
+    column-gap: 40px;
+}
+
+.search__input-container{
+    display: flex;
+    flex-direction: column;
+    row-gap: 27px;
+}
+
+.search__results-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    height: 76px;
+
+    background-color: #C8D8E9;
+    border: 1px solid #CBDBEC;
+    cursor: pointer;
+}
+
+.search__results-header p{
+    font-size: 18px;
+    font-weight: 500;
+    color: #002147;
+
+    text-align: center;
+    padding: 10px 0px;
+    width: 200px;
+
+
+    border-right: 1px solid #CBDBEC;
+}
+
+.search__results-header p:first-child{
+    min-width: 290px;
+}
+
+.search__results-header p:last-child{
+    width: 150px;
+    border: none;
+}
+
+.search__results-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #E0EFFF;
+    border: 1px solid #CBDBEC;
+    min-height: 76px;
+}
+
+.search__results-content .search__results-item{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 76px;
+    padding: 0 20px;
+    width: 100%;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+.search__results-item{
+    font-size: 16px;
+    font-weight: 500;
+    border-right: 1px solid #CBDBEC;
+    max-width: 200px;
+    white-space: nowrap;
+    overflow: scroll;
+    text-overflow: ellipsis;
+}
+
+.search__results-content .search__results-item:first-child{
+    min-width: 290px;
+}
+
+
+.seach__results-link{
+    width: 150px;
+    padding: 10px 20px;
+    
+    text-align: center;
+    color: var(--secondary-color);
+    font-weight: 600;
+    font-size: 16px;
+
+    display: flex;
+    justify-content: center;
+    column-gap: 10px;
+}
+
+
+.search__results-pagination{
+    border: 1px solid var(--secondary-color);
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.search__results-pagination p{
+    color: var(--secondary-color);
+    text-decoration: underline;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.search__results-pagination p.disabled{
+    color: #E29E85;
+}
+
+@media (max-width: 768px) {
+    .search__input-group{
+        flex-direction: column;
+        row-gap: 12px;
+    }
+    .seach__results-link, .search__results-header p{
+        width: 120px;
+    }
+}

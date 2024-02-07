@@ -3,14 +3,12 @@
     flex-wrap: wrap;
     align-items: center;
     font-family: 'Outfit', 'sans-serif';
-}
-
-.search .filter.container-1040{
     padding: 0;
     flex-direction: row;
     column-gap: 10px;
     margin: 0;
 }
+
 
 .filter .filter-header{
     padding: 20px 20px 20px 0;

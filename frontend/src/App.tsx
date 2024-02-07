@@ -7,6 +7,7 @@ import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPa
 import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage';
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
+import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsPage';
 
 
   
@@ -18,6 +19,7 @@ const App: React.FC = () => {
         <Route path='/' element={<WelcomePage />} />
         <Route path='/student' element={<TeaserStudent />} />
         <Route path='/provider' element={<TeaserProvider />} />
+        <Route path='/scholarships' element={<SearchResultsPage isASection={false} />} />
         <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
         <Route path="/terms-and-conditions" element={<TermsAndConditionsPage />} />
         <Route path="*" element={<PageNotFoundPage />} />

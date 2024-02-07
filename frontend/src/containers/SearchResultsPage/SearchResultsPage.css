@@ -1,0 +1,21 @@
+
+section.search-results{
+    padding: 120px 20px;
+}
+
+section.search-results .container-1040{
+    display: flex;
+    flex-direction: column;
+    row-gap: 44px;
+}
+
+@media (max-width: 768px) {
+    section.search-results{
+        padding: 60px 20px;
+        row-gap: 40px;
+    }
+
+    section.search-results .container-1040{
+        row-gap: 40px;
+    }
+}
