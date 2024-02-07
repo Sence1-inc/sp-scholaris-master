@@ -3,6 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { Scholarship } from '../../redux/types';
 import viewSvg from '../../public/images/view.svg'
+import './Table.css'
 
 interface TableProps {
   hasPagination: boolean;
