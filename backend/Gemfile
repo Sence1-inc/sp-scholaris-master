@@ -69,3 +69,9 @@ end
 gem 'kaminari'
 
 gem 'rack-cors', '~> 1.1', require: 'rack/cors'
+
+gem "dockerfile-rails", ">= 1.6", :group => :development
+
+group :development, :test do
+  gem 'dotenv-rails', require: 'dotenv/rails-now'
+end
