@@ -8,7 +8,7 @@ primary_region = 'sin'
 console_command = '/rails/bin/rails console'
 
 [build]
-  dockerfile = "Dockerfile.backend"
+  dockerfile = "Dockerfile"
   ignorefile = "./dockerignore"
 
   [build.args]
@@ -31,8 +31,8 @@ console_command = '/rails/bin/rails console'
     port = 5001
     type = 'http'
     interval = '10s'
-    timeout = '2s'
-    grace_period = '5s'
+    timeout = '60s'
+    grace_period = '60s'
     method = 'GET'
     path = '/up'
     protocol = 'http'
