@@ -4,7 +4,7 @@ import { useSearchParams } from "react-router-dom";
 import "./SearchResultsPage.css";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { Params, Scholarship } from "../../redux/types";
+import { Scholarship } from "../../redux/types";
 import Search from "../../components/Search/Search";
 import useGetScholarships from "../../hooks/useGetScholarships";
 import { initializeParams } from "../../redux/reducers/SearchParamsReducer";
