@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Header from '../../components/Header/Header';
 import Footer from '../../components/Footer/Footer';
 import WelcomeButton from '../../components/Button/WelcomeButton';
@@ -9,20 +9,6 @@ import WelcomeImage from '../../public/images/welcome-icon.png';
 import './WelcomePage.css';
 
 const WelcomePage: React.FC = () => {
-  const [windowWidthSize, setWindowWidthSize] = useState<number>(window.innerWidth);
-
-  useEffect(() => {
-    const handleWindowWidthResize = () => {
-      setWindowWidthSize(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleWindowWidthResize);
-
-    return () => {
-      window.removeEventListener('resize', handleWindowWidthResize);
-    };
-  }, []);
-
   return (
     <>
       <Header />

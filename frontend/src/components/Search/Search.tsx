@@ -13,10 +13,6 @@ interface SearchProps {
   withHeader: boolean;
 }
 
-interface Scholarships {
-  scholarship: Scholarship[]
-}
-
 const Search: React.FC<SearchProps> = ({withHeader}) => {
   const dispatch = useAppDispatch()
   const params = useAppSelector((state) => state.searchParams)

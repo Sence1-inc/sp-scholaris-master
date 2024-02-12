@@ -3,16 +3,11 @@ import Button from '../Button/Button';
 import Input from '../Input/Input';
 import { Link } from 'react-router-dom';
 import './Newsletter.css';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import axiosInstance from '../../axiosConfig'
 
 interface SubscriberData {
   email: string;
-  user_type: string;
-}
-
-interface NewsletterData {
-  subject: string;
-  content: string;
   user_type: string;
 }
 
@@ -48,7 +43,7 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         user_type: user_type,
       };
 
-      const response: AxiosResponse<SuccessResponse | ErrorResponse> = await axios.post(
+      const response: AxiosResponse<SuccessResponse | ErrorResponse> = await axiosInstance.post(
         `api/v1/subscribers`,
         newSubscriberData
       );
@@ -89,7 +84,6 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         By subscribing to the newsletter, I have read this form and understand its content and voluntarily give my consent for the collection, use, processing, storage and retention of my personal data or information to Sence1 for the purpose(s) described in the 
         <Link to={'/privacy-consent'}> Privacy Policy</Link> document
         </p>
-
       </div>
       </div>
     </section>

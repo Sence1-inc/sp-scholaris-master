@@ -6,7 +6,6 @@ import "./Filter.css";
 import FilterOption from "./FilterOption/FilterOption";
 import { useAppDispatch } from '../../redux/store';
 import {format} from 'date-fns';
-import useGetScholarships from "../../hooks/useGetScholarships";
 
 interface FilterProps {}
 
@@ -26,7 +25,6 @@ export interface DateRangeItem {
 
 const Filter: React.FC<FilterProps> = () => {
   const dispatch = useAppDispatch()
-  const { getScholarships } = useGetScholarships()
   const initialDateRange: DateRangeItem[] = [
     {
       startDate: new Date(),

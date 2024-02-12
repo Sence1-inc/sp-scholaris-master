@@ -44,7 +44,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}
   }, [params.params]);
 
   const handleNext = () => {
-    if (scholarships.length == 10) {
+    if (scholarships.length === 10) {
       setPage(page + 1)
       dispatch(initializeParams({ ...params.params, "page": page + 1 }))
     }
@@ -71,7 +71,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}
     }
     
     dispatch(initializeParams(initialData.params))
-  }, [course, school, benefits, location, start_date, due_date, provider]);
+  }, [course, school, benefits, location, start_date, due_date, provider, params.params]);
 
   return (
     <>
