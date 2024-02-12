@@ -35,8 +35,6 @@ const Search: React.FC<SearchProps> = ({isSection}) => {
   const handleSearch:  (e: React.MouseEvent<HTMLButtonElement>) => void  = async (e) => {
     e.preventDefault()
     dispatch(initializeParams({...params.params, name}))
-    const queryParams = queryString.stringify(params.params)
-    navigate(`/scholarships?${queryParams}`)
   }
 
   const handleChange  = async (value: string) => {
@@ -46,6 +44,11 @@ const Search: React.FC<SearchProps> = ({isSection}) => {
   useEffect(() => {
     if (!params.params.name) {
       setName("")
+    }
+
+    if (Object.keys(params.params).length > 0) {
+      const queryParams = queryString.stringify(params.params)
+      navigate(`/scholarships?${queryParams}`)
     }
   }, [params.params])
 
