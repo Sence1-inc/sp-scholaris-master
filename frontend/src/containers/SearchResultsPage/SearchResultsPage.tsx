@@ -1,6 +1,6 @@
 import Header from "../../components/Header/Header";
 import Footer from "../../components/Footer/Footer";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import "./SearchResultsPage.css";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/store";
@@ -64,6 +64,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}
     Object.entries(keysToUpdateFiltered).forEach(([key, value]) => {
       dispatch(initializeParams({ ...params.params, [key]: value }));
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [course, school, benefits, location, start_date, due_date, provider, name, dispatch]);
 
   useEffect(() => {
@@ -72,11 +73,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}
     if (Object.keys(params.params).some(param => params.params[param] !== undefined) || hasParametersInURL) {
       getScholarships();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, params.params])
-
-  useEffect(() => {
-    getScholarships()
-  }, [])
 
   return (
     <>

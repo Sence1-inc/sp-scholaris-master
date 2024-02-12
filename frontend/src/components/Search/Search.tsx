@@ -30,6 +30,7 @@ const Search: React.FC<SearchProps> = ({isSection}) => {
     if (isSection) {
       getScholarships(false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSection])
 
   const handleSearch:  (e: React.MouseEvent<HTMLButtonElement>) => void  = async (e) => {
@@ -50,6 +51,7 @@ const Search: React.FC<SearchProps> = ({isSection}) => {
       const queryParams = queryString.stringify(params.params)
       navigate(`/scholarships?${queryParams}`)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.params])
 
   return (

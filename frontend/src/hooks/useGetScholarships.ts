@@ -11,10 +11,6 @@ interface ErrorResponse {
   details: string[];
 }
 
-interface useGetScholarshipsProps {
-  isRedirected?: boolean
-}
-
 const useGetScholarships = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();

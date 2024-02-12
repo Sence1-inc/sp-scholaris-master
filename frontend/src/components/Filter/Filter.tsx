@@ -98,6 +98,7 @@ const Filter: React.FC<FilterProps> = () => {
     } else {
       dispatch(initializeParams({...params.params, ...selectedParams}))
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedParams, dispatch])
 
   return (
