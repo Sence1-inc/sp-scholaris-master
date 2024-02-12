@@ -35,7 +35,7 @@ const Search: React.FC<SearchProps> = ({isSection}) => {
 
   const handleSearch:  (e: React.MouseEvent<HTMLButtonElement>) => void  = async (e) => {
     e.preventDefault()
-    dispatch(initializeParams({...params.params, name}))
+    dispatch(initializeParams({...params.params, ...(name ? { name } : {})}))
   }
 
   const handleChange  = async (value: string) => {

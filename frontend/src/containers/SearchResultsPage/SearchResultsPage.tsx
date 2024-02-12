@@ -55,17 +55,22 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}
   }
 
   useEffect(() => {
-    const keysToUpdate: Params = { course, school, benefits, location, start_date, due_date, provider, name };
+    const initialData = {
+      params: {...params.params, 
+        ...(course && { course: course}), 
+        ...(school && { school: school}), 
+        ...(benefits && { benefits: benefits}), 
+        ...(location && { location: location}), 
+        ...(start_date && { start_date: start_date}), 
+        ...(due_date && { due_date: due_date}), 
+        ...(provider && { provider: provider}),
+        ...(name && { name: name})
+      }
+    }
 
-    const keysToUpdateFiltered: Params = Object.entries(keysToUpdate)
-      .filter(([key, value]) => !!value)
-      .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
-
-    Object.entries(keysToUpdateFiltered).forEach(([key, value]) => {
-      dispatch(initializeParams({ ...params.params, [key]: value }));
-    });
+    dispatch(initializeParams(initialData.params))
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [course, school, benefits, location, start_date, due_date, provider, name, dispatch]);
+  }, [course, school, benefits, location, start_date, due_date, provider, name]);
 
   useEffect(() => {
     const hasParametersInURL = searchParams.size > 0;
