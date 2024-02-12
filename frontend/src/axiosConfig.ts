@@ -7,7 +7,7 @@ const instance: AxiosInstance = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': '*/*',
-    'Access-Control-Allow-Origin': baseURL,
+    'Access-Control-Allow-Origin': "*",
     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE'
   },
 });
