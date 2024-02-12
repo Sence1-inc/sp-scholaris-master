@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Filter from '../Filter/Filter';
 import Button from '../Button/Button';
 import Input from '../Input/Input';
@@ -8,41 +8,56 @@ import { useAppDispatch, useAppSelector } from '../../redux/store';
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer';
 import Table from '../Table/Table';
 import { Scholarship } from '../../redux/types';
+import { useNavigate } from 'react-router-dom';
+import queryString from 'query-string';
+
 
 interface SearchProps {
-  withHeader: boolean;
+  isSection: boolean;
 }
 
-const Search: React.FC<SearchProps> = ({withHeader}) => {
+const Search: React.FC<SearchProps> = ({isSection}) => {
   const dispatch = useAppDispatch()
   const params = useAppSelector((state) => state.searchParams)
+  const navigate = useNavigate();
   const scholarships = useAppSelector(state => state.scholarships)
   const { getScholarships } = useGetScholarships();
+  const [name, setName] = useState<string>(params.params.name as string)
 
   const data: any = scholarships
   
   useEffect(() => {
-    getScholarships(false)
-  }, [])
+    if (isSection) {
+      getScholarships(false)
+    }
+  }, [isSection])
 
   const handleSearch:  (e: React.MouseEvent<HTMLButtonElement>) => void  = async (e) => {
     e.preventDefault()
-    getScholarships()
+    dispatch(initializeParams({...params.params, name}))
+    const queryParams = queryString.stringify(params.params)
+    navigate(`/scholarships?${queryParams}`)
   }
 
   const handleChange  = async (value: string) => {
-    dispatch(initializeParams({...params.params, "name": value}))
+    setName(value)
   }
+
+  useEffect(() => {
+    if (!params.params.name) {
+      setName("")
+    }
+  }, [params.params])
 
   return (
     <section className="search">
-      { withHeader ? (<div className="container-1040">
+      { isSection ? (<div className="container-1040">
         <div className="section-header">
           <h3 className='color-secondary'>Scholaris</h3>
           <h2>Step into a world of opportunities</h2>
         </div>
         <div className="section__search-input">
-          <Input handleChange={(e) => handleChange(e.target.value)} placeholder='Search Scholarship Name'/>
+          <Input handleChange={(e) => handleChange(e.target.value)} value={name} placeholder='Search Scholarship Name'/>
           <Button handleClick={(e) => handleSearch(e)}>Search</Button>
         </div>
         <Filter/>
@@ -50,7 +65,7 @@ const Search: React.FC<SearchProps> = ({withHeader}) => {
       </div>) : (
         <div className="search__input-container">
           <div className="search__input-group">
-            <Input handleChange={(e) => handleChange(e.target.value)} placeholder="Search Scholarship Name" />
+            <Input handleChange={(e) => handleChange(e.target.value)} value={name} placeholder="Search Scholarship Name" />
             <Button handleClick={(e) => handleSearch(e)}>Search</Button>
           </div>
           <Filter/>

@@ -27,8 +27,8 @@ const useGetScholarships = () => {
       );
 
       if (response.status === 200) {
-        const queryParams = queryString.stringify(params.params);
         dispatch(initializeScholarships(response.data as Scholarship[]));
+        const queryParams = queryString.stringify(params.params);
         isRedirected && navigate(`/scholarships?${queryParams}`);
       } 
     } catch (error) {

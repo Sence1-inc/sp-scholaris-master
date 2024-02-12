@@ -1,11 +1,11 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { RangeKeyDict } from "react-date-range";
 import { initializeParams } from "../../redux/reducers/SearchParamsReducer";
 import "./Filter.css";
 import FilterOption from "./FilterOption/FilterOption";
-import { useAppDispatch } from '../../redux/store';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
 import {format} from 'date-fns';
+import axiosInstance from '../../axiosConfig'
 
 interface FilterProps {}
 
@@ -25,6 +25,7 @@ export interface DateRangeItem {
 
 const Filter: React.FC<FilterProps> = () => {
   const dispatch = useAppDispatch()
+  const params = useAppSelector(state => state.searchParams)
   const initialDateRange: DateRangeItem[] = [
     {
       startDate: new Date(),
@@ -37,13 +38,13 @@ const Filter: React.FC<FilterProps> = () => {
   const [courses, setCourses] = useState<Option[] | []>([])
   const [schools, setSchools] = useState<Option[] | []>([])
   const [providers, setProviders] = useState<Option[] | []>([])
-  const [params, setParams] = useState<Params>({})
+  const [selectedParams, setSelectedParams] = useState<Params>({})
   const [selectedDateRange, setSelectedDateRange] = useState<DateRangeItem[] | []>(initialDateRange);
 
   const handleOptionClick = (option: Option) => {
     const key: string | null = activeDropdown
     if (activeDropdown) {
-      setParams((prevParams) => ({
+      setSelectedParams((prevParams) => ({
         ...prevParams,
         [key as string]: option.label
       }));
@@ -58,15 +59,15 @@ const Filter: React.FC<FilterProps> = () => {
 
   const handleReset = () => {
     setSelectedDateRange(initialDateRange)
-    setParams({});
+    setSelectedParams({});
   }
 
   useEffect(() => {
     const getData = async () => {
-      const benefits = await axios.get(`api/v1/benefits`)
-      const courses = await axios.get(`api/v1/courses`)
-      const schools = await axios.get(`api/v1/schools`)
-      const providers = await axios.get(`api/v1/scholarship_providers`)
+      const benefits = await axiosInstance.get(`api/v1/benefits`)
+      const courses = await axiosInstance.get(`api/v1/courses`)
+      const schools = await axiosInstance.get(`api/v1/schools`)
+      const providers = await axiosInstance.get(`api/v1/scholarship_providers`)
 
       setBenefits(mapToOptions(benefits.data, 'benefit_name'))
       setCourses(mapToOptions(courses.data, 'course_name'))
@@ -84,7 +85,7 @@ const Filter: React.FC<FilterProps> = () => {
   const handleSelect = (ranges: RangeKeyDict) => {
     const newDateRange: DateRangeItem[] = [ranges.selection as DateRangeItem];
     setSelectedDateRange(newDateRange);
-    setParams((prevParams: Params) => ({
+    setSelectedParams((prevParams: Params) => ({
       ...prevParams,
       start_date: format(ranges.selection.startDate as Date, "LLLL dd, yyyy"),
       due_date: format(ranges.selection.endDate as Date, "LLLL dd, yyyy"),
@@ -92,8 +93,12 @@ const Filter: React.FC<FilterProps> = () => {
   };
 
   useEffect(() => {
-    dispatch(initializeParams(params))
-  }, [params])
+    if (!activeDropdown) {
+      dispatch(initializeParams({}))
+    } else {
+      dispatch(initializeParams({...params.params, ...selectedParams}))
+    }
+  }, [selectedParams, dispatch])
 
   return (
     <div className="filter">

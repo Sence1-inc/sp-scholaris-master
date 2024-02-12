@@ -3,8 +3,7 @@ import Button from '../Button/Button';
 import Input from '../Input/Input';
 import { Link } from 'react-router-dom';
 import './Newsletter.css';
-import { AxiosResponse } from 'axios';
-import axiosInstance from '../../axiosConfig'
+import axios, { AxiosResponse } from 'axios';
 
 interface SubscriberData {
   email: string;
@@ -43,7 +42,7 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         user_type: user_type,
       };
 
-      const response: AxiosResponse<SuccessResponse | ErrorResponse> = await axiosInstance.post(
+      const response: AxiosResponse<SuccessResponse | ErrorResponse> = await axios.post(
         `api/v1/subscribers`,
         newSubscriberData
       );
@@ -76,7 +75,7 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         <p>{description_content}</p>
       </div>
       <div className="newsletter-input__container">
-        <Input placeholder={'Enter your email'} handleChange={handleEmailChange} />
+        <Input value={email} placeholder={'Enter your email'} handleChange={handleEmailChange} />
         {errorMessage && <p style={{ color: 'red', margin: 0 }}>{errorMessage}</p>}
         {successMessage && <p style={{ color: 'green', margin: 0 }}>{successMessage}</p>}
         <Button handleClick={handleSubscribe}>SUBSCRIBE</Button>

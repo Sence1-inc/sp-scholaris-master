@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { useAppSelector } from '../../redux/store';
+import React from 'react';
 import './Input.css';
 
 interface InputProps {
   placeholder: string;
   handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
+  value: string | null
 }
 
-const Input: React.FC<InputProps> = ({ placeholder, handleChange }) => {
-  const params = useAppSelector(state => state.searchParams)
-  const [value, setValue] = useState<string>()
-
-  useEffect(() => {
-    setValue(params.params.name ? params.params.name as string : "")
-  }, [params.params.name])
-
+const Input: React.FC<InputProps> = ({ placeholder, handleChange, value }) => {
   return (
-    <input value={value} className="search-input" type="text" placeholder={placeholder} onChange={handleChange} />
+    <input value={value as string} className="search-input" type="text" placeholder={placeholder} onChange={handleChange} />
   );
 };
 

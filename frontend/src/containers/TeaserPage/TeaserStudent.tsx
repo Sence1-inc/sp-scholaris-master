@@ -20,7 +20,7 @@ const HomePage: React.FC = () => {
           </>} subtitle_content={'Sign up for our newsletter'} 
           description_content={'Get the latest news about exciting new features'} />
       <FeatureGuides features={FEATURES} contentType='studentFeatures'/>
-      <Search withHeader/>
+      <Search isSection/>
       <Footer />
     </>
   );
