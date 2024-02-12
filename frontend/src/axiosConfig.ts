@@ -7,8 +7,9 @@ const instance: AxiosInstance = axios.create({
   timeout: 10000,
   headers: {
     'Content-Type': '*/*',
-    'Access-Control-Allow-Origin': "*",
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE'
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE',
+    'Access-Control-Allow-Headers': '*'
   },
 });
 
