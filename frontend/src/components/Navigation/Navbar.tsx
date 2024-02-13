@@ -14,7 +14,7 @@ const Navbar: React.FC = () =>  {
         </div>
         <div className={`navbar__menu-main ${isOpen && 'open'}` }>
             <ul>
-                <li><Link to='/search'>Search</Link></li>
+                <li><Link to='/scholarships'>Search</Link></li>
             </ul>
         </div>
         <div className="navbar__menu-hamburger" onClick={() => isOpen ? setIsOpen(false) : setIsOpen(true)}>
