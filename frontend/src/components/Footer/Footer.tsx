@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
         <div>
           <div className='NavFooter'>
             <ul>
-              <li><Link to='/listings'>Listings</Link></li>
+              <li><Link to='/scholarships'>Listings</Link></li>
               <li><Link to='/terms-and-conditions'>Terms and Condition</Link></li>
               <li><Link to='/privacy-consent'>Privacy Policy</Link></li>
               { location.pathname !== '/' &&  <li><Link to='/'>Welcome Page</Link></li>}
