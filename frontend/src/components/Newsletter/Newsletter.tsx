@@ -3,7 +3,8 @@ import Button from '../Button/Button';
 import Input from '../Input/Input';
 import { Link } from 'react-router-dom';
 import './Newsletter.css';
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
+import axiosInstance from '../../axiosConfig'
 
 interface SubscriberData {
   email: string;
@@ -42,7 +43,7 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         user_type: user_type,
       };
 
-      const response: AxiosResponse<SuccessResponse | ErrorResponse> = await axios.post(
+      const response: AxiosResponse<SuccessResponse | ErrorResponse> = await axiosInstance.post(
         `api/v1/subscribers`,
         newSubscriberData
       );
