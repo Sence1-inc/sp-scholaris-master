@@ -75,11 +75,19 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}
   useEffect(() => {
     const hasParametersInURL = searchParams.size > 0;
 
-    if (Object.keys(params.params).some(param => params.params[param] !== undefined) || hasParametersInURL) {
+    if (Object.keys(params.params).some(param => params.params[param] !== undefined) && hasParametersInURL) {
       getScholarships();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, params.params])
+
+  useEffect(() => {
+    const hasParametersInURL = searchParams.size > 0;
+    if (!hasParametersInURL && Object.keys(params.params).length === 0) {
+      getScholarships();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
