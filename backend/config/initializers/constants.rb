@@ -56,6 +56,14 @@ PROVIDER_NEWSLETTER_CONTENT = "
   </p>
 
   <p>
+    To better address your scholarship posting and management requirements, we invite you to participate in an interview. This can be conducted in writing, face-to-face, or via video call, whichever suits your preference. Please be assured that any information gathered will solely be used to enhance our application for your benefit.
+  </p>
+
+  <p>
+    Should you be interested, kindly inform us at inquire@sence1.com with the subject line 'Confirmation: Scholaris Interview Request'.
+  </p>
+
+  <p>
     Stay tuned for what's ahead in the next few months for <span class='color-secondary'>Scholaris</span>. We are proud that you will become part of something revolutionary for the education scene!
   </p>
 ".freeze
