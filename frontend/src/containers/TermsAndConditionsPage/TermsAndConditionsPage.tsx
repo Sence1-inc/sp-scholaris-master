@@ -9,7 +9,9 @@ const TermsAndConditionsPage: React.FC = () => {
       <Header />
       <div className='content_tc-body'>
         <h2 className='content_tc-header'>Terms and Conditions</h2>
-        <h4 className='content_tc-subheader'>Last Updated: Jan 9, 2024</h4>
+        <h4 className='content_tc-subheader'>Last Updated: Feb 16, 2024</h4>
+
+        <p className='content_tc-body-text'>Disclaimer: We have no affiliation with DepEd, CHED, or any educational institutions, and we do not oversee the scholarship listings on this website. Moreover, we are not connected to any schools or organizations providing scholarship assistance.</p>
 
         <p className='content_tc-body-text'>Throughout this Terms and Conditions, terms such as "Scholaris," "Company," "we," "our," or "us" pertain to Sence1 Inc. and any corporate affiliates associated with us.</p>
 
