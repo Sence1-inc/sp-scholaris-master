@@ -1,12 +1,9 @@
 import React from 'react';
-import Footer from '../../components/Footer/Footer';
-import Header from '../../components/Header/Header';
 import './PrivacyConsentPage.css'
 
 const PrivacyConsentPage: React.FC = () => {
   return (
     <>
-      <Header />
       <div className='content_privacy-body'>
         <h2 className='content_privacy-body-header'>Privacy Consent</h2>
         <p className='content_privacy-body-text'>Scholaris is dedicated to safeguarding your personal data and privacy. Throughout this Privacy Policy, terms such as "Scholaris," "Company," "we," "our," or "us" pertain to Sence1 Inc. and any corporate affiliates associated with us. Our array of services, inclusive of those featured on this website, are collectively referred to as "Services" in this Privacy Policy.</p>
@@ -101,7 +98,6 @@ const PrivacyConsentPage: React.FC = () => {
         </div>
         <p className='content_privacy-body-text'>You may also lodge a complaint with the National Privacy Commission (NPC). For further details, please refer to the NPC website: <a className='content_privacy-npc-link' href="https://privacy.gov.ph">https://privacy.gov.ph</a></p>
       </div>
-      <Footer />
     </>
   );
 };

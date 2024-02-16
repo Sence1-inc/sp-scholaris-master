@@ -1,5 +1,3 @@
-import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
 import { useSearchParams } from "react-router-dom";
 import "./SearchResultsPage.css";
 import { useEffect, useState } from "react";
@@ -90,7 +88,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}
 
   return (
     <>
-      <Header />
       <section className="search-results">
         <div className="container-1040">
           <Breadcrumbs />
@@ -99,7 +96,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({isASection}
           <Table page={page} hasPagination={true} handleNext={handleNext} handlePrevious={handlePrevious} scholarships={scholarships} />
         </div>
       </section>
-      <Footer />
     </>
   );
 }

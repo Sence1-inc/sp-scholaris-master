@@ -1,6 +1,4 @@
 import React from 'react';
-import Header from '../../components/Header/Header';
-import Footer from '../../components/Footer/Footer';
 import WelcomeButton from '../../components/Button/WelcomeButton';
 import AngleDownIcon from '../../public/images/angles-down-solid.svg';
 import UserIcon from '../../public/images/users-solid.svg';
@@ -11,7 +9,6 @@ import './WelcomePage.css';
 const WelcomePage: React.FC = () => {
   return (
     <>
-      <Header />
       <div className='content__welcome-intro'>
         <div className='container'>
           <img src={WelcomeImage} alt='' />
@@ -37,7 +34,6 @@ const WelcomePage: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </>
   );
 }
