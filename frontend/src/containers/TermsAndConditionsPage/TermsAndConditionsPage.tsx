@@ -1,12 +1,9 @@
 import React from 'react';
-import Footer from '../../components/Footer/Footer';
-import Header from '../../components/Header/Header';
 import './TermsAndConditionsPage.css'
 
 const TermsAndConditionsPage: React.FC = () => {
   return (
     <>
-      <Header />
       <div className='content_tc-body'>
         <h2 className='content_tc-header'>Terms and Conditions</h2>
         <h4 className='content_tc-subheader'>Last Updated: Feb 16, 2024</h4>
@@ -39,7 +36,6 @@ const TermsAndConditionsPage: React.FC = () => {
 
         <p className='content_tc-body-text'>Thank you for using Scholaris!</p>
       </div>
-      <Footer />
     </>
   );
 };
