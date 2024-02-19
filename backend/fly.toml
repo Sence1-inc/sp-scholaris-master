@@ -8,7 +8,7 @@ primary_region = 'sin'
 console_command = '/rails/bin/rails console'
 
 [build]
-  dockerfile = "Dockerfile"
+  dockerfile = "Dockerfile.prod"
   ignorefile = "./dockerignore"
 
   [build.args]
@@ -16,14 +16,16 @@ console_command = '/rails/bin/rails console'
     MODE="development"
 
 [env]
-  RAILS_ENV = "development"
+  RAILS_ENV = "production"
+  DATABASE_URL = "mysql2://admin:pWfjApfXCVkhYQ8@scholaris-db.cboibzju9stw.us-east-1.rds.amazonaws.com:3306/app"
 
 [http_service]
+  protocol = "tcp"
   internal_port = 5001
   force_https = true
   auto_stop_machines = true
   auto_start_machines = true
-  min_machines_running = 0
+  min_machines_running = 1
   processes = ['app']
 
 [checks]
