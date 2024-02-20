@@ -42,6 +42,24 @@ module Api
                   only: [:id, :description]
                 }
               }
+            },
+            requirements: { 
+              only: [
+                :id, 
+                :requirements_text
+              ]
+            },
+            eligibilities: { 
+              only: [
+                :id, 
+                :eligibility_text
+              ]
+            },
+            benefits: { 
+              only: [
+                :id, 
+                :benefit_name
+              ]
             }
           }
         )
