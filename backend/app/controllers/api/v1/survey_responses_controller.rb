@@ -28,7 +28,12 @@ module Api
           render json: { error: 'Email cannot be empty' }, status: :unprocessable_entity
           return
         end
-        
+
+        if SurveyResponse.exists?(email: params[:email])
+          render json: { error: 'Email already exists' }, status: :unprocessable_entity
+          return
+        end
+
         survey_response = SurveyResponse.new(survey_params)
 
         if survey_response.save
