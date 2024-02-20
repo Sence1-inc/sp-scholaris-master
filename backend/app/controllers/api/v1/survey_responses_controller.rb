@@ -37,7 +37,12 @@ module Api
         survey_response = SurveyResponse.new(survey_params)
 
         if survey_response.save
-          render json: survey_response, status: :created
+          render json: { 
+            message: 'Survey responses submitted successfully',
+            id: survey_response.id, 
+            email: survey_response.email,
+            user_id: survey_response.user_id,
+          }, status: :created
         else
           render json: survey_response.errors, status: :unprocessable_entity
         end
