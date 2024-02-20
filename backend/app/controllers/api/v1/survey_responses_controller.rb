@@ -1,6 +1,7 @@
 module Api
   module V1
     class SurveyResponsesController < ApplicationController
+      skip_before_action :verify_authenticity_token
       before_action :set_survey_response, only: %i[ show edit update destroy ]
     
       # GET /survey_responses or /survey_responses.json
@@ -23,6 +24,11 @@ module Api
     
       # POST /survey_responses or /survey_responses.json
       def create
+        if params[:email].blank?
+          render json: { error: 'Email cannot be empty' }, status: :unprocessable_entity
+          return
+        end
+        
         survey_response = SurveyResponse.new(survey_params)
 
         if survey_response.save
