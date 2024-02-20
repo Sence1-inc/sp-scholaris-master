@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @api_v1_survey_question %>
+
+<div>
+  <%= link_to "Edit this survey question", edit_api_v1_survey_question_path(@api_v1_survey_question) %> |
+  <%= link_to "Back to survey questions", api_v1_survey_questions_path %>
+
+  <%= button_to "Destroy this survey question", @api_v1_survey_question, method: :delete %>
+</div>
