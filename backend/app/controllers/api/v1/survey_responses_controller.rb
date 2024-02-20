@@ -34,6 +34,11 @@ module Api
           return
         end
 
+        if params[:responses].empty?
+          render json: { error: 'Responses cannot be empty' }, status: :unprocessable_entity
+          return
+        end
+
         survey_response = SurveyResponse.new(survey_params)
 
         if survey_response.save
