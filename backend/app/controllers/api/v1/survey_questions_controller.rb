@@ -3,9 +3,9 @@ class Api::V1::SurveyQuestionsController < ApplicationController
 
   # GET /api/v1/survey_questions or /api/v1/survey_questions.json
   def index
-    @q = SurveyQuestion.student_questions(params[:user_type]);
+    q = SurveyQuestion.student_questions(params[:user_type]).as_json({:only => [:id, :question_text]})
 
-    render json: @q.to_json(only: [:id, :question_text]);
+    render json: {:user_type => params[:user_type], :survey_questions => q}
 
   end
 
