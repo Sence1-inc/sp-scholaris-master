@@ -1,4 +1,4 @@
-SurveyQuestion.create!(question_text: "What is your email?", user_type:"student");
+# SurveyQuestion.create!(question_text: "What is your email?", user_type:"student");
 SurveyQuestion.create!(question_text: "What are the keywords you use when searching for scholarships?", user_type:"student");
 SurveyQuestion.create!(question_text: "What are the challenges you encounter in searching for a scholarship?", user_type:"student");
 SurveyQuestion.create!(question_text: "How do you currently stay informed about scholarship opportunities? What methods or platforms do you use to find and apply for scholarships?", user_type:"student");
