@@ -9,8 +9,7 @@
 # migrations use external dependencies or application code.
 #
 # It's strongly recommended that you check this file into your version control system.
-
-ActiveRecord::Schema[7.1].define(version: 2024_02_20_064103) do
+ActiveRecord::Schema[7.1].define(version: 2024_02_20_072214) do
   create_table "benefits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "benefit_name"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
@@ -119,6 +118,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_064103) do
     t.index ["scholarship_id"], name: "index_scholarship_benefits_on_scholarship_id"
   end
 
+  create_table "scholarship_eligibilities", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "scholarship_id"
+    t.bigint "eligibility_id"
+    t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.timestamp "deleted_at"
+    t.index ["eligibility_id"], name: "index_scholarship_eligibilities_on_eligibility_id"
+    t.index ["scholarship_id"], name: "index_scholarship_eligibilities_on_scholarship_id"
+  end
+
   create_table "scholarship_provider_profiles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "scholarship_provider_id", null: false
     t.string "provider_type"
@@ -142,6 +151,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_064103) do
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
     t.index ["user_id"], name: "index_scholarship_providers_on_user_id"
+  end
+
+  create_table "scholarship_requirements", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "scholarship_id"
+    t.bigint "requirement_id"
+    t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.timestamp "deleted_at"
+    t.index ["requirement_id"], name: "index_scholarship_requirements_on_requirement_id"
+    t.index ["scholarship_id"], name: "index_scholarship_requirements_on_scholarship_id"
   end
 
   create_table "scholarship_types", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -223,13 +242,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_02_20_064103) do
   end
 
   create_table "survey_responses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "email"
+    t.string "email", null: false
     t.bigint "user_id"
     t.json "responses"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_survey_responses_on_deleted_at"
+    t.index ["email"], name: "index_survey_responses_on_email", unique: true
     t.index ["user_id"], name: "fk_survey_responses_users"
   end
 
