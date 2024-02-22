@@ -1,9 +1,9 @@
 ---
-
-Name: "Feature Request ID: 0001"
-About: _Create a Feature on Navigation_
-Labels: feature
-Notion Link: notion_link
+name: Feature Request
+about: Template for feature requests PR
+title: "[FEATURE]"
+labels: ''
+assignees: ''
 
 ---
 
