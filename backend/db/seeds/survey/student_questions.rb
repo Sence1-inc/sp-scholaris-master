@@ -1,0 +1,11 @@
+# SurveyQuestion.create!(question_text: "What is your email?", user_type:"student");
+SurveyQuestion.create!(question_text: "What are the keywords you use when searching for scholarships?", user_type:"student");
+SurveyQuestion.create!(question_text: "What are the challenges you encounter in searching for a scholarship?", user_type:"student");
+SurveyQuestion.create!(question_text: "How do you currently stay informed about scholarship opportunities? What methods or platforms do you use to find and apply for scholarships?", user_type:"student");
+SurveyQuestion.create!(question_text: "How do you currently evaluate the credibility and legitimacy of scholarship providers or programs? What factors do you consider to be important in assessing the authenticity of scholarships?", user_type:"student");
+SurveyQuestion.create!(question_text: "How easy/difficult is it to search for scholarships?", user_type:"student");
+SurveyQuestion.create!(question_text: "What are the challenges you encounter in submission and management of scholarship?", user_type:"student");
+SurveyQuestion.create!(question_text: "Have you ever faced any issues or obstacles in managing multiple scholarship applications or tracking the status of your applications? If yes, please elaborate.", user_type:"student");
+SurveyQuestion.create!(question_text: "How do you maintain the scholarship?", user_type:"student");
+SurveyQuestion.create!(question_text: "Do you think you will benefit from this scholarship pooling app?", user_type:"student");
+SurveyQuestion.create!(question_text: "We will be releasing application management soon, where you can get updates from providers and save scholarships and apply scholarships, how likely will you use the app from 1 (never) to 5 (most likely)?", user_type:"student");

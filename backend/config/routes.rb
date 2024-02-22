@@ -3,6 +3,7 @@ Rails.application.routes.draw do
 
   namespace :api do
     namespace :v1 do
+      resources :survey_questions
       resources :subscribers
       post 'subscribers/soft_delete', to: 'subscribers#soft_del', as: 'subscribers_soft_delete'
       post 'subscribers/restore', to: 'subscribers#restore'
