@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       resources :schools
       resources :scholarship_providers
       resources :courses
+      resources :survey_responses
     end
   end
 end
