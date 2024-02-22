@@ -23,7 +23,7 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <div>
-          <p>Scholaris Copyright | All Rights Reserved 2024</p>
+          <p>Scholaris Copyright | Managed by Sence1 | All Rights Reserved 2024</p>
         </div>
       </div>
     </footer>
