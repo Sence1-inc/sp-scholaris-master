@@ -1,0 +1,7 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  eligibility_texts: MyText
+
+two:
+  eligibility_texts: MyText

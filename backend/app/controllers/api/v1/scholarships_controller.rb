@@ -22,6 +22,47 @@ module Api
     
       # GET /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def show
+        render json: @scholarship.as_json(
+          :only => [ 
+            :id, 
+            :scholarship_name, 
+            :start_date, 
+            :due_date,
+            :application_link,
+            :school_year, 
+          ],
+          :include => {
+            scholarship_provider: { 
+              only: [
+                :id, 
+                :provider_name
+              ],
+              include: {
+                scholarship_provider_profile: { 
+                  only: [:id, :description]
+                }
+              }
+            },
+            requirements: { 
+              only: [
+                :id, 
+                :requirements_text
+              ]
+            },
+            eligibilities: { 
+              only: [
+                :id, 
+                :eligibility_text
+              ]
+            },
+            benefits: { 
+              only: [
+                :id, 
+                :benefit_name
+              ]
+            }
+          }
+        )
       end
     
       # GET /api/v1/scholarships/new
