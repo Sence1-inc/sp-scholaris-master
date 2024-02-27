@@ -1,23 +1,20 @@
 export const FEATURES: FeatureProps[] = [
   {
-    title: "Seamless Scholarship Management",
+    title: "A portal for a wide range of scholarship opportunities",
     desc: "Effortlessly upload and manage scholarship details with our user-friendly interface. Whether you prefer hands-on manual editing or the efficiency of bulk uploads through CSV files, Scholaris ensures a seamless experience, saving you time and effort.",
-    image: "/images/provider-f-1.png",
+    image: "/images/img_202401_1.png",
   },
   {
-    title: "Enhanced Visibility",
-    desc: "Boost the visibility of your scholarship programs through Scholaris' extensive network. Reach a wider audience of qualified candidates who may otherwise have difficulty discovering your opportunities.",
-    image: "/images/provider-f-2.png",
+    title:
+      "Find your scholarships of interest with search filters such as benefits, courses, and schools.",
+    desc: "Easily search for scholarships according to your preference: benefits, chosen courses, and schools. These filters provide a more refined set of scholarship options for students. Never miss an application due date by filtering scholarships by their application dates!",
+    image: "/images/img_202401_2.png",
   },
   {
-    title: "Amplify Online Presence",
-    desc: "Forge meaningful connections with prospective scholars by showcasing your organization's unique identity. Your comprehensive profile, including mission statements, past contributions, and success stories, will be featured prominently to students. This personalized touch helps students understand your values, fostering a stronger bond between organizations and applicants.",
-    image: "/images/provider-f-3.png",
-  },
-  {
-    title: "Intuitive Scholarship Search",
-    desc: "Enhance the exposure of your scholarships through our robust search feature. Students can easily find your scholarship offerings using filters such as application date, location, benefits, course, and school on Scholaris. With these tailored options, your opportunities will be easily discoverable by eligible candidates.",
-    image: "/images/provider-f-1.png",
+    title:
+      "Learn about scholarships offered by different Scholarship Granting Organizations (SGOs)",
+    desc: "Students may view profiles of different SGOs - which may vary between scholarship providers and schools, showcasing their background and scholarship offerings. Access to SGO profiles will assist students in finding and applying for scholarships that align with their interests and qualifications.",
+    image: "/images/img_202401_3.png",
   },
 ];
 
