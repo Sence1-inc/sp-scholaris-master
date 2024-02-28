@@ -1,19 +1,59 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Button from "../../components/Button/Button";
+import './SurveyPage.css';
+import axios from "axios";
 
-const SurveyPage: React.FC = () => {
-    return(
-        <>
-        <h2>Survey</h2>
-        <div className="survey-subtitle">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Adipisci ab dolorem praesentium fugiat dignissimos sed possimus, architecto esse? Nulla temporibus quidem sequi ratione quia, eum officiis veritatis soluta voluptate eaque?</p>
-        </div>
-        <div className="survey-description">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quas earum sit eius, itaque repudiandae quae inventore eligendi reprehenderit alias unde placeat, assumenda ullam cumque nesciunt dolorem? Facere explicabo impedit nobis!</p>
-        </div>
-        <Button>Confirm</Button>
-        </>
-    )
+interface SurveyQuestion {
+  id: number;
+  question_text: string;
 }
 
-export default SurveyPage
+const SurveyPage: React.FC = () => {
+  const [surveyQuestions, setSurveyQuestions] = useState<SurveyQuestion[] | null>(null);
+  const [surveyNumber, setSurveyNumber] = useState(1);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5001/api/v1/survey_questions?user_type=student`);
+        setSurveyQuestions(response.data.survey_questions || []);
+      } catch (error) {
+        console.error("Error fetching survey questions:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const handleClick = () => {
+    if (surveyNumber < (surveyQuestions?.length || 0)) {
+      setSurveyNumber(prev => prev + 1);
+    } else {
+      // Redirect to a different page when reaching the last survey question
+      navigate("/thank-you-page");
+    }
+  }
+
+  const currentQuestion = surveyQuestions?.find(question => question.id === surveyNumber);
+
+  return (
+    <div className="survey">
+      <div className="container-1040">
+        <div className="survey__header-container">
+          <h2>Survey</h2>
+        </div>
+        {currentQuestion && (
+          <>
+            <p className="survey-description" key={currentQuestion.id}>{currentQuestion.question_text}</p>
+            <textarea></textarea>
+            <Button handleClick={handleClick}>Confirm</Button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default SurveyPage;
