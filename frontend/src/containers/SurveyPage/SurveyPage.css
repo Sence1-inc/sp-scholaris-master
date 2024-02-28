@@ -48,3 +48,21 @@
 .survey .button__primary{
     max-width: 100%;
 }
+
+
+@media screen and (max-width: 768px) {
+    .survey {
+        padding: 40px 20px;
+    }
+    .survey .survey-description {
+        font-size: 24px;
+    }
+    .survey .container-1040 {
+        row-gap: 28px;
+    }
+    .survey textarea{
+        height: 160px;
+        font-size: 16px;
+    }
+
+}
