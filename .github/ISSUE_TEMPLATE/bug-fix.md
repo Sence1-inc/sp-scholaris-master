@@ -1,9 +1,9 @@
 ---
-
-Name: "Bug Report ID: 0001"
-About: Create a Bug Report
-Labels: bug
-Notion Link: notion_link
+name: Bug Fix
+about: Template for bug fixes PR
+title: "[FIX]"
+labels: ''
+assignees: ''
 
 ---
 
