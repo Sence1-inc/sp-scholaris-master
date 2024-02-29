@@ -40,7 +40,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
       <Typography variant="h2" sx={{ fontWeight: '700', textAlign: "center", marginTop: "20px" }}>Survey</Typography>
       {
         surveyQuestions?.map((questionText, index) => (
-          <Container key={index}>
+          <Container key={index} sx={{padding: '0!important'}}>
             <Typography variant="body1" sx={{ fontSize: '24px', color: 'var(--primary-color)', marginBottom: '10px', textAlign: 'start' }}>
               {questionText['question_text']}
             </Typography>
