@@ -19,7 +19,11 @@ const ThankYouPage: React.FC = () => {
                         borderRadius: '16px',
                         marginTop: 5,
                         maxWidth: 'md', width: '100%', height: '70px',
-                        fontSize: '24px', fontFamily: 'Outfit', fontWeight: '700'
+                        fontSize: '24px', fontFamily: 'Outfit', fontWeight: '700',
+                        ":hover": {
+                          bgcolor: "#002147",
+                          color: "white",
+                     },
                     }}>Go Back Home
                 </Button>
             </Container>
