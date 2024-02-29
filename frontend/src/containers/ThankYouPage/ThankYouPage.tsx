@@ -1,8 +1,6 @@
 import React from "react";
 import "./ThankYouPage.css";
-// import WelcomePage from '/containers/WelcomePage/WelcomePage';
 import { Box, Button, Container } from "@mui/material";
-// import { amber } from '@mui/material/colors';
 
 const ThankYouPage: React.FC = () => {
   return (
