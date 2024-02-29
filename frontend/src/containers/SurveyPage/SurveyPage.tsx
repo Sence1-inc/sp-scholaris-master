@@ -162,7 +162,13 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         </Typography>
         <TextField
           size="medium"
-          sx={{ borderRadius: "16px", width: "100%" }}
+          sx={{
+            borderRadius: "16px",
+            width: "100%",
+            "& fieldset": { border: "none" },
+            border: "1px solid #0E2F71",
+            boxShadow: "-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset",
+          }}
           inputProps={{
             sx: { fontSize: "20px", color: "var(--primary-color)" },
           }}
@@ -189,7 +195,13 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
             multiline
             minRows={2}
             size="medium"
-            sx={{ borderRadius: "16px", width: "100%" }}
+            sx={{
+              borderRadius: "16px",
+              width: "100%",
+              "& fieldset": { border: "none" },
+              border: "1px solid #0E2F71",
+              boxShadow: "-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset",
+            }}
             inputProps={{
               sx: { fontSize: "20px", color: "var(--primary-color)" },
             }}
