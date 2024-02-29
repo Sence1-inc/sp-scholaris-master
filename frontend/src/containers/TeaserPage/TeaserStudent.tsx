@@ -1,14 +1,14 @@
 import React from "react";
-import WelcomeSection from "../../components/WelcomeSection/WelcomeSection";
-import Newsletter from "../../components/Newsletter/Newsletter";
 import FeatureGuides from "../../components/Feature/FeatureGuides";
+import Newsletter from "../../components/Newsletter/Newsletter";
+import Search from "../../components/Search/Search";
+import WelcomeSection from "../../components/WelcomeSection/WelcomeSection";
 import { STUDENT_TYPE } from "../../constants/constants";
 import {
   FEATURES,
   STUDENT_WELCOME_SUBHEADER,
   STUDENT_WELCOME_THIRD_LEVEL_HEADING,
 } from "../../data/StudentContent";
-import Search from "../../components/Search/Search";
 
 const HomePage: React.FC = () => {
   return (
