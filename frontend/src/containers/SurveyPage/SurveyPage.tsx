@@ -41,7 +41,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
       {
         surveyQuestions?.map((questionText, index) => (
           <Container key={index}>
-            <Typography variant="body1" sx={{ fontSize: '24px', color: 'var(--primary-color)' }}>
+            <Typography variant="body1" sx={{ fontSize: '24px', color: 'var(--primary-color)', marginBottom: '10px', textAlign: 'start' }}>
               {questionText['question_text']}
             </Typography>
             <TextField
