@@ -96,13 +96,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, params.params]);
 
-  useEffect(() => {
-    if (Object.keys(params.params).length === 0) {
-      getScholarships();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.params]);
-
   return (
     <>
       <section className="search-results">
