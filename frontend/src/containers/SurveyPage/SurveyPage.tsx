@@ -38,6 +38,16 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   return (
     <Container maxWidth="md" sx={{ display: "flex", flexDirection: "column", rowGap: '50px', textAlign: "center", marginBlock: "40px" }}>
       <Typography variant="h2" sx={{ fontWeight: '700', textAlign: "center", marginTop: "20px" }}>Survey</Typography>
+      <Container  sx={{padding: '0!important'}}>
+            <Typography variant="body1" sx={{ fontSize: '24px', color: 'var(--primary-color)', marginBottom: '10px', textAlign: 'start' }}>
+              What is your email?
+            </Typography>
+            <TextField
+              size='medium'
+              sx={{ borderRadius: '16px', width: '100%' }}
+              inputProps={{ sx: { fontSize: '20px', color: 'var(--primary-color)' } }}
+            />
+          </Container>
       {
         surveyQuestions?.map((questionText, index) => (
           <Container key={index} sx={{padding: '0!important'}}>
