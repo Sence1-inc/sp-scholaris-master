@@ -1,11 +1,58 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Logo from "../../public/images/logo.png";
 import "./Navbar.css";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const pathname = window.location.pathname;
+  const location = useLocation();
+  const pathname = location.pathname;
+
+  const renderOption = () => {
+    if (pathname === "/student") {
+      return (
+        <ul>
+          <li>
+            <Link to={{ pathname: "/student", hash: "#newsletter" }}>
+              Newsletter
+            </Link>
+          </li>
+          <li>
+            <Link to="/student/survey">Survey</Link>
+          </li>
+          <li>
+            <Link to="/scholarships">Search</Link>
+          </li>
+        </ul>
+      );
+    }
+
+    if (pathname === "/provider") {
+      return (
+        <ul>
+          <li>
+            <Link to={{ pathname: "/provider", hash: "#newsletter" }}>
+              Newsletter
+            </Link>
+          </li>
+          <li>
+            <Link to="/provider/survey">Survey</Link>
+          </li>
+          <li>
+            <Link to="/scholarships">Search</Link>
+          </li>
+        </ul>
+      );
+    }
+
+    return (
+      <ul>
+        <li>
+          <Link to="/scholarships">Search</Link>
+        </li>
+      </ul>
+    );
+  };
 
   return (
     <nav id="navbar">
@@ -15,27 +62,7 @@ const Navbar: React.FC = () => {
         </Link>
       </div>
       <div className={`navbar__menu-main ${isOpen && "open"}`}>
-        <ul>
-          {pathname === "/student" ? (
-            <>
-              <li>
-                <Link to={{ pathname: "/student", hash: "#newsletter" }}>
-                  Newsletter
-                </Link>
-              </li>
-              <li>
-                <Link to="/student/survey">Survey</Link>
-              </li>
-            </>
-          ) : (
-            <li>
-              <Link to="/provider/survey">Survey</Link>
-            </li>
-          )}
-          <li>
-            <Link to="/scholarships">Search</Link>
-          </li>
-        </ul>
+        {renderOption()}
       </div>
       <div
         className="navbar__menu-hamburger"
