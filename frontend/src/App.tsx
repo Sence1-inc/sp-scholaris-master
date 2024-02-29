@@ -9,6 +9,7 @@ import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage';
 import ScrollToTop from './components/ScrollToTop/ScrollToTop';
 import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsPage';
 import ThankYouPage from './containers/ThankYouPage/ThankYouPage';
+import SurveyPage from './containers/SurveyPage/SurveyPage';
 
 const StudentRoutes: React.FC = () => (
   <Routes>
