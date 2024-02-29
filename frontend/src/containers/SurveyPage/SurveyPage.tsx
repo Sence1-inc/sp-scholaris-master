@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Typography, TextField } from "@mui/material";
-import axios from "axios";
+import axiosInstance from '../../axiosConfig';
 
 interface SurveyQuestion {
   id: number;
@@ -20,7 +20,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`http://localhost:5001/api/v1/survey_questions?user_type=${user_type}`);
+        const response = await axiosInstance.get(`/api/v1/survey_questions?user_type=${user_type}`);
         setSurveyQuestions(response.data.survey_questions || []);
       } catch (error) {
         console.error("Error fetching survey questions:", error);
