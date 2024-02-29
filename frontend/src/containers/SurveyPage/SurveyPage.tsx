@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button, Container, Typography, TextField } from "@mui/material";
 import axiosInstance from '../../axiosConfig';
@@ -15,7 +15,6 @@ interface SurveyPageProps {
 const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   const [surveyQuestions, setSurveyQuestions] = useState<SurveyQuestion[] | null>(null);
   const navigate = useNavigate();
-  const textarea = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -28,6 +27,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
     };
 
     fetchData();
+    // eslint-disable-next-line
   }, []);
 
 
