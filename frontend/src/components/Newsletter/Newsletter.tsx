@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import Button from '../Button/Button';
-import Input from '../Input/Input';
-import { Link } from 'react-router-dom';
-import './Newsletter.css';
-import { AxiosResponse } from 'axios';
-import axiosInstance from '../../axiosConfig'
+import React, { useEffect, useRef, useState } from "react";
+import Button from "../Button/Button";
+import Input from "../Input/Input";
+import { Link, useLocation } from "react-router-dom";
+import "./Newsletter.css";
+import { AxiosResponse } from "axios";
+import axiosInstance from "../../axiosConfig";
 
 interface SubscriberData {
   email: string;
@@ -29,13 +29,23 @@ interface NewsletterProps {
   user_type: string;
 }
 
-const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content, description_content, user_type}) => {
-  const [email, setEmail] = useState<string>('');
-  const [errorMessage, setErrorMessage] = useState<string>('');
-  const [successMessage, setSuccessMessage] = useState<string>('');
+const Newsletter: React.FC<NewsletterProps> = ({
+  title_content,
+  subtitle_content,
+  description_content,
+  user_type,
+}) => {
+  const [email, setEmail] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [successMessage, setSuccessMessage] = useState<string>("");
+  const [hasScrolled, setHasScrolled] = useState(false);
+  const { hash } = useLocation();
+  const newletterRef = useRef<HTMLElement>(null);
 
-  const handleSubscribe:  (e: React.MouseEvent<HTMLButtonElement>) => void  = async (e) => {
-    e.preventDefault()
+  const handleSubscribe: (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => void = async (e) => {
+    e.preventDefault();
 
     try {
       const newSubscriberData: SubscriberData = {
@@ -43,48 +53,78 @@ const Newsletter: React.FC<NewsletterProps> = ({title_content, subtitle_content,
         user_type: user_type,
       };
 
-      const response: AxiosResponse<SuccessResponse | ErrorResponse> = await axiosInstance.post(
-        `api/v1/subscribers`,
-        newSubscriberData
-      );
+      const response: AxiosResponse<SuccessResponse | ErrorResponse> =
+        await axiosInstance.post(`api/v1/subscribers`, newSubscriberData);
 
       if (response.status === 201) {
         const successData = response.data as SuccessResponse;
         setSuccessMessage(successData.message);
-        setErrorMessage('');
+        setErrorMessage("");
       } else {
         const errorData = response.data as ErrorResponse;
-        setErrorMessage(`Error: ${errorData.error}. ${errorData.details.join(' ')}`);
-        setSuccessMessage('');
+        setErrorMessage(
+          `Error: ${errorData.error}. ${errorData.details.join(" ")}`
+        );
+        setSuccessMessage("");
       }
     } catch (error) {
-      setErrorMessage('Error creating new subscriber. Please try again.');
-      setSuccessMessage('');
+      setErrorMessage("Error creating new subscriber. Please try again.");
+      setSuccessMessage("");
     }
   };
 
-  const handleEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void  = (e) => {
-    setEmail(e.target.value)
-  }
+  const handleEmailChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
+    e
+  ) => {
+    setEmail(e.target.value);
+  };
+
+  useEffect(() => {
+    if (newletterRef.current && hash === "#newsletter" && !hasScrolled) {
+      newletterRef.current.scrollIntoView({
+        behavior: "smooth",
+        inline: "start",
+        block: "start",
+      });
+
+      setHasScrolled(true);
+    }
+
+    return () => {
+      setHasScrolled(false);
+    };
+    // eslint-disable-next-line
+  }, [newletterRef, hash]);
 
   return (
-    <section className="newsletter">
-      <div className='container-1040'>
-        <h2 className='newsletter-subheader'>{title_content}</h2>
-      <div className="section-header">
-        <h3>{subtitle_content}</h3>
-        <p>{description_content}</p>
-      </div>
-      <div className="newsletter-input__container">
-        <Input value={email} placeholder={'Enter your email'} handleChange={handleEmailChange} />
-        {errorMessage && <p style={{ color: 'red', margin: 0 }}>{errorMessage}</p>}
-        {successMessage && <p style={{ color: 'green', margin: 0 }}>{successMessage}</p>}
-        <Button handleClick={handleSubscribe}>SUBSCRIBE</Button>
-        <p className='newsletter-text__small'>
-        By subscribing to the newsletter, I have read this form and understand its content and voluntarily give my consent for the collection, use, processing, storage and retention of my personal data or information to Sence1 for the purpose(s) described in the 
-        <Link to={'/privacy-consent'}> Privacy Policy</Link> document
-        </p>
-      </div>
+    <section ref={newletterRef} id="newsletter" className="newsletter">
+      <div className="container-1040">
+        <h2 className="newsletter-subheader">{title_content}</h2>
+        <div className="section-header">
+          <h3>{subtitle_content}</h3>
+          <p>{description_content}</p>
+        </div>
+        <div className="newsletter-input__container">
+          <Input
+            value={email}
+            placeholder={"Enter your email"}
+            handleChange={handleEmailChange}
+          />
+          {errorMessage && (
+            <p style={{ color: "red", margin: 0 }}>{errorMessage}</p>
+          )}
+          {successMessage && (
+            <p style={{ color: "green", margin: 0 }}>{successMessage}</p>
+          )}
+          <Button handleClick={handleSubscribe}>SUBSCRIBE</Button>
+          <p className="newsletter-text__small">
+            By subscribing to the newsletter, I have read this form and
+            understand its content and voluntarily give my consent for the
+            collection, use, processing, storage and retention of my personal
+            data or information to Sence1 for the purpose(s) described in the
+            <Link to={"/privacy-consent"}> Privacy Policy</Link> document
+          </p>
+        </div>
       </div>
     </section>
   );
