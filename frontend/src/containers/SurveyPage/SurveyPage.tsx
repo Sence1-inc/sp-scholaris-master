@@ -68,7 +68,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         variant="contained"
         color="primary"
         onClick={handleClick}
-        sx={{ borderRadius: '16px', backgroundColor: '#f36b3b', padding: '20px', marginBottom: '20px', "&:hover": { backgroundColor: '#d2522b' } }}
+        sx={{ borderRadius: '16px', backgroundColor: '#f36b3b', padding: '20px', marginBottom: '60px', "&:hover": { backgroundColor: '#d2522b' } }}
       >
         Confirm
       </Button>
