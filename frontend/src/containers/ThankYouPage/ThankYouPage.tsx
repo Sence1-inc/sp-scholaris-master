@@ -1,8 +1,10 @@
 import React from "react";
 import "./ThankYouPage.css";
 import { Box, Button, Container } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const ThankYouPage: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <>
       <Box className="content__thank-you">
@@ -27,6 +29,7 @@ const ThankYouPage: React.FC = () => {
                 color: "white",
               },
             }}
+            onClick={() => navigate("/")}
           >
             Go Back Home
           </Button>

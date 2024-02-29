@@ -23,47 +23,11 @@ interface SurveyResponse {
   responses: Response[];
 }
 
-const initialResponses = {
+const initialSurveyResponses = {
   email: "",
   responses: [
     {
       survey_question_id: 1,
-      answer: "",
-    },
-    {
-      survey_question_id: 2,
-      answer: "",
-    },
-    {
-      survey_question_id: 3,
-      answer: "",
-    },
-    {
-      survey_question_id: 4,
-      answer: "",
-    },
-    {
-      survey_question_id: 5,
-      answer: "",
-    },
-    {
-      survey_question_id: 6,
-      answer: "",
-    },
-    {
-      survey_question_id: 7,
-      answer: "",
-    },
-    {
-      survey_question_id: 8,
-      answer: "",
-    },
-    {
-      survey_question_id: 9,
-      answer: "",
-    },
-    {
-      survey_question_id: 10,
       answer: "",
     },
   ],
@@ -75,8 +39,24 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   const [surveyQuestions, setSurveyQuestions] = useState<
     SurveyQuestion[] | null
   >(null);
-  const [surveyResponses, setSurveyResponses] =
-    useState<SurveyResponse>(initialResponses);
+  const [surveyResponses, setSurveyResponses] = useState<SurveyResponse>(
+    initialSurveyResponses
+  );
+
+  useEffect(() => {
+    if (surveyQuestions) {
+      const formattedQuestions = surveyQuestions.map((question) => {
+        return {
+          survey_question_id: question.id,
+          answer: "",
+        };
+      });
+
+      setSurveyResponses((prevState) => {
+        return { ...prevState, responses: formattedQuestions };
+      });
+    }
+  }, [surveyQuestions]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -161,6 +141,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
           What is your email?
         </Typography>
         <TextField
+          required
           size="medium"
           sx={{
             borderRadius: "16px",
@@ -192,6 +173,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
             {questionText["question_text"]}
           </Typography>
           <TextField
+            required
             multiline
             minRows={2}
             size="medium"
