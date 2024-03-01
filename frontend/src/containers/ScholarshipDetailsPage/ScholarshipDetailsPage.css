@@ -150,3 +150,45 @@
         padding: 15px 10px;
     }
 }
+
+
+#details .profiles-card {
+    width: 100%;
+    background-color: #f36b3b;
+    border-radius: 32px;
+    padding: 40px 50px;
+    margin: 40px 0 0;
+}
+
+#details .profiles-column {
+    display: flex;
+    flex-direction: row;
+    gap: 50px;
+}
+
+#details .profiles-image img {
+    width: 150px;
+}
+
+#details .profiles-details p {
+    color: #002147;
+}
+
+#details .profiles-details a.button .button__primary {
+    background-color: #a8dadc;
+    margin-top: 20px;
+}
+
+#details .profiles-details a.button .button__primary p {
+    color: #002147;
+}
+
+@media screen and (max-width: 767px) {
+    #details .profiles-column {
+        flex-direction: column;
+    }
+
+    #details .profiles-image img {
+        width: 100px;
+    }
+}

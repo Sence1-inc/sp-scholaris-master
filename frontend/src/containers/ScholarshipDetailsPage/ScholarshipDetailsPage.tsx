@@ -7,6 +7,7 @@ import useGetScholarshipData from "../../hooks/useGetScholarshipData";
 import BackButton from "../../components/BackButton/BackButton";
 import PrimaryButton from "../../components/Button/PrimaryButton";
 import TextLoading from "../../components/Loading/TextLoading";
+import ProviderProfile from '../../public/images/pro-profile.png';
 import './ScholarshipDetailsPage.css';
 
 interface Results {
@@ -51,15 +52,12 @@ export const ScholarshipDetailsPage: React.FC<ScholarshipDataResultsPageProps> =
     return `${format(month, 2)}-${format(day, 2)}-${year}`;
   }
 
-
-  console.log(scholarshipData)
-
   return (
     <>
       <section id="details">
         <div className="container">
           <aside id="aside">
-            <BackButton text="Back to Dashboard" />
+            <BackButton text="Back to Dashboard" url="/scholarships" />
           </aside>
           <h2 className="title2">Scholarship Details</h2>
           { scholarshipData &&
@@ -121,6 +119,22 @@ export const ScholarshipDetailsPage: React.FC<ScholarshipDataResultsPageProps> =
               </div>
               <div className="details-section">
                 <PrimaryButton label="Apply" />
+              </div>
+            </div>
+          }
+          { scholarshipData && scholarshipData.scholarship_provider &&
+            <div className="profiles-card">
+              <div className="profiles-column">
+                <div className="profiles-image">
+                  <img src={ProviderProfile} alt="" />
+                </div>
+                <div className="profiles-details">
+                  <h3 className="title3">{scholarshipData.scholarship_provider.provider_name}</h3>
+                  <p>{scholarshipData.scholarship_provider.scholarship_provider_profile.description}</p>
+                  <div className="details-section">
+                    <PrimaryButton label="Visit Profile" />
+                  </div>
+                </div>
               </div>
             </div>
           }
