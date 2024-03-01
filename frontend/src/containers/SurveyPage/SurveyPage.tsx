@@ -78,7 +78,6 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
     await axiosInstance
       .post("/api/v1/survey_responses", surveyResponses)
       .then((response) => {
-        console.log(response);
         if (response.data) {
           navigate("/thank-you");
         }
