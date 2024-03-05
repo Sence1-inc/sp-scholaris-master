@@ -106,10 +106,42 @@ module Api
     
       # PATCH/PUT /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def update
-        if @scholarship.update(scholarship_params)
-          render json: { "message": "Scholarship details successfully updated." }, status: :ok
+        @benefit_errors = {}
+        @benefits = @scholarship.benefits
+        @benefits.each do |benefit|
+          puts benefit
+          benefit.update(benefit_name: params[:benefits])
+          @benefit_errors[benefit.id] = benefit.errors.full_messages unless benefit.errors.empty?
+        end
+
+        @requirement_errors = {}
+        @requirements = @scholarship.requirements
+        @requirements.each do |requirement|
+          requirement.update(requirements_text: params[:requirements])
+          @requirement_errors[requirement.id] = requirement.errors.full_messages unless requirement.errors.empty?
+        end
+        
+
+        @eligibility_errors = {}
+        @eligibilities = @scholarship.eligibilities
+        @eligibilities.each do |eligibility|
+          eligibility.update(eligibility_text: params[:eligibilities])
+          @eligibility_errors[eligibility.id] = eligibility.errors.full_messages unless eligibility.errors.empty?
+        end
+
+        errors = {}
+        errors[:benefit] = @benefit_errors.first unless @benefit_errors.empty?
+        errors[:requirement] = @requirement_errors.first unless @requirement_errors.empty?
+        errors[:eligibility] = @eligibility_errors.first unless @eligibility_errors.empty?
+
+        if errors.empty?
+          if @scholarship.update(scholarship_params)
+            render json: { "message": "Scholarship details successfully updated." }, status: :ok
+          else
+            render json: @scholarship.errors, status: :unprocessable_entity
+          end
         else
-          render json: @scholarship_provider.errors, status: :unprocessable_entity
+          render json: errors, status: :unprocessable_entity
         end
       end
     
