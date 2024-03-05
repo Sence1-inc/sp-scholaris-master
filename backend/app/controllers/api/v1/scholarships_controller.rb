@@ -78,27 +78,19 @@ module Api
       def create
         @scholarship = Scholarship.new(scholarship_params)
     
-        respond_to do |format|
-          if @scholarship.save
-            format.html { redirect_to scholarship_url(@scholarship), notice: "Scholarship was successfully created." }
-            format.json { render :show, status: :created, location: @scholarship }
+        if @scholarship.save
+            render json: { "message": "Scholarship was successfully created." }, status: :created
           else
-            format.html { render :new, status: :unprocessable_entity }
-            format.json { render json: @scholarship.errors, status: :unprocessable_entity }
+            render json: @scholarship_provider.errors, status: :unprocessable_entity
           end
-        end
       end
     
       # PATCH/PUT /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def update
-        respond_to do |format|
-          if @scholarship.update(scholarship_params)
-            format.html { redirect_to scholarship_url(@scholarship), notice: "Scholarship was successfully updated." }
-            format.json { render :show, status: :ok, location: @scholarship }
-          else
-            format.html { render :edit, status: :unprocessable_entity }
-            format.json { render json: @scholarship.errors, status: :unprocessable_entity }
-          end
+        if @scholarship.update(scholarship_params)
+          render json: { "message": "Scholarship details successfully updated." }, status: :ok
+        else
+          render json: @scholarship_provider.errors, status: :unprocessable_entity
         end
       end
     
