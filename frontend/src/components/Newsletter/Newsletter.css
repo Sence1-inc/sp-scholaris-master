@@ -1,82 +1,78 @@
-
-
- .newsletter-input{
-    display: flex;
-    flex-direction: column;
-    row-gap: 30px;
+.newsletter-input {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
 }
 
- .newsletter-subheader{
-    margin: 0;
-    font-size: 56px;
-    font-weight: 700;
-    color: #323233;
+.newsletter-subheader {
+  margin: 0;
+  font-size: 56px;
+  font-weight: 700;
+  color: #323233;
 
-    text-align: center;
+  text-align: center;
 }
 
-.newsletter-subheader__orange{
-    color: var(--secondary-color);
+.newsletter-subheader__orange {
+  color: var(--secondary-color);
 }
 
-.newsletter-input__container{
-    display: flex;
-    flex-direction: column;
+.newsletter-input__container {
+  display: flex;
+  flex-direction: column;
 
-    row-gap: 30px;
+  row-gap: 30px;
 }
 
-.newsletter .container-1040{
-    max-width: 900px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    row-gap: 71px;
-    padding: 120px 0px;
-
+.newsletter .container-1040 {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  row-gap: 71px;
+  padding: 120px 0px;
 }
 
-.newsletter .section-header{
-    row-gap: 7px;
+.newsletter .section-header {
+  row-gap: 7px;
 }
 
-.newsletter .section-header p{
-    font-size: 24px;
-    font-weight: 400;
+.newsletter .section-header p {
+  font-size: 24px;
+  font-weight: 400;
 }
 
-.newsletter-text__small{
-    font-size: 12px;
+.newsletter-text__small {
+  font-size: 12px;
 }
 
 @media (max-width: 1080px) {
-    .newsletter .container-1040{
-        padding: 120px 20px;
-    }
+  .newsletter .container-1040 {
+    padding: 120px 20px;
+  }
 }
 
 @media (max-width: 768px) {
-     .newsletter-subheader{
-        font-size: 36px;
-    }
-     .newsletter-input{
-        row-gap: 12px;
-    }
-    .newsletter .section-header p{
-        font-size: 20px;
-        font-weight: 400;
-    }
+  .newsletter-subheader {
+    font-size: 36px;
+  }
+  .newsletter-input {
+    row-gap: 12px;
+  }
+  .newsletter .section-header p {
+    font-size: 20px;
+    font-weight: 400;
+  }
 
-    .newsletter-input__container{
-        row-gap: 12px;
-    }
+  .newsletter-input__container {
+    row-gap: 12px;
+  }
 
-    .newsletter-text__small{
-        font-size: 10px;
-    }
-    .newsletter .container-1040{
-        row-gap: 40px;
-        padding: 60px 20px;
-    }
-
+  .newsletter-text__small {
+    font-size: 10px;
+  }
+  .newsletter .container-1040 {
+    row-gap: 40px;
+    padding: 60px 20px;
+  }
 }

@@ -1,19 +1,19 @@
-import React from "react";
-import { useLocation } from "react-router-dom";
-import PrimaryButton from "../Button/PrimaryButton";
+import React from 'react'
+import { useLocation } from 'react-router-dom'
+import PrimaryButton from '../Button/PrimaryButton'
 
-import "./WelcomeSection.css";
+import './WelcomeSection.css'
 
 interface WelcomeSectionProps {
-  subheader?: string;
-  third_level_header?: string;
+  subheader?: string
+  third_level_header?: string
 }
 
 const WelcomeSection: React.FC<WelcomeSectionProps> = ({
   subheader,
   third_level_header,
 }) => {
-  const location = useLocation();
+  const location = useLocation()
 
   return (
     <section className="section__welcome">
@@ -28,20 +28,20 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
         <div className="section__buttons">
           <PrimaryButton
             url={
-              location.pathname === "/student"
-                ? "/student#search"
-                : "/provider#features"
+              location.pathname === '/student'
+                ? '/student#search'
+                : '/provider#features'
             }
             label={
-              location.pathname === "/student"
-                ? "Seach Scholarships"
-                : "Get Started"
+              location.pathname === '/student'
+                ? 'Seach Scholarships'
+                : 'Get Started'
             }
           />
         </div>
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default WelcomeSection;
+export default WelcomeSection

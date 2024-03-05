@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import Logo from "../../public/images/logo.png";
-import "./Navbar.css";
+import React, { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
+import Logo from '../../public/images/logo.png'
+import './Navbar.css'
 
 const Navbar: React.FC = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const location = useLocation();
-  const pathname = location.pathname;
+  const [isOpen, setIsOpen] = useState<boolean>(false)
+  const location = useLocation()
+  const pathname = location.pathname
 
   const renderOption = () => {
-    if (pathname === "/student") {
+    if (pathname === '/student') {
       return (
         <ul>
           <li>
-            <Link to={{ pathname: "/student", hash: "#newsletter" }}>
+            <Link to={{ pathname: '/student', hash: '#newsletter' }}>
               Newsletter
             </Link>
           </li>
@@ -24,14 +24,14 @@ const Navbar: React.FC = () => {
             <Link to="/scholarships">Search</Link>
           </li>
         </ul>
-      );
+      )
     }
 
-    if (pathname === "/provider") {
+    if (pathname === '/provider') {
       return (
         <ul>
           <li>
-            <Link to={{ pathname: "/provider", hash: "#newsletter" }}>
+            <Link to={{ pathname: '/provider', hash: '#newsletter' }}>
               Newsletter
             </Link>
           </li>
@@ -42,7 +42,7 @@ const Navbar: React.FC = () => {
             <Link to="/scholarships">Search</Link>
           </li>
         </ul>
-      );
+      )
     }
 
     return (
@@ -51,8 +51,8 @@ const Navbar: React.FC = () => {
           <Link to="/scholarships">Search</Link>
         </li>
       </ul>
-    );
-  };
+    )
+  }
 
   return (
     <nav id="navbar">
@@ -61,7 +61,7 @@ const Navbar: React.FC = () => {
           <img src={Logo} alt="Scholaris Logo" />
         </Link>
       </div>
-      <div className={`navbar__menu-main ${isOpen && "open"}`}>
+      <div className={`navbar__menu-main ${isOpen && 'open'}`}>
         {renderOption()}
       </div>
       <div
@@ -73,7 +73,7 @@ const Navbar: React.FC = () => {
         <div className="burger burger_1"></div>
       </div>
     </nav>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

@@ -43,14 +43,14 @@ h2 {
   font-family: 'Outfit', 'sans-serif';
   font-size: 4rem;
   font-weight: 800;
-  color: var(--primary-color)
+  color: var(--primary-color);
 }
 
 h3 {
   font-family: 'Outfit', 'sans-serif';
   font-size: 3rem;
   font-weight: 700;
-  color: var(--primary-color)
+  color: var(--primary-color);
 }
 
 .color-secondary {
@@ -84,11 +84,11 @@ p {
   flex-direction: row-reverse;
 }
 
-.section-header{
+.section-header {
   text-align: center;
 }
 
-.section-header h3{
+.section-header h3 {
   color: var(--secondary-color);
 }
 
@@ -110,7 +110,7 @@ p {
     font-size: 1rem;
   }
 
-  .section .container-1040{
+  .section .container-1040 {
     row-gap: 40px;
-}
+  }
 }

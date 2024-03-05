@@ -15,7 +15,6 @@
   margin-bottom: 50px;
 }
 
-
 .content__welcome-intro .container p {
   margin: 0 0 30px;
 }
@@ -38,14 +37,14 @@
 }
 
 .content__welcome-annotations {
-    max-width: 720px;
-    width: 100%;
-    margin: 0 auto;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 .content__welcome-annotations p {
-    font-size: 1rem;
-    font-weight: 300;
+  font-size: 1rem;
+  font-weight: 300;
 }
 
 @media screen and (max-width: 768px) {
@@ -57,5 +56,5 @@
     flex-direction: column;
     max-width: 100%;
     gap: 1.25rem;
-  }    
+  }
 }

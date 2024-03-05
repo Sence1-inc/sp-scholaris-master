@@ -1,15 +1,15 @@
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import WelcomePage from "./containers/WelcomePage/WelcomePage";
-import TeaserStudent from "./containers/TeaserPage/TeaserStudent";
-import TeaserProvider from "./containers/TeaserPage/TeaserProvider";
-import PrivacyConsentPage from "./containers/PrivacyConsentPage/PrivacyConsentPage";
-import TermsAndConditionsPage from "./containers/TermsAndConditionsPage/TermsAndConditionsPage";
-import PageNotFoundPage from "./containers/PageNotFoundPage/PageNotFoundPage";
-import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
-import { SearchResultsPage } from "./containers/SearchResultsPage/SearchResultsPage";
-import ThankYouPage from "./containers/ThankYouPage/ThankYouPage";
-import SurveyPage from "./containers/SurveyPage/SurveyPage";
+import React from 'react'
+import { Route, Routes } from 'react-router-dom'
+import ScrollToTop from './components/ScrollToTop/ScrollToTop'
+import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
+import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage'
+import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsPage'
+import SurveyPage from './containers/SurveyPage/SurveyPage'
+import TeaserProvider from './containers/TeaserPage/TeaserProvider'
+import TeaserStudent from './containers/TeaserPage/TeaserStudent'
+import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage'
+import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
+import WelcomePage from './containers/WelcomePage/WelcomePage'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -17,7 +17,7 @@ const StudentRoutes: React.FC = () => (
     <Route path="survey" element={<SurveyPage user_type="student" />} />
     <Route path="*" element={<PageNotFoundPage />} />
   </Routes>
-);
+)
 
 const ProviderRoutes: React.FC = () => (
   <Routes>
@@ -25,7 +25,7 @@ const ProviderRoutes: React.FC = () => (
     <Route path="survey" element={<SurveyPage user_type="provider" />} />
     <Route path="*" element={<PageNotFoundPage />} />
   </Routes>
-);
+)
 
 const App: React.FC = () => {
   return (
@@ -48,7 +48,7 @@ const App: React.FC = () => {
         <Route path="*" element={<PageNotFoundPage />} />
       </Routes>
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

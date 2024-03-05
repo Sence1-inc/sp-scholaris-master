@@ -1,22 +1,22 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Scholarship } from "../types";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { Scholarship } from '../types'
 
 interface Scholarships {
-  scholarships: Scholarship[];
+  scholarships: Scholarship[]
 }
 
 export const scholarshipsSlice: any = createSlice({
-  name: "scholarships",
+  name: 'scholarships',
   initialState: {
     scholarships: [],
   } as Scholarships,
   reducers: {
     initializeScholarships: (state, action: PayloadAction<Scholarship[]>) => {
-      state.scholarships = action.payload;
+      state.scholarships = action.payload
     },
   },
-});
+})
 
-export const { initializeScholarships } = scholarshipsSlice.actions;
+export const { initializeScholarships } = scholarshipsSlice.actions
 
-export default scholarshipsSlice.reducer;
+export default scholarshipsSlice.reducer

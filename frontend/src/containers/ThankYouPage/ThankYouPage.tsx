@@ -1,10 +1,10 @@
-import React from "react";
-import "./ThankYouPage.css";
-import { Box, Button, Container } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import React from 'react'
+import './ThankYouPage.css'
+import { Box, Button, Container } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 const ThankYouPage: React.FC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
   return (
     <>
       <Box className="content__thank-you">
@@ -15,28 +15,28 @@ const ThankYouPage: React.FC = () => {
           <Button
             variant="contained"
             sx={{
-              bgcolor: "#f36b3b",
-              borderRadius: "16px",
+              bgcolor: '#f36b3b',
+              borderRadius: '16px',
               marginTop: 5,
-              maxWidth: "md",
-              width: "100%",
-              height: "70px",
-              fontSize: "24px",
-              fontFamily: "Outfit",
-              fontWeight: "700",
-              ":hover": {
-                bgcolor: "#002147",
-                color: "white",
+              maxWidth: 'md',
+              width: '100%',
+              height: '70px',
+              fontSize: '24px',
+              fontFamily: 'Outfit',
+              fontWeight: '700',
+              ':hover': {
+                bgcolor: '#002147',
+                color: 'white',
               },
             }}
-            onClick={() => navigate("/")}
+            onClick={() => navigate('/')}
           >
             Go Back Home
           </Button>
         </Container>
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default ThankYouPage;
+export default ThankYouPage

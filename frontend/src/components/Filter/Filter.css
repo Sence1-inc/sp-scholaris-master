@@ -1,32 +1,31 @@
-.filter{
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    font-family: 'Outfit', 'sans-serif';
-    padding: 0;
-    flex-direction: row;
-    column-gap: 10px;
-    margin: 0;
+.filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  font-family: 'Outfit', 'sans-serif';
+  padding: 0;
+  flex-direction: row;
+  column-gap: 10px;
+  margin: 0;
 }
 
-
-.filter .filter-header{
-    padding: 20px 20px 20px 0;
-    font-size: 24px;
-    color: #002147;
+.filter .filter-header {
+  padding: 20px 20px 20px 0;
+  font-size: 24px;
+  color: #002147;
 }
 
-.filter .filter-option{
-    padding: 20px 25px;
+.filter .filter-option {
+  padding: 20px 25px;
 }
 
-.dropdown-options input{
-    border: 1px solid #002147;
-    border-radius: 4px;
-    padding: 4px 9px;
-    font-size: 12px;
+.dropdown-options input {
+  border: 1px solid #002147;
+  border-radius: 4px;
+  padding: 4px 9px;
+  font-size: 12px;
 }
 
-.dropdown-option{
-    font-size: 20px;
+.dropdown-option {
+  font-size: 20px;
 }

@@ -1,28 +1,28 @@
-import "./Feature.css";
-import Feature from "./Feature";
-import { useEffect, useRef, useState } from "react";
-import { useLocation } from "react-router-dom";
+import './Feature.css'
+import Feature from './Feature'
+import { useEffect, useRef, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
 const FeatureGuides = ({ features, contentType }: FeaturesProps) => {
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const { hash } = useLocation();
-  const featuresRef = useRef<HTMLElement>(null);
+  const [hasScrolled, setHasScrolled] = useState(false)
+  const { hash } = useLocation()
+  const featuresRef = useRef<HTMLElement>(null)
   useEffect(() => {
-    if (featuresRef.current && hash === "#features" && !hasScrolled) {
+    if (featuresRef.current && hash === '#features' && !hasScrolled) {
       featuresRef.current.scrollIntoView({
-        behavior: "smooth",
-        inline: "start",
-        block: "start",
-      });
+        behavior: 'smooth',
+        inline: 'start',
+        block: 'start',
+      })
 
-      setHasScrolled(true);
+      setHasScrolled(true)
     }
 
     return () => {
-      setHasScrolled(false);
-    };
+      setHasScrolled(false)
+    }
     // eslint-disable-next-line
-  }, [featuresRef, hash]);
+  }, [featuresRef, hash])
   return (
     <section
       id="features"
@@ -40,11 +40,11 @@ const FeatureGuides = ({ features, contentType }: FeaturesProps) => {
               image={feature.image}
               isEven={index % 2 ? true : false}
             />
-          );
+          )
         })}
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default FeatureGuides;
+export default FeatureGuides

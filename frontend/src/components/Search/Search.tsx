@@ -1,79 +1,79 @@
-import React, { useEffect, useRef, useState } from "react";
-import Filter from "../Filter/Filter";
-import Button from "../Button/Button";
-import Input from "../Input/Input";
-import "./Search.css";
-import useGetScholarships from "../../hooks/useGetScholarships";
-import { useAppDispatch, useAppSelector } from "../../redux/store";
-import { initializeParams } from "../../redux/reducers/SearchParamsReducer";
-import Table from "../Table/Table";
-import { Scholarship } from "../../redux/types";
-import { useLocation, useNavigate } from "react-router-dom";
-import queryString from "query-string";
+import React, { useEffect, useRef, useState } from 'react'
+import Filter from '../Filter/Filter'
+import Button from '../Button/Button'
+import Input from '../Input/Input'
+import './Search.css'
+import useGetScholarships from '../../hooks/useGetScholarships'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
+import Table from '../Table/Table'
+import { Scholarship } from '../../redux/types'
+import { useLocation, useNavigate } from 'react-router-dom'
+import queryString from 'query-string'
 
 interface SearchProps {
-  isSection: boolean;
+  isSection: boolean
 }
 
 const Search: React.FC<SearchProps> = ({ isSection }) => {
-  const dispatch = useAppDispatch();
-  const params = useAppSelector((state) => state.searchParams);
-  const navigate = useNavigate();
-  const scholarships = useAppSelector((state) => state.scholarships);
-  const { getScholarships } = useGetScholarships();
-  const [name, setName] = useState<string>(params.params.name as string);
-  const [hasScrolled, setHasScrolled] = useState(false);
-  const { hash } = useLocation();
-  const searchRef = useRef<HTMLElement>(null);
+  const dispatch = useAppDispatch()
+  const params = useAppSelector((state) => state.searchParams)
+  const navigate = useNavigate()
+  const scholarships = useAppSelector((state) => state.scholarships)
+  const { getScholarships } = useGetScholarships()
+  const [name, setName] = useState<string>(params.params.name as string)
+  const [hasScrolled, setHasScrolled] = useState(false)
+  const { hash } = useLocation()
+  const searchRef = useRef<HTMLElement>(null)
 
-  const data: any = scholarships;
+  const data: any = scholarships
 
   useEffect(() => {
     if (isSection) {
-      getScholarships(false);
+      getScholarships(false)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSection]);
+  }, [isSection])
 
   useEffect(() => {
-    if (searchRef.current && hash === "#search" && !hasScrolled) {
+    if (searchRef.current && hash === '#search' && !hasScrolled) {
       searchRef.current.scrollIntoView({
-        behavior: "smooth",
-        inline: "start",
-        block: "start",
-      });
+        behavior: 'smooth',
+        inline: 'start',
+        block: 'start',
+      })
 
-      setHasScrolled(true);
+      setHasScrolled(true)
     }
 
     return () => {
-      setHasScrolled(false);
-    };
+      setHasScrolled(false)
+    }
     // eslint-disable-next-line
-  }, [searchRef, hash]);
+  }, [searchRef, hash])
 
   const handleSearch: (e: React.MouseEvent<HTMLButtonElement>) => void = async (
     e
   ) => {
-    e.preventDefault();
-    dispatch(initializeParams({ ...params.params, ...(name ? { name } : {}) }));
-  };
+    e.preventDefault()
+    dispatch(initializeParams({ ...params.params, ...(name ? { name } : {}) }))
+  }
 
   const handleChange = async (value: string) => {
-    setName(value);
-  };
+    setName(value)
+  }
 
   useEffect(() => {
     if (!params.params.name) {
-      setName("");
+      setName('')
     }
 
     if (Object.keys(params.params).length > 0) {
-      const queryParams = queryString.stringify(params.params);
-      navigate(`/scholarships?${queryParams}`);
+      const queryParams = queryString.stringify(params.params)
+      navigate(`/scholarships?${queryParams}`)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [params.params]);
+  }, [params.params])
 
   return (
     <section ref={searchRef} id="search" className="search">
@@ -111,7 +111,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
         </div>
       )}
     </section>
-  );
-};
+  )
+}
 
-export default Search;
+export default Search

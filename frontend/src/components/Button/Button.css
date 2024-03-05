@@ -1,38 +1,41 @@
+.search .button__primary,
+.search-results .button__primary {
+  padding: 30px 70px;
+  border-radius: 16px;
+  font-weight: 700;
+  text-transform: capitalize;
 
-.search .button__primary, .search-results .button__primary{
-    padding: 30px 70px;
-    border-radius: 16px;
-    font-weight: 700;
-    text-transform: capitalize;
-
-    cursor: pointer;
+  cursor: pointer;
 }
 
-
-.search .button__primary p, .newsletter .button__primary p{
-    font-size: 24px;
+.search .button__primary p,
+.newsletter .button__primary p {
+  font-size: 24px;
 }
 
-.newsletter .button__primary{
-    width: 100%;
-    padding: 30px 70px;
-    font-size: 24px;
-    border-radius: 16px;
-    font-weight: 700;
-    text-transform: capitalize;
-    max-width: 100%;
+.newsletter .button__primary {
+  width: 100%;
+  padding: 30px 70px;
+  font-size: 24px;
+  border-radius: 16px;
+  font-weight: 700;
+  text-transform: capitalize;
+  max-width: 100%;
 }
 
-.btn:hover{
-    background-color: #e06031;
+.btn:hover {
+  background-color: #e06031;
 }
 
 @media (max-width: 768px) {
-    .search .button__primary, .newsletter .button__primary, .search-results .button__primary{
-        padding: 12px 50px;
-        width: 100%;
-    }
-    .search .button__primary p, .newsletter .button__primary p{
-        font-size: 16px;
-    }
+  .search .button__primary,
+  .newsletter .button__primary,
+  .search-results .button__primary {
+    padding: 12px 50px;
+    width: 100%;
+  }
+  .search .button__primary p,
+  .newsletter .button__primary p {
+    font-size: 16px;
+  }
 }

@@ -4,10 +4,17 @@ import './Disclaimer.css'
 export class Disclaimer extends Component {
   render() {
     return (
-      <section className='section_disclaimer-contaier'>
-        <div className='section_disclainer-container-text'>
-          <h1 className='section_disclainer-container-text-heading'>DISCLAIMER</h1>
-          <p>We have no affiliation with DepEd, CHED, or any educational institutions, and we do not oversee the scholarship listings on this website. Moreover, we are not connected to any schools or organizations providing scholarship assistance.</p>
+      <section className="section_disclaimer-contaier">
+        <div className="section_disclainer-container-text">
+          <h1 className="section_disclainer-container-text-heading">
+            DISCLAIMER
+          </h1>
+          <p>
+            We have no affiliation with DepEd, CHED, or any educational
+            institutions, and we do not oversee the scholarship listings on this
+            website. Moreover, we are not connected to any schools or
+            organizations providing scholarship assistance.
+          </p>
         </div>
       </section>
     )

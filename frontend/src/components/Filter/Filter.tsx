@@ -1,16 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { RangeKeyDict } from "react-date-range";
-import { initializeParams } from "../../redux/reducers/SearchParamsReducer";
-import "./Filter.css";
-import FilterOption from "./FilterOption/FilterOption";
-import { useAppDispatch, useAppSelector } from '../../redux/store';
-import {format} from 'date-fns';
+import React, { useEffect, useState } from 'react'
+import { RangeKeyDict } from 'react-date-range'
+import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
+import './Filter.css'
+import FilterOption from './FilterOption/FilterOption'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { format } from 'date-fns'
 import axiosInstance from '../../axiosConfig'
 
 interface FilterProps {}
 
 interface Option {
-  label: string;
+  label: string
 }
 
 interface Params {
@@ -18,48 +18,50 @@ interface Params {
 }
 
 export interface DateRangeItem {
-  startDate: Date;
-  endDate: Date;
-  key: string;
+  startDate: Date
+  endDate: Date
+  key: string
 }
 
 const Filter: React.FC<FilterProps> = () => {
   const dispatch = useAppDispatch()
-  const params = useAppSelector(state => state.searchParams)
+  const params = useAppSelector((state) => state.searchParams)
   const initialDateRange: DateRangeItem[] = [
     {
       startDate: new Date(),
-      endDate: new Date(), 
+      endDate: new Date(),
       key: 'selection',
     },
-  ];
-  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  ]
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [benefits, setBenefits] = useState<Option[] | []>([])
   const [courses, setCourses] = useState<Option[] | []>([])
   const [schools, setSchools] = useState<Option[] | []>([])
   const [providers, setProviders] = useState<Option[] | []>([])
   const [selectedParams, setSelectedParams] = useState<Params>({})
-  const [selectedDateRange, setSelectedDateRange] = useState<DateRangeItem[] | []>(initialDateRange);
+  const [selectedDateRange, setSelectedDateRange] = useState<
+    DateRangeItem[] | []
+  >(initialDateRange)
 
   const handleOptionClick = (option: Option) => {
     const key: string | null = activeDropdown
     if (activeDropdown) {
       setSelectedParams((prevParams) => ({
         ...prevParams,
-        [key as string]: option.label
-      }));
+        [key as string]: option.label,
+      }))
     }
-  };
+  }
 
   const mapToOptions = (response: any[], label: string): Option[] => {
     return response.map((item) => ({
       label: item[label],
-    }));
-  };
+    }))
+  }
 
   const handleReset = () => {
     setSelectedDateRange(initialDateRange)
-    setSelectedParams({});
+    setSelectedParams({})
   }
 
   useEffect(() => {
@@ -79,24 +81,26 @@ const Filter: React.FC<FilterProps> = () => {
   }, [])
 
   const handleDropdownToggle = (dropdownName: string): void => {
-    setActiveDropdown((prev: string | null) => (prev === dropdownName ? null : dropdownName));
-  };
+    setActiveDropdown((prev: string | null) =>
+      prev === dropdownName ? null : dropdownName
+    )
+  }
 
   const handleSelect = (ranges: RangeKeyDict) => {
-    const newDateRange: DateRangeItem[] = [ranges.selection as DateRangeItem];
-    setSelectedDateRange(newDateRange);
+    const newDateRange: DateRangeItem[] = [ranges.selection as DateRangeItem]
+    setSelectedDateRange(newDateRange)
     setSelectedParams((prevParams: Params) => ({
       ...prevParams,
-      start_date: format(ranges.selection.startDate as Date, "LLLL dd, yyyy"),
-      due_date: format(ranges.selection.endDate as Date, "LLLL dd, yyyy"),
-    }));
-  };
+      start_date: format(ranges.selection.startDate as Date, 'LLLL dd, yyyy'),
+      due_date: format(ranges.selection.endDate as Date, 'LLLL dd, yyyy'),
+    }))
+  }
 
   useEffect(() => {
     if (!activeDropdown) {
       dispatch(initializeParams({}))
     } else {
-      dispatch(initializeParams({...params.params, ...selectedParams}))
+      dispatch(initializeParams({ ...params.params, ...selectedParams }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedParams, dispatch])
@@ -110,24 +114,24 @@ const Filter: React.FC<FilterProps> = () => {
         selectedDateRange={selectedDateRange}
         handleSelect={handleSelect}
         type="date"
-        isVisible={activeDropdown === "date"}
-        onToggleVisibility={() => handleDropdownToggle("date")}
+        isVisible={activeDropdown === 'date'}
+        onToggleVisibility={() => handleDropdownToggle('date')}
       >
         Date
       </FilterOption>
       <FilterOption
         handleOptionClick={handleOptionClick}
         options={benefits}
-        isVisible={activeDropdown === "benefits"}
-        onToggleVisibility={() => handleDropdownToggle("benefits")}
+        isVisible={activeDropdown === 'benefits'}
+        onToggleVisibility={() => handleDropdownToggle('benefits')}
       >
         Benefits
       </FilterOption>
       <FilterOption
         handleOptionClick={handleOptionClick}
         options={courses}
-        isVisible={activeDropdown === "course"}
-        onToggleVisibility={() => handleDropdownToggle("course")}
+        isVisible={activeDropdown === 'course'}
+        onToggleVisibility={() => handleDropdownToggle('course')}
       >
         Course
       </FilterOption>
@@ -135,16 +139,16 @@ const Filter: React.FC<FilterProps> = () => {
         handleOptionClick={handleOptionClick}
         options={schools}
         type="search"
-        isVisible={activeDropdown === "school"}
-        onToggleVisibility={() => handleDropdownToggle("school")}
+        isVisible={activeDropdown === 'school'}
+        onToggleVisibility={() => handleDropdownToggle('school')}
       >
         School
       </FilterOption>
       <FilterOption
         handleOptionClick={handleOptionClick}
         options={providers}
-        isVisible={activeDropdown === "provider"}
-        onToggleVisibility={() => handleDropdownToggle("provider")}
+        isVisible={activeDropdown === 'provider'}
+        onToggleVisibility={() => handleDropdownToggle('provider')}
       >
         Provider
       </FilterOption>
@@ -152,7 +156,7 @@ const Filter: React.FC<FilterProps> = () => {
         Reset
       </FilterOption>
     </div>
-  );
-};
+  )
+}
 
-export default Filter;
+export default Filter
