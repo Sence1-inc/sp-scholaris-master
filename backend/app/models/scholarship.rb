@@ -1,11 +1,19 @@
 class Scholarship < ApplicationRecord
   belongs_to :scholarship_provider
+  belongs_to :scholarship_type
   has_and_belongs_to_many :courses, join_table: "course_scholarship_schools"
   has_and_belongs_to_many :schools, join_table: "course_scholarship_schools"
   has_and_belongs_to_many :benefits, join_table: "scholarship_benefits"
   has_and_belongs_to_many :requirements, join_table: "scholarship_requirements"
   has_and_belongs_to_many :eligibilities, join_table: "scholarship_eligibilities"
 
+  validates :scholarship_name, presence: true
+  validates :start_date, presence: true
+  validates :due_date, presence: true
+  validates :application_link, presence: true
+  validates :school_year, presence: true
+  validates :scholarship_provider, presence: true
+  validates :scholarship_type, presence: true
   validate :valid_dates
 
   scope :filtered, ->(params) {
@@ -28,6 +36,8 @@ class Scholarship < ApplicationRecord
   private
 
   def valid_dates
-    errors.add(:due_date, "must be after the start date") if due_date.present? && start_date.present? && due_date <= start_date
+    if due_date.present? && start_date.present? && due_date <= start_date
+      errors.add(:due_date, "must be after the start date")
+    end
   end
 end

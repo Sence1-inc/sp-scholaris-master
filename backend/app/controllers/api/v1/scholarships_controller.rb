@@ -1,6 +1,7 @@
 module Api
   module V1
     class ScholarshipsController < ApplicationController
+      skip_before_action :verify_authenticity_token
       before_action :set_scholarship, only: %i[ show edit update destroy ]
     
       # GET /api/v1/scholarships or /api/v1/scholarships.json
@@ -77,12 +78,30 @@ module Api
       # POST /api/v1/scholarships or /api/v1/scholarships.json
       def create
         @scholarship = Scholarship.new(scholarship_params)
-    
-        if @scholarship.save
+
+        @benefit = Benefit.new(benefit_name: params[:benefits])
+        @requirement = Requirement.new(requirements_text: params[:requirements])
+        @eligibility = Eligibility.new(eligibility_text: params[:eligibilities])
+
+        errors = {}
+        errors[:benefit] = @benefit.errors if @benefit.invalid?
+        errors[:requirement] = @requirement.errors if @requirement.invalid?
+        errors[:eligibility] = @eligibility.errors if @eligibility.invalid?
+
+        if errors.empty?
+          if @scholarship.save
+            
+            @scholarship.benefits << @benefit
+            @scholarship.requirements << @requirement
+            @scholarship.eligibilities << @eligibility
+          
             render json: { "message": "Scholarship was successfully created." }, status: :created
           else
-            render json: @scholarship_provider.errors, status: :unprocessable_entity
+            render json: @scholarship.errors, status: :unprocessable_entity
           end
+        else
+          render json: errors, status: :unprocessable_entity
+        end
       end
     
       # PATCH/PUT /api/v1/scholarships/1 or /api/v1/scholarships/1.json
@@ -112,7 +131,7 @@ module Api
     
         # Only allow a list of trusted parameters through.
         def scholarship_params
-          params.require(:scholarship).permit(:scholarship_name, :start_date, :due_date, :application_link, :school_year, :scholarship_provider_id, :requirement_id, :eligibility_id, :scholarship_type_id)
+          params.require(:scholarship).permit(:scholarship_name, :start_date, :due_date, :application_link, :school_year, :scholarship_provider_id, :requirements, :eligibilities, :scholarship_type_id, :benefits)
         end
     end
   end
