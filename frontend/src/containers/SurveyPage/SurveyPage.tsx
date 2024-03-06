@@ -128,7 +128,13 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
               user_type: '',
             })
           )
-          navigate('/thank-you')
+          navigate('/thank-you', {
+            state: {
+              user_type: pathname.includes(STUDENT_TYPE)
+                ? STUDENT_TYPE
+                : PROVIDER_TYPE,
+            },
+          })
         }
       })
       .catch((error) => {
