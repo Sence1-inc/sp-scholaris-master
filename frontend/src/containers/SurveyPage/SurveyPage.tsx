@@ -1,4 +1,5 @@
 import {
+  Box,
   Checkbox,
   Container,
   FormControlLabel,
@@ -7,7 +8,7 @@ import {
 } from '@mui/material'
 import { AxiosResponse } from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import {
   ErrorResponse,
@@ -57,7 +58,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   const subscriber = useAppSelector((state) => state.subscriber)
   const [isASubscriber, setIsASubscriber] = useState<boolean>(false)
   const [hasSubscriptionIntent, setHasSubscriptionIntent] =
-    useState<boolean>(false)
+    useState<boolean>(true)
   const [message, setMessage] = useState<string>('')
   const [surveyQuestions, setSurveyQuestions] = useState<
     SurveyQuestion[] | null
@@ -213,11 +214,13 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
               {errorMessage}
             </Typography>
           )}
-          <Typography
-            variant="h5"
-            sx={{ fontWeight: '700', textAlign: 'center', marginTop: '20px' }}
-          >
-            You are currently not subscribed to our newsletter
+          <Box>
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: '700', textAlign: 'center', marginTop: '20px' }}
+            >
+              You are currently not subscribed to our newsletter
+            </Typography>
             <FormGroup>
               <FormControlLabel
                 sx={{
@@ -245,7 +248,23 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
                 }
               />
             </FormGroup>
-          </Typography>
+            {hasSubscriptionIntent && (
+              <Typography variant="body2" className="newsletter-text__small">
+                By subscribing to the newsletter, I have read this form and
+                understand its content and voluntarily give my consent for the
+                collection, use, processing, storage and retention of my
+                personal data or information to Sence1 for the purpose(s)
+                described in the{' '}
+                <Link
+                  style={{ color: 'var(--primary-color)' }}
+                  to={'/privacy-consent'}
+                >
+                  Privacy Policy
+                </Link>{' '}
+                document
+              </Typography>
+            )}
+          </Box>
         </>
       )}
       <Survey
