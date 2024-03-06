@@ -1,5 +1,6 @@
 import { Fab } from '@mui/material'
 import React from 'react'
+import './FabButton.css'
 
 interface FabButtonProps {
   handleClick: (event: React.MouseEvent<HTMLButtonElement>) => void
@@ -10,6 +11,7 @@ interface FabButtonProps {
 const FabButton: React.FC<FabButtonProps> = ({ handleClick, icon, text }) => {
   return (
     <Fab
+      className="fab"
       onClick={handleClick}
       variant="extended"
       sx={{
