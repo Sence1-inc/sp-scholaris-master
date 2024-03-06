@@ -1,6 +1,7 @@
 import EmailIcon from '@mui/icons-material/Email'
 import { Box, Fab } from '@mui/material'
 import React, { useState } from 'react'
+import FabButton from '../../components/FabButton/FabButton'
 import FeatureGuides from '../../components/Feature/FeatureGuides'
 import FloatingElement from '../../components/FloatingElement/FloatingElement'
 import Newsletter from '../../components/Newsletter/Newsletter'
@@ -49,24 +50,11 @@ const HomePage: React.FC = () => {
           }
         />
       </FloatingElement>
-      <Fab
-        onClick={handleClick}
-        variant="extended"
-        sx={{
-          position: 'fixed',
-          bottom: '30px',
-          right: '30px',
-          backgroundColor: 'var(--secondary-color)',
-          color: 'white',
-          padding: '20px',
-          '&:hover': {
-            backgroundColor: 'var(--primary-color)',
-          },
-        }}
-      >
-        <EmailIcon sx={{ mr: 1 }} />
-        Subscribe to our Newsletter
-      </Fab>
+      <FabButton
+        icon={<EmailIcon sx={{ mr: 1 }} />}
+        text="Subscribe to our Newsletter"
+        handleClick={(e: React.MouseEvent<HTMLButtonElement>) => handleClick(e)}
+      />
     </>
   )
 }
