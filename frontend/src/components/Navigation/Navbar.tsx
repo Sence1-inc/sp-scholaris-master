@@ -1,3 +1,4 @@
+import { Button } from '@mui/material'
 import React, { useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Logo from '../../public/images/logo.png'
@@ -21,7 +22,17 @@ const Navbar: React.FC = () => {
             <Link to="/student/survey">Survey</Link>
           </li>
           <li>
-            <Link to="/scholarships">Search</Link>
+            <Button
+              sx={{
+                backgroundColor: 'var(--secondary-color)',
+                borderRadius: '16px',
+                padding: '10px 18px',
+              }}
+              component={Link}
+              to="/scholarships"
+            >
+              Search
+            </Button>
           </li>
         </ul>
       )
@@ -31,7 +42,12 @@ const Navbar: React.FC = () => {
       return (
         <ul>
           <li>
-            <Link to={{ pathname: '/provider', hash: '#newsletter' }}>
+            <Link
+              to={{
+                pathname: '/provider',
+                hash: '#newsletter',
+              }}
+            >
               Newsletter
             </Link>
           </li>
@@ -39,7 +55,17 @@ const Navbar: React.FC = () => {
             <Link to="/provider/survey">Survey</Link>
           </li>
           <li>
-            <Link to="/scholarships">Search</Link>
+            <Button
+              sx={{
+                backgroundColor: 'var(--secondary-color)',
+                borderRadius: '16px',
+                padding: '10px 18px',
+              }}
+              component={Link}
+              to="/scholarships"
+            >
+              Search
+            </Button>
           </li>
         </ul>
       )
@@ -48,7 +74,17 @@ const Navbar: React.FC = () => {
     return (
       <ul>
         <li>
-          <Link to="/scholarships">Search</Link>
+          <Button
+            sx={{
+              backgroundColor: 'var(--secondary-color)',
+              borderRadius: '16px',
+              padding: '10px 18px',
+            }}
+            component={Link}
+            to="/scholarships"
+          >
+            Search
+          </Button>
         </li>
       </ul>
     )
