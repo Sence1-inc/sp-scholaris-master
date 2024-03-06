@@ -1,5 +1,5 @@
 import EmailIcon from '@mui/icons-material/Email'
-import { Box, Fab } from '@mui/material'
+import { Box } from '@mui/material'
 import React, { useState } from 'react'
 import FabButton from '../../components/FabButton/FabButton'
 import FeatureGuides from '../../components/Feature/FeatureGuides'
