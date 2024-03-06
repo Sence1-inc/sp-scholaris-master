@@ -60,7 +60,7 @@ PROVIDER_NEWSLETTER_CONTENT = "
   </p>
 
   <p>
-    Should you be interested, kindly inform us at inquire@sence1.com with the subject line 'Confirmation: Scholaris Interview Request'.
+    If you would like to help us improve our service functionality, please reply to this email. We will send you a message from here. We are considering special benefits in the future for those who cooperate with the interview. Thank you very much for your support.
   </p>
 
   <p>
