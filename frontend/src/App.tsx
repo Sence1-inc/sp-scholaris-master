@@ -15,6 +15,7 @@ import TeaserStudent from './containers/TeaserPage/TeaserStudent'
 import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage'
 import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
+import SignInPage from './containers/SignInPage/SignInPage'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -43,32 +44,23 @@ const App: React.FC = () => {
       }}
     >
       <ScrollToTop />
-      <Navbar />
-      <Box sx={{ flexGrow: 1, postion: 'absolute' }}>
-        <Routes>
-          <Route path="/" element={<WelcomePage />} />
-          <Route path="/student/*" element={<StudentRoutes />} />
-          <Route path="/provider/*" element={<ProviderRoutes />} />
-          <Route
-            path="/scholarships"
-            element={<SearchResultsPage isASection={false} />}
-          />
-          <Route
-            path="/scholarships/:id"
-            element={<ScholarshipDetailsPage isASection={false} />}
-          />
-          <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
-          <Route
-            path="/terms-and-conditions"
-            element={<TermsAndConditionsPage />}
-          />
-          <Route path="/thank-you" element={<ThankYouPage />} />
-          <Route path="*" element={<PageNotFoundPage />} />
-        </Routes>
-      </Box>
-
-      <Disclaimer />
-      <Footer />
+      <Routes>
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/student/*" element={<StudentRoutes />} />
+        <Route path="/provider/*" element={<ProviderRoutes />} />
+        <Route
+          path="/scholarships"
+          element={<SearchResultsPage isASection={false} />}
+        />
+        <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
+        <Route
+          path="/terms-and-conditions"
+          element={<TermsAndConditionsPage />}
+        />
+        <Route path="/thank-you" element={<ThankYouPage />} />
+        <Route path='/sign-in' element={<SignInPage/>}/>
+        <Route path="*" element={<PageNotFoundPage />} />
+      </Routes>
     </Box>
   )
 }
