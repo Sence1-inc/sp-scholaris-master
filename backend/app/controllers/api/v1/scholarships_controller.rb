@@ -135,10 +135,14 @@ module Api
         errors[:eligibility] = @eligibility_errors.first unless @eligibility_errors.empty?
 
         if errors.empty?
-          if @scholarship.update(scholarship_params)
-            render json: { "message": "Scholarship details successfully updated." }, status: :ok
+          if Scholarship.is_soft_deleted(@scholarship) 
+            if @scholarship.update(scholarship_params)
+              render json: { "message": "Scholarship details successfully updated." }, status: :ok
+            else
+              render json: @scholarship.errors, status: :unprocessable_entity
+            end
           else
-            render json: @scholarship.errors, status: :unprocessable_entity
+            render json: { "message": "Unable to update scholarship." }, status: :unprocessable_entity
           end
         else
           render json: errors, status: :unprocessable_entity
@@ -147,11 +151,11 @@ module Api
     
       # DELETE /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def destroy
-        @scholarship.destroy!
-    
-        respond_to do |format|
-          format.html { redirect_to scholarships_url, notice: "Scholarship was successfully destroyed." }
-          format.json { head :no_content }
+        if Scholarship.is_soft_deleted(@scholarship)
+          Scholarship.soft_delete(@scholarship)
+          render json: {message: "Scholarship deleted.", status: :ok}
+        else
+          render json: {message: "Unable to delete scholarship", status: :unprocessable_entity}, status: 422
         end
       end
     
