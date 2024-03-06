@@ -8,18 +8,21 @@ import { AxiosResponse } from 'axios'
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import { initializeSubscirber } from '../../redux/reducers/SubscriberReducer'
+import { useAppDispatch } from '../../redux/store'
+import ThankYou from '../ThankYou/ThankYou'
 
-interface SubscriberData {
+export interface SubscriberData {
   email: string
   user_type: string
 }
 
-interface ErrorResponse {
+export interface ErrorResponse {
   error: string
   details: string[]
 }
 
-interface SuccessResponse {
+export interface SuccessResponse {
   email: string
   user_type: string
   message: string
@@ -38,6 +41,7 @@ const Newsletter: React.FC<NewsletterProps> = ({
   description_content,
   user_type,
 }) => {
+  const dispatch = useAppDispatch()
   const [email, setEmail] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('')
@@ -61,6 +65,12 @@ const Newsletter: React.FC<NewsletterProps> = ({
 
       if (response.status === 201) {
         const successData = response.data as SuccessResponse
+        dispatch(
+          initializeSubscirber({
+            email: successData.email,
+            user_type: successData.user_type,
+          })
+        )
         setSuccessMessage(successData.message)
         setErrorMessage('')
       } else {
@@ -101,85 +111,88 @@ const Newsletter: React.FC<NewsletterProps> = ({
 
   return (
     <Box ref={newletterRef} id="newsletter">
-      <Container maxWidth="lg">
-        <Typography
-          variant="h3"
-          align="center"
-          sx={{
-            mb: 2,
-            color: 'var(--primary-color)',
-            textAlign: 'center',
-            fontWeight: '700',
-            fontSize: '48px',
-          }}
-        >
-          {title_content}
-        </Typography>
-        <Box sx={{ mb: 4 }}>
+      {!successMessage ? (
+        <Container maxWidth="lg">
           <Typography
-            variant="h4"
+            variant="h3"
+            align="center"
             sx={{
-              mb: 1,
-              color: 'var(--secondary-color)',
+              mb: 2,
+              color: 'var(--primary-color)',
               textAlign: 'center',
               fontWeight: '700',
+              fontSize: '48px',
             }}
           >
-            {subtitle_content}
+            {title_content}
           </Typography>
-          <Typography
-            sx={{ fontSize: '24px', fontWeight: '400', textAlign: 'center' }}
-            variant="body1"
-          >
-            {description_content}
-          </Typography>
-        </Box>
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <TextField
-            sx={{
-              '& fieldset': { border: 'none' },
-              borderRadius: '16px',
-              border: '1px solid #0E2F71',
-            }}
-            id="outlined-basic"
-            variant="outlined"
-            value={email}
-            onChange={handleEmailChange}
-          />
-          {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
-          {successMessage && <Alert severity="success">{successMessage}</Alert>}
-          <Button
-            fullWidth
-            sx={{
-              padding: '20px',
-              borderRadius: '16px',
-              fontWeight: '700',
-              textTransform: 'capitalize',
-              backgroundColor: 'var(--secondary-color)',
-              color: 'white',
-              '&:hover': {
-                backgroundColor: 'var(--primary-color)',
-              },
-            }}
-            onClick={handleSubscribe}
-          >
-            SUBSCRIBE
-          </Button>
-          <Typography variant="body2" className="newsletter-text__small">
-            By subscribing to the newsletter, I have read this form and
-            understand its content and voluntarily give my consent for the
-            collection, use, processing, storage and retention of my personal
-            data or information to Sence1 for the purpose(s) described in the{' '}
-            <Link
-              style={{ color: 'var(--primary-color)' }}
-              to={'/privacy-consent'}
+          <Box sx={{ mb: 4 }}>
+            <Typography
+              variant="h4"
+              sx={{
+                mb: 1,
+                color: 'var(--secondary-color)',
+                textAlign: 'center',
+                fontWeight: '700',
+              }}
             >
-              Privacy Policy
-            </Link>{' '}
-            document
-          </Typography>
-        </Box>
-      </Container>
+              {subtitle_content}
+            </Typography>
+            <Typography
+              sx={{ fontSize: '24px', fontWeight: '400', textAlign: 'center' }}
+              variant="body1"
+            >
+              {description_content}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <TextField
+              sx={{
+                '& fieldset': { border: 'none' },
+                borderRadius: '16px',
+                border: '1px solid #0E2F71',
+              }}
+              id="outlined-basic"
+              variant="outlined"
+              value={email}
+              onChange={handleEmailChange}
+            />
+            {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+            <Button
+              fullWidth
+              sx={{
+                padding: '20px',
+                borderRadius: '16px',
+                fontWeight: '700',
+                textTransform: 'capitalize',
+                backgroundColor: 'var(--secondary-color)',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: 'var(--primary-color)',
+                },
+              }}
+              onClick={handleSubscribe}
+            >
+              SUBSCRIBE
+            </Button>
+            <Typography variant="body2" className="newsletter-text__small">
+              By subscribing to the newsletter, I have read this form and
+              understand its content and voluntarily give my consent for the
+              collection, use, processing, storage and retention of my personal
+              data or information to Sence1 for the purpose(s) described in the{' '}
+              <Link
+                style={{ color: 'var(--primary-color)' }}
+                to={'/privacy-consent'}
+              >
+                Privacy Policy
+              </Link>{' '}
+              document
+            </Typography>
+          </Box>
+        </Container>
+      ) : (
+        <ThankYou />
+      )}
     </Box>
   )
 }

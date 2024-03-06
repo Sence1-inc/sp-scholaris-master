@@ -1,9 +1,25 @@
-import { Button, Container, TextField, Typography } from '@mui/material'
+import {
+  Checkbox,
+  Container,
+  FormControlLabel,
+  FormGroup,
+  Typography,
+} from '@mui/material'
+import { AxiosResponse } from 'axios'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import {
+  ErrorResponse,
+  SubscriberData,
+  SuccessResponse,
+} from '../../components/Newsletter/Newsletter'
+import Survey from '../../components/Survey/Survey'
+import { PROVIDER_TYPE, STUDENT_TYPE } from '../../constants/constants'
+import { initializeSubscirber } from '../../redux/reducers/SubscriberReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 
-interface SurveyQuestion {
+export interface SurveyQuestion {
   id: number
   question_text: string
 }
@@ -17,7 +33,7 @@ interface Response {
   answer: string
 }
 
-interface SurveyResponse {
+export interface SurveyResponse {
   email: string
   user_id?: number
   responses: Response[]
@@ -34,7 +50,14 @@ const initialSurveyResponses = {
 }
 
 const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
+  const location = useLocation()
+  const { pathname } = location
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const subscriber = useAppSelector((state) => state.subscriber)
+  const [isASubscriber, setIsASubscriber] = useState<boolean>(false)
+  const [hasSubscriptionIntent, setHasSubscriptionIntent] =
+    useState<boolean>(false)
   const [message, setMessage] = useState<string>('')
   const [surveyQuestions, setSurveyQuestions] = useState<
     SurveyQuestion[] | null
@@ -42,6 +65,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   const [surveyResponses, setSurveyResponses] = useState<SurveyResponse>(
     initialSurveyResponses
   )
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   useEffect(() => {
     if (surveyQuestions) {
@@ -74,11 +98,35 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
     // eslint-disable-next-line
   }, [])
 
+  useEffect(() => {
+    if (subscriber.email) {
+      setIsASubscriber(true)
+
+      if (pathname.includes(subscriber.user_type)) {
+        setSurveyResponses((prevState) => {
+          return { ...prevState, email: subscriber.email }
+        })
+      }
+    } else {
+      setIsASubscriber(false)
+    }
+  }, [subscriber, pathname])
+
   const handleSubmit = async () => {
     await axiosInstance
       .post('/api/v1/survey_responses', surveyResponses)
       .then((response) => {
         if (response.data) {
+          if (hasSubscriptionIntent) {
+            // eslint-disable-next-line
+            handleSubscribe
+          }
+          dispatch(
+            initializeSubscirber({
+              email: '',
+              user_type: '',
+            })
+          )
           navigate('/thank-you')
         }
       })
@@ -110,6 +158,43 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
     }
   }
 
+  const handleSubscribe: (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => void = async (e) => {
+    e.preventDefault()
+
+    try {
+      const user_type = pathname.includes(STUDENT_TYPE)
+        ? STUDENT_TYPE
+        : PROVIDER_TYPE
+      const newSubscriberData: SubscriberData = {
+        email: surveyResponses.email,
+        user_type: user_type,
+      }
+
+      const response: AxiosResponse<SuccessResponse | ErrorResponse> =
+        await axiosInstance.post(`api/v1/subscribers`, newSubscriberData)
+
+      if (response.status === 201) {
+        const successData = response.data as SuccessResponse
+        dispatch(
+          initializeSubscirber({
+            email: successData.email,
+            user_type: successData.user_type,
+          })
+        )
+        setErrorMessage('')
+      } else {
+        const errorData = response.data as ErrorResponse
+        setErrorMessage(
+          `Error: ${errorData.error}. ${errorData.details.join(' ')}`
+        )
+      }
+    } catch (error) {
+      setErrorMessage('Error creating new subscriber. Please try again.')
+    }
+  }
+
   return (
     <Container
       maxWidth="md"
@@ -121,97 +206,59 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         marginBlock: '40px',
       }}
     >
-      <Typography
-        variant="h2"
-        sx={{ fontWeight: '700', textAlign: 'center', marginTop: '20px' }}
-      >
-        Survey
-      </Typography>
-      <Container sx={{ padding: '0!important' }}>
-        <Typography
-          variant="body1"
-          sx={{
-            fontSize: '24px',
-            color: 'var(--primary-color)',
-            marginBottom: '10px',
-            textAlign: 'start',
-          }}
-        >
-          What is your email?
-        </Typography>
-        <TextField
-          required
-          size="medium"
-          sx={{
-            borderRadius: '16px',
-            width: '100%',
-            '& fieldset': { border: 'none' },
-            border: '1px solid #0E2F71',
-            boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
-          }}
-          inputProps={{
-            sx: { fontSize: '20px', color: 'var(--primary-color)' },
-          }}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            handleChange(e, 'email')
-          }
-          value={surveyResponses.email}
-        />
-      </Container>
-      {surveyQuestions?.map((questionText, index) => (
-        <Container key={index} sx={{ padding: '0!important' }}>
+      {!isASubscriber && (
+        <>
+          {errorMessage && (
+            <Typography color="error" variant="body2">
+              {errorMessage}
+            </Typography>
+          )}
           <Typography
-            variant="body1"
-            sx={{
-              fontSize: '24px',
-              color: 'var(--primary-color)',
-              marginBottom: '10px',
-              textAlign: 'start',
-            }}
+            variant="h5"
+            sx={{ fontWeight: '700', textAlign: 'center', marginTop: '20px' }}
           >
-            {questionText['question_text']}
+            You are currently not subscribed to our newsletter
+            <FormGroup>
+              <FormControlLabel
+                sx={{
+                  margin: 'auto',
+                  '& .MuiFormControlLabel-label ': {
+                    fontWeight: 700,
+                    fontSize: '24px',
+                    color: 'var(--secondary-color)',
+                  },
+                }}
+                control={
+                  <Checkbox
+                    sx={{
+                      color: 'var(--secondary-color)',
+                      '&.Mui-checked': {
+                        color: 'var(--secondary-color)',
+                      },
+                    }}
+                    defaultChecked
+                  />
+                }
+                label="I want to subscribe"
+                onChange={() =>
+                  setHasSubscriptionIntent(!hasSubscriptionIntent)
+                }
+              />
+            </FormGroup>
           </Typography>
-          <TextField
-            required
-            multiline
-            minRows={2}
-            size="medium"
-            sx={{
-              borderRadius: '16px',
-              width: '100%',
-              '& fieldset': { border: 'none' },
-              border: '1px solid #0E2F71',
-              boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
-            }}
-            inputProps={{
-              sx: { fontSize: '20px', color: 'var(--primary-color)' },
-            }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleChange(e, `responses`, questionText.id)
-            }
-            value={
-              surveyResponses.responses.find(
-                (response) => response.survey_question_id === questionText.id
-              )?.answer || ''
-            }
-          />
-        </Container>
-      ))}
-      {message && <Typography sx={{ color: 'red' }}>{message}</Typography>}
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleSubmit}
-        sx={{
-          borderRadius: '16px',
-          backgroundColor: '#f36b3b',
-          padding: '20px',
-          marginBottom: '60px',
-          '&:hover': { backgroundColor: '#d2522b' },
+        </>
+      )}
+      <Survey
+        {...{
+          surveyQuestions,
+          surveyResponses,
+          handleChange,
+          handleSubmit,
+          subscriber,
+          pathname,
+          message,
         }}
-      >
-        Submit
-      </Button>
+      />
     </Container>
   )
 }

@@ -32,10 +32,13 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
     >
       <Paper
         sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           padding: '40px',
           width: '50vw',
           overflowY: 'hidden',
-          maxHeight: '94vh',
+          height: '94vh',
         }}
       >
         <IconButton
