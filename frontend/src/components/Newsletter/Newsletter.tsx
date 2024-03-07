@@ -1,22 +1,28 @@
-import React, { useEffect, useRef, useState } from 'react'
-import Button from '../Button/Button'
-import Input from '../Input/Input'
-import { Link, useLocation } from 'react-router-dom'
-import './Newsletter.css'
+import Alert from '@mui/material/Alert'
+import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+import Container from '@mui/material/Container'
+import TextField from '@mui/material/TextField'
+import Typography from '@mui/material/Typography'
 import { AxiosResponse } from 'axios'
+import React, { useEffect, useRef, useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import { initializeSubscirber } from '../../redux/reducers/SubscriberReducer'
+import { useAppDispatch } from '../../redux/store'
+import ThankYou from '../ThankYou/ThankYou'
 
-interface SubscriberData {
+export interface SubscriberData {
   email: string
   user_type: string
 }
 
-interface ErrorResponse {
+export interface ErrorResponse {
   error: string
   details: string[]
 }
 
-interface SuccessResponse {
+export interface SuccessResponse {
   email: string
   user_type: string
   message: string
@@ -35,12 +41,13 @@ const Newsletter: React.FC<NewsletterProps> = ({
   description_content,
   user_type,
 }) => {
+  const dispatch = useAppDispatch()
   const [email, setEmail] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [hasScrolled, setHasScrolled] = useState(false)
   const { hash } = useLocation()
-  const newletterRef = useRef<HTMLElement>(null)
+  const newletterRef = useRef<HTMLDivElement>(null)
 
   const handleSubscribe: (
     e: React.MouseEvent<HTMLButtonElement>
@@ -58,6 +65,12 @@ const Newsletter: React.FC<NewsletterProps> = ({
 
       if (response.status === 201) {
         const successData = response.data as SuccessResponse
+        dispatch(
+          initializeSubscirber({
+            email: successData.email,
+            user_type: successData.user_type,
+          })
+        )
         setSuccessMessage(successData.message)
         setErrorMessage('')
       } else {
@@ -97,36 +110,90 @@ const Newsletter: React.FC<NewsletterProps> = ({
   }, [newletterRef, hash])
 
   return (
-    <section ref={newletterRef} id="newsletter" className="newsletter">
-      <div className="container-1040">
-        <h2 className="newsletter-subheader">{title_content}</h2>
-        <div className="section-header">
-          <h3>{subtitle_content}</h3>
-          <p>{description_content}</p>
-        </div>
-        <div className="newsletter-input__container">
-          <Input
-            value={email}
-            placeholder={'Enter your email'}
-            handleChange={handleEmailChange}
-          />
-          {errorMessage && (
-            <p style={{ color: 'red', margin: 0 }}>{errorMessage}</p>
-          )}
-          {successMessage && (
-            <p style={{ color: 'green', margin: 0 }}>{successMessage}</p>
-          )}
-          <Button handleClick={handleSubscribe}>SUBSCRIBE</Button>
-          <p className="newsletter-text__small">
-            By subscribing to the newsletter, I have read this form and
-            understand its content and voluntarily give my consent for the
-            collection, use, processing, storage and retention of my personal
-            data or information to Sence1 for the purpose(s) described in the
-            <Link to={'/privacy-consent'}> Privacy Policy</Link> document
-          </p>
-        </div>
-      </div>
-    </section>
+    <Box ref={newletterRef} id="newsletter">
+      {!successMessage ? (
+        <Container maxWidth="lg">
+          <Typography
+            variant="h3"
+            align="center"
+            sx={{
+              mb: 2,
+              color: 'var(--primary-color)',
+              textAlign: 'center',
+              fontWeight: '700',
+              fontSize: '48px',
+            }}
+          >
+            {title_content}
+          </Typography>
+          <Box sx={{ mb: 4 }}>
+            <Typography
+              variant="h4"
+              sx={{
+                mb: 1,
+                color: 'var(--secondary-color)',
+                textAlign: 'center',
+                fontWeight: '700',
+              }}
+            >
+              {subtitle_content}
+            </Typography>
+            <Typography
+              sx={{ fontSize: '24px', fontWeight: '400', textAlign: 'center' }}
+              variant="body1"
+            >
+              {description_content}
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <TextField
+              sx={{
+                '& fieldset': { border: 'none' },
+                borderRadius: '16px',
+                border: '1px solid #0E2F71',
+              }}
+              id="outlined-basic"
+              variant="outlined"
+              value={email}
+              onChange={handleEmailChange}
+            />
+            {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
+            <Button
+              fullWidth
+              sx={{
+                padding: '20px',
+                borderRadius: '16px',
+                fontWeight: '700',
+                textTransform: 'capitalize',
+                backgroundColor: 'var(--secondary-color)',
+                color: 'white',
+                '&:hover': {
+                  backgroundColor: 'var(--primary-color)',
+                },
+              }}
+              onClick={handleSubscribe}
+            >
+              SUBSCRIBE
+            </Button>
+            <Typography variant="body2" className="newsletter-text__small">
+              By subscribing to the newsletter, I have read this form and
+              understand its content and voluntarily give my consent for the
+              collection, use, processing, storage and retention of my personal
+              data or information to Sence1 for the purpose(s) described in the{' '}
+              <Link
+                style={{ color: 'var(--primary-color)' }}
+                to={'/privacy-consent'}
+              >
+                Privacy Policy
+              </Link>{' '}
+              document
+            </Typography>
+          </Box>
+        </Container>
+      ) : (
+        <ThankYou />
+      )}
+    </Box>
   )
 }
 
