@@ -1,6 +1,7 @@
 module Api
   module V1
     class ScholarshipsController < ApplicationController
+      skip_before_action :verify_authenticity_token
       before_action :set_scholarship, only: %i[ show edit update destroy ]
     
       # GET /api/v1/scholarships or /api/v1/scholarships.json
@@ -77,38 +78,84 @@ module Api
       # POST /api/v1/scholarships or /api/v1/scholarships.json
       def create
         @scholarship = Scholarship.new(scholarship_params)
-    
-        respond_to do |format|
+
+        @benefit = Benefit.new(benefit_name: params[:benefits])
+        @requirement = Requirement.new(requirements_text: params[:requirements])
+        @eligibility = Eligibility.new(eligibility_text: params[:eligibilities])
+
+        errors = {}
+        errors[:benefit] = @benefit.errors if @benefit.invalid?
+        errors[:requirement] = @requirement.errors if @requirement.invalid?
+        errors[:eligibility] = @eligibility.errors if @eligibility.invalid?
+
+        if errors.empty?
           if @scholarship.save
-            format.html { redirect_to scholarship_url(@scholarship), notice: "Scholarship was successfully created." }
-            format.json { render :show, status: :created, location: @scholarship }
+            
+            @scholarship.benefits << @benefit
+            @scholarship.requirements << @requirement
+            @scholarship.eligibilities << @eligibility
+          
+            render json: { "message": "Scholarship was successfully created." }, status: :created
           else
-            format.html { render :new, status: :unprocessable_entity }
-            format.json { render json: @scholarship.errors, status: :unprocessable_entity }
+            render json: @scholarship.errors, status: :unprocessable_entity
           end
+        else
+          render json: errors, status: :unprocessable_entity
         end
       end
     
       # PATCH/PUT /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def update
-        respond_to do |format|
-          if @scholarship.update(scholarship_params)
-            format.html { redirect_to scholarship_url(@scholarship), notice: "Scholarship was successfully updated." }
-            format.json { render :show, status: :ok, location: @scholarship }
+        @benefit_errors = {}
+        @benefits = @scholarship.benefits
+        @benefits.each do |benefit|
+          puts benefit
+          benefit.update(benefit_name: params[:benefits])
+          @benefit_errors[benefit.id] = benefit.errors.full_messages unless benefit.errors.empty?
+        end
+
+        @requirement_errors = {}
+        @requirements = @scholarship.requirements
+        @requirements.each do |requirement|
+          requirement.update(requirements_text: params[:requirements])
+          @requirement_errors[requirement.id] = requirement.errors.full_messages unless requirement.errors.empty?
+        end
+        
+
+        @eligibility_errors = {}
+        @eligibilities = @scholarship.eligibilities
+        @eligibilities.each do |eligibility|
+          eligibility.update(eligibility_text: params[:eligibilities])
+          @eligibility_errors[eligibility.id] = eligibility.errors.full_messages unless eligibility.errors.empty?
+        end
+
+        errors = {}
+        errors[:benefit] = @benefit_errors.first unless @benefit_errors.empty?
+        errors[:requirement] = @requirement_errors.first unless @requirement_errors.empty?
+        errors[:eligibility] = @eligibility_errors.first unless @eligibility_errors.empty?
+
+        if errors.empty?
+          if Scholarship.is_soft_deleted(@scholarship) 
+            if @scholarship.update(scholarship_params)
+              render json: { "message": "Scholarship details successfully updated." }, status: :ok
+            else
+              render json: @scholarship.errors, status: :unprocessable_entity
+            end
           else
-            format.html { render :edit, status: :unprocessable_entity }
-            format.json { render json: @scholarship.errors, status: :unprocessable_entity }
+            render json: { "message": "Unable to update scholarship." }, status: :unprocessable_entity
           end
+        else
+          render json: errors, status: :unprocessable_entity
         end
       end
     
       # DELETE /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def destroy
-        @scholarship.destroy!
-    
-        respond_to do |format|
-          format.html { redirect_to scholarships_url, notice: "Scholarship was successfully destroyed." }
-          format.json { head :no_content }
+        if Scholarship.is_soft_deleted(@scholarship)
+          Scholarship.soft_delete(@scholarship)
+          render json: {message: "Scholarship deleted.", status: :ok}
+        else
+          render json: {message: "Unable to delete scholarship", status: :unprocessable_entity}, status: 422
         end
       end
     
@@ -120,7 +167,7 @@ module Api
     
         # Only allow a list of trusted parameters through.
         def scholarship_params
-          params.require(:scholarship).permit(:scholarship_name, :start_date, :due_date, :application_link, :school_year, :scholarship_provider_id, :requirement_id, :eligibility_id, :scholarship_type_id)
+          params.require(:scholarship).permit(:scholarship_name, :start_date, :due_date, :application_link, :school_year, :scholarship_provider_id, :requirements, :eligibilities, :scholarship_type_id, :benefits)
         end
     end
   end

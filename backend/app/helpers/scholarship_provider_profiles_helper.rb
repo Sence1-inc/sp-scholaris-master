@@ -1,2 +1,2 @@
-module ProvidersHelper
+module ScholarshipProviderProfilesHelper
 end
