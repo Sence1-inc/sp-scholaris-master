@@ -12,8 +12,27 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
       password: ''
     })
 
-    function handleSignUp() {
-      
+    function handleSignUp(inputType: string, inputValue: string) {
+      if (inputType === 'email') {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const isValidEmail = emailRegex.test(inputValue);
+  
+        if (!isValidEmail) {
+          console.error('Invalid email format');
+          return;
+        }
+        setUserCredentials((prevUserCredentials) => ({
+          ...prevUserCredentials,
+          email: inputValue
+        }));
+
+      } else if (inputType === 'password') {
+        if (inputValue === '') {
+          // if user's password is true
+          console.error('Password must be at least 6 characters');
+          return;
+        }
+      }
     }
 
     return(
