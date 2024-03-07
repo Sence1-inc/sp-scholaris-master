@@ -1,3 +1,5 @@
+import { useState } from 'react'
+import { Navigate } from 'react-router-dom'
 import { Button, Container, TextField, Typography, Link } from '@mui/material'
 
 interface SignUpPageProps{
@@ -5,10 +7,13 @@ interface SignUpPageProps{
 }
 
 const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
+    const [userCredentials, setUserCredentials] = useState({
+      email: '',
+      password: ''
+    })
 
-    const focusedInputLabelStyle ={
-        position: 'relative',
-        color: 'pink'
+    function handleSignUp() {
+      
     }
 
     return(

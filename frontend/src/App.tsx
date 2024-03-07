@@ -17,6 +17,7 @@ import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
 import SignInPage from './containers/SignInPage/SignInPage'
 import SignUpPage from './containers/SignUpPage/SignUpPage'
+import VerifyEmailPage from './containers/VerifyEmailPage/VerifyEmailPage'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -61,6 +62,7 @@ const App: React.FC = () => {
         <Route path="/thank-you" element={<ThankYouPage />} />
         <Route path='/sign-in' element={<SignInPage/>}/>
         <Route path='/Sign-up' element={<SignUpPage/>}/>
+        <Route path='/verify-email' element={<VerifyEmailPage/>}/>
         <Route path="*" element={<PageNotFoundPage />} />
       </Routes>
     </Box>

@@ -6,11 +6,7 @@ interface SignInPageProps{
 
 const SignInPage: React.FC<SignInPageProps> = ( ) => {
 
-    const focusedInputLabelStyle ={
-        position: 'relative',
-        color: 'pink'
-    }
-
+    
     return(
         <Container maxWidth='md' sx={{
             display: 'flex',
