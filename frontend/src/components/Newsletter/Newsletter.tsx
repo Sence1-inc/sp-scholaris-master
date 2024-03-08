@@ -1,6 +1,7 @@
 import Alert from '@mui/material/Alert'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import CircularProgress from '@mui/material/CircularProgress'
 import Container from '@mui/material/Container'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -48,11 +49,13 @@ const Newsletter: React.FC<NewsletterProps> = ({
   const [hasScrolled, setHasScrolled] = useState(false)
   const { hash } = useLocation()
   const newletterRef = useRef<HTMLDivElement>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleSubscribe: (
     e: React.MouseEvent<HTMLButtonElement>
   ) => void = async (e) => {
     e.preventDefault()
+    setIsLoading(true)
 
     try {
       const newSubscriberData: SubscriberData = {
@@ -71,9 +74,11 @@ const Newsletter: React.FC<NewsletterProps> = ({
             user_type: successData.user_type,
           })
         )
+        setIsLoading(false)
         setSuccessMessage(successData.message)
         setErrorMessage('')
       } else {
+        setIsLoading(false)
         const errorData = response.data as ErrorResponse
         setErrorMessage(
           `Error: ${errorData.error}. ${errorData.details.join(' ')}`
@@ -81,6 +86,7 @@ const Newsletter: React.FC<NewsletterProps> = ({
         setSuccessMessage('')
       }
     } catch (error) {
+      setIsLoading(false)
       setErrorMessage('Error creating new subscriber. Please try again.')
       setSuccessMessage('')
     }
@@ -173,7 +179,11 @@ const Newsletter: React.FC<NewsletterProps> = ({
               }}
               onClick={handleSubscribe}
             >
-              SUBSCRIBE
+              {isLoading ? (
+                <CircularProgress size={24} sx={{ color: 'white' }} />
+              ) : (
+                'SUBSCRIBE'
+              )}
             </Button>
             <Typography variant="body2" className="newsletter-text__small">
               By subscribing to the newsletter, I have read this form and

@@ -10,18 +10,23 @@ const ThankYou = () => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '10px',
+        gap: '20px',
         height: '100%',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
-      <Typography variant="h5">
+      <Typography variant="h5" sx={{ textAlign: 'center' }}>
         Thank you {subscriber.email} for subscribing to our newsletter
       </Typography>
-      <Typography variant="body2">
+      <Typography variant="body2" sx={{ textAlign: 'center' }}>
         Experience a smoother scholarship application process with our upcoming
         management system, granting you more control over applications and
-        scholarship management. Share your thoughts in our survey and help us
-        tailor our services to better meet your needs.
+        scholarship management.
+      </Typography>
+      <Typography variant="body2" sx={{ textAlign: 'center' }}>
+        Share your thoughts in our survey and help us tailor our services to
+        better meet your needs.
       </Typography>
       <Button
         onClick={() => navigate(`/${subscriber.user_type}/survey`)}
