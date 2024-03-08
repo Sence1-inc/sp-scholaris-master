@@ -3,12 +3,14 @@ import ScholarshipsReducer from './reducers/ScholarshipsReducer'
 import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux'
 import SearchParamsReducer from './reducers/SearchParamsReducer'
 import SubscriberReducer from './reducers/SubscriberReducer'
+import ScholarshipDataReducer from './reducers/ScholarshipDataReducer'
 
 const store = configureStore({
   reducer: {
     scholarships: ScholarshipsReducer,
     searchParams: SearchParamsReducer,
     subscriber: SubscriberReducer,
+    scholarshipData: ScholarshipDataReducer,
   },
 })
 
