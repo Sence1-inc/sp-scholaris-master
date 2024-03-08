@@ -1,35 +1,32 @@
-import { AxiosResponse } from "axios";
-import axiosInstance from "../axiosConfig";
-import { initializeScholarshipData } from "../redux/reducers/ScholarshipDataReducer";
-import { useAppDispatch } from "../redux/store";
-import { ScholarshipDatas } from "../redux/types";
+import { AxiosResponse } from 'axios'
+import axiosInstance from '../axiosConfig'
+import { initializeScholarshipData } from '../redux/reducers/ScholarshipDataReducer'
+import { useAppDispatch } from '../redux/store'
+import { ScholarshipData } from '../redux/types'
 
 interface ErrorResponse {
-  error: string;
-  details: string[];
+  error: string
+  details: string[]
 }
 
 const useGetScholarshipsData = () => {
-  const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch()
   const getScholarshipData = async (id: string | undefined) => {
-    console.log(id);
+    console.log(id)
     try {
-      const response: AxiosResponse<ScholarshipDatas | ErrorResponse> =
-        await axiosInstance.get(`api/v1/scholarships/${id}`);
+      const response: AxiosResponse<ScholarshipData | ErrorResponse> =
+        await axiosInstance.get(`api/v1/scholarships/${id}`)
 
       if (response.status === 200) {
-        dispatch(initializeScholarshipData(response.data as ScholarshipDatas));
+        dispatch(initializeScholarshipData(response.data as ScholarshipData))
       }
-
-      //   const queryParams = queryString.stringify(params.params);
-      // }
     } catch (error) {
-      dispatch(initializeScholarshipData([]));
-      console.error("Error: ", error);
+      dispatch(initializeScholarshipData([]))
+      console.error('Error: ', error)
     }
-  };
+  }
 
-  return { getScholarshipData };
-};
+  return { getScholarshipData }
+}
 
-export default useGetScholarshipsData;
+export default useGetScholarshipsData
