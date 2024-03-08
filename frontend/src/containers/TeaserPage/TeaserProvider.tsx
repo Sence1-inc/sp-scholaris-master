@@ -13,12 +13,10 @@ import {
   PROVIDER_WELCOME_SUBHEADER,
 } from '../../data/ProviderContent'
 
-const shake = keyframes({
-  '0%': { transform: 'rotate(0)' },
-  '25%': { transform: 'rotate(10deg)' },
-  '50%': { transform: 'rotate(-10deg)' },
-  '75%': { transform: 'rotate(10deg)' },
-  '100%': { transform: 'rotate(0)' },
+const jump = keyframes({
+  '0%': { transform: 'translateY(0)' },
+  '50%': { transform: 'translateY(-10px)' },
+  '100%': { transform: 'translateY(0)' },
 })
 
 const HomePage: React.FC = () => {
@@ -53,7 +51,11 @@ const HomePage: React.FC = () => {
         />
       </FloatingElement>
       <FabButton
-        icon={<EmailIcon sx={{ mr: 1, animation: `${shake} 1s infinite` }} />}
+        icon={
+          <EmailIcon
+            sx={{ mr: 1, animation: `${jump} 0.5s ease-in-out infinite` }}
+          />
+        }
         text="Subscribe to our Newsletter"
         handleClick={(e: React.MouseEvent<HTMLButtonElement>) => handleClick(e)}
       />
