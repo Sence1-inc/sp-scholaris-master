@@ -1,8 +1,8 @@
 import { format } from 'date-fns'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { Scholarship } from '../../redux/types'
 import viewSvg from '../../public/images/view.svg'
+import { Scholarship } from '../../redux/types'
 import './Table.css'
 
 interface TableProps {
@@ -46,7 +46,10 @@ export const Table: React.FC<TableProps> = ({
                 <p className="search__results-item">
                   {scholarship.scholarship_provider.provider_name}
                 </p>
-                <Link to={'/'} className="seach__results-link">
+                <Link
+                  to={`/scholarships/${scholarship.id}`}
+                  className="seach__results-link"
+                >
                   View
                   <img src={viewSvg} alt="View icon" />
                 </Link>
