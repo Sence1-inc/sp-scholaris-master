@@ -71,8 +71,6 @@
   font-weight: 500;
   border-right: 1px solid #cbdbec;
   max-width: 200px;
-  white-space: nowrap;
-  overflow: scroll;
   text-overflow: ellipsis;
 }
 
