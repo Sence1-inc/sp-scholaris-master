@@ -32,7 +32,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "format": "prettier --write ."
   },
   "proxy": "http://backend:5001",
   "eslintConfig": {

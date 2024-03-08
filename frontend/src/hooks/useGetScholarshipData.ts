@@ -12,7 +12,6 @@ interface ErrorResponse {
 const useGetScholarshipsData = () => {
   const dispatch = useAppDispatch()
   const getScholarshipData = async (id: string | undefined) => {
-    console.log(id)
     try {
       const response: AxiosResponse<ScholarshipData | ErrorResponse> =
         await axiosInstance.get(`api/v1/scholarships/${id}`)

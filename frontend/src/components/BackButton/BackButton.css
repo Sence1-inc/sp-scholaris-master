@@ -1,19 +1,19 @@
 a#back-button {
-    position: relative;
-    margin-left: 30px;
-    font-size: 24px;
-    font-weight: 700 !important;
-    color: #f36b3b;
-    text-decoration: none;
+  position: relative;
+  margin-left: 30px;
+  font-size: 24px;
+  font-weight: 700 !important;
+  color: #f36b3b;
+  text-decoration: none;
 }
 
 a#back-button:before {
-    content: "";
-    position: absolute;
-    left: -30px;
-    top: 20%;
-    width: 11px;
-    height: 23px;
-    background: url('../../public/images/back.png') no-repeat;
-    background-size: 100%;
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 20%;
+  width: 11px;
+  height: 23px;
+  background: url('../../public/images/back.png') no-repeat;
+  background-size: 100%;
 }
