@@ -1,13 +1,14 @@
-import { useSearchParams } from 'react-router-dom'
-import './SearchResultsPage.css'
+import { Typography, useTheme } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { Scholarship } from '../../redux/types'
+import { useSearchParams } from 'react-router-dom'
+import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import Search from '../../components/Search/Search'
+import Table from '../../components/Table/Table'
 import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
-import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
-import Table from '../../components/Table/Table'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { Scholarship } from '../../redux/types'
+import './SearchResultsPage.css'
 
 interface Results {
   scholarships: Scholarship[]
@@ -20,6 +21,7 @@ interface SearchResultsPageProps {
 export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   isASection,
 }) => {
+  const theme = useTheme()
   const dispatch = useAppDispatch()
   const { getScholarships } = useGetScholarships()
   const [searchParams] = useSearchParams()
@@ -94,13 +96,20 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           <Breadcrumbs />
           <h3>Search Result</h3>
           <Search isSection={false} />
-          <Table
-            page={page}
-            hasPagination={true}
-            handleNext={handleNext}
-            handlePrevious={handlePrevious}
-            scholarships={scholarships}
-          />
+          {window.innerWidth > theme.breakpoints.values.md ? (
+            <Table
+              page={page}
+              hasPagination={true}
+              handleNext={handleNext}
+              handlePrevious={handlePrevious}
+              scholarships={scholarships}
+            />
+          ) : (
+            <Typography sx={{ textAlign: 'center' }}>
+              You can see the results on a larger display or switch to landscape
+              mode for better viewing.
+            </Typography>
+          )}
         </div>
       </section>
     </>

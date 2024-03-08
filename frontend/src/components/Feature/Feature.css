@@ -63,6 +63,9 @@
   .featureGuides__feature-desc {
     text-align: justify;
   }
+  .container-1040 h2 {
+    text-align: left;
+  }
 }
 
 @media screen and (max-width: 390px) {

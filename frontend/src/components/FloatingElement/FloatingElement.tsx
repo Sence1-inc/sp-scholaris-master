@@ -1,6 +1,6 @@
+import ClearIcon from '@mui/icons-material/Clear'
 import { IconButton, Paper, Popover } from '@mui/material'
 import React from 'react'
-import ClearIcon from '@mui/icons-material/Clear'
 
 interface FloatingElementProps {
   children: React.ReactNode
@@ -35,10 +35,10 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          padding: '40px',
-          width: '50vw',
+          padding: { xs: '40px 10px', md: '40px' },
+          width: { xs: '90vw', md: '50vw' },
           overflowY: 'hidden',
-          height: '94vh',
+          height: { md: '94vh' },
         }}
       >
         <IconButton
