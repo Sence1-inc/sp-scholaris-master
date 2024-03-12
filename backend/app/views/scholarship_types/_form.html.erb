@@ -1,0 +1,22 @@
+<%= form_with(model: scholarship_type) do |form| %>
+  <% if scholarship_type.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(scholarship_type.errors.count, "error") %> prohibited this scholarship_type from being saved:</h2>
+
+      <ul>
+        <% scholarship_type.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :scholarship_type_name, style: "display: block" %>
+    <%= form.text_field :scholarship_type_name %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

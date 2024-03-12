@@ -1,21 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react'
-import Filter from '../Filter/Filter'
-import Button from '../Button/Button'
-import Input from '../Input/Input'
-import './Search.css'
-import useGetScholarships from '../../hooks/useGetScholarships'
-import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
-import Table from '../Table/Table'
-import { Scholarship } from '../../redux/types'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Typography, useTheme } from '@mui/material'
 import queryString from 'query-string'
+import React, { useEffect, useRef, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
+import useGetScholarships from '../../hooks/useGetScholarships'
+import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { Scholarship } from '../../redux/types'
+import Button from '../Button/Button'
+import Filter from '../Filter/Filter'
+import Input from '../Input/Input'
+import Table from '../Table/Table'
+import './Search.css'
 
 interface SearchProps {
   isSection: boolean
 }
 
 const Search: React.FC<SearchProps> = ({ isSection }) => {
+  const theme = useTheme()
   const dispatch = useAppDispatch()
   const params = useAppSelector((state) => state.searchParams)
   const navigate = useNavigate()
@@ -92,10 +94,17 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
             <Button handleClick={(e) => handleSearch(e)}>Search</Button>
           </div>
           <Filter />
-          <Table
-            hasPagination={false}
-            scholarships={data.scholarships as Scholarship[]}
-          />
+          {window.innerWidth > theme.breakpoints.values.md ? (
+            <Table
+              hasPagination={false}
+              scholarships={data.scholarships as Scholarship[]}
+            />
+          ) : (
+            <Typography sx={{ textAlign: 'center' }}>
+              You can see the results on a larger display or switch to landscape
+              mode for better viewing.
+            </Typography>
+          )}
         </div>
       ) : (
         <div className="search__input-container">

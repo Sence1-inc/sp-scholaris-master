@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   frontend:
@@ -22,7 +22,6 @@ services:
       - 5001:5001
     volumes:
       - ./backend:/app/backend
-      - ./backend/db/init.sql:/app/backend/init.sql
     depends_on:
       - db
       - mailhog
@@ -36,7 +35,7 @@ services:
       BACKEND_DATABASE_PASSWORD: prodpassword
     # dont terminate docker after running bin/dev
     tty: true
-  db: 
+  db:
     image: mysql:8.2.0
     container_name: db_mysql_container
     restart: always
@@ -46,11 +45,11 @@ services:
       MYSQL_USER: user
       MYSQL_PASSWORD: password
     ports:
-        - "3307:3306"
+      - "3307:3306"
   mailhog:
-      container_name: mailhog_container
-      image: mailhog/mailhog
-      ports:
-        - "8025:8025"
+    container_name: mailhog_container
+    image: mailhog/mailhog
+    ports:
+      - "8025:8025"
 volumes:
   node_modules:

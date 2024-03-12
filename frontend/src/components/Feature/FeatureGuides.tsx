@@ -1,7 +1,8 @@
-import './Feature.css'
-import Feature from './Feature'
+import { Box, Container } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import Feature from './Feature'
+import './Feature.css'
 
 const FeatureGuides = ({ features, contentType }: FeaturesProps) => {
   const [hasScrolled, setHasScrolled] = useState(false)
@@ -24,12 +25,12 @@ const FeatureGuides = ({ features, contentType }: FeaturesProps) => {
     // eslint-disable-next-line
   }, [featuresRef, hash])
   return (
-    <section
+    <Box
       id="features"
       ref={featuresRef}
       className={`featureGuides ` + contentType}
     >
-      <div className="container-1040">
+      <Container className="container-1040">
         <h2>Feature Guides</h2>
         {features.map((feature: FeatureProps, index: number) => {
           return (
@@ -42,8 +43,8 @@ const FeatureGuides = ({ features, contentType }: FeaturesProps) => {
             />
           )
         })}
-      </div>
-    </section>
+      </Container>
+    </Box>
   )
 }
 

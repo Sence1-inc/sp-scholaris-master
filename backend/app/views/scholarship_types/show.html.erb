@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @scholarship_type %>
+
+<div>
+  <%= link_to "Edit this scholarship type", edit_scholarship_type_path(@scholarship_type) %> |
+  <%= link_to "Back to scholarship types", scholarship_types_path %>
+
+  <%= button_to "Destroy this scholarship type", @scholarship_type, method: :delete %>
+</div>
