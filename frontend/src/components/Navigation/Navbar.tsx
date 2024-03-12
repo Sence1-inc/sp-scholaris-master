@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
           </li>
           <li>
             <Button sx={ctaButtonStyle} component={Link} to="/scholarships">
-              Search
+              Scholarship Search
             </Button>
           </li>
         </ul>
@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
           </li>
           <li>
             <Button sx={ctaButtonStyle} component={Link} to="/scholarships">
-              Search
+              Scholarship Search
             </Button>
           </li>
         </ul>
@@ -60,7 +60,7 @@ const Navbar: React.FC = () => {
       <ul>
         <li>
           <Button sx={ctaButtonStyle} component={Link} to="/scholarships">
-            Search
+            Scholarship Search
           </Button>
         </li>
       </ul>
