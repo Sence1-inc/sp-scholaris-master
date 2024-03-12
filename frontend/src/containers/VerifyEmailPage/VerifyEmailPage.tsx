@@ -1,5 +1,6 @@
-import { useState, useMemo } from 'react';
-import {Button, Container, Typography, Link, Alert, IconButton} from '@mui/material'
+import { useState, } from 'react';
+import { useNavigate } from 'react-router-dom';
+import {Button, Container, Typography, Alert, IconButton} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import CheckIcon from '../../public/images/checkIcon.svg'
 
@@ -9,53 +10,17 @@ interface VerifyEmailProps{
 }
 
 const VerifyEmailPage: React.FC<VerifyEmailProps> = ( ) => {
-    const [btnHide, setBtnHide] = useState(true)
+    const [showAlert, setShowAlert] = useState(false);
+    const navigate = useNavigate();
 
-    const alertComponent = useMemo(() => {
-        return (
-          <Alert
-            sx={{
-              display: `${btnHide ? 'flex' : 'none'}`,
-              alignItems: 'center', // Center vertically
-              justifyContent: 'space-between', // Center horizontally
-              position: 'absolute',
-              right: '20px',
-              top: '120px',
-              padding: '10px 25px',
-              fontSize: '26px',
-              color: '#fff',
-              backgroundColor: '#1AA5D8',
-              borderRadius: '16px',
-            }}
-            iconMapping={{
-              success: (
-                <img
-                  src={CheckIcon}
-                  alt="Check Icon"
-                  style={{ width: 'inherit', height: 'inherit' }}
-                />
-              ),
-              error: <CloseIcon fontSize="inherit" />,
-            }}
-            action={
-              <IconButton
-                color="inherit"
-                size="medium"
-                sx={{
-                  width: '50px',
-                  height: '50px',
-                }}
-                edge="end"
-                onClick={() => setBtnHide(false)}
-              >
-                <CloseIcon fontSize="inherit" />
-              </IconButton>
-            }
-          >
-            Signed up successfully
-          </Alert>
-        );
-      }, [btnHide]);
+    const handleVerifyEmail = () => {
+
+        setShowAlert(true);
+
+        setTimeout(() => {
+            setShowAlert(false);
+          }, 5000);
+      };
 
     return(
         <Container 
@@ -67,7 +32,49 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = ( ) => {
             alignItems: 'center',
             paddingBlock: '120px'
         }}>
-            {alertComponent}
+                 {showAlert && (
+        <Alert
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            position: 'absolute',
+            right: '20px',
+            top: '120px',
+            padding: '10px 25px',
+            fontSize: '26px',
+            color: '#fff',
+            backgroundColor: '#1AA5D8',
+            borderRadius: '16px',
+          }}
+          iconMapping={{
+            success: (
+              <img
+                src={CheckIcon}
+                alt="Check Icon"
+                style={{ width: 'inherit', height: 'inherit' }}
+              />
+            ),
+            error: <CloseIcon fontSize="inherit" />,
+          }}
+          action={
+            <IconButton
+              color="inherit"
+              size="medium"
+              sx={{
+                width: '50px',
+                height: '50px',
+              }}
+              edge="end"
+              onClick={() => setShowAlert(false)}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          }
+        >
+          Signed up successfully
+        </Alert>
+      )}
             <Typography
             variant='h2'
             sx={{
@@ -88,18 +95,19 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = ( ) => {
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet purus nulla. Suspendisse egestas erat eu lectus semper, quis sollicitudin diam blandit. Sed rhoncus, nisi ac sollicitudin ultricies, ante turpis fermentum elit, id euismod dolor augue mollis dui. Integer efficitur diam sed tellus feugiat, et posuere tortor vestibulum. 
             </Typography>
             <Button
-        variant="contained"
-        color="primary"
-        sx={{
-          borderRadius: '16px',
-          backgroundColor: '#f36b3b',
-          padding: '20px',
-          margin: '0 auto',
-          width: '100%',
-          maxWidth: '550px',
-          '&:hover': { backgroundColor: '#d2522b' },
-          textTransform: 'inherit',
-          fontSize: '24px'
+             onClick={handleVerifyEmail} 
+            variant="contained"
+            color="primary"
+            sx={{
+            borderRadius: '16px',
+            backgroundColor: '#f36b3b',
+            padding: '20px',
+            margin: '0 auto',
+            width: '100%',
+            maxWidth: '550px',
+            '&:hover': { backgroundColor: '#d2522b' },
+            textTransform: 'inherit',
+            fontSize: '24px'
         }}
       >
         Verify Email
@@ -112,7 +120,8 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = ( ) => {
             }}>
             Check your email to verify your account
         </Typography>
-        <Button
+    <Button
+    onClick={() => navigate('/sign-in')}
         variant="contained"
         sx={{
           backgroundColor: 'transparent',

@@ -1,12 +1,61 @@
-import { Button, Container, TextField, Typography, FormControl, InputLabel, Link } from '@mui/material'
+import { useState } from 'react';
+import { Button, Container, TextField, Typography, Link } from '@mui/material'
+import { useNavigate } from 'react-router-dom';
 
 interface SignInPageProps{
 
 }
 
 const SignInPage: React.FC<SignInPageProps> = ( ) => {
+  const [userCredentials, setUserCredentials] = useState({
+    email: '',
+    password: '',
+  })
 
-    
+  const [borderColorValidation, setBorderColorValidation] = useState(
+    {
+      emailBorder: '#0E2F71',
+      passwordBorder: '0E2F71'
+    }
+  )
+
+  const navigate = useNavigate()
+
+  function handleEmail(inputValue: string) {
+    setUserCredentials((prevUserCredentials) => ({
+    ...prevUserCredentials,
+    email: inputValue
+    }));
+  }
+
+  function handlePassword(inputValue: string){
+    setUserCredentials((prevUserCredentials) => ({
+      ...prevUserCredentials,
+      password: inputValue
+    }));
+  }
+
+  function handleCredentials(){
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValidEmail = emailRegex.test(userCredentials.email) // && userCredentials.email === user's email;
+    const isPasswordValid = undefined // if password is the user's password
+
+    if(!isValidEmail && !isPasswordValid){
+      setBorderColorValidation((prevValidation) => ({
+        ...prevValidation,
+        emailBorder: 'red',
+      }));
+    }else{
+      setBorderColorValidation((prevValidation) => ({
+        ...prevValidation,
+        emailBorder: '#0E2F71',
+      }));
+      navigate('/dashboard')
+    }
+
+
+  }
+
     return(
         <Container maxWidth='md' sx={{
             display: 'flex',
@@ -23,8 +72,9 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
                 Sign-in
             </Typography>
             <TextField
+                onChange={(e) => handleEmail(e.target.value)}
                 type='email'
-                id='input'
+                id='email'
                 label="Email address"
                 placeholder='Input your email'
                 sx={{
@@ -33,7 +83,7 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
                     marginTop: '35px',
                     width: '100%',
                     '& fieldset': { border: 'none' },
-                    border: '1px solid #0E2F71',
+                    border: `1px solid ${borderColorValidation.emailBorder}`,
                     boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
                   }}
                   inputProps={{
@@ -53,8 +103,9 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
                   }}
             />
             <TextField
+                onChange={(e) => handlePassword(e.target.value)}
                 type='password'
-                id='input'
+                id='Password'
                 label="Password"
                 placeholder='Input your email'
                 sx={{
@@ -94,6 +145,7 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
             marginBottom: '10px',
             textAlign: 'start',
           }}
+          
         >
           Forgot password?
         </Link>
@@ -107,6 +159,7 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
                 marginBottom: '10px',
                 textAlign: 'start',
             }}
+            onClick={() => navigate('/sign-in')}
         >
           No account yet? Sign-up here
         </Link>
@@ -124,6 +177,7 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
           OR
         </Typography>
         <Button
+        onClick={() => handleCredentials()}
         variant="contained"
         color="primary"
         sx={{

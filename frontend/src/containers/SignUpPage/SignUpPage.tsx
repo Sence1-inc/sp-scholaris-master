@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Button, Container, TextField, Typography, Link } from '@mui/material'
 
 interface SignUpPageProps{
@@ -7,33 +7,46 @@ interface SignUpPageProps{
 }
 
 const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
-    const [userCredentials, setUserCredentials] = useState({
-      email: '',
-      password: ''
-    })
+  const [userCredentials, setUserCredentials] = useState({
+    email: '',
+    password: '',
+    password2: ''
+  })
 
-    function handleSignUp(inputType: string, inputValue: string) {
-      if (inputType === 'email') {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        const isValidEmail = emailRegex.test(inputValue);
-  
-        if (!isValidEmail) {
-          console.error('Invalid email format');
-          return;
-        }
-        setUserCredentials((prevUserCredentials) => ({
-          ...prevUserCredentials,
-          email: inputValue
-        }));
+  const navigate = useNavigate()
 
-      } else if (inputType === 'password') {
-        if (inputValue === '') {
-          // if user's password is true
-          console.error('Password must be at least 6 characters');
-          return;
-        }
-      }
+  function handleEmail(inputValue: string) {
+    setUserCredentials((prevUserCredentials) => ({
+    ...prevUserCredentials,
+    email: inputValue
+    }));
+  }
+
+  function handlePassword(inputValue: string){
+    setUserCredentials((prevUserCredentials) => ({
+      ...prevUserCredentials,
+      password: inputValue
+    }));
+  }
+
+  function handlePassword2(inputValue: string){
+    setUserCredentials((prevUserCredentials) => ({
+      ...prevUserCredentials,
+      password2: inputValue
+    }));
+  }
+
+  function handleSignUp(){
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const isValidEmail = emailRegex.test(userCredentials.email);
+    //const isPasswordValid what is the condition for the password to be valid?
+
+    if(!isValidEmail){
+      console.log('email and password does not match')
     }
+      navigate('/verify-email')
+
+  }
 
     return(
         <Container maxWidth='md' sx={{
@@ -51,8 +64,9 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                 Sign-up
             </Typography>
             <TextField
+                onChange={(e) => handleEmail(e.target.value)}
                 type='email'
-                id='input'
+                id='email'
                 label="Email address"
                 placeholder='Input your email'
                 sx={{
@@ -81,8 +95,9 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                   }}
             />
             <TextField
+                onChange={(e) => handlePassword(e.target.value)}
                 type='password'
-                id='input'
+                id='password'
                 label="Password"
                 placeholder='Input your email'
                 sx={{
@@ -111,8 +126,9 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                   }}
             />
              <TextField
+                onChange={(e) => handlePassword2(e.target.value)}
                 type='password'
-                id='input'
+                id='paswword2'
                 label="Password"
                 placeholder='Input your email'
                 sx={{
@@ -155,6 +171,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
         </Link>
           <Container sx={{display: 'flex', justifyContent: 'center', gap: '50px', alignItems: 'center', marginBottom: '60px'}}>
           <Button
+          onClick={handleSignUp}
         variant="contained"
         color="primary"
         sx={{
@@ -169,7 +186,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
           fontSize: '24px'
         }}
       >
-        Login
+        Sign up
       </Button>
           <Typography
           variant="body1"
