@@ -4,6 +4,7 @@ export const primaryButtonStyle = {
   backgroundColor: 'primary.main',
   '&:hover': { backgroundColor: 'secondary.main' },
   color: 'common.white',
+  height: '100%',
 }
 
 export const ctaButtonStyle = {
@@ -12,4 +13,5 @@ export const ctaButtonStyle = {
   backgroundColor: 'secondary.main',
   '&:hover': { backgroundColor: 'primary.main' },
   color: 'common.white',
+  height: '100%',
 }

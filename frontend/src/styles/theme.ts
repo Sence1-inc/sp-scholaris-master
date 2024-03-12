@@ -107,7 +107,7 @@ const theme: Theme = createTheme({
       styleOverrides: {
         root: {
           borderRadius: '16px',
-          padding: '22px',
+          padding: '20px',
           width: '100%',
           '& fieldset': { border: 'none' },
           border: '1px solid var(--primary-color)',
