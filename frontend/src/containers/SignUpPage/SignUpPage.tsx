@@ -41,7 +41,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
     const isValidEmail = emailRegex.test(userCredentials.email);
     //const isPasswordValid what is the condition for the password to be valid?
 
-    if(!isValidEmail){
+    if(!isValidEmail && userCredentials.password === userCredentials.password2){
       console.log('email and password does not match')
     }
       navigate('/verify-email')
