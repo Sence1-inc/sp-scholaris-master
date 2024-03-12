@@ -28,7 +28,16 @@ import './AddEditScholarshipPage.css'
                     </Box>
                    
 
-                    <h3>Add New Scholarship</h3>
+                    <Typography
+                        p={"50px 0 30px"}
+
+                        sx={{
+                            fontFamily: 'Roboto',
+                            fontSize: '48px',
+                            fontWeight: '700'
+                        }}
+                        >Add New Scholarship
+                    </Typography>
 
                     <Box component="section"
                         height= 'auto'
@@ -62,7 +71,8 @@ import './AddEditScholarshipPage.css'
                             sx={{ 
                                 width: "100%",
                                 borderRadius: '16px', border: 'none',
-                                background: '#fff', boxShadow: 3 
+                                background: '#fff', boxShadow: 3, 
+                                '& fieldset': { border: 'none' }
                             }}
 
                             name="scholarship_name"
@@ -86,7 +96,8 @@ import './AddEditScholarshipPage.css'
                             sx={{ 
                                 width: "100%",
                                 borderRadius: '16px', border: 'none',
-                                background: '#fff', boxShadow: 3 
+                                background: '#fff', boxShadow: 3, 
+                                '& fieldset': { border: 'none' }
                             }}
 
                             name="scholarship_description"
@@ -110,7 +121,8 @@ import './AddEditScholarshipPage.css'
                             sx={{ 
                                 width: "100%",
                                 borderRadius: '16px', border: 'none',
-                                background: '#fff', boxShadow: 3 
+                                background: '#fff', boxShadow: 3, 
+                                '& fieldset': { border: 'none' } 
                             }}
 
                             name="scholarship_requirements"
@@ -134,7 +146,8 @@ import './AddEditScholarshipPage.css'
                             sx={{ 
                                 width: "100%",
                                 borderRadius: '16px', border: 'none',
-                                background: '#fff', boxShadow: 3 
+                                background: '#fff', boxShadow: 3, 
+                                '& fieldset': { border: 'none' } 
                             }}
 
                             name="scholarship_benefits"
@@ -158,7 +171,8 @@ import './AddEditScholarshipPage.css'
                             sx={{ 
                                 width: "100%",
                                 borderRadius: '16px', border: 'none',
-                                background: '#fff', boxShadow: 3 
+                                background: '#fff', boxShadow: 3, 
+                                '& fieldset': { border: 'none' } 
                             }}
 
                             name="scholarship_eligibility"
@@ -181,7 +195,8 @@ import './AddEditScholarshipPage.css'
                             sx={{ 
                                 width: "100%",
                                 borderRadius: '16px', border: 'none',
-                                background: '#fff', boxShadow: 3 
+                                background: '#fff', boxShadow: 3, 
+                                '& fieldset': { border: 'none' } 
                             }}
 
                             name="scholarship_type"
@@ -209,7 +224,8 @@ import './AddEditScholarshipPage.css'
                                 width: "100%",
                                 borderRadius: '16px', border: 'none',
                                 background: '#fff', boxShadow: 3 ,
-                                marginBottom: '20px'
+                                marginBottom: '20px', 
+                                '& fieldset': { border: 'none' }
                             }}
 
                             name="scholarship_link"
@@ -270,7 +286,8 @@ import './AddEditScholarshipPage.css'
                                 sx={{ 
                                     width: "100%",
                                     borderRadius: '16px', border: 'none',
-                                    background: '#fff', boxShadow: 3 
+                                    background: '#fff', boxShadow: 3, 
+                                    '& fieldset': { border: 'none' } 
                                 }}
 
                                 name="scholarship_start"
@@ -282,7 +299,8 @@ import './AddEditScholarshipPage.css'
                                 sx={{ 
                                     width: "100%",
                                     borderRadius: '16px', border: 'none',
-                                    background: '#fff', boxShadow: 3 
+                                    background: '#fff', boxShadow: 3, 
+                                    '& fieldset': { border: 'none' } 
                                 }}
 
                                 name="scholarship_end"
@@ -295,7 +313,8 @@ import './AddEditScholarshipPage.css'
                                 sx={{ 
                                     width: "100%",
                                     borderRadius: '16px', border: 'none',
-                                    background: '#fff', boxShadow: 3 
+                                    background: '#fff', boxShadow: 3, 
+                                    '& fieldset': { border: 'none' } 
                                 }}
 
                                 name="application_link"
