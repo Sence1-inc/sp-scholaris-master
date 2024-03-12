@@ -1,4 +1,3 @@
-import { ThemeProvider } from '@mui/material/styles'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
@@ -12,7 +11,6 @@ import TeaserStudent from './containers/TeaserPage/TeaserStudent'
 import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage'
 import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
-import theme from './styles/theme'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
