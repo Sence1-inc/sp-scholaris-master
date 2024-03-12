@@ -97,6 +97,16 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               Survey
             </Typography>
           </ListItem>
+          <ListItem>
+            <Typography
+              variant="body1"
+              component={Link}
+              to="/dashboard"
+              sx={{ color: 'common.white', textDecoration: 'none' }}
+            >
+              Dashboard
+            </Typography>
+          </ListItem>
           <ListItem disablePadding sx={{ width: 'auto' }}>
             <Button
               sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
@@ -158,7 +168,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar component="nav" sx={{ position: 'relative' }}>
+      <AppBar component="nav" sx={{ position: 'relative', padding: '20px' }}>
         <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>
             <Link to="/">
