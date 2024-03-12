@@ -32,31 +32,29 @@ const ProviderRoutes: React.FC = () => (
 
 const App: React.FC = () => {
   return (
-    <ThemeProvider theme={theme}>
-      <div className="App">
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<WelcomePage />} />
-          <Route path="/student/*" element={<StudentRoutes />} />
-          <Route path="/provider/*" element={<ProviderRoutes />} />
-          <Route
-            path="/scholarships"
-            element={<SearchResultsPage isASection={false} />}
-          />
-          <Route
-            path="/scholarships/:id"
-            element={<ScholarshipDetailsPage isASection={false} />}
-          />
-          <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
-          <Route
-            path="/terms-and-conditions"
-            element={<TermsAndConditionsPage />}
-          />
-          <Route path="/thank-you" element={<ThankYouPage />} />
-          <Route path="*" element={<PageNotFoundPage />} />
-        </Routes>
-      </div>
-    </ThemeProvider>
+    <>
+      <ScrollToTop />
+      <Routes>
+        <Route path="/" element={<WelcomePage />} />
+        <Route path="/student/*" element={<StudentRoutes />} />
+        <Route path="/provider/*" element={<ProviderRoutes />} />
+        <Route
+          path="/scholarships"
+          element={<SearchResultsPage isASection={false} />}
+        />
+        <Route
+          path="/scholarships/:id"
+          element={<ScholarshipDetailsPage isASection={false} />}
+        />
+        <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
+        <Route
+          path="/terms-and-conditions"
+          element={<TermsAndConditionsPage />}
+        />
+        <Route path="/thank-you" element={<ThankYouPage />} />
+        <Route path="*" element={<PageNotFoundPage />} />
+      </Routes>
+    </>
   )
 }
 
