@@ -11,7 +11,7 @@ import TeaserStudent from './containers/TeaserPage/TeaserStudent'
 import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage'
 import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
-import AddEditScholarshipPage from './containers/AddEditScholarshipPage/AddEditScholarshipPage'
+import ScholarshipEditorPage from './containers/ScholarshipEditorPage/ScholarshipEditorPage'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -54,7 +54,7 @@ const App: React.FC = () => {
         <Route path="*" element={<PageNotFoundPage />} />
         <Route
           path="/add-edit-scholarship"
-          element={<AddEditScholarshipPage />}
+          element={<ScholarshipEditorPage />}
         />
       </Routes>
     </div>

@@ -11,10 +11,10 @@ import {
   Typography,
 } from '@mui/material'
 
-const AddEditScholarshipPage = () => {
+const ScholarshipEditorPage = () => {
   return (
     <FormGroup>
-      <Container>
+      <Container sx={{ padding: { sm: '60px 100px', lg: '120px' } }}>
         <Box p={'50px 0 0'}>
           <Link
             href="#"
@@ -44,15 +44,20 @@ const AddEditScholarshipPage = () => {
         </Typography>
 
         <Box
-          height="auto"
-          width="100%"
-          display="flex"
-          flexDirection="column"
-          alignItems="flex-start"
-          p="30px"
-          gap="48px"
-          sx={{ background: '#AFC3D9', borderRadius: '32px' }}
-          m="0 0 80px 0"
+          sx={{
+            height: 'auto',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'flex-start',
+            p: '30px',
+            gap: '48px',
+            background: '#AFC3D9',
+            borderRadius: '32px',
+            m: '0 0 80px 0',
+            paddingTop: '40px',
+            paddingBottom: '40px',
+          }}
         >
           <Box sx={{ width: '100%' }}>
             <Typography
@@ -388,4 +393,4 @@ const AddEditScholarshipPage = () => {
   )
 }
 
-export default AddEditScholarshipPage
+export default ScholarshipEditorPage
