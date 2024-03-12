@@ -1,4 +1,4 @@
-import { Box, Container } from '@mui/material'
+import { Box, Container, Typography } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import Feature from './Feature'
@@ -31,7 +31,7 @@ const FeatureGuides = ({ features, contentType }: FeaturesProps) => {
       className={`featureGuides ` + contentType}
     >
       <Container className="container-1040">
-        <h2>Feature Guides</h2>
+        <Typography variant="h2">Feature Guides</Typography>
         {features.map((feature: FeatureProps, index: number) => {
           return (
             <Feature
