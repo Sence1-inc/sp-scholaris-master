@@ -12,7 +12,7 @@ const Footer: React.FC = () => {
 
   return (
     <footer id="footer">
-      <div className="container">
+      <div className="footer_container">
         <div>
           <div className="NavFooter">
             <ul>
