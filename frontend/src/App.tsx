@@ -52,7 +52,10 @@ const App: React.FC = () => {
         />
         <Route path="/thank-you" element={<ThankYouPage />} />
         <Route path="*" element={<PageNotFoundPage />} />
-        <Route path="/add-edit-scholarship" element={<AddEditScholarshipPage />} />
+        <Route
+          path="/add-edit-scholarship"
+          element={<AddEditScholarshipPage />}
+        />
       </Routes>
     </div>
   )

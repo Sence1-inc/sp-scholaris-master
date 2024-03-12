@@ -10,53 +10,51 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import './AddEditScholarshipPage.css'
 
 const AddEditScholarshipPage = () => {
   return (
-    <>
-      <FormGroup>
-        <Container>
-          <Box component="section" p={'50px 0 0'}>
-            <Link
-              href="#"
-              target="_blank"
-              sx={{
-                fontFamily: 'Roboto',
-                fontSize: '36px',
-                fontWeight: '700',
-                color: '#F36B3B',
-                textDecoration: 'none',
-              }}
-            >
-              <ArrowBackIosIcon />
-              Dashboard
-            </Link>
-          </Box>
-
-          <Typography
-            p={'50px 0 30px'}
+    <FormGroup>
+      <Container>
+        <Box p={'50px 0 0'}>
+          <Link
+            href="#"
+            target="_blank"
             sx={{
               fontFamily: 'Roboto',
-              fontSize: '48px',
+              fontSize: '36px',
               fontWeight: '700',
+              color: '#F36B3B',
+              textDecoration: 'none',
             }}
           >
-            Add New Scholarship
-          </Typography>
+            <ArrowBackIosIcon />
+            Dashboard
+          </Link>
+        </Box>
 
-          <Box
-            component="section"
-            height="auto"
-            width="auto"
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            p="30px"
-            gap={1}
-            sx={{ background: '#AFC3D9', borderRadius: '32px' }}
-            m="0 0 80px 0"
-          >
+        <Typography
+          p={'50px 0 30px'}
+          sx={{
+            fontFamily: 'Roboto',
+            fontSize: '48px',
+            fontWeight: '700',
+          }}
+        >
+          Add New Scholarship
+        </Typography>
+
+        <Box
+          height="auto"
+          width="100%"
+          display="flex"
+          flexDirection="column"
+          alignItems="flex-start"
+          p="30px"
+          gap="48px"
+          sx={{ background: '#AFC3D9', borderRadius: '32px' }}
+          m="0 0 80px 0"
+        >
+          <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -73,6 +71,7 @@ const AddEditScholarshipPage = () => {
               variant="outlined"
               sx={{
                 width: '100%',
+                height: '80px',
                 borderRadius: '16px',
                 border: 'none',
                 background: '#fff',
@@ -81,7 +80,8 @@ const AddEditScholarshipPage = () => {
               }}
               name="scholarship_name"
             />
-
+          </Box>
+          <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -106,7 +106,8 @@ const AddEditScholarshipPage = () => {
               }}
               name="scholarship_description"
             />
-
+          </Box>
+          <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -131,7 +132,8 @@ const AddEditScholarshipPage = () => {
               }}
               name="scholarship_requirements"
             />
-
+          </Box>
+          <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -156,7 +158,8 @@ const AddEditScholarshipPage = () => {
               }}
               name="scholarship_benefits"
             />
-
+          </Box>
+          <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -181,7 +184,8 @@ const AddEditScholarshipPage = () => {
               }}
               name="scholarship_eligibility"
             />
-
+          </Box>
+          <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -197,6 +201,7 @@ const AddEditScholarshipPage = () => {
               id="demo-simple-select"
               sx={{
                 width: '100%',
+                height: '80px',
                 borderRadius: '16px',
                 border: 'none',
                 background: '#fff',
@@ -209,7 +214,8 @@ const AddEditScholarshipPage = () => {
               <MenuItem value={20}>Twenty</MenuItem>
               <MenuItem value={30}>Thirty</MenuItem>
             </Select>
-
+          </Box>
+          <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -225,6 +231,7 @@ const AddEditScholarshipPage = () => {
               variant="outlined"
               sx={{
                 width: '100%',
+                height: '80px',
                 borderRadius: '16px',
                 border: 'none',
                 background: '#fff',
@@ -234,60 +241,39 @@ const AddEditScholarshipPage = () => {
               }}
               name="scholarship_link"
             />
-
-            <Box
-              component="section"
-              height="auto"
-              width="100%"
-              display={'flex'}
-              justifyContent={'space-between'}
-            >
+          </Box>
+          <Box
+            sx={{
+              width: '100%',
+              height: 'auto',
+              display: 'flex',
+              '& > div': {
+                flex: '1 1 0',
+                marginRight: '10px',
+                '&:last-child': {
+                  marginRight: '0',
+                },
+              },
+            }}
+          >
+            <Box>
               <Typography
                 sx={{
                   fontFamily: 'Roboto',
                   fontSize: '24px',
                   fontWeight: '700',
                   color: '#002147',
+                  textAlign: 'start',
                 }}
               >
                 Application Start
               </Typography>
-
-              <Typography
-                sx={{
-                  fontFamily: 'Roboto',
-                  fontSize: '24px',
-                  fontWeight: '700',
-                  color: '#002147',
-                }}
-              >
-                Application End
-              </Typography>
-
-              <Typography
-                sx={{
-                  fontFamily: 'Roboto',
-                  fontSize: '24px',
-                  fontWeight: '700',
-                  color: '#002147',
-                }}
-              >
-                School Year
-              </Typography>
-            </Box>
-
-            <Box
-              component="section"
-              height="auto"
-              width="100%"
-              gap={5}
-              display={'flex'}
-            >
               <TextField
                 id="standard-helperText"
                 variant="outlined"
                 sx={{
                   width: '100%',
+                  height: '80px',
                   borderRadius: '16px',
                   border: 'none',
                   background: '#fff',
@@ -296,11 +282,25 @@ const AddEditScholarshipPage = () => {
                 }}
                 name="scholarship_start"
               />
+            </Box>
+            <Box>
+              <Typography
+                sx={{
+                  fontFamily: 'Roboto',
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  color: '#002147',
+                  textAlign: 'start',
+                }}
+              >
+                Application End
+              </Typography>
               <TextField
                 id="standard-helperText"
                 variant="outlined"
                 sx={{
                   width: '100%',
+                  height: '80px',
                   borderRadius: '16px',
                   border: 'none',
                   background: '#fff',
@@ -309,11 +309,25 @@ const AddEditScholarshipPage = () => {
                 }}
                 name="scholarship_end"
               />
+            </Box>
+            <Box>
+              <Typography
+                sx={{
+                  fontFamily: 'Roboto',
+                  fontSize: '24px',
+                  fontWeight: '700',
+                  color: '#002147',
+                  textAlign: 'start',
+                }}
+              >
+                School Year
+              </Typography>
               <TextField
                 id="standard-helperText"
                 variant="outlined"
                 sx={{
                   width: '100%',
+                  height: '80px',
                   borderRadius: '16px',
                   border: 'none',
                   background: '#fff',
@@ -323,7 +337,8 @@ const AddEditScholarshipPage = () => {
                 name="application_link"
               />
             </Box>
-
+          </Box>
+          <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -339,39 +354,37 @@ const AddEditScholarshipPage = () => {
               id="demo-simple-select"
               sx={{
                 width: '100%',
+                height: '80px',
                 borderRadius: '16px',
                 border: 'none',
                 background: '#fff',
                 boxShadow: 3,
               }}
-              name="scholarship_type"
+              name="status"
             >
               <MenuItem value={'Active'}>Active</MenuItem>
               <MenuItem value={'Inactive'}>Inactive</MenuItem>
             </Select>
-
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{
-                width: '100%',
-                padding: '20px',
-                borderRadius: '16px',
-                background: '#F36B3B',
-
-                fontFamily: 'Open Sans',
-                fontSize: '24px',
-                fontWeight: '700',
-
-                margin: '40px 0 20px',
-              }}
-            >
-              Save Scholarship
-            </Button>
           </Box>
-        </Container>
-      </FormGroup>
-    </>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              width: '100%',
+              padding: '20px',
+              borderRadius: '16px',
+              background: '#F36B3B',
+
+              fontFamily: 'Open Sans',
+              fontSize: '24px',
+              fontWeight: '700',
+            }}
+          >
+            <Typography variant="h5">Save Scholarship</Typography>
+          </Button>
+        </Box>
+      </Container>
+    </FormGroup>
   )
 }
 
