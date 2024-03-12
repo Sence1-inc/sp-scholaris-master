@@ -1,15 +1,15 @@
 export const primaryButtonStyle = {
   borderRadius: '16px',
   padding: '20px',
-  marginBottom: '60px',
-  '&:hover': { backgroundColor: 'var(--secondary-color)' },
+  backgroundColor: 'primary.main',
+  '&:hover': { backgroundColor: 'secondary.main' },
 }
 
 export const ctaButtonStyle = {
   borderRadius: '16px',
   padding: '20px',
-  marginBottom: '60px',
-  '&:hover': { backgroundColor: 'var(--primary-color)' },
+  backgroundColor: 'secondary.main',
+  '&:hover': { backgroundColor: 'primary.main' },
 }
 
 export const textField = {

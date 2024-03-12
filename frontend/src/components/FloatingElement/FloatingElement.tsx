@@ -29,9 +29,13 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
         vertical: 'top',
         horizontal: 'right',
       }}
+      slotProps={{
+        paper: { style: { borderRadius: '16px' } },
+      }}
     >
       <Paper
         sx={{
+          backgroundColor: 'background.default',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -39,6 +43,7 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
           width: { xs: '90vw', md: '50vw' },
           overflowY: 'hidden',
           height: { md: '94vh' },
+          border: 'none',
         }}
       >
         <IconButton

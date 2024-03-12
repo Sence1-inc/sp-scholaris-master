@@ -115,7 +115,7 @@ const Survey: React.FC<SurveyProps> = ({
         variant="contained"
         color="secondary"
         onClick={handleSubmit}
-        sx={ctaButtonStyle}
+        sx={{ ...ctaButtonStyle, marginBottom: '60px' }}
       >
         Submit
       </Button>
