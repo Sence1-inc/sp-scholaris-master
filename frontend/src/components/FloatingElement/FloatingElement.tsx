@@ -1,6 +1,8 @@
 import ClearIcon from '@mui/icons-material/Clear'
 import { IconButton, Paper, Popover } from '@mui/material'
 import React from 'react'
+import { useTheme } from '@mui/material/styles'
+import useMediaQuery from '@mui/material/useMediaQuery'
 
 interface FloatingElementProps {
   children: React.ReactNode
@@ -13,8 +15,11 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
   anchorEl,
   handleClose,
 }) => {
+  const theme = useTheme()
+  const isLandscape = useMediaQuery(theme.breakpoints.up('sm'))
   const isOpen = Boolean(anchorEl)
   const id = isOpen ? 'floating-paper' : undefined
+
   return (
     <Popover
       id={id}
@@ -42,7 +47,7 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
           padding: { xs: '40px 10px', md: '40px' },
           width: { xs: '90vw', md: '50vw' },
           overflowY: 'hidden',
-          height: { md: '94vh' },
+          height: { xs: '90vh', sm: isLandscape ? '94vh' : '50vh' },
           border: 'none',
         }}
       >
