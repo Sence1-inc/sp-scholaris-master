@@ -4,7 +4,7 @@ import {
   SurveyQuestion,
   SurveyResponse,
 } from '../../containers/SurveyPage/SurveyPage'
-import { ctaButtonStyle, textField } from '../../styles/globalStyles'
+import { ctaButtonStyle } from '../../styles/globalStyles'
 
 interface SurveyProps {
   surveyQuestions: SurveyQuestion[] | null
@@ -61,7 +61,6 @@ const Survey: React.FC<SurveyProps> = ({
         <TextField
           required
           size="medium"
-          sx={textField}
           inputProps={{
             sx: { fontSize: '20px', color: 'var(--primary-color)' },
           }}
@@ -95,7 +94,6 @@ const Survey: React.FC<SurveyProps> = ({
             multiline
             minRows={2}
             size="medium"
-            sx={textField}
             inputProps={{
               sx: { fontSize: '20px', color: 'var(--primary-color)' },
             }}

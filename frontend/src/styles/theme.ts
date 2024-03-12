@@ -111,6 +111,29 @@ const theme: Theme = createTheme({
       },
     },
   },
+  components: {
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          borderRadius: '16px',
+          padding: '22px',
+          width: '100%',
+          '& fieldset': { border: 'none' },
+          border: '1px solid var(--primary-color)',
+          boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          '& .MuiOutlinedInput-input': {
+            padding: '0',
+          },
+        },
+      },
+    },
+  },
 })
 
 export default theme

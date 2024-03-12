@@ -11,7 +11,7 @@ import { Link, useLocation } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import { initializeSubscirber } from '../../redux/reducers/SubscriberReducer'
 import { useAppDispatch } from '../../redux/store'
-import { ctaButtonStyle, textField } from '../../styles/globalStyles'
+import { ctaButtonStyle } from '../../styles/globalStyles'
 import ThankYou from '../ThankYou/ThankYou'
 
 export interface SubscriberData {
@@ -145,7 +145,6 @@ const Newsletter: React.FC<NewsletterProps> = ({
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <TextField
-              sx={textField}
               id="outlined-basic"
               variant="outlined"
               value={email}
