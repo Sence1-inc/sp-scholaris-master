@@ -3,6 +3,7 @@ export const primaryButtonStyle = {
   padding: '20px',
   backgroundColor: 'primary.main',
   '&:hover': { backgroundColor: 'secondary.main' },
+  color: 'common.white',
 }
 
 export const ctaButtonStyle = {
@@ -10,6 +11,7 @@ export const ctaButtonStyle = {
   padding: '20px',
   backgroundColor: 'secondary.main',
   '&:hover': { backgroundColor: 'primary.main' },
+  color: 'common.white',
 }
 
 export const textField = {
