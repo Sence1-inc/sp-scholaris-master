@@ -1,5 +1,9 @@
+import { Box } from '@mui/material'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
+import Disclaimer from './components/Disclaimer/Disclaimer'
+import Footer from './components/Footer/Footer'
+import Navbar from './components/Navigation/Navbar'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage'
@@ -30,29 +34,42 @@ const ProviderRoutes: React.FC = () => (
 
 const App: React.FC = () => {
   return (
-    <>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        minHeight: '100vh',
+        position: 'relative',
+      }}
+    >
       <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<WelcomePage />} />
-        <Route path="/student/*" element={<StudentRoutes />} />
-        <Route path="/provider/*" element={<ProviderRoutes />} />
-        <Route
-          path="/scholarships"
-          element={<SearchResultsPage isASection={false} />}
-        />
-        <Route
-          path="/scholarships/:id"
-          element={<ScholarshipDetailsPage isASection={false} />}
-        />
-        <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
-        <Route
-          path="/terms-and-conditions"
-          element={<TermsAndConditionsPage />}
-        />
-        <Route path="/thank-you" element={<ThankYouPage />} />
-        <Route path="*" element={<PageNotFoundPage />} />
-      </Routes>
-    </>
+      <Navbar />
+      <Box sx={{ flexGrow: 1, postion: 'absolute' }}>
+        <Routes>
+          <Route path="/" element={<WelcomePage />} />
+          <Route path="/student/*" element={<StudentRoutes />} />
+          <Route path="/provider/*" element={<ProviderRoutes />} />
+          <Route
+            path="/scholarships"
+            element={<SearchResultsPage isASection={false} />}
+          />
+          <Route
+            path="/scholarships/:id"
+            element={<ScholarshipDetailsPage isASection={false} />}
+          />
+          <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
+          <Route
+            path="/terms-and-conditions"
+            element={<TermsAndConditionsPage />}
+          />
+          <Route path="/thank-you" element={<ThankYouPage />} />
+          <Route path="*" element={<PageNotFoundPage />} />
+        </Routes>
+      </Box>
+
+      <Disclaimer />
+      <Footer />
+    </Box>
   )
 }
 
