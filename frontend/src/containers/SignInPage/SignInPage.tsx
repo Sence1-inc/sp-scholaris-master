@@ -177,7 +177,7 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
           OR
         </Typography>
         <Button
-        onClick={() => handleCredentials()}
+        onClick={handleCredentials}
         variant="contained"
         color="primary"
         sx={{
