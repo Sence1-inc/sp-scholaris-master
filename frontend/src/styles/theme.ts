@@ -31,12 +31,14 @@ const theme: Theme = createTheme({
       fontSize: '4.8rem',
       fontWeight: 700,
       lineHeight: 1.167,
+      color: '#002147',
     },
     h2: {
       fontFamily: "'Roboto', 'sans-serif'",
       fontSize: '3.6rem',
       fontWeight: 700,
       lineHeight: 1.3,
+      color: '#002147',
       '@media (max-width:768px)': {
         fontSize: '2.2rem',
       },
@@ -46,6 +48,7 @@ const theme: Theme = createTheme({
       fontSize: '2.4rem',
       fontWeight: 700,
       lineHeight: 1.5,
+      color: '#002147',
       '@media (max-width:768px)': {
         fontSize: '2.0rem',
       },
@@ -55,6 +58,7 @@ const theme: Theme = createTheme({
       fontSize: '2.0rem',
       fontWeight: 700,
       lineHeight: 1.5,
+      color: '#002147',
       '@media (max-width:768px)': {
         fontSize: '1.8rem',
       },
@@ -64,6 +68,7 @@ const theme: Theme = createTheme({
       fontSize: '1.8rem',
       fontWeight: 700,
       lineHeight: 1.5,
+      color: '#002147',
       '@media (max-width:768px)': {
         fontSize: '1.6rem',
       },
@@ -73,6 +78,7 @@ const theme: Theme = createTheme({
       fontSize: '1.4rem',
       fontWeight: 700,
       lineHeight: 1.5,
+      color: '#002147',
       '@media (max-width:768px)': {
         fontSize: '1.2rem',
       },
