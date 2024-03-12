@@ -218,9 +218,9 @@ import './AddEditScholarshipPage.css'
                         <Box 
                             component="section"
                             height= 'auto'
-                            width= ' '
-                            gap={"120px"}
+                            width= '100%'
                             display={"flex"}
+                            justifyContent={"space-between"}
                         >
                             <Typography
                                 sx={{
