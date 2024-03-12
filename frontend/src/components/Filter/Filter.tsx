@@ -6,6 +6,7 @@ import FilterOption from './FilterOption/FilterOption'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { format } from 'date-fns'
 import axiosInstance from '../../axiosConfig'
+import { Typography } from '@mui/material'
 
 interface FilterProps {}
 
@@ -108,7 +109,7 @@ const Filter: React.FC<FilterProps> = () => {
   return (
     <div className="filter">
       <div className="filter-header">
-        <h4>Filters</h4>
+        <Typography variant="h4">Filters</Typography>
       </div>
       <FilterOption
         selectedDateRange={selectedDateRange}

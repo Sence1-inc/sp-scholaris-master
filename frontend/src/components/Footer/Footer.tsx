@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import './Footer.css'
@@ -33,9 +34,9 @@ const Footer: React.FC = () => {
           </div>
         </div>
         <div>
-          <p>
+          <Typography variant="body2" sx={{ color: 'common.white' }}>
             Scholaris Copyright | Managed by Sence1 | All Rights Reserved 2024
-          </p>
+          </Typography>
         </div>
       </div>
     </footer>
