@@ -30,14 +30,12 @@ const theme: Theme = createTheme({
       fontFamily: "'Outfit', 'sans-serif'",
       fontSize: '4.8rem',
       fontWeight: 800,
-      lineHeight: 1.167,
       color: '#002147',
     },
     h2: {
       fontFamily: "'Outfit', 'sans-serif'",
       fontSize: '4rem',
       fontWeight: 800,
-      lineHeight: 1.3,
       color: '#002147',
       '@media (max-width:768px)': {
         fontSize: '2.875rem',
@@ -47,7 +45,6 @@ const theme: Theme = createTheme({
       fontFamily: "'Outfit', 'sans-serif'",
       fontSize: '3rem',
       fontWeight: 700,
-      lineHeight: 1.5,
       color: '#002147',
       '@media (max-width:768px)': {
         fontSize: '1.875rem',
@@ -57,7 +54,6 @@ const theme: Theme = createTheme({
       fontFamily: "'Outfit', 'sans-serif'",
       fontSize: '2.0rem',
       fontWeight: 700,
-      lineHeight: 1.5,
       color: '#002147',
       '@media (max-width:768px)': {
         fontSize: '1.8rem',
@@ -67,7 +63,6 @@ const theme: Theme = createTheme({
       fontFamily: "'Outfit', 'sans-serif'",
       fontSize: '1.8rem',
       fontWeight: 700,
-      lineHeight: 1.5,
       color: '#002147',
       '@media (max-width:768px)': {
         fontSize: '1.6rem',
@@ -77,7 +72,6 @@ const theme: Theme = createTheme({
       fontFamily: "'Outfit', 'sans-serif'",
       fontSize: '1.4rem',
       fontWeight: 700,
-      lineHeight: 1.5,
       color: '#002147',
       '@media (max-width:768px)': {
         fontSize: '1.2rem',
@@ -87,7 +81,6 @@ const theme: Theme = createTheme({
       fontFamily: "'Roboto', 'sans-serif'",
       fontSize: '1.25rem',
       fontWeight: 300,
-      lineHeight: 1.3,
       '@media (max-width:768px)': {
         fontSize: '1rem',
       },
@@ -96,7 +89,6 @@ const theme: Theme = createTheme({
       fontFamily: "'Roboto', 'sans-serif'",
       fontSize: '1rem',
       fontWeight: 700,
-      lineHeight: 1.5,
       '@media (max-width:768px)': {
         fontSize: '0.875rem',
       },
@@ -105,7 +97,6 @@ const theme: Theme = createTheme({
       fontFamily: "'Roboto', 'sans-serif'",
       fontSize: '0.875rem',
       fontWeight: 300,
-      lineHeight: 1.5,
       '@media (max-width:768px)': {
         fontSize: '0.750rem',
       },
