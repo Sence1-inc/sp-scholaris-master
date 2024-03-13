@@ -4,6 +4,7 @@ import {
   SurveyQuestion,
   SurveyResponse,
 } from '../../containers/SurveyPage/SurveyPage'
+import { ctaButtonStyle } from '../../styles/globalStyles'
 
 interface SurveyProps {
   surveyQuestions: SurveyQuestion[] | null
@@ -49,10 +50,8 @@ const Survey: React.FC<SurveyProps> = ({
       </Typography>
       <Container sx={{ padding: '0!important' }}>
         <Typography
-          variant="body1"
+          variant="h6"
           sx={{
-            fontSize: '24px',
-            color: 'var(--primary-color)',
             marginBottom: '10px',
             textAlign: 'start',
           }}
@@ -62,13 +61,6 @@ const Survey: React.FC<SurveyProps> = ({
         <TextField
           required
           size="medium"
-          sx={{
-            borderRadius: '16px',
-            width: '100%',
-            '& fieldset': { border: 'none' },
-            border: '1px solid #0E2F71',
-            boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
-          }}
           inputProps={{
             sx: { fontSize: '20px', color: 'var(--primary-color)' },
           }}
@@ -89,10 +81,8 @@ const Survey: React.FC<SurveyProps> = ({
       {surveyQuestions?.map((questionText, index) => (
         <Container key={index} sx={{ padding: '0!important' }}>
           <Typography
-            variant="body1"
+            variant="h6"
             sx={{
-              fontSize: '24px',
-              color: 'var(--primary-color)',
               marginBottom: '10px',
               textAlign: 'start',
             }}
@@ -104,13 +94,6 @@ const Survey: React.FC<SurveyProps> = ({
             multiline
             minRows={2}
             size="medium"
-            sx={{
-              borderRadius: '16px',
-              width: '100%',
-              '& fieldset': { border: 'none' },
-              border: '1px solid #0E2F71',
-              boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
-            }}
             inputProps={{
               sx: { fontSize: '20px', color: 'var(--primary-color)' },
             }}
@@ -125,18 +108,12 @@ const Survey: React.FC<SurveyProps> = ({
           />
         </Container>
       ))}
-      {message && <Typography sx={{ color: 'red' }}>{message}</Typography>}
+      {message && <Typography color="error">{message}</Typography>}
       <Button
         variant="contained"
-        color="primary"
+        color="secondary"
         onClick={handleSubmit}
-        sx={{
-          borderRadius: '16px',
-          backgroundColor: '#f36b3b',
-          padding: '20px',
-          marginBottom: '60px',
-          '&:hover': { backgroundColor: '#d2522b' },
-        }}
+        sx={{ ...ctaButtonStyle, marginBottom: '60px' }}
       >
         Submit
       </Button>

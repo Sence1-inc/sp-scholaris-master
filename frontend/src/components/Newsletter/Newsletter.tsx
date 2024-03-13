@@ -11,6 +11,7 @@ import { Link, useLocation } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import { initializeSubscirber } from '../../redux/reducers/SubscriberReducer'
 import { useAppDispatch } from '../../redux/store'
+import { ctaButtonStyle } from '../../styles/globalStyles'
 import ThankYou from '../ThankYou/ThankYou'
 
 export interface SubscriberData {
@@ -124,10 +125,6 @@ const Newsletter: React.FC<NewsletterProps> = ({
             align="center"
             sx={{
               mb: 2,
-              color: 'var(--primary-color)',
-              textAlign: 'center',
-              fontWeight: '700',
-              fontSize: '48px',
             }}
           >
             {title_content}
@@ -137,27 +134,17 @@ const Newsletter: React.FC<NewsletterProps> = ({
               variant="h4"
               sx={{
                 mb: 1,
-                color: 'var(--secondary-color)',
                 textAlign: 'center',
-                fontWeight: '700',
               }}
             >
               {subtitle_content}
             </Typography>
-            <Typography
-              sx={{ fontSize: '24px', fontWeight: '400', textAlign: 'center' }}
-              variant="body1"
-            >
+            <Typography sx={{ textAlign: 'center' }} variant="h6">
               {description_content}
             </Typography>
           </Box>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             <TextField
-              sx={{
-                '& fieldset': { border: 'none' },
-                borderRadius: '16px',
-                border: '1px solid #0E2F71',
-              }}
               id="outlined-basic"
               variant="outlined"
               value={email}
@@ -165,18 +152,8 @@ const Newsletter: React.FC<NewsletterProps> = ({
             />
             {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
             <Button
-              fullWidth
-              sx={{
-                padding: '20px',
-                borderRadius: '16px',
-                fontWeight: '700',
-                textTransform: 'capitalize',
-                backgroundColor: 'var(--secondary-color)',
-                color: 'white',
-                '&:hover': {
-                  backgroundColor: 'var(--primary-color)',
-                },
-              }}
+              variant="contained"
+              sx={ctaButtonStyle}
               onClick={handleSubscribe}
             >
               {isLoading ? (
@@ -185,15 +162,12 @@ const Newsletter: React.FC<NewsletterProps> = ({
                 'SUBSCRIBE'
               )}
             </Button>
-            <Typography variant="body2" className="newsletter-text__small">
+            <Typography variant="subtitle1" sx={{ textAlign: 'center' }}>
               By subscribing to the newsletter, I have read this form and
               understand its content and voluntarily give my consent for the
               collection, use, processing, storage and retention of my personal
               data or information to Sence1 for the purpose(s) described in the{' '}
-              <Link
-                style={{ color: 'var(--primary-color)' }}
-                to={'/privacy-consent'}
-              >
+              <Link style={{ color: 'primary.main' }} to={'/privacy-consent'}>
                 Privacy Policy
               </Link>{' '}
               document

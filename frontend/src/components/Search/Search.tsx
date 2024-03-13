@@ -1,4 +1,4 @@
-import { Typography, useTheme } from '@mui/material'
+import { Box, Button, TextField, Typography, useTheme } from '@mui/material'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -6,9 +6,8 @@ import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
-import Button from '../Button/Button'
+import { ctaButtonStyle } from '../../styles/globalStyles'
 import Filter from '../Filter/Filter'
-import Input from '../Input/Input'
 import Table from '../Table/Table'
 import './Search.css'
 
@@ -85,14 +84,29 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
             <h3 className="color-secondary">Scholaris</h3>
             <h2>Step into a world of opportunities</h2>
           </div>
-          <div className="section__search-input">
-            <Input
-              handleChange={(e) => handleChange(e.target.value)}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '40px',
+            }}
+          >
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              onChange={(e) => handleChange(e.target.value)}
               value={name}
               placeholder="Search Scholarship Name"
+              sx={{ width: 'calc(66.666% - 20px)' }}
             />
-            <Button handleClick={(e) => handleSearch(e)}>Search</Button>
-          </div>
+            <Button
+              sx={{ ...ctaButtonStyle, flexGrow: 1 }}
+              onClick={handleSearch}
+            >
+              Search
+            </Button>
+          </Box>
           <Filter />
           {window.innerWidth > theme.breakpoints.values.md ? (
             <Table
@@ -108,14 +122,29 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
         </div>
       ) : (
         <div className="search__input-container">
-          <div className="search__input-group">
-            <Input
-              handleChange={(e) => handleChange(e.target.value)}
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '40px',
+            }}
+          >
+            <TextField
+              id="outlined-basic"
+              variant="outlined"
+              onChange={(e) => handleChange(e.target.value)}
               value={name}
               placeholder="Search Scholarship Name"
+              sx={{ width: 'calc(66.666% - 20px)' }}
             />
-            <Button handleClick={(e) => handleSearch(e)}>Search</Button>
-          </div>
+            <Button
+              sx={{ ...ctaButtonStyle, flexGrow: 1 }}
+              onClick={handleSearch}
+            >
+              Search
+            </Button>
+          </Box>
           <Filter />
         </div>
       )}

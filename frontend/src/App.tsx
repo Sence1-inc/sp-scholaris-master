@@ -11,7 +11,6 @@ import TeaserStudent from './containers/TeaserPage/TeaserStudent'
 import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage'
 import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
-import ScholarshipEditorPage from './containers/ScholarshipEditorPage/ScholarshipEditorPage'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -31,7 +30,7 @@ const ProviderRoutes: React.FC = () => (
 
 const App: React.FC = () => {
   return (
-    <div className="App">
+    <>
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<WelcomePage />} />
@@ -52,12 +51,8 @@ const App: React.FC = () => {
         />
         <Route path="/thank-you" element={<ThankYouPage />} />
         <Route path="*" element={<PageNotFoundPage />} />
-        <Route
-          path="/add-edit-scholarship"
-          element={<ScholarshipEditorPage />}
-        />
       </Routes>
-    </div>
+    </>
   )
 }
 

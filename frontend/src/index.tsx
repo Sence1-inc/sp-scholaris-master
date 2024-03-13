@@ -10,15 +10,19 @@ import store from './redux/store'
 import Header from './components/Header/Header'
 import Footer from './components/Footer/Footer'
 import Disclaimer from './components/Disclaimer/Disclaimer'
+import { ThemeProvider } from '@mui/material/styles'
+import theme from './styles/theme'
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <Header />
-      <App />
-      <Disclaimer />
-      <Footer />
+      <ThemeProvider theme={theme}>
+        <Header />
+        <App />
+        <Disclaimer />
+        <Footer />
+      </ThemeProvider>
     </BrowserRouter>
   </Provider>
 )
