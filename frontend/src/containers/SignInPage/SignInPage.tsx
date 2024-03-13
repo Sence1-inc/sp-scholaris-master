@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { Button, Container, TextField, Typography, Link } from '@mui/material'
+import { useState, Fragment } from 'react';
+import { Button, Container, TextField, Typography, Link, Snackbar, IconButton } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
+import CloseIcon from '@mui/icons-material/Close';
 
 interface SignInPageProps{
 
@@ -8,16 +9,12 @@ interface SignInPageProps{
 
 const SignInPage: React.FC<SignInPageProps> = ( ) => {
   const [userCredentials, setUserCredentials] = useState({
-    email: '',
-    password: '',
+    email: 'Enter your email',
+    password: 'Password'
   })
 
-  const [borderColorValidation, setBorderColorValidation] = useState(
-    {
-      emailBorder: '#0E2F71',
-      passwordBorder: '0E2F71'
-    }
-  )
+  const [open, setOpen] = useState(false);
+
 
   const navigate = useNavigate()
 
@@ -41,20 +38,28 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
     const isPasswordValid = undefined // if password is the user's password
 
     if(!isValidEmail && !isPasswordValid){
-      setBorderColorValidation((prevValidation) => ({
-        ...prevValidation,
-        emailBorder: 'red',
-      }));
+      setOpen(true);
     }else{
-      setBorderColorValidation((prevValidation) => ({
-        ...prevValidation,
-        emailBorder: '#0E2F71',
-      }));
       navigate('/dashboard')
     }
-
-
   }
+
+  const handleClose = (event: React.SyntheticEvent | Event) => {
+    setOpen(false);
+  };
+
+  const action = (
+    <Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Fragment>
+  );
 
     return(
         <Container maxWidth='md' sx={{
@@ -71,26 +76,33 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
             }}>
                 Sign-in
             </Typography>
+            <Snackbar
+              open={open}
+              autoHideDuration={6000}
+              onClose={handleClose}
+              message="Password and email does not match"
+              action={action}
+            />
             <TextField
                 onChange={(e) => handleEmail(e.target.value)}
+                value={userCredentials.email}
                 type='email'
                 id='email'
                 label="Email address"
                 placeholder='Input your email'
                 sx={{
-                    backgroundColor: '#F3F3F3',
                     borderRadius: '16px',
                     marginTop: '35px',
                     width: '100%',
                     '& fieldset': { border: 'none' },
-                    border: `1px solid ${borderColorValidation.emailBorder}`,
+                    border: '1px solid #0E2F71',
                     boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
                   }}
                   inputProps={{
                     sx: { fontSize: '24px', color: 'var(--primary-color)', padding: '30px' },
                   }}
                   InputProps={{
-                    placeholder: 'asdasd'
+                    placeholder: 'Input your email'
                   }}
                   InputLabelProps={{
                     sx: {
@@ -104,12 +116,12 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
             />
             <TextField
                 onChange={(e) => handlePassword(e.target.value)}
+                value={userCredentials.password}
                 type='password'
                 id='Password'
                 label="Password"
                 placeholder='Input your email'
                 sx={{
-                    backgroundColor: '#F3F3F3',
                     borderRadius: '16px',
                     marginTop: '35px',
                     width: '100%',
@@ -184,7 +196,7 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
           borderRadius: '16px',
           backgroundColor: '#f36b3b',
           padding: '20px',
-          margin: '0 auto',
+          margin: '0 auto 60px',
           width: '100%',
           maxWidth: '600px',
           '&:hover': { backgroundColor: '#d2522b' },
@@ -193,25 +205,6 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
         }}
       >
         Login
-      </Button>
-      <Button
-        variant="contained"
-        sx={{
-          borderRadius: '16px',
-          backgroundColor: 'transparent',
-          border: '3px solid #1AA5D8',
-          boxShadow: 'none',
-          padding: '20px',
-          margin: '0 auto 60px',
-          width: '100%',
-          maxWidth: '600px',
-          '&:hover': { backgroundColor: 'transparent' },
-          textTransform: 'inherit',
-          fontSize: '24px',
-          color: '#1AA5D8',
-        }}
-      >
-        Sign-in with Google
       </Button>
 
         </Container>

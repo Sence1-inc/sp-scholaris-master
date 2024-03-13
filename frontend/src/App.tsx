@@ -61,7 +61,7 @@ const App: React.FC = () => {
         />
         <Route path="/thank-you" element={<ThankYouPage />} />
         <Route path='/sign-in' element={<SignInPage/>}/>
-        <Route path='/Sign-up' element={<SignUpPage/>}/>
+        <Route path='/sign-up' element={<SignUpPage/>}/>
         <Route path='/verify-email' element={<VerifyEmailPage/>}/>
         <Route path="*" element={<PageNotFoundPage />} />
       </Routes>

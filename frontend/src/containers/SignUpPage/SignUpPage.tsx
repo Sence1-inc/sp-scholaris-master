@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, Fragment } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Container, TextField, Typography, Link } from '@mui/material'
+import { Button, Container, TextField, Typography, Link,  Snackbar, IconButton  } from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close';
 
 interface SignUpPageProps{
 
@@ -8,10 +9,12 @@ interface SignUpPageProps{
 
 const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
   const [userCredentials, setUserCredentials] = useState({
-    email: '',
-    password: '',
-    password2: ''
+    email: 'Enter your email',
+    password: 'Password',
+    password2: 'Password2'
   })
+
+  const [open, setOpen] = useState(false);
 
   const navigate = useNavigate()
 
@@ -39,14 +42,33 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
   function handleSignUp(){
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const isValidEmail = emailRegex.test(userCredentials.email);
-    //const isPasswordValid what is the condition for the password to be valid?
+    const isPasswordValid = userCredentials.password.length > 6
+    const isPassword2 = userCredentials.password === userCredentials.password2
 
-    if(!isValidEmail && userCredentials.password === userCredentials.password2){
-      console.log('email and password does not match')
-    }
-      navigate('/verify-email')
+    // if(!isValidEmail){
+    //   setOpen(prevState => )
+    // }
+    //   navigate('/verify-email')
 
   }
+
+
+  const handleClose = (event: React.SyntheticEvent | Event) => {
+    setOpen(false);
+  };
+
+  const action = (
+    <Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Fragment>
+  );
 
     return(
         <Container maxWidth='md' sx={{
@@ -63,6 +85,13 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
             }}>
                 Sign-up
             </Typography>
+            <Snackbar
+              open={open}
+              autoHideDuration={6000}
+              onClose={handleClose}
+              message="Password and email does not match"
+              action={action}
+            />
             <TextField
                 onChange={(e) => handleEmail(e.target.value)}
                 type='email'
@@ -82,7 +111,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                     sx: { fontSize: '24px', color: 'var(--primary-color)', padding: '30px' },
                   }}
                   InputProps={{
-                    placeholder: 'asdasd'
+                    placeholder: 'Input your email'
                   }}
                   InputLabelProps={{
                     sx: {
@@ -99,7 +128,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                 type='password'
                 id='password'
                 label="Password"
-                placeholder='Input your email'
+                placeholder='Input your password'
                 sx={{
                     backgroundColor: '#F3F3F3',
                     borderRadius: '16px',
@@ -113,7 +142,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                     sx: { fontSize: '24px', color: 'var(--primary-color)', padding: '30px' },
                   }}
                   InputProps={{
-                    placeholder: 'asdasd'
+                    placeholder: 'Input your password'
                   }}
                   InputLabelProps={{
                     sx: {
@@ -130,7 +159,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                 type='password'
                 id='paswword2'
                 label="Password"
-                placeholder='Input your email'
+                placeholder='Input your password'
                 sx={{
                     backgroundColor: '#F3F3F3',
                     borderRadius: '16px',
@@ -144,7 +173,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                     sx: { fontSize: '24px', color: 'var(--primary-color)', padding: '30px' },
                   }}
                   InputProps={{
-                    placeholder: 'asdasd'
+                    placeholder: 'Input your password'
                   }}
                   InputLabelProps={{
                     sx: {
@@ -169,7 +198,6 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
         >
           Already have and account? Sign-in here
         </Link>
-          <Container sx={{display: 'flex', justifyContent: 'center', gap: '50px', alignItems: 'center', marginBottom: '60px'}}>
           <Button
           onClick={handleSignUp}
         variant="contained"
@@ -178,7 +206,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
           borderRadius: '16px',
           backgroundColor: '#f36b3b',
           padding: '20px',
-          margin: '0 auto',
+          margin: '0 auto 60px',
           width: '100%',
           maxWidth: '320px',
           '&:hover': { backgroundColor: '#d2522b' },
@@ -188,37 +216,6 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
       >
         Sign up
       </Button>
-          <Typography
-          variant="body1"
-          sx={{
-            textDecoration: 'underline',
-            fontSize: '24px',
-            color: 'var(--primary-color)',
-            textAlign: 'center',
-          }}
-        >
-          OR
-        </Typography>
-        <Button
-        variant="contained"
-        sx={{
-          borderRadius: '16px',
-          backgroundColor: 'transparent',
-          border: '3px solid #1AA5D8',
-          boxShadow: 'none',
-          padding: '20px',
-          margin: '0 auto',
-          width: '100%',
-          maxWidth: '320px',
-          '&:hover': { backgroundColor: 'transparent' },
-          textTransform: 'inherit',
-          fontSize: '24px',
-          color: '#1AA5D8',
-        }}
-      >
-        Sign-in with Google
-      </Button>
-          </Container>
         </Container>
     )
 }
