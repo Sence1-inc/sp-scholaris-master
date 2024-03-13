@@ -27,6 +27,7 @@ module Api
           :only => [ 
             :id, 
             :scholarship_name, 
+            :description,
             :start_date, 
             :due_date,
             :application_link,
@@ -167,7 +168,7 @@ module Api
     
         # Only allow a list of trusted parameters through.
         def scholarship_params
-          params.require(:scholarship).permit(:scholarship_name, :start_date, :due_date, :application_link, :school_year, :scholarship_provider_id, :requirements, :eligibilities, :scholarship_type_id, :benefits)
+          params.require(:scholarship).permit(:scholarship_name, :description, :start_date, :due_date, :application_link, :school_year, :scholarship_provider_id, :requirements, :eligibilities, :scholarship_type_id, :benefits)
         end
     end
   end
