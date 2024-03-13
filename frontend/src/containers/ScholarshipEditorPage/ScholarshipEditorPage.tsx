@@ -10,8 +10,29 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import {
+  DatePicker,
+  LocalizationProvider,
+  MobileDatePicker,
+  StaticDatePicker,
+} from '@mui/x-date-pickers'
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 
 const ScholarshipEditorPage = () => {
+  const { id } = useParams<{ id: string }>()
+  const [scholarshipName, setScholarshipName] = useState<string>('')
+  const [startDate, setStartDate] = useState<string>('')
+  const [dueDate, setDueDate] = useState<string>('')
+  const [applicationLink, setApplicationLink] = useState<string>('')
+  const [schoolYear, setSchoolYear] = useState<string>('')
+  const [scholarshipProvideId, setScholarshipProvideId] = useState<string>('')
+  const [requirements, setRequirements] = useState<string>('')
+  const [eligibilities, setEligibilities] = useState<string>('')
+  const [scholarshipType, setScholarshipType] = useState<string>('')
+  const [benefits, setBenefits] = useState<string>('')
+
   return (
     <FormGroup>
       <Container sx={{ padding: { sm: '60px 100px', lg: '120px' } }}>
@@ -273,7 +294,20 @@ const ScholarshipEditorPage = () => {
               >
                 Application Start
               </Typography>
-              <TextField
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <MobileDatePicker
+                  sx={{
+                    width: '100%',
+                    height: '80px',
+                    borderRadius: '16px',
+                    border: 'none',
+                    background: '#fff',
+                    boxShadow: 3,
+                    '& fieldset': { border: 'none' },
+                  }}
+                />
+              </LocalizationProvider>
+              {/* <TextField
                 id="standard-helperText"
                 variant="outlined"
                 sx={{
@@ -286,7 +320,7 @@ const ScholarshipEditorPage = () => {
                   '& fieldset': { border: 'none' },
                 }}
                 name="scholarship_start"
-              />
+              /> */}
             </Box>
             <Box>
               <Typography
