@@ -1,9 +1,11 @@
+import AddIcon from '@mui/icons-material/Add'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
   Box,
   Button,
   Container,
   FormGroup,
+  IconButton,
   Link,
   MenuItem,
   Select,
@@ -28,11 +30,78 @@ const ScholarshipEditorPage = () => {
   const [scholarshipProviderId, setScholarshipProviderId] = useState<
     number | null
   >()
-  const [requirements, setRequirements] = useState<string>('')
-  const [eligibilities, setEligibilities] = useState<string>('')
+  const [requirements, setRequirements] = useState<
+    Array<{ requirements_text: string }>
+  >([])
+  const [eligibilities, setEligibilities] = useState<
+    Array<{ eligibility_text: string }>
+  >([])
+  const [benefits, setBenefits] = useState<Array<{ benefit_name: string }>>([])
   const [scholarshipTypeId, setScholarshipTypeId] = useState<number>(0)
-  const [benefits, setBenefits] = useState<string>('')
   const [status, setStatus] = useState<string>('')
+  const [newBenefit, setNewBenefit] = useState('')
+  const [newEligibility, setNewEligibility] = useState('')
+  const [newRequirement, setNewRequirement] = useState('')
+
+  const handleAddBenefit = () => {
+    setBenefits([...benefits, { benefit_name: '' }])
+  }
+
+  const handleBenefitChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const updatedBenefits = [...benefits]
+    updatedBenefits[index].benefit_name = e.target.value
+    setBenefits(updatedBenefits)
+  }
+
+  const handleAddNewBenefit = () => {
+    if (newBenefit.trim() !== '') {
+      setBenefits([...benefits, { benefit_name: newBenefit }])
+      setNewBenefit('')
+    }
+  }
+
+  const handleAddNewEligibility = () => {
+    if (newEligibility.trim() !== '') {
+      setEligibilities([...eligibilities, { eligibility_text: newEligibility }])
+      setNewEligibility('')
+    }
+  }
+
+  const handleAddEligibility = () => {
+    setEligibilities([...eligibilities, { eligibility_text: '' }])
+  }
+
+  const handleEligibilityChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const updatedEligibility = [...eligibilities]
+    updatedEligibility[index].eligibility_text = e.target.value
+    setEligibilities(updatedEligibility)
+  }
+
+  const handleAddNewRequirement = () => {
+    if (newRequirement.trim() !== '') {
+      setRequirements([...requirements, { requirements_text: newRequirement }])
+      setNewRequirement('')
+    }
+  }
+
+  const handleAddRequirement = () => {
+    setRequirements([...requirements, { requirements_text: '' }])
+  }
+
+  const handleRequirementChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    index: number
+  ) => {
+    const updatedRequirement = [...requirements]
+    updatedRequirement[index].requirements_text = e.target.value
+    setRequirements(updatedRequirement)
+  }
 
   useEffect(() => {
     // this will be updated during our Auth sprint
@@ -43,47 +112,29 @@ const ScholarshipEditorPage = () => {
     const getScholarship = async () => {
       try {
         const { data } = await axiosInstance.get(`/api/v1/scholarships/${id}`)
-
+        console.log(data)
         if (data) {
           setScholarshipName(data.scholarship_name)
           setDescription(data.description)
           setStartDate(data.start_date)
           setDueDate(data.due_date)
           setApplicationLink(data.application_link)
-          setBenefits(
-            data.benefits
-              .map(
-                (benefit: { id: number; benefit_name: string }) =>
-                  `• ${benefit.benefit_name}`
-              )
-              .join('\n')
-          )
-          setEligibilities(
-            data.eligibilities
-              .map(
-                (eligibility: { id: number; eligibility_text: string }) =>
-                  `• ${eligibility.eligibility_text}`
-              )
-              .join('\n')
-          )
-          setRequirements(
-            data.requirements
-              .map(
-                (requirement: { id: number; requirement_text: string }) =>
-                  `• ${requirement.requirement_text}`
-              )
-              .join('\n')
-          )
+          setBenefits(data.benefits)
+          setEligibilities(data.eligibilities)
+          setRequirements(data.requirements)
           setSchoolYear(data.school_year)
           setStatus(data.status)
           setScholarshipTypeId(data.scholarship_type.id)
         }
       } catch (error) {}
     }
+
     if (id) {
       getScholarship()
     }
   }, [id])
+
+  const handleSubmit = () => {}
 
   return (
     <FormGroup>
@@ -198,21 +249,56 @@ const ScholarshipEditorPage = () => {
             >
               Requirements
             </Typography>
-            <TextField
-              id="outlined-multiline-static"
-              multiline
-              rows={4}
+            <Box
               sx={{
-                width: '100%',
-                borderRadius: '16px',
-                border: 'none',
-                background: '#fff',
-                boxShadow: 3,
-                '& fieldset': { border: 'none' },
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
               }}
-              value={requirements}
-              name="requirements"
-            />
+            >
+              {requirements.length > 0 ? (
+                requirements.map((requirement, index) => (
+                  <TextField
+                    key={index}
+                    id={`outlined-multiline-static-${index}`}
+                    multiline
+                    sx={{
+                      width: '100%',
+                      borderRadius: '16px',
+                      border: 'none',
+                      background: '#fff',
+                      boxShadow: 3,
+                      '& fieldset': { border: 'none' },
+                    }}
+                    value={requirement.requirements_text}
+                    name="requirements"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleRequirementChange(e, index)
+                    }
+                  />
+                ))
+              ) : (
+                <TextField
+                  id="outlined-multiline-static"
+                  multiline
+                  sx={{
+                    width: '100%',
+                    borderRadius: '16px',
+                    border: 'none',
+                    background: '#fff',
+                    boxShadow: 3,
+                    '& fieldset': { border: 'none' },
+                  }}
+                  value={newRequirement}
+                  onChange={(e) => setNewRequirement(e.target.value)}
+                  onBlur={handleAddNewRequirement}
+                  name="newRequirement"
+                />
+              )}
+              <IconButton onClick={handleAddRequirement}>
+                <AddIcon sx={{ color: 'secondary.main' }} />
+              </IconButton>
+            </Box>
           </Box>
           <Box sx={{ width: '100%' }}>
             <Typography
@@ -225,21 +311,56 @@ const ScholarshipEditorPage = () => {
             >
               Benefits
             </Typography>
-            <TextField
-              id="outlined-multiline-static"
-              multiline
-              rows={4}
+            <Box
               sx={{
-                width: '100%',
-                borderRadius: '16px',
-                border: 'none',
-                background: '#fff',
-                boxShadow: 3,
-                '& fieldset': { border: 'none' },
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
               }}
-              value={benefits}
-              name="benefits"
-            />
+            >
+              {benefits.length > 0 ? (
+                benefits.map((benefit, index) => (
+                  <TextField
+                    key={index}
+                    id={`outlined-multiline-static-${index}`}
+                    multiline
+                    sx={{
+                      width: '100%',
+                      borderRadius: '16px',
+                      border: 'none',
+                      background: '#fff',
+                      boxShadow: 3,
+                      '& fieldset': { border: 'none' },
+                    }}
+                    value={benefit.benefit_name}
+                    name="benefits"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleBenefitChange(e, index)
+                    }
+                  />
+                ))
+              ) : (
+                <TextField
+                  id="outlined-multiline-static"
+                  multiline
+                  sx={{
+                    width: '100%',
+                    borderRadius: '16px',
+                    border: 'none',
+                    background: '#fff',
+                    boxShadow: 3,
+                    '& fieldset': { border: 'none' },
+                  }}
+                  value={newBenefit}
+                  onChange={(e) => setNewBenefit(e.target.value)}
+                  onBlur={handleAddNewBenefit}
+                  name="newBenefit"
+                />
+              )}
+              <IconButton onClick={handleAddBenefit}>
+                <AddIcon sx={{ color: 'secondary.main' }} />
+              </IconButton>
+            </Box>
           </Box>
           <Box sx={{ width: '100%' }}>
             <Typography
@@ -252,21 +373,56 @@ const ScholarshipEditorPage = () => {
             >
               Eligibility
             </Typography>
-            <TextField
-              id="outlined-multiline-static"
-              multiline
-              rows={4}
+            <Box
               sx={{
-                width: '100%',
-                borderRadius: '16px',
-                border: 'none',
-                background: '#fff',
-                boxShadow: 3,
-                '& fieldset': { border: 'none' },
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
               }}
-              value={eligibilities}
-              name="eligibilities"
-            />
+            >
+              {eligibilities.length > 0 ? (
+                eligibilities.map((eligibility, index) => (
+                  <TextField
+                    key={index}
+                    id={`outlined-multiline-static-${index}`}
+                    multiline
+                    sx={{
+                      width: '100%',
+                      borderRadius: '16px',
+                      border: 'none',
+                      background: '#fff',
+                      boxShadow: 3,
+                      '& fieldset': { border: 'none' },
+                    }}
+                    value={eligibility.eligibility_text}
+                    name="eligibilities"
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleEligibilityChange(e, index)
+                    }
+                  />
+                ))
+              ) : (
+                <TextField
+                  id="outlined-multiline-static"
+                  multiline
+                  sx={{
+                    width: '100%',
+                    borderRadius: '16px',
+                    border: 'none',
+                    background: '#fff',
+                    boxShadow: 3,
+                    '& fieldset': { border: 'none' },
+                  }}
+                  value={newEligibility}
+                  onChange={(e) => setNewEligibility(e.target.value)}
+                  onBlur={handleAddNewEligibility}
+                  name="newEligibility"
+                />
+              )}
+              <IconButton onClick={handleAddEligibility}>
+                <AddIcon sx={{ color: 'secondary.main' }} />
+              </IconButton>
+            </Box>
           </Box>
           <Box sx={{ width: '100%' }}>
             <Typography
@@ -454,6 +610,7 @@ const ScholarshipEditorPage = () => {
             </Select>
           </Box>
           <Button
+            onClick={handleSubmit}
             type="submit"
             variant="contained"
             sx={{
@@ -461,7 +618,6 @@ const ScholarshipEditorPage = () => {
               padding: '20px',
               borderRadius: '16px',
               background: '#F36B3B',
-
               fontFamily: 'Open Sans',
               fontSize: '24px',
               fontWeight: '700',
