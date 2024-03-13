@@ -10,28 +10,80 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import {
-  DatePicker,
-  LocalizationProvider,
-  MobileDatePicker,
-  StaticDatePicker,
-} from '@mui/x-date-pickers'
-import { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs'
+import { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
 
 const ScholarshipEditorPage = () => {
   const { id } = useParams<{ id: string }>()
   const [scholarshipName, setScholarshipName] = useState<string>('')
+  const [description, setDescription] = useState<string>('')
   const [startDate, setStartDate] = useState<string>('')
   const [dueDate, setDueDate] = useState<string>('')
   const [applicationLink, setApplicationLink] = useState<string>('')
   const [schoolYear, setSchoolYear] = useState<string>('')
-  const [scholarshipProvideId, setScholarshipProvideId] = useState<string>('')
+  const [scholarshipProviderId, setScholarshipProviderId] = useState<
+    number | null
+  >()
   const [requirements, setRequirements] = useState<string>('')
   const [eligibilities, setEligibilities] = useState<string>('')
-  const [scholarshipType, setScholarshipType] = useState<string>('')
+  const [scholarshipTypeId, setScholarshipTypeId] = useState<number>(0)
   const [benefits, setBenefits] = useState<string>('')
+  const [status, setStatus] = useState<string>('')
+
+  useEffect(() => {
+    // this will be updated during our Auth sprint
+    setScholarshipProviderId(2)
+  }, [])
+
+  useEffect(() => {
+    const getScholarship = async () => {
+      try {
+        const { data } = await axiosInstance.get(`/api/v1/scholarships/${id}`)
+
+        if (data) {
+          setScholarshipName(data.scholarship_name)
+          setDescription(data.description)
+          setStartDate(data.start_date)
+          setDueDate(data.due_date)
+          setApplicationLink(data.application_link)
+          setBenefits(
+            data.benefits
+              .map(
+                (benefit: { id: number; benefit_name: string }) =>
+                  `• ${benefit.benefit_name}`
+              )
+              .join('\n')
+          )
+          setEligibilities(
+            data.eligibilities
+              .map(
+                (eligibility: { id: number; eligibility_text: string }) =>
+                  `• ${eligibility.eligibility_text}`
+              )
+              .join('\n')
+          )
+          setRequirements(
+            data.requirements
+              .map(
+                (requirement: { id: number; requirement_text: string }) =>
+                  `• ${requirement.requirement_text}`
+              )
+              .join('\n')
+          )
+          setSchoolYear(data.school_year)
+          setStatus(data.status)
+          setScholarshipTypeId(data.scholarship_type.id)
+        }
+      } catch (error) {}
+    }
+    if (id) {
+      getScholarship()
+    }
+  }, [id])
 
   return (
     <FormGroup>
@@ -104,6 +156,7 @@ const ScholarshipEditorPage = () => {
                 boxShadow: 3,
                 '& fieldset': { border: 'none' },
               }}
+              value={scholarshipName}
               name="scholarship_name"
             />
           </Box>
@@ -130,7 +183,8 @@ const ScholarshipEditorPage = () => {
                 boxShadow: 3,
                 '& fieldset': { border: 'none' },
               }}
-              name="scholarship_description"
+              value={description}
+              name="description"
             />
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -156,7 +210,8 @@ const ScholarshipEditorPage = () => {
                 boxShadow: 3,
                 '& fieldset': { border: 'none' },
               }}
-              name="scholarship_requirements"
+              value={requirements}
+              name="requirements"
             />
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -182,7 +237,8 @@ const ScholarshipEditorPage = () => {
                 boxShadow: 3,
                 '& fieldset': { border: 'none' },
               }}
-              name="scholarship_benefits"
+              value={benefits}
+              name="benefits"
             />
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -208,7 +264,8 @@ const ScholarshipEditorPage = () => {
                 boxShadow: 3,
                 '& fieldset': { border: 'none' },
               }}
-              name="scholarship_eligibility"
+              value={eligibilities}
+              name="eligibilities"
             />
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -234,11 +291,12 @@ const ScholarshipEditorPage = () => {
                 boxShadow: 3,
                 '& fieldset': { border: 'none' },
               }}
+              value={scholarshipTypeId} // Ensure scholarshipTypeId is correctly initialized to 1
               name="scholarship_type"
             >
-              <MenuItem value={10}>Ten</MenuItem>
-              <MenuItem value={20}>Twenty</MenuItem>
-              <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={1}>1</MenuItem>
+              <MenuItem value={2}>2</MenuItem>
+              <MenuItem value={3}>3</MenuItem>
             </Select>
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -265,7 +323,8 @@ const ScholarshipEditorPage = () => {
                 marginBottom: '20px',
                 '& fieldset': { border: 'none' },
               }}
-              name="scholarship_link"
+              value={applicationLink}
+              name="application_link"
             />
           </Box>
           <Box
@@ -296,6 +355,7 @@ const ScholarshipEditorPage = () => {
               </Typography>
               <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <MobileDatePicker
+                  value={dayjs(startDate)}
                   sx={{
                     width: '100%',
                     height: '80px',
@@ -307,20 +367,6 @@ const ScholarshipEditorPage = () => {
                   }}
                 />
               </LocalizationProvider>
-              {/* <TextField
-                id="standard-helperText"
-                variant="outlined"
-                sx={{
-                  width: '100%',
-                  height: '80px',
-                  borderRadius: '16px',
-                  border: 'none',
-                  background: '#fff',
-                  boxShadow: 3,
-                  '& fieldset': { border: 'none' },
-                }}
-                name="scholarship_start"
-              /> */}
             </Box>
             <Box>
               <Typography
@@ -334,20 +380,20 @@ const ScholarshipEditorPage = () => {
               >
                 Application End
               </Typography>
-              <TextField
-                id="standard-helperText"
-                variant="outlined"
-                sx={{
-                  width: '100%',
-                  height: '80px',
-                  borderRadius: '16px',
-                  border: 'none',
-                  background: '#fff',
-                  boxShadow: 3,
-                  '& fieldset': { border: 'none' },
-                }}
-                name="scholarship_end"
-              />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <MobileDatePicker
+                  value={dayjs(dueDate)}
+                  sx={{
+                    width: '100%',
+                    height: '80px',
+                    borderRadius: '16px',
+                    border: 'none',
+                    background: '#fff',
+                    boxShadow: 3,
+                    '& fieldset': { border: 'none' },
+                  }}
+                />
+              </LocalizationProvider>
             </Box>
             <Box>
               <Typography
@@ -373,7 +419,8 @@ const ScholarshipEditorPage = () => {
                   boxShadow: 3,
                   '& fieldset': { border: 'none' },
                 }}
-                name="application_link"
+                value={schoolYear}
+                name="school_year"
               />
             </Box>
           </Box>
@@ -399,10 +446,11 @@ const ScholarshipEditorPage = () => {
                 background: '#fff',
                 boxShadow: 3,
               }}
+              value={status}
               name="status"
             >
-              <MenuItem value={'Active'}>Active</MenuItem>
-              <MenuItem value={'Inactive'}>Inactive</MenuItem>
+              <MenuItem value={'active'}>Active</MenuItem>
+              <MenuItem value={'inactive'}>Inactive</MenuItem>
             </Select>
           </Box>
           <Button
