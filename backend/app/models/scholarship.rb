@@ -15,6 +15,7 @@ class Scholarship < ApplicationRecord
   validates :school_year, presence: true
   validates :scholarship_provider, presence: true
   validates :scholarship_type, presence: true
+  validates :status, presence: true
   validate :valid_dates
 
   scope :filtered, ->(params) {

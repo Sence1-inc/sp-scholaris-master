@@ -31,7 +31,8 @@ module Api
             :start_date, 
             :due_date,
             :application_link,
-            :school_year, 
+            :school_year,
+            :status
           ],
           :include => {
             scholarship_provider: { 
@@ -44,6 +45,12 @@ module Api
                   only: [:id, :description]
                 }
               }
+            },
+            scholarship_type: { 
+              only: [
+                :id, 
+                :scholarship_type_name
+              ]
             },
             requirements: { 
               only: [
