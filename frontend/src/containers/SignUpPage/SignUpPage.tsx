@@ -26,6 +26,8 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     snackBarMessage: '',
   })
 
+  const [open, setOpen] = useState(false)
+
   const navigate = useNavigate()
 
   function handleEmail(inputValue: string) {

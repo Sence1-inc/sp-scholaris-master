@@ -16,8 +16,8 @@ interface SignInPageProps {}
 
 const SignInPage: React.FC<SignInPageProps> = () => {
   const [userCredentials, setUserCredentials] = useState({
-    email: '',
-    password: '',
+    email: 'Enter your email',
+    password: 'Password',
   })
 
   const [open, setOpen] = useState(false)
