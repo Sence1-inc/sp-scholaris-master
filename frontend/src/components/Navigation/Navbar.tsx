@@ -168,7 +168,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
 
   return (
     <Box sx={{ display: 'flex' }}>
-      <AppBar component="nav" sx={{ position: 'relative', padding: '20px' }}>
+      <AppBar component="nav" sx={{ position: 'relative', padding: '8px' }}>
         <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>
             <Link to="/">
