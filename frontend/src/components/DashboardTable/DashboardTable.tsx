@@ -64,6 +64,11 @@ export default function DataTable() {
         }}
         pageSizeOptions={[5, 10]}
         checkboxSelection
+        sx={{
+          borderRadius: "16px",
+          fontFamily: "Outfit",
+          fontSize: "20px"
+        }}
       />
     </div>
   );

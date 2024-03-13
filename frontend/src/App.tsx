@@ -20,6 +20,7 @@ import SignInPage from './containers/SignInPage/SignInPage'
 import SignUpPage from './containers/SignUpPage/SignUpPage'
 import VerifyEmailPage from './containers/VerifyEmailPage/VerifyEmailPage'
 import AddScholarshipViaCSVPage from './containers/AddScholarshipViaCSVPage/AddScholarshipViaCSVPage'
+import ProviderDashboardPage from './containers/ProviderDashboardPage/ProviderDashboardPage'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -31,6 +32,7 @@ const StudentRoutes: React.FC = () => (
 
 const ProviderRoutes: React.FC = () => (
   <Routes>
+    <Route path="/dashboard" element={<ProviderDashboardPage />} />
     <Route path="/" element={<TeaserProvider />} />
     <Route path="survey" element={<SurveyPage user_type="provider" />} />
     <Route path="*" element={<PageNotFoundPage />} />
