@@ -1,6 +1,8 @@
 import { useState, Fragment } from 'react';
-import { Button, Container, TextField, Typography, Link, Snackbar, IconButton } from '@mui/material'
+import { Button, Container, TextField, Typography, Snackbar, IconButton } from '@mui/material'
 import { useNavigate } from 'react-router-dom';
+import { Link as MuiLink } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
 import CloseIcon from '@mui/icons-material/Close';
 
 interface SignInPageProps{
@@ -9,8 +11,8 @@ interface SignInPageProps{
 
 const SignInPage: React.FC<SignInPageProps> = ( ) => {
   const [userCredentials, setUserCredentials] = useState({
-    email: 'Enter your email',
-    password: 'Password'
+    email: '',
+    password: ''
   })
 
   const [open, setOpen] = useState(false);
@@ -146,7 +148,7 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
                   }}
             />
             <Container sx={{display: 'flex', justifyContent: 'space-between', padding: '0 !important'}}>
-        <Link
+        <MuiLink
             underline='none'
             sx={{
             cursor: 'pointer',
@@ -160,8 +162,10 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
           
         >
           Forgot password?
-        </Link>
-        <Link
+        </MuiLink>
+        <MuiLink
+            component={RouterLink}
+            to="/sign-up"
             underline='none'
             variant="body1"
             sx={{
@@ -171,10 +175,9 @@ const SignInPage: React.FC<SignInPageProps> = ( ) => {
                 marginBottom: '10px',
                 textAlign: 'start',
             }}
-            onClick={() => navigate('/sign-in')}
         >
           No account yet? Sign-up here
-        </Link>
+        </MuiLink>
             </Container>
 
             <Typography

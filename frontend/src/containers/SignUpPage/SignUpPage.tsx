@@ -1,7 +1,9 @@
 import { useState, Fragment } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Button, Container, TextField, Typography, Link,  Snackbar, IconButton  } from '@mui/material'
+import { Button, Container, TextField, Typography,  Snackbar, IconButton  } from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
+import { Link as MuiLink } from '@mui/material'
+import { Link as RouterLink } from 'react-router-dom'
 
 interface SignUpPageProps{
 
@@ -9,12 +11,16 @@ interface SignUpPageProps{
 
 const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
   const [userCredentials, setUserCredentials] = useState({
-    email: 'Enter your email',
-    password: 'Password',
-    password2: 'Password2'
+    email: '',
+    password: '',
+    password2: '',
+
   })
 
-  const [open, setOpen] = useState(false);
+  const [snackBarState, setSnackBarState] = useState({
+    state: false,
+    snackBarMessage: ''
+  });
 
   const navigate = useNavigate()
 
@@ -45,16 +51,38 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
     const isPasswordValid = userCredentials.password.length > 6
     const isPassword2 = userCredentials.password === userCredentials.password2
 
-    // if(!isValidEmail){
-    //   setOpen(prevState => )
-    // }
-    //   navigate('/verify-email')
+    if (!isValidEmail || !userCredentials.email) {
+      setSnackBarState(prevState => ({
+        ...prevState,
+        state: true,
+        snackBarMessage: 'Please provide a valid email address.'
+      }))}
+      else if(!isPasswordValid){
+        setSnackBarState(prevState => ({
+          ...prevState,
+          state: true,
+          snackBarMessage: 'Please provide a valid password.'
+        }))
+      }
+      else if(!isPassword2){
+        setSnackBarState(prevState => ({
+          ...prevState,
+          state: true,
+          snackBarMessage: 'Password does not match.'
+        }))
+      }
+     else{
+      navigate('/verify-email')
+     }
 
   }
 
 
   const handleClose = (event: React.SyntheticEvent | Event) => {
-    setOpen(false);
+    setSnackBarState(prevState => ({
+      ...prevState,
+      state: false
+    }))
   };
 
   const action = (
@@ -86,10 +114,10 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                 Sign-up
             </Typography>
             <Snackbar
-              open={open}
+              open={snackBarState.state}
               autoHideDuration={6000}
               onClose={handleClose}
-              message="Password and email does not match"
+              message={snackBarState.snackBarMessage}
               action={action}
             />
             <TextField
@@ -99,7 +127,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                 label="Email address"
                 placeholder='Input your email'
                 sx={{
-                    backgroundColor: '#F3F3F3',
+                    backgroundColor: '#fff',
                     borderRadius: '16px',
                     marginTop: '35px',
                     width: '100%',
@@ -130,7 +158,7 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                 label="Password"
                 placeholder='Input your password'
                 sx={{
-                    backgroundColor: '#F3F3F3',
+                    backgroundColor: '#fff',
                     borderRadius: '16px',
                     marginTop: '35px',
                     width: '100%',
@@ -157,11 +185,11 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
              <TextField
                 onChange={(e) => handlePassword2(e.target.value)}
                 type='password'
-                id='paswword2'
-                label="Password"
+                id='password2'
+                label="Confirm Password"
                 placeholder='Input your password'
                 sx={{
-                    backgroundColor: '#F3F3F3',
+                    backgroundColor: '#fff',
                     borderRadius: '16px',
                     marginTop: '35px',
                     width: '100%',
@@ -185,19 +213,23 @@ const SignUpPage: React.FC<SignUpPageProps> = ( ) => {
                     shrink: false
                   }}
             />
-        <Link
+        <MuiLink
+          component={RouterLink}
+          to="/sign-in"
           underline='none'
           variant="body1"
           sx={{
               cursor: 'pointer',
               fontSize: '16px',
               color: '#767676',
-              marginBottom: '10px',
               textAlign: 'center',
           }}
         >
           Already have and account? Sign-in here
-        </Link>
+        </MuiLink>
+        <Typography sx={{textAlign: 'center', color: '#767676', fontSize: '24px', textDecoration: 'underline'}}>
+          OR
+        </Typography>
           <Button
           onClick={handleSignUp}
         variant="contained"
