@@ -58,6 +58,14 @@ const App: React.FC = () => {
             path="/scholarships/:id"
             element={<ScholarshipDetailsPage isASection={false} />}
           />
+          <Route
+            path="/scholarships/:id/update"
+            element={<ScholarshipEditorPage />}
+          />
+          <Route
+            path="/scholarships/create"
+            element={<ScholarshipEditorPage />}
+          />
           <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
           <Route
             path="/terms-and-conditions"
