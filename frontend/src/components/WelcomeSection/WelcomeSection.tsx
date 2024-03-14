@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material'
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import PrimaryButton from '../Button/PrimaryButton'
@@ -18,13 +19,13 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
   return (
     <section className="section__welcome">
       <div className="container">
-        <h2 className="mb-2">
+        <Typography variant="h2" sx={{ mb: 2 }}>
           Welcome to <span className="color-secondary">Scholaris</span>
-        </h2>
-        <div dangerouslySetInnerHTML={{ __html: subheader as string }}></div>
-        <div
-          dangerouslySetInnerHTML={{ __html: third_level_header as string }}
-        ></div>
+        </Typography>
+        {subheader && <Typography variant="h3">{subheader}</Typography>}
+        {third_level_header && (
+          <Typography variant="h4">{third_level_header}</Typography>
+        )}
         <div className="section__buttons">
           <PrimaryButton
             url={

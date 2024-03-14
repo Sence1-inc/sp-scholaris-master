@@ -21,4 +21,4 @@ export const FEATURES: FeatureProps[] = [
   },
 ]
 
-export const PROVIDER_WELCOME_SUBHEADER: string = `<h3>Scholaris offers a platform that enhances the visibility of scholarship listings to aspiring scholars. We bring together Scholarship Granting Organizations and scholars in a synergistic way.</h3>`
+export const PROVIDER_WELCOME_SUBHEADER: string = `Scholaris offers a platform that enhances the visibility of scholarship listings to aspiring scholars. We bring together Scholarship Granting Organizations and scholars in a synergistic way.`

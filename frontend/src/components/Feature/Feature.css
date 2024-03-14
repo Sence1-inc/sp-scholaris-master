@@ -1,7 +1,7 @@
 .featureGuides {
   background: var(--accent-color);
   padding-top: 120px;
-  padding-bottom: 260px;
+  padding-bottom: 120px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,11 +10,11 @@
 .featureGuides .container-1040 {
   display: flex;
   flex-direction: column;
-  row-gap: 40px;
+  gap: 40px;
 }
 
 .featureGuides.studentFeatures .container-1040 {
-  row-gap: 120px;
+  gap: 120px;
 }
 
 .featureGuides.studentFeatures h2 {
@@ -24,17 +24,18 @@
 .featureGuides__feature {
   display: flex;
   column-gap: 111px;
+  width: '100%';
 }
 
 .featureGuides__feature-img {
-  max-width: 34%;
+  width: 34%;
 }
 
 .featureGuides__feature-text {
-  max-width: 535px;
+  width: 535px;
   display: flex;
   flex-direction: column;
-  row-gap: 20px;
+  gap: 20px;
 }
 
 /* .featureGuides__feature-desc {

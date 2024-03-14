@@ -1,7 +1,7 @@
 #header {
   display: block;
   width: 100%;
-  height: auto;
+  height: 85px;
   padding: 0 20px;
   margin: 0;
   background-color: var(--primary-color);

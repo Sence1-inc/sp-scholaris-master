@@ -223,7 +223,11 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
           <Box>
             <Typography
               variant="h5"
-              sx={{ fontWeight: '700', textAlign: 'center', marginTop: '20px' }}
+              sx={{
+                fontWeight: '700',
+                textAlign: 'center',
+                marginTop: '20px',
+              }}
             >
               You are currently not subscribed to our newsletter
             </Typography>

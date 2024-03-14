@@ -90,28 +90,26 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   }, [searchParams, params.params])
 
   return (
-    <>
-      <section className="search-results">
-        <div className="container-1040">
-          <Breadcrumbs />
-          <h3>Search Result</h3>
-          <Search isSection={false} />
-          {window.innerWidth > theme.breakpoints.values.md ? (
-            <Table
-              page={page}
-              hasPagination={true}
-              handleNext={handleNext}
-              handlePrevious={handlePrevious}
-              scholarships={scholarships}
-            />
-          ) : (
-            <Typography sx={{ textAlign: 'center' }}>
-              You can see the results on a larger display or switch to landscape
-              mode for better viewing.
-            </Typography>
-          )}
-        </div>
-      </section>
-    </>
+    <section className="search-results">
+      <div className="container-1040">
+        <Breadcrumbs />
+        <Typography variant="h3">Search Results</Typography>
+        <Search isSection={false} />
+        {window.innerWidth > theme.breakpoints.values.md ? (
+          <Table
+            page={page}
+            hasPagination={true}
+            handleNext={handleNext}
+            handlePrevious={handlePrevious}
+            scholarships={scholarships}
+          />
+        ) : (
+          <Typography sx={{ textAlign: 'center' }}>
+            You can see the results on a larger display or switch to landscape
+            mode for better viewing.
+          </Typography>
+        )}
+      </div>
+    </section>
   )
 }

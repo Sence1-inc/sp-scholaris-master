@@ -1,4 +1,4 @@
-import { Box, Button, Container } from '@mui/material'
+import { Box, Button, Container, Typography } from '@mui/material'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { PROVIDER_TYPE, STUDENT_TYPE } from '../../constants/constants'
@@ -10,9 +10,11 @@ const ThankYouPage: React.FC = () => {
   return (
     <Box className="content__thank-you">
       <Container className="container">
-        <h2>Thank you for your Feedback!</h2>
-        <h3>We're grateful for your feedback</h3>
-        <p>We will keep on improving our services and feature.</p>
+        <Typography variant="h2">Thank you for your Feedback!</Typography>
+        <Typography variant="h3">We're grateful for your feedback</Typography>
+        <Typography variant="body1">
+          We will keep on improving our services and feature.
+        </Typography>
         <Button
           variant="contained"
           sx={{

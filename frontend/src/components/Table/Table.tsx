@@ -1,3 +1,4 @@
+import { Typography } from '@mui/material'
 import { format } from 'date-fns'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -24,11 +25,11 @@ export const Table: React.FC<TableProps> = ({
     <>
       <div className="search__results-container">
         <div className="search__results-header">
-          <p>Scholarship Details</p>
-          <p>Application Start Date</p>
-          <p>Application Due Date</p>
-          <p>Provider</p>
-          <p>Actions</p>
+          <Typography variant="body1">Scholarship Details</Typography>
+          <Typography variant="body1">Application Start Date</Typography>
+          <Typography variant="body1">Application Due Date</Typography>
+          <Typography variant="body1">Provider</Typography>
+          <Typography variant="body1">Actions</Typography>
         </div>
         {scholarships.length > 0 ? (
           scholarships.map((scholarship: Scholarship, index: number) => (
@@ -59,28 +60,39 @@ export const Table: React.FC<TableProps> = ({
         ) : (
           <ul>
             <li className="search__results-content">
-              <p className="search__results-item">No scholarship found.</p>
+              <Typography variant="h5">No scholarship found.</Typography>
             </li>
           </ul>
         )}
       </div>
       {hasPagination && (
         <div className="search__results-pagination">
-          <p>
+          <Typography variant="h6" sx={{ color: 'secondary.main' }}>
             Results: <span>{scholarships.length}</span>
-          </p>
-          <p className={page === 1 ? 'disabled' : ''} onClick={handlePrevious}>
+          </Typography>
+          <Typography
+            variant="h6"
+            sx={{
+              color: 'secondary.main',
+              cursor: page === 1 ? 'not-allowed' : 'pointer',
+            }}
+            {...(page && page > 1 && { onClick: handlePrevious })}
+          >
             Previous
-          </p>
-          <p>
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'secondary.main' }}>
             Page: <span>{page}</span>
-          </p>
-          <p
-            className={scholarships.length < 10 ? 'disabled' : ''}
-            onClick={handleNext}
+          </Typography>
+          <Typography
+            variant="h6"
+            sx={{
+              color: 'secondary.main',
+              cursor: scholarships.length < 10 ? 'not-allowed' : 'pointer',
+            }}
+            {...(scholarships.length >= 10 && { onClick: handleNext })}
           >
             Next
-          </p>
+          </Typography>
         </div>
       )}
     </>
