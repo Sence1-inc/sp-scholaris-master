@@ -19,6 +19,7 @@ import WelcomePage from './containers/WelcomePage/WelcomePage'
 import SignInPage from './containers/SignInPage/SignInPage'
 import SignUpPage from './containers/SignUpPage/SignUpPage'
 import VerifyEmailPage from './containers/VerifyEmailPage/VerifyEmailPage'
+import AddScholarshipViaCSVPage from './containers/AddScholarshipViaCSVPage/AddScholarshipViaCSVPage'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -75,10 +76,14 @@ const App: React.FC = () => {
             element={<TermsAndConditionsPage />}
           />
           <Route path="/thank-you" element={<ThankYouPage />} />
-          <Route path='/sign-in' element={<SignInPage/>}/>
-          <Route path='/sign-up' element={<SignUpPage/>}/>
-          <Route path='/verify-email' element={<VerifyEmailPage/>}/>
+          <Route path="/sign-in" element={<SignInPage />} />
+          <Route path="/sign-up" element={<SignUpPage />} />
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
           <Route path="*" element={<PageNotFoundPage />} />
+          <Route
+            path="/new-scholarship-csv"
+            element={<AddScholarshipViaCSVPage />}
+          />
         </Routes>
       </Box>
 
