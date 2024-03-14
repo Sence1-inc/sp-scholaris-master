@@ -256,7 +256,7 @@ const ScholarshipEditorPage = () => {
             fontWeight: '700',
           }}
         >
-          Add New Scholarship
+          {id ? 'Edit Scholarship' : 'Add New Scholarship'}
         </Typography>
 
         <Box
