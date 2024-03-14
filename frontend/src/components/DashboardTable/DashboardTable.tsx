@@ -46,9 +46,15 @@ const columns = [
 
 /* sample data - move to a separate file */
 const rows = [
-  { id: 1, scholarshipName: 'Tulong Dunong Scholarship', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "active" }, //actions are not included in the rows.
-  { id: 2, scholarshipName: 'Tulong Dunong Scholarship 2', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "active" },
-  { id: 3, scholarshipName: 'Tulong Dunong Scholarship 3', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "active" }
+  { id: 1, scholarshipName: 'Tulong Dunong Scholarship', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "Active" }, //actions are not included in the rows.
+  { id: 2, scholarshipName: 'Math and Science Scholarship', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "Active" },
+  { id: 3, scholarshipName: 'Robinsons Scholarship (Full)', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "Active" },
+  { id: 4, scholarshipName: 'Gokongwei Brothers Grant', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "Active" }, //actions are not included in the rows.
+  { id: 5, scholarshipName: 'Green Archers Scholarship Grant', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "Active" },
+  { id: 6, scholarshipName: 'Western Visayas Scholarship Grant', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "Active" },
+  { id: 7, scholarshipName: 'North Luzon Scholarship Grant', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "Active" }, //actions are not included in the rows.
+  { id: 8, scholarshipName: 'Sagip Scholarship Grant', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "Active" },
+  { id: 9, scholarshipName: 'Ayala Scholarship', startDate: new Date(2023, 12, 9), endDate: new Date(2024, 1, 10), status: "Active" }
 ];
 
 export default function DataTable() {
@@ -92,7 +98,10 @@ export default function DataTable() {
           },
           borderRadius: "16px",
           fontFamily: "Outfit",
-          fontSize: "20px"
+          fontSize: {
+            xs: "12px",
+            md: "1rem"
+          }
         }}
       />
     </div>

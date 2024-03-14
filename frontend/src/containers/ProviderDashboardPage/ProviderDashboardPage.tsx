@@ -5,8 +5,11 @@ import DashboardTable from '../../components/DashboardTable/DashboardTable'
 const ProviderDashboardPage: React.FC = () => {
   return (
     <>
-    <Container fixed sx={{
-        padding: "100px 0"
+    <Box sx={{
+        padding: {
+            xs: "100px 20px",
+            md: "100px 74px"
+        }
     }}>
         <Box component="section" 
             sx={{
@@ -18,7 +21,7 @@ const ProviderDashboardPage: React.FC = () => {
             <Link href="#" sx={{
                 fontFamily: "Open Sans",
                 fontStyle: "italic",
-                fontSize: "20",
+                fontSize: "1rem",
                 color: "#686868",
                 display: "flex",
                 alignSelf: "flex-end",
@@ -26,41 +29,61 @@ const ProviderDashboardPage: React.FC = () => {
             }}>scholarship_template.csv</Link>
         <Box sx={{ 
                 display: "flex" , 
+                flexDirection: {
+                    xs: "column",
+                    md: "row"
+                },
                 justifyContent: "space-between", 
                 width: "100%",
-                alignItems: "flex-end"
+                alignItems: "flex-start",
+                rowGap: "20px"
             }}>
             <Typography variant="h3" sx={{
                 fontFamily: "Roboto",
                 fontWeight: "700",
-                letterSpacing: "0px"
+                letterSpacing: "0px",
+                fontSize: "2.5rem",
+                display: "flex",
+                alignSelf: {
+                    xs: "flex-start",
+                    md: "flex-end"
+                }
             }}>Scholarship Dashboard</Typography>
             <Box sx={{ 
                 display: "flex" , 
+                flexDirection: {
+                    xs: "column",
+                    sm: "row"
+                },
                 justifyContent: "space-between", 
-                columnGap: "22px"
+                columnGap: "20px",
+                rowGap: "20px",
+                width: {
+                    xs: "100%",
+                    sm: "auto"
+                }
             }}>
                 <Button variant="contained" 
                     sx={{
                         fontFamily: "Open Sans",
-                        fontSize: "24px",
+                        fontSize: "1rem",
                         fontWeight: "700",
                         borderRadius: "16px",
                         backgroundColor: "#F36B3B",
                         textTransform: "none",
                         padding: "12px 20px",
-                        letterSpacing: "0px"
+                        letterSpacing: "0px",
                     }}>Add Scholarship</Button>
                 <Button variant="contained"
                     sx={{
                         fontFamily: "Open Sans",
-                        fontSize: "24px",
+                        fontSize: "1rem",
                         fontWeight: "700",
                         borderRadius: "16px",
                         backgroundColor: "#F36B3B",
                         textTransform: "none",
                         padding: "12px 20px",
-                        letterSpacing: "0px"
+                        letterSpacing: "0px",
                     }}>Add Scholarship via CSV
                     </Button>
             </Box>
@@ -69,7 +92,7 @@ const ProviderDashboardPage: React.FC = () => {
                 <DashboardTable />
             </Box>      
         </Box>
-    </Container> 
+    </Box> 
     </>
   )
 }
