@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Container, Typography } from '@mui/material';
+import { Box, Button, Container, Link, Typography } from '@mui/material';
 import DashboardTable from '../../components/DashboardTable/DashboardTable'
 
 const ProviderDashboardPage: React.FC = () => {
@@ -15,6 +15,15 @@ const ProviderDashboardPage: React.FC = () => {
                 maxWidth: "1200px",
                 rowGap: "30px"
             }}>
+            <Link href="#" sx={{
+                fontFamily: "Open Sans",
+                fontStyle: "italic",
+                fontSize: "20",
+                color: "#686868",
+                display: "flex",
+                alignSelf: "flex-end",
+                textDecorationColor: "#686868"                
+            }}>scholarship_template.csv</Link>
         <Box sx={{ 
                 display: "flex" , 
                 justifyContent: "space-between", 
