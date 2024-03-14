@@ -35,6 +35,10 @@ class Scholarship < ApplicationRecord
     results
   }
 
+  def as_json(options = {})
+    super(include: [:benefits, :eligibilities, :requirements, :scholarship_provider, :scholarship_type, :courses, :schools])
+  end
+
   private
 
   def valid_dates

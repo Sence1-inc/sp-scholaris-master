@@ -23,55 +23,7 @@ module Api
     
       # GET /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def show
-        render json: @scholarship.as_json(
-          :only => [ 
-            :id, 
-            :scholarship_name, 
-            :description,
-            :start_date, 
-            :due_date,
-            :application_link,
-            :school_year,
-            :status
-          ],
-          :include => {
-            scholarship_provider: { 
-              only: [
-                :id, 
-                :provider_name
-              ],
-              include: {
-                scholarship_provider_profile: { 
-                  only: [:id, :description]
-                }
-              }
-            },
-            scholarship_type: { 
-              only: [
-                :id, 
-                :scholarship_type_name
-              ]
-            },
-            requirements: { 
-              only: [
-                :id, 
-                :requirements_text
-              ]
-            },
-            eligibilities: { 
-              only: [
-                :id, 
-                :eligibility_text
-              ]
-            },
-            benefits: { 
-              only: [
-                :id, 
-                :benefit_name
-              ]
-            }
-          }
-        )
+        render json: @scholarship.as_json
       end
     
       # GET /api/v1/scholarships/new
@@ -86,22 +38,46 @@ module Api
       # POST /api/v1/scholarships or /api/v1/scholarships.json
       def create
         @scholarship = Scholarship.new(scholarship_params)
+        benefit_params = params[:benefits] || []
+        requirement_params = params[:requirements] || []
+        eligibility_params = params[:eligibilities] || []
 
-        @benefit = Benefit.new(benefit_name: params[:benefits])
-        @requirement = Requirement.new(requirements_text: params[:requirements])
-        @eligibility = Eligibility.new(eligibility_text: params[:eligibilities])
+        @requirements = []
+        @eligibilities = []
+        @benefits = []
+
+        benefit_params.each do |param|
+          @benefits << Benefit.new(benefit_name: param[:benefit_name])
+        end
+
+        requirement_params.each do |param|
+          @requirements << Requirement.new(requirements_text: param[:requirements_text])
+        end
+
+        eligibility_params.each do |param|
+          @eligibilities << Eligibility.new(eligibility_text: param[:eligibility_text])
+        end
 
         errors = {}
-        errors[:benefit] = @benefit.errors if @benefit.invalid?
-        errors[:requirement] = @requirement.errors if @requirement.invalid?
-        errors[:eligibility] = @eligibility.errors if @eligibility.invalid?
+        errors[:benefit] = @benefits.map { |benefit| benefit.errors } if @benefits.any? { |benefit| benefit.invalid? }
+        errors[:requirement] = @requirements.map { |requirement| requirement.errors } if @requirements.any? { |requirement| requirement.invalid? }
+        errors[:eligibility] = @eligibilities.map { |eligibility| eligibility.errors } if @eligibilities.any? { |eligibility| eligibility.invalid? }
+
 
         if errors.empty?
           if @scholarship.save
             
-            @scholarship.benefits << @benefit
-            @scholarship.requirements << @requirement
-            @scholarship.eligibilities << @eligibility
+            @benefits.each do |benefit|
+              @scholarship.benefits << benefit
+            end
+
+            @requirements.each do |requirement|
+              @scholarship.requirements << requirement
+            end
+
+            @eligibilities.each do |eligibility|
+              @scholarship.eligibilities << eligibility
+            end
           
             render json: { "message": "Scholarship was successfully created." }, status: :created
           else
@@ -115,33 +91,70 @@ module Api
       # PATCH/PUT /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def update
         @benefit_errors = {}
-        @benefits = @scholarship.benefits
-        @benefits.each do |benefit|
+        params[:benefits].each do |benefit_params|
+          if benefit_params[:id].present?
+            benefit = @scholarship.benefits.find_by(id: benefit_params[:id])
+          end
+          puts "THIS"
           puts benefit
-          benefit.update(benefit_name: params[:benefits])
-          @benefit_errors[benefit.id] = benefit.errors.full_messages unless benefit.errors.empty?
+          if benefit
+            benefit.update!(benefit_name: benefit_params[:benefit_name])
+            p "wew"
+            puts benefit.errors.full_messages
+            @benefit_errors[benefit.id] = benefit.errors.full_messages unless benefit.errors.empty?
+          else
+            benefit = @scholarship.benefits.build(benefit_name: benefit_params[:benefit_name])
+            if benefit.save
+              @scholarship.benefits << benefit
+            else
+              @benefit_errors[benefit.id] = benefit.errors.full_messages
+            end
+          end
         end
 
         @requirement_errors = {}
-        @requirements = @scholarship.requirements
-        @requirements.each do |requirement|
-          requirement.update(requirements_text: params[:requirements])
-          @requirement_errors[requirement.id] = requirement.errors.full_messages unless requirement.errors.empty?
+        params[:requirements].each do |requirement_params|
+          if requirement_params[:id].present?
+            requirement = @scholarship.requirements.find_by(id: requirement_params[:id])
+          end
+
+          if requirement
+            requirement.update!(requirements_text: requirement_params[:requirements_text])
+            @requirement_errors[requirement.id] = requirement.errors.full_messages unless requirement.errors.empty?
+          else
+            requirement = @scholarship.requirements.build(requirements_text: requirement_params[:requirements_text])
+            if requirement.save
+              @scholarship.requirements << requirement
+            else
+              @requirement_errors[requirement.id] = requirement.errors.full_messages
+            end
+          end
         end
-        
 
         @eligibility_errors = {}
-        @eligibilities = @scholarship.eligibilities
-        @eligibilities.each do |eligibility|
-          eligibility.update(eligibility_text: params[:eligibilities])
-          @eligibility_errors[eligibility.id] = eligibility.errors.full_messages unless eligibility.errors.empty?
+        params[:eligibilities].each do |eligibility_params|
+          if eligibility_params[:id].present?
+            eligibility = @scholarship.eligibilities.find_by(id: eligibility_params[:id])
+          end
+
+          if eligibility
+            eligibility.update!(eligibility_text: eligibility_params[:eligibility_text])
+            @eligibility_errors[eligibility.id] = eligibility.errors.full_messages unless eligibility.errors.empty?
+          else
+            eligibility = @scholarship.eligibilities.build(eligibility_text: eligibility_params[:eligibility_text])
+            if eligibility.save
+              @scholarship.eligibilities << eligibility
+            else
+              @eligibility_errors[eligibility.id] = eligibility.errors.full_messages
+            end
+          end
         end
 
         errors = {}
-        errors[:benefit] = @benefit_errors.first unless @benefit_errors.empty?
-        errors[:requirement] = @requirement_errors.first unless @requirement_errors.empty?
-        errors[:eligibility] = @eligibility_errors.first unless @eligibility_errors.empty?
-
+        errors[:benefits] = @benefit_errors if @benefit_errors.is_a?(Hash) && !@benefit_errors.empty?
+        errors[:requirements] = @requirement_errors if @requirement_errors.is_a?(Hash) && !@requirement_errors.empty?
+        errors[:eligibilities] = @eligibility_errors if @eligibility_errors.is_a?(Hash) && !@eligibility_errors.empty?
+        
         if errors.empty?
           if Scholarship.is_soft_deleted(@scholarship) 
             if @scholarship.update(scholarship_params)
