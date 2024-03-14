@@ -8,6 +8,7 @@ import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage'
 import { ScholarshipDetailsPage } from './containers/ScholarshipDetailsPage/ScholarshipDetailsPage'
+import ScholarshipEditorPage from './containers/ScholarshipEditorPage/ScholarshipEditorPage'
 import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsPage'
 import SurveyPage from './containers/SurveyPage/SurveyPage'
 import TeaserProvider from './containers/TeaserPage/TeaserProvider'
@@ -59,6 +60,14 @@ const App: React.FC = () => {
           <Route
             path="/scholarships/:id"
             element={<ScholarshipDetailsPage isASection={false} />}
+          />
+          <Route
+            path="/scholarships/:id/update"
+            element={<ScholarshipEditorPage />}
+          />
+          <Route
+            path="/scholarships/create"
+            element={<ScholarshipEditorPage />}
           />
           <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
           <Route

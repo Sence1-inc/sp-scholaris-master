@@ -8,12 +8,14 @@ class Scholarship < ApplicationRecord
   has_and_belongs_to_many :eligibilities, join_table: "scholarship_eligibilities"
 
   validates :scholarship_name, presence: true
+  validates :description, presence: true
   validates :start_date, presence: true
   validates :due_date, presence: true
   validates :application_link, presence: true
   validates :school_year, presence: true
   validates :scholarship_provider, presence: true
   validates :scholarship_type, presence: true
+  validates :status, presence: true
   validate :valid_dates
 
   scope :filtered, ->(params) {
@@ -32,6 +34,10 @@ class Scholarship < ApplicationRecord
 
     results
   }
+
+  def as_json(options = {})
+    super(include: [:benefits, :eligibilities, :requirements, :scholarship_provider, :scholarship_type, :courses, :schools])
+  end
 
   private
 

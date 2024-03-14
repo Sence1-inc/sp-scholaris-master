@@ -112,6 +112,7 @@ const theme: Theme = createTheme({
           '& fieldset': { border: 'none' },
           border: '1px solid var(--primary-color)',
           boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
+          backgroundColor: 'white',
         },
       },
     },
