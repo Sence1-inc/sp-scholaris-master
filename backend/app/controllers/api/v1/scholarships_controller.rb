@@ -174,7 +174,7 @@ module Api
       def destroy
         if Scholarship.is_soft_deleted(@scholarship)
           Scholarship.soft_delete(@scholarship)
-          
+
           @scholarship.benefits.each do |benefit|
             Benefit.soft_delete(benefit)
           end
