@@ -233,8 +233,7 @@ const ScholarshipEditorPage = () => {
       <Container sx={{ padding: { sm: '60px 100px', lg: '120px' } }}>
         <Box p={'50px 0 0'}>
           <Link
-            href="#"
-            target="_blank"
+            href="/provider/dashboard"
             sx={{
               fontFamily: 'Roboto',
               fontSize: '36px',
