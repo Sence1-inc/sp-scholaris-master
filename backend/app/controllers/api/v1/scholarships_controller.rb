@@ -9,7 +9,10 @@ module Api
         @scholarships = Scholarship.filtered(params)
     
         if @scholarships.present?
-          @scholarships = @scholarships.page(params[:page]).per(params[:limit] || 10)
+          if params[:limit].present?
+            @scholarships = @scholarships.page(params[:page]).per(params[:limit])
+          end
+          
           render json: @scholarships.as_json(
             :only => [:id, :scholarship_name, :start_date, :due_date],
             :include => {
@@ -95,12 +98,10 @@ module Api
           if benefit_params[:id].present?
             benefit = @scholarship.benefits.find_by(id: benefit_params[:id])
           end
-          puts "THIS"
-          puts benefit
+
           if benefit
             benefit.update!(benefit_name: benefit_params[:benefit_name])
-            p "wew"
-            puts benefit.errors.full_messages
+
             @benefit_errors[benefit.id] = benefit.errors.full_messages unless benefit.errors.empty?
           else
             benefit = @scholarship.benefits.build(benefit_name: benefit_params[:benefit_name])
