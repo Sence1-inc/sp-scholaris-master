@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       resources :survey_responses
       resources :scholarship_provider_profiles
       resources :scholarship_types
+      resources :uploads
     end
   end
 end

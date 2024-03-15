@@ -39,56 +39,71 @@ module Api
       end
     
       # POST /api/v1/scholarships or /api/v1/scholarships.json
-      def create
-        @scholarship = Scholarship.new(scholarship_params)
-        benefit_params = params[:benefits] || []
-        requirement_params = params[:requirements] || []
-        eligibility_params = params[:eligibilities] || []
+      # def create
+      #   @scholarship = Scholarship.new(scholarship_params)
+      #   benefit_params = params[:benefits] || []
+      #   requirement_params = params[:requirements] || []
+      #   eligibility_params = params[:eligibilities] || []
 
-        @requirements = []
-        @eligibilities = []
-        @benefits = []
+        # @requirements = []
+        # @eligibilities = []
+        # @benefits = []
 
-        benefit_params.each do |param|
-          @benefits << Benefit.new(benefit_name: param[:benefit_name])
-        end
+        # benefit_params.each do |param|
+        #   @benefits << Benefit.new(benefit_name: param[:benefit_name])
+        # end
 
-        requirement_params.each do |param|
-          @requirements << Requirement.new(requirements_text: param[:requirements_text])
-        end
+        # requirement_params.each do |param|
+        #   @requirements << Requirement.new(requirements_text: param[:requirements_text])
+        # end
 
-        eligibility_params.each do |param|
-          @eligibilities << Eligibility.new(eligibility_text: param[:eligibility_text])
-        end
+        # eligibility_params.each do |param|
+        #   @eligibilities << Eligibility.new(eligibility_text: param[:eligibility_text])
+        # end
 
-        errors = {}
-        errors[:benefit] = @benefits.map { |benefit| benefit.errors } if @benefits.any? { |benefit| benefit.invalid? }
-        errors[:requirement] = @requirements.map { |requirement| requirement.errors } if @requirements.any? { |requirement| requirement.invalid? }
-        errors[:eligibility] = @eligibilities.map { |eligibility| eligibility.errors } if @eligibilities.any? { |eligibility| eligibility.invalid? }
+      #   errors = {}
+      #   errors[:benefit] = @benefits.map { |benefit| benefit.errors } if @benefits.any? { |benefit| benefit.invalid? }
+      #   errors[:requirement] = @requirements.map { |requirement| requirement.errors } if @requirements.any? { |requirement| requirement.invalid? }
+      #   errors[:eligibility] = @eligibilities.map { |eligibility| eligibility.errors } if @eligibilities.any? { |eligibility| eligibility.invalid? }
 
 
-        if errors.empty?
-          if @scholarship.save
+      #   if errors.empty?
+      #     if @scholarship.save
             
-            @benefits.each do |benefit|
-              @scholarship.benefits << benefit
-            end
+      #       @benefits.each do |benefit|
+      #         @scholarship.benefits << benefit
+      #       end
 
-            @requirements.each do |requirement|
-              @scholarship.requirements << requirement
-            end
+      #       @requirements.each do |requirement|
+      #         @scholarship.requirements << requirement
+      #       end
 
-            @eligibilities.each do |eligibility|
-              @scholarship.eligibilities << eligibility
-            end
+      #       @eligibilities.each do |eligibility|
+      #         @scholarship.eligibilities << eligibility
+      #       end
           
-            render json: { "message": "Scholarship was successfully created." }, status: :created
-          else
-            render json: @scholarship.errors, status: :unprocessable_entity
-          end
-        else
-          render json: errors, status: :unprocessable_entity
-        end
+      #       render json: { "message": "Scholarship was successfully created." }, status: :created
+      #     else
+      #       render json: @scholarship.errors, status: :unprocessable_entity
+      #     end
+      #   else
+      #     render json: errors, status: :unprocessable_entity
+      #   end
+      # end
+
+      def create
+        @scholarship_params = scholarship_params
+
+        puts "params.dig(:eligibilities)"
+        puts params.dig(:eligibilities)
+
+        # @scholarship_params[:eligibilities] = params[:eligibilities]
+        # @scholarship_params[:benefits] = params[:benefits]
+        # @scholarship_params[:requirements] = params[:requirements]
+        puts @scholarship_params
+        scholarship_service = ScholarshipService.new(@scholarship_params)
+        result = scholarship_service.create_scholarship
+        render json: result, status: result.key?(:errors) ? :unprocessable_entity : :created
       end
     
       # PATCH/PUT /api/v1/scholarships/1 or /api/v1/scholarships/1.json
@@ -101,7 +116,6 @@ module Api
 
           if benefit
             benefit.update!(benefit_name: benefit_params[:benefit_name])
-
             @benefit_errors[benefit.id] = benefit.errors.full_messages unless benefit.errors.empty?
           else
             benefit = @scholarship.benefits.build(benefit_name: benefit_params[:benefit_name])
@@ -199,8 +213,29 @@ module Api
     
         # Only allow a list of trusted parameters through.
         def scholarship_params
-          params.require(:scholarship).permit(:scholarship_name, :status, :description, :start_date, :due_date, :application_link, :school_year, :scholarship_provider_id, :requirements, :eligibilities, :scholarship_type_id, :benefits)
+          params.require(:scholarship).permit(
+            :scholarship_name, 
+            :status, 
+            :description, 
+            :start_date, 
+            :due_date, 
+            :application_link, 
+            :school_year, 
+            :scholarship_provider_id, 
+            :scholarship_type_id,
+            {requirements: [:id, :requirements_text]},
+            {eligibilities: [:id, :eligibility]},
+            {benefits: [:id, :benefit_name]}
+          )
         end
+
+        # def other_params
+        #   params.permit(
+            # {requirements: [:id, :requirements_text]},
+            # {eligibilities: [:id, :eligibility]},
+            # {benefits: [:id, :benefit_name]}
+        #   )
+        # end
     end
   end
 end
