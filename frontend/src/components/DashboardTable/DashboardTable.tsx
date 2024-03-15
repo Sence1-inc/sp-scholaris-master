@@ -37,6 +37,7 @@ export default function DataTable() {
 
   useEffect(() => {
     getScholarships(false)
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
