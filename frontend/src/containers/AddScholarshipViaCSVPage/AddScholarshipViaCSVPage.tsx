@@ -9,6 +9,8 @@ import {
 } from '@mui/material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
+import primaryButtonStyle from '../../styles/theme'
+
 
 const AddScholarshipViaCSVPage: React.FC = () => {
     return (
@@ -82,72 +84,86 @@ const AddScholarshipViaCSVPage: React.FC = () => {
                                 scholarship_template.csv
                             </Typography>
                         </Box>
-                            <form>
-                                    <TextField
-                                        sx={{
-                                            width: '100%',
-                                            margin: '20px 0',
-                                            padding: '20px 0',
-                                            "& fieldset": { border: 'none' },
-                                            borderWidth: "2px",
-                                            borderStyle: "dashed",
-                                            borderRadius: '16px',
-                                            background: '#fff',
-                                            textAlign: 'center'
-                                        }}
-                                    
-                                    type="file" />
-                                    <Button variant="contained" color="primary" component="span"
-                                        sx={{
-                                            width: '100%',
-                                            borderRadius: '16px',
-                                            padding: '20px 30px',
-                                            
-                                            background: '#F36B3B',
-                                            fontFamily: 'Open Sans',
-                                            fontSize: '24px',
-                                            fontWeight: '700'
-                                        }}
-                                    >
-                                        Save Scholarship
-                                    </Button>
-                                    <Box
-                                        display={'flex'}
-                                        justifyContent={'flex-end'}
-                                        p={'20px 0 0'}
-                                    >
-                                        <Typography
-                                            sx={{
-                                                color: '#1E3050',
-                                                marginRight: '10px',
-                                                fontFamily: 'Open Sans',
-                                                fontSize: '20px',
-                                                fontWeight: '700'
-                                            }}
-                                        >  
-                                            Count: 2 |
-                                        </Typography>
-                                        <Typography
-                                            sx={{
-                                                color: '#F50F0F',
-                                                marginRight: '10px',
-                                                fontSize: '20px',
-                                                fontWeight: '700'
-                                            }}
-                                        >  
-                                            Error: 1
-                                        </Typography>
-                                        <Typography
-                                            sx={{
-                                                color: '#1E3050',
-                                                fontSize: '20px',
-                                                fontWeight: '700'
-                                            }}
-                                        >  
-                                           | Normal: 1
-                                        </Typography>
-                                    </Box>
-                            </form>
+                        <Box
+                            sx={{
+                                margin: '20px 0',
+                                padding: '20px 0',
+                                borderWidth: '2px',
+                                borderStyle: 'dashed',
+                                borderRadius: '16px',
+                                background: '#fff',
+                                textAlign: 'center',
+                                position: 'relative',
+                                overflow: 'hidden',
+                                cursor: 'pointer',
+                                '& input': {
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                width: '100%',
+                                height: '100%',
+                                opacity: 0,
+                                cursor: 'pointer',
+                                },
+                            }}
+                            >
+                            <input type="file" />
+                            <Typography
+                                variant="body1"
+                                sx={{
+                                display: 'flex',
+                                flexDirection: 'row',
+                                alignItems: 'flex-end',
+                                justifyContent: 'center',
+                                }}
+                            >
+                                <InsertDriveFileIcon /> <span>Upload File</span>
+                            </Typography>
+                            </Box>
+                            <Button
+                                variant="contained"
+                                component="span"
+                                sx={primaryButtonStyle}
+                                fullWidth
+                            >
+                            Save Scholarship
+                            </Button>
+                            <Box
+                                display={'flex'}
+                                justifyContent={'flex-end'}
+                                p={'20px 0 0'}
+                            >
+                                <Typography
+                                    sx={{
+                                        color: '#1E3050',
+                                        marginRight: '10px',
+                                        fontFamily: 'Open Sans',
+                                        fontSize: '20px',
+                                        fontWeight: '700'
+                                    }}
+                                >  
+                                    Count: 2 |
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        color: '#F50F0F',
+                                        marginRight: '10px',
+                                        fontSize: '20px',
+                                        fontWeight: '700'
+                                    }}
+                                >  
+                                    Error: 1
+                                </Typography>
+                                <Typography
+                                    sx={{
+                                        color: '#1E3050',
+                                        fontSize: '20px',
+                                        fontWeight: '700'
+                                    }}
+                                >  
+                                    | Normal: 1
+                                </Typography>
+                            </Box>
                     </Box>
 
                 </Box>
