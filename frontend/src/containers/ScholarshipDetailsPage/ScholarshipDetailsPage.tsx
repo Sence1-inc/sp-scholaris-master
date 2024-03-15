@@ -28,8 +28,7 @@ export const ScholarshipDetailsPage: React.FC<
 
   useEffect(() => {
     getScholarshipData(id)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [id])
 
   useEffect(() => {
     setScholarshipData(result.scholarshipData)
@@ -148,7 +147,7 @@ export const ScholarshipDetailsPage: React.FC<
                   <p>
                     {
                       scholarshipData.scholarship_provider
-                        .scholarship_provider_profile.description
+                        .scholarship_provider_profile?.description
                     }
                   </p>
                   <div className="details-section">
