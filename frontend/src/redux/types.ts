@@ -7,6 +7,7 @@ export type Scholarship = {
     id: number
     provider_name: string
   }
+  status: string
 }
 
 export type ScholarshipData = {

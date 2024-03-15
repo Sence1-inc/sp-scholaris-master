@@ -5,21 +5,22 @@ import Disclaimer from './components/Disclaimer/Disclaimer'
 import Footer from './components/Footer/Footer'
 import Navbar from './components/Navigation/Navbar'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
+import AddScholarshipViaCSVPage from './containers/AddScholarshipViaCSVPage/AddScholarshipViaCSVPage'
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage'
+import ProviderDashboardPage from './containers/ProviderDashboardPage/ProviderDashboardPage'
 import { ScholarshipDetailsPage } from './containers/ScholarshipDetailsPage/ScholarshipDetailsPage'
 import ScholarshipEditorPage from './containers/ScholarshipEditorPage/ScholarshipEditorPage'
 import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsPage'
+import SignInPage from './containers/SignInPage/SignInPage'
+import SignUpPage from './containers/SignUpPage/SignUpPage'
 import SurveyPage from './containers/SurveyPage/SurveyPage'
 import TeaserProvider from './containers/TeaserPage/TeaserProvider'
 import TeaserStudent from './containers/TeaserPage/TeaserStudent'
 import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage'
 import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
-import WelcomePage from './containers/WelcomePage/WelcomePage'
-import SignInPage from './containers/SignInPage/SignInPage'
-import SignUpPage from './containers/SignUpPage/SignUpPage'
 import VerifyEmailPage from './containers/VerifyEmailPage/VerifyEmailPage'
-import AddScholarshipViaCSVPage from './containers/AddScholarshipViaCSVPage/AddScholarshipViaCSVPage'
+import WelcomePage from './containers/WelcomePage/WelcomePage'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -31,6 +32,7 @@ const StudentRoutes: React.FC = () => (
 
 const ProviderRoutes: React.FC = () => (
   <Routes>
+    <Route path="/dashboard" element={<ProviderDashboardPage />} />
     <Route path="/" element={<TeaserProvider />} />
     <Route path="survey" element={<SurveyPage user_type="provider" />} />
     <Route path="*" element={<PageNotFoundPage />} />

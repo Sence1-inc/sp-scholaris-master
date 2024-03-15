@@ -174,6 +174,16 @@ module Api
       def destroy
         if Scholarship.is_soft_deleted(@scholarship)
           Scholarship.soft_delete(@scholarship)
+
+          @scholarship.benefits.each do |benefit|
+            Benefit.soft_delete(benefit)
+          end
+          @scholarship.requirements.each do |requirement|
+            Requirement.soft_delete(requirement)
+          end
+          @scholarship.eligibilities.each do |eligibility|
+            Eligibility.soft_delete(eligibility)
+          end
           render json: {message: "Scholarship deleted.", status: :ok}
         else
           render json: {message: "Unable to delete scholarship", status: :unprocessable_entity}, status: 422

@@ -101,7 +101,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             <Typography
               variant="body1"
               component={Link}
-              to="/dashboard"
+              to="/provider/dashboard"
               sx={{ color: 'common.white', textDecoration: 'none' }}
             >
               Dashboard
