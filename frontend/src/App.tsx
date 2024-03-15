@@ -81,7 +81,7 @@ const App: React.FC = () => {
           <Route path="/verify-email" element={<VerifyEmailPage />} />
           <Route path="*" element={<PageNotFoundPage />} />
           <Route
-            path="/new-scholarship-csv"
+            path="/scholarships/create/upload"
             element={<AddScholarshipViaCSVPage />}
           />
         </Routes>
