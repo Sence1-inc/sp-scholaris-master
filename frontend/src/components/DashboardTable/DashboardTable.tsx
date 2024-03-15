@@ -32,6 +32,7 @@ export default function DataTable() {
   const data: any = useAppSelector((state) => state.scholarships)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [selectedRow, setSelectedRow] = useState<number>(0)
   const [successMessage, setSuccessMessage] = useState<string>('')
 
@@ -39,6 +40,14 @@ export default function DataTable() {
     getScholarships(false)
     // eslint-disable-next-line
   }, [])
+
+  useEffect(() => {
+    if (data.scholarships.length > 0) {
+      setIsLoading(false)
+    } else {
+      setIsLoading(true)
+    }
+  }, [data])
 
   useEffect(() => {
     if (data.scholarships) {
@@ -168,6 +177,7 @@ export default function DataTable() {
         }}
         pageSizeOptions={[5, 10]}
         checkboxSelection
+        loading={isLoading}
         sx={{
           '.MuiDataGrid-root': {
             border: 'none',
