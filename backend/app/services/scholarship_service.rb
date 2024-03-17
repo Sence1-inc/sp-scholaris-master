@@ -9,8 +9,6 @@ class ScholarshipService
   end
 
   def create_scholarship
-    puts "tangina"
-    puts scholarship_params
     @scholarship = Scholarship.new(scholarship_params)
     if save_scholarship_and_associations
       { message: 'Scholarship was successfully created.' }
@@ -32,14 +30,11 @@ class ScholarshipService
   end
 
   def build_associations
-    build_benefits
-    build_requirements
-    build_eligibilities
     save_associations
   end
 
   def build_requirements
-    @requirements = scholarship_params[:requirements_attributes]&.map do |_, param|
+    @requirements = scholarship_params[:requirements]&.map do |_, param|
       Requirement.new(requirements_text: param[:requirements_text])
     end
   end
