@@ -21,7 +21,7 @@ class Scholarship < ApplicationRecord
   validate :valid_dates
 
   scope :filtered, ->(params) {
-    results = all
+    results = all.where(deleted_at: nil)
     results = results.includes(:courses, :schools, :scholarship_provider, :benefits)
     results = results.joins(:courses).where("courses.course_name = ?", params[:course]) if params[:course].present?
     results = results.joins(:schools).where("schools.school_name = ?", params[:school]) if params[:school].present?
