@@ -93,9 +93,6 @@ module Api
 
       def create
         @scholarship_params = scholarship_params
-        @scholarship_params[:requirements_attributes] = @scholarship_params.delete(:requirements)
-        @scholarship_params[:eligibilities_attributes] = @scholarship_params.delete(:eligibilities)
-        @scholarship_params[:benefits_attributes] = @scholarship_params.delete(:benefits)
 
         scholarship_service = ScholarshipService.new(@scholarship_params)
         result = scholarship_service.create_scholarship
@@ -221,9 +218,9 @@ module Api
             :school_year, 
             :scholarship_provider_id, 
             :scholarship_type_id,
-            requirements: [:id, :requirements_text],
-            eligibilities: [:id, :eligibility_text],
-            benefits: [:id, :benefit_name]
+            :requirements,
+            :eligibilities,
+            :benefits
           )
         end
     end
