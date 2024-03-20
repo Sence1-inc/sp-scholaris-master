@@ -1,10 +1,71 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import { Box, Container, Link, Typography } from '@mui/material'
-import React from 'react'
+import {
+  Alert,
+  Box,
+  Container,
+  Link,
+  Snackbar,
+  Typography,
+} from '@mui/material'
+import React, { useState } from 'react'
+import axiosInstance from '../../axiosConfig'
 import { PrimaryButton } from '../../styles/globalStyles'
 
 const AddScholarshipViaCSVPage: React.FC = () => {
+  const [file, setFile] = useState<File | null>(null)
+  const [successCount, setSuccessCount] = useState<number>(0)
+  const [errorsCount, setErrorsCount] = useState<number>(0)
+  const [totalCount, setTotalCount] = useState<number>(0)
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
+  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const uploadedFile = event.target.files && event.target.files[0]
+    if (uploadedFile) {
+      setFile(uploadedFile)
+    }
+  }
+
+  const handleUpload = async () => {
+    if (file) {
+      try {
+        const formData = new FormData()
+        formData.append('file', file) // Ensure that 'file' matches the expected parameter name in your Rails controller
+        const response = await axiosInstance.post(
+          '/api/v1/scholarships/upload',
+          formData,
+          {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        )
+        setIsSnackbarOpen(true)
+        const { success_count, errors_count, total_count, error } =
+          response.data
+
+        if (error) {
+          setSuccessMessage('')
+          setErrorMessage(`Error uploading file: ${error}`)
+        } else {
+          setSuccessCount(success_count)
+          setErrorsCount(errors_count)
+          setTotalCount(total_count)
+          setSuccessMessage('File successfully uploaded')
+          setErrorMessage('')
+        }
+      } catch (error) {
+        setSuccessMessage('')
+        setErrorMessage('Error uploading file')
+      }
+    } else {
+      setIsSnackbarOpen(true)
+      setErrorMessage('No file uploaded')
+    }
+  }
+
   return (
     <Container
       component="section"
@@ -12,6 +73,23 @@ const AddScholarshipViaCSVPage: React.FC = () => {
         padding: '20px 10px 50px',
       }}
     >
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={isSnackbarOpen}
+        onClose={() => setIsSnackbarOpen(false)}
+        autoHideDuration={6000}
+        key="topcenter"
+      >
+        <Alert
+          onClose={() => setIsSnackbarOpen(false)}
+          severity={successMessage ? 'success' : 'error'}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {successMessage && <Typography>{successMessage}</Typography>}
+          {errorMessage && <Typography>{errorMessage}</Typography>}
+        </Alert>
+      </Snackbar>
       <Box p={'20px 0 40px'}>
         <Link
           href="/provider/dashboard"
@@ -96,7 +174,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
               },
             }}
           >
-            <input type="file" />
+            <input type="file" onChange={handleFileChange} />
             <Typography
               variant="body1"
               sx={{
@@ -106,10 +184,11 @@ const AddScholarshipViaCSVPage: React.FC = () => {
                 color: 'primary.main',
               }}
             >
-              <InsertDriveFileIcon /> <span>Upload File</span>
+              <InsertDriveFileIcon />{' '}
+              <span>{file ? file.name : 'Upload File'}</span>
             </Typography>
           </Box>
-          <PrimaryButton variant="contained" fullWidth>
+          <PrimaryButton variant="contained" fullWidth onClick={handleUpload}>
             Save Scholarship
           </PrimaryButton>
           <Box display={'flex'} justifyContent={'flex-end'} p={'20px 0 0'}>
@@ -120,7 +199,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
                 fontWeight: '700',
               }}
             >
-              Count: 2 |
+              Count: {totalCount} |
             </Typography>
             <Typography
               color="error"
@@ -129,7 +208,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
                 fontWeight: '700',
               }}
             >
-              Error: 1
+              Error: {errorsCount}
             </Typography>
             <Typography
               sx={{
@@ -137,7 +216,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
                 fontWeight: '700',
               }}
             >
-              | Normal: 1
+              | Success: {successCount}
             </Typography>
           </Box>
         </Box>
