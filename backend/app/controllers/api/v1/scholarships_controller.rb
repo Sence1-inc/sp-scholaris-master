@@ -67,6 +67,7 @@ module Api
             file_params = data
             file_params.each do |file_param|
               begin
+                file_param[:scholarship_provider_id] = 1 # update this with the id of the authenticated user
                 scholarship_service = ScholarshipService.new(file_param)
                 result = scholarship_service.create_scholarship
                 if result.key?(:errors)
@@ -142,13 +143,12 @@ module Api
             :start_date, 
             :due_date, 
             :application_link, 
-            :school_year, 
-            :scholarship_provider_id, 
+            :school_year,
             :scholarship_type_id,
             :requirements,
             :eligibilities,
             :benefits
-          )
+          ).merge(scholarship_provider_id: 1) # update this with the id of the authenticated user
         end
     end
   end
