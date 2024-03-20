@@ -8,6 +8,7 @@ Rails.application.routes.draw do
       post 'subscribers/soft_delete', to: 'subscribers#soft_del', as: 'subscribers_soft_delete'
       post 'subscribers/restore', to: 'subscribers#restore'
       resources :scholarships
+      post 'scholarships/upload', to: 'scholarships#upload', as: 'scholarships_upload'
       resources :newsletters
       resources :benefits
       resources :schools
@@ -16,7 +17,6 @@ Rails.application.routes.draw do
       resources :survey_responses
       resources :scholarship_provider_profiles
       resources :scholarship_types
-      resources :uploads
     end
   end
 end

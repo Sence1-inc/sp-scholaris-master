@@ -37,144 +37,73 @@ module Api
       # GET /api/v1/scholarships/1/edit
       def edit
       end
-    
-      # POST /api/v1/scholarships or /api/v1/scholarships.json
-      # def create
-      #   @scholarship = Scholarship.new(scholarship_params)
-      #   benefit_params = params[:benefits] || []
-      #   requirement_params = params[:requirements] || []
-      #   eligibility_params = params[:eligibilities] || []
-
-        # @requirements = []
-        # @eligibilities = []
-        # @benefits = []
-
-        # benefit_params.each do |param|
-        #   @benefits << Benefit.new(benefit_name: param[:benefit_name])
-        # end
-
-        # requirement_params.each do |param|
-        #   @requirements << Requirement.new(requirements_text: param[:requirements_text])
-        # end
-
-        # eligibility_params.each do |param|
-        #   @eligibilities << Eligibility.new(eligibility_text: param[:eligibility_text])
-        # end
-
-      #   errors = {}
-      #   errors[:benefit] = @benefits.map { |benefit| benefit.errors } if @benefits.any? { |benefit| benefit.invalid? }
-      #   errors[:requirement] = @requirements.map { |requirement| requirement.errors } if @requirements.any? { |requirement| requirement.invalid? }
-      #   errors[:eligibility] = @eligibilities.map { |eligibility| eligibility.errors } if @eligibilities.any? { |eligibility| eligibility.invalid? }
-
-
-      #   if errors.empty?
-      #     if @scholarship.save
-            
-      #       @benefits.each do |benefit|
-      #         @scholarship.benefits << benefit
-      #       end
-
-      #       @requirements.each do |requirement|
-      #         @scholarship.requirements << requirement
-      #       end
-
-      #       @eligibilities.each do |eligibility|
-      #         @scholarship.eligibilities << eligibility
-      #       end
-          
-      #       render json: { "message": "Scholarship was successfully created." }, status: :created
-      #     else
-      #       render json: @scholarship.errors, status: :unprocessable_entity
-      #     end
-      #   else
-      #     render json: errors, status: :unprocessable_entity
-      #   end
-      # end
 
       def create
-        @scholarship_params = scholarship_params
-
-        scholarship_service = ScholarshipService.new(@scholarship_params)
+        scholarship_service = ScholarshipService.new(scholarship_params)
         result = scholarship_service.create_scholarship
         render json: result, status: result.key?(:errors) ? :unprocessable_entity : :created
+      end
+
+      def upload
+        uploaded_file = params[:file]
+        if uploaded_file.respond_to?(:read)
+          begin
+            temp_file = Tempfile.new(["uploaded_file", ".xlsx"])
+            temp_file.binmode
+            temp_file.write(uploaded_file.read)
+            temp_file.rewind
+
+            excel = Roo::Spreadsheet.open(temp_file.path, extension: :xlsx)
+            header = excel.row(1)
+            data = []
+            (2..excel.last_row).each do |i|
+              row = Hash[[header, excel.row(i)].transpose]
+              data << row
+            end
+
+            errors_count = 0
+            success_count = 0
+            results = []
+            file_params = data
+            file_params.each do |file_param|
+              begin
+                scholarship_service = ScholarshipService.new(file_param)
+                result = scholarship_service.create_scholarship
+                if result.key?(:errors)
+                  errors_count += 1
+                else
+                  success_count += 1
+                end
+                results << result
+              rescue StandardError => e
+                errors_count += 1
+                results << { errors: [e.message] }
+              end
+            end
+
+            response_status = errors_count.positive? ? :unprocessable_entity : :created
+            render json: { results: results, errors_count: errors_count, success_count: success_count, total_count: file_params.size }, status: response_status
+          ensure
+            # Ensure to close and unlink the temporary file
+            temp_file.close
+            temp_file.unlink
+          end
+        else
+          render json: { error: 'Invalid file' }, status: :unprocessable_entity
+        end
       end
     
       # PATCH/PUT /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def update
-        @benefit_errors = {}
-        params[:benefits].each do |benefit_params|
-          if benefit_params[:id].present?
-            benefit = @scholarship.benefits.find_by(id: benefit_params[:id])
-          end
+        @scholarship = Scholarship.find(params[:id])
+        scholarship_service = ScholarshipService.new(scholarship_params)
 
-          if benefit
-            benefit.update!(benefit_name: benefit_params[:benefit_name])
-            @benefit_errors[benefit.id] = benefit.errors.full_messages unless benefit.errors.empty?
-          else
-            benefit = @scholarship.benefits.build(benefit_name: benefit_params[:benefit_name])
-            if benefit.save
-              @scholarship.benefits << benefit
-            else
-              @benefit_errors[benefit.id] = benefit.errors.full_messages
-            end
-          end
-        end
+        result = scholarship_service.update_scholarship(@scholarship.id)
 
-        @requirement_errors = {}
-        params[:requirements].each do |requirement_params|
-          if requirement_params[:id].present?
-            requirement = @scholarship.requirements.find_by(id: requirement_params[:id])
-          end
-
-          if requirement
-            requirement.update!(requirements_text: requirement_params[:requirements_text])
-            @requirement_errors[requirement.id] = requirement.errors.full_messages unless requirement.errors.empty?
-          else
-            requirement = @scholarship.requirements.build(requirements_text: requirement_params[:requirements_text])
-            if requirement.save
-              @scholarship.requirements << requirement
-            else
-              @requirement_errors[requirement.id] = requirement.errors.full_messages
-            end
-          end
-        end
-
-        @eligibility_errors = {}
-        params[:eligibilities].each do |eligibility_params|
-          if eligibility_params[:id].present?
-            eligibility = @scholarship.eligibilities.find_by(id: eligibility_params[:id])
-          end
-
-          if eligibility
-            eligibility.update!(eligibility_text: eligibility_params[:eligibility_text])
-            @eligibility_errors[eligibility.id] = eligibility.errors.full_messages unless eligibility.errors.empty?
-          else
-            eligibility = @scholarship.eligibilities.build(eligibility_text: eligibility_params[:eligibility_text])
-            if eligibility.save
-              @scholarship.eligibilities << eligibility
-            else
-              @eligibility_errors[eligibility.id] = eligibility.errors.full_messages
-            end
-          end
-        end
-
-        errors = {}
-        errors[:benefits] = @benefit_errors if @benefit_errors.is_a?(Hash) && !@benefit_errors.empty?
-        errors[:requirements] = @requirement_errors if @requirement_errors.is_a?(Hash) && !@requirement_errors.empty?
-        errors[:eligibilities] = @eligibility_errors if @eligibility_errors.is_a?(Hash) && !@eligibility_errors.empty?
-        
-        if errors.empty?
-          if Scholarship.is_soft_deleted(@scholarship) 
-            if @scholarship.update(scholarship_params)
-              render json: { "message": "Scholarship details successfully updated." }, status: :ok
-            else
-              render json: @scholarship.errors, status: :unprocessable_entity
-            end
-          else
-            render json: { "message": "Unable to update scholarship." }, status: :unprocessable_entity
-          end
+        if result[:errors].present?
+          render json: result[:errors], status: :unprocessable_entity
         else
-          render json: errors, status: :unprocessable_entity
+          render json: { message: result[:message] }, status: :ok
         end
       end
     
