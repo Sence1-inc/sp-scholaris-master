@@ -67,7 +67,6 @@ module Api
         else
           render json: {message: "Already unsubscribed", status: :unprocessable_entity}, status: 422
         end
-        
       end
     
       def restore
@@ -83,7 +82,7 @@ module Api
       private
     
       def set_subscriber
-        @subscriber = Subscriber.find(params[:id])
+        @subscriber = Subscriber.find_by(id: params[:id], deleted_at: nil)
       end
   
       # Only allow a list of trusted parameters through.

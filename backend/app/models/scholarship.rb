@@ -1,5 +1,5 @@
 class Scholarship < ApplicationRecord
-  before_save :check_deleted_at
+  before_save :check_deleted_at, unless: :destroying?
   before_destroy :soft_delete_associations
 
   belongs_to :scholarship_provider
@@ -61,5 +61,9 @@ class Scholarship < ApplicationRecord
     self.requirements.update_all(deleted_at: Time.current) if self.requirements.deleted_at == nil
     self.benefits.update_all(deleted_at: Time.current) if self.benefits.deleted_at == nil
     self.eligibilities.update_all(deleted_at: Time.current) if self.eligibilities.deleted_at == nil
+  end
+
+  def destroying?
+    _destroy
   end
 end
