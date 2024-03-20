@@ -33,20 +33,6 @@ const theme = {
 }
 
 const AccountSettings: React.FC = () => {
-  const [password, setPassword] = useState<string>('');
-  const [newPassword, setNewPassword] = useState<string>('');
-  const [verifyNewPassword, setVerifyNewPassword] = useState<string>('');
-
-  const handlePasswordChange = () => {
-    if(password === newPassword) {
-      return 'Previous Passwords Cannot be used. Please Select a new password'
-    }
-
-    if(newPassword === verifyNewPassword) {
-      return;
-    }
-  }
-
   return (
     <AccountCard heading='Account Security' subHeading='Edit your account password security'>
       <FormGroup sx={theme.formStyle}>
