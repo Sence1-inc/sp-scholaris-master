@@ -76,13 +76,11 @@ module Api
                 end
                 results << result
               rescue StandardError => e
-                errors_count += 1
-                results << { errors: [e.message] }
+                render json: { error: e.message }, status: :unprocessable_entity
               end
             end
 
-            response_status = errors_count.positive? ? :unprocessable_entity : :created
-            render json: { results: results, errors_count: errors_count, success_count: success_count, total_count: file_params.size }, status: response_status
+            render json: { results: results, errors_count: errors_count, success_count: success_count, total_count: file_params.size }, status: :created
           ensure
             # Ensure to close and unlink the temporary file
             temp_file.close
