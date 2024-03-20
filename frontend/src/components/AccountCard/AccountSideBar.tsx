@@ -1,4 +1,4 @@
-import React, { useState, Dispatch } from 'react';
+import React, { useState, useEffect, Dispatch } from 'react';
 import { Typography, Box, Card, List, ListItem, Button } from '@mui/material'
 import ProfileImage from '../../public/images/profile.png'
 import PersonIcon from '@mui/icons-material/Person';
@@ -9,6 +9,7 @@ import LockPersonIcon from '@mui/icons-material/LockPerson';
 import { useNavigate } from "react-router-dom";
 
 interface AccountSideBarProps {
+  activeContent: string | undefined,
   setActiveContent: Dispatch<string>,
   id: string | undefined,
   provider: {
@@ -18,9 +19,13 @@ interface AccountSideBarProps {
   } | null
 }
 
-const AccountSideBar: React.FC<AccountSideBarProps> = ({ setActiveContent, id, provider }) => {
-  const [activeButton, setActiveButton] = useState<string>('view-profile');
+const AccountSideBar: React.FC<AccountSideBarProps> = ({ activeContent, setActiveContent, id, provider }) => {
+  const [activeButton, setActiveButton] = useState<string | undefined>('');
   const navigate = useNavigate();
+
+  useEffect(() => {
+    setActiveButton(activeContent);
+  }, [activeContent])
 
   const onButtonClicked = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.target as HTMLElement;
@@ -29,7 +34,6 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({ setActiveContent, id, p
     setActiveContent(target.id)
     navigate(`/provider/account/${id}/${target.id}`);
   }
-  
 
   return (
     <Card sx={

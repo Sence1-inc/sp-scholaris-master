@@ -22,12 +22,18 @@ interface ProviderUser {
 }
 
 const ProviderProfile: React.FC = () => {
-  const [activeContent, setActiveContent] = useState<string>('view-profile');
+  const [activeContent, setActiveContent] = useState<string | undefined>('');
   const { id, lastRoute } = useParams();
   const { getProviderData } = useGetProviderData();
   const result = useAppSelector((state) => state.provider) as Results
   const [providerData, setProviderData] = useState<ProviderData | null>(null);
   const [providerUserData, setProviderUserData] = useState<ProviderUser | null>(null);
+
+  useEffect(() => {
+    if(lastRoute) {
+      setActiveContent(lastRoute);
+    }
+  }, [lastRoute])
 
   useEffect(() => {
     getProviderData(id)
@@ -44,14 +50,12 @@ const ProviderProfile: React.FC = () => {
     }
   }, [providerData])
 
-  console.log(providerData)
-
   return (
     <Box sx={theme.simpleBoxStyle}>
       <Container>
         <Typography sx={theme.headingStyle}>Account Profile</Typography>
         <Box sx={theme.boxStyle}>
-          <AccountSideBar setActiveContent={setActiveContent} id={id} provider={providerUserData}/>
+          <AccountSideBar activeContent={activeContent} setActiveContent={setActiveContent} id={id} provider={providerUserData}/>
           { activeContent && lastRoute === 'view-profile' && <AccountViewProfile provider={providerData} />}
           { activeContent && lastRoute === 'account-profile' && <AccountProfile provider={providerData}  />}
           { activeContent && lastRoute === 'account-security' && <AccountSecurity />}

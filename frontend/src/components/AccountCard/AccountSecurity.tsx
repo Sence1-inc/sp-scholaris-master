@@ -23,7 +23,6 @@ const theme = {
     "& .MuiOutlinedInput-root": {
       "& .MuiInputBase-input": {
         height: 40,
-        padding: 2,
         fontSize: 20,
       },
       "& fieldset.MuiOutlinedInput-notchedOutline": {
