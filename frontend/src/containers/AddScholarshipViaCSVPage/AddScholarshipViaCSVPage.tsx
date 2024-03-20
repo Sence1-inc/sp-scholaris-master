@@ -1,8 +1,10 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import {
   Alert,
   Box,
+  Button,
   Container,
   Link,
   Snackbar,
@@ -20,6 +22,17 @@ const AddScholarshipViaCSVPage: React.FC = () => {
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+
+  const handleDownload = () => {
+    const fileUrl = `${process.env.PUBLIC_URL}/files/scholarship_data.xlsx`
+    const link = document.createElement('a')
+    link.href = fileUrl
+    link.setAttribute('download', 'scholarship_data.xlsx')
+    document.body.appendChild(link)
+    link.click()
+
+    document.body.removeChild(link)
+  }
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const uploadedFile = event.target.files && event.target.files[0]
@@ -139,17 +152,18 @@ const AddScholarshipViaCSVPage: React.FC = () => {
             >
               Upload CSV File
             </Typography>
-            <Typography
-              sx={{
-                color: '#686868',
-                fontFamily: 'Open Sans',
-                fontSize: '20px',
-                fontWeight: '400',
-                fontStyle: 'italic',
-              }}
-            >
-              scholarship_template.csv
-            </Typography>
+            <Button variant="text" onClick={handleDownload}>
+              <Typography
+                sx={{
+                  color: '#686868',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
+              >
+                <FileDownloadIcon /> <span>Download scholarship template</span>
+              </Typography>
+            </Button>
           </Box>
           <Box
             sx={{
