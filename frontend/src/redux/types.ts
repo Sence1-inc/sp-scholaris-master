@@ -51,6 +51,29 @@ export type ScholarshipData = {
   ]
 }
 
+export type ProviderData = {
+  id: number
+  provider_type: string
+  description: string
+  scholarship_provider: {
+      id: number
+      provider_name: string
+      user_id: number
+  }
+  region: {
+    id: number
+    region_name: string
+  }
+  city: {
+    id: number
+    city_name: string
+  }
+  province: {
+    id: number
+    province_name: string
+  }
+}
+
 export type Params = {
   [key: string]: string | null | Date | number
 }

@@ -15,6 +15,7 @@ import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsP
 import SignInPage from './containers/SignInPage/SignInPage'
 import SignUpPage from './containers/SignUpPage/SignUpPage'
 import SurveyPage from './containers/SurveyPage/SurveyPage'
+import ProviderProfile from './containers/ProfilesPage/ProviderProfile/ProviderProfile'
 import TeaserProvider from './containers/TeaserPage/TeaserProvider'
 import TeaserStudent from './containers/TeaserPage/TeaserStudent'
 import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage'
@@ -35,6 +36,7 @@ const ProviderRoutes: React.FC = () => (
     <Route path="/dashboard" element={<ProviderDashboardPage />} />
     <Route path="/" element={<TeaserProvider />} />
     <Route path="survey" element={<SurveyPage user_type="provider" />} />
+    <Route path="account/:id/:lastRoute" element={<ProviderProfile />} />
     <Route path="*" element={<PageNotFoundPage />} />
   </Routes>
 )

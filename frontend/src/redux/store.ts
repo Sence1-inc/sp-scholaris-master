@@ -4,6 +4,8 @@ import { TypedUseSelectorHook, useSelector, useDispatch } from 'react-redux'
 import SearchParamsReducer from './reducers/SearchParamsReducer'
 import SubscriberReducer from './reducers/SubscriberReducer'
 import ScholarshipDataReducer from './reducers/ScholarshipDataReducer'
+import ProviderDataReducer from './reducers/ProviderDataReducer'
+
 
 const store = configureStore({
   reducer: {
@@ -11,6 +13,7 @@ const store = configureStore({
     searchParams: SearchParamsReducer,
     subscriber: SubscriberReducer,
     scholarshipData: ScholarshipDataReducer,
+    provider: ProviderDataReducer
   },
 })
 
