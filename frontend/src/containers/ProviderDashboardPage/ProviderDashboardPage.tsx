@@ -24,20 +24,6 @@ const ProviderDashboardPage: React.FC = () => {
           rowGap: '30px',
         }}
       >
-        <Link
-          href="#"
-          sx={{
-            fontFamily: 'Open Sans',
-            fontStyle: 'italic',
-            fontSize: '1rem',
-            color: '#686868',
-            display: 'flex',
-            alignSelf: 'flex-end',
-            textDecorationColor: '#686868',
-          }}
-        >
-          scholarship_template.csv
-        </Link>
         <Box
           sx={{
             display: 'flex',
