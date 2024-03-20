@@ -1,4 +1,3 @@
-import AddBoxIcon from '@mui/icons-material/AddBox'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
   Alert,
@@ -6,7 +5,6 @@ import {
   Button,
   Container,
   FormGroup,
-  IconButton,
   Link,
   MenuItem,
   Select,
@@ -33,80 +31,25 @@ const ScholarshipEditorPage = () => {
   const [scholarshipProviderId, setScholarshipProviderId] = useState<
     number | null
   >()
-  const [requirements, setRequirements] = useState<
-    Array<{ requirements_text: string }>
-  >([])
-  const [eligibilities, setEligibilities] = useState<
-    Array<{ eligibility_text: string }>
-  >([])
-  const [benefits, setBenefits] = useState<Array<{ benefit_name: string }>>([])
+  const [requirements, setRequirements] = useState<string>('')
+  const [eligibilities, setEligibilities] = useState<string>('')
+  const [benefits, setBenefits] = useState<string>('')
   const [scholarshipTypeId, setScholarshipTypeId] = useState<string>('')
   const [status, setStatus] = useState<string>('')
-  const [newBenefit, setNewBenefit] = useState<string>('')
-  const [newEligibility, setNewEligibility] = useState<string>('')
-  const [newRequirement, setNewRequirement] = useState<string>('')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('')
 
-  const handleAddBenefit = () => {
-    setBenefits([...benefits, { benefit_name: '' }])
+  const handleBenefitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setBenefits(e.target.value)
   }
 
-  const handleBenefitChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const updatedBenefits = [...benefits]
-    updatedBenefits[index].benefit_name = e.target.value
-    setBenefits(updatedBenefits)
+  const handleEligibilityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEligibilities(e.target.value)
   }
 
-  const handleAddNewBenefit = () => {
-    if (newBenefit.trim() !== '') {
-      setBenefits([...benefits, { benefit_name: newBenefit }])
-      setNewBenefit('')
-    }
-  }
-
-  const handleAddNewEligibility = () => {
-    if (newEligibility.trim() !== '') {
-      setEligibilities([...eligibilities, { eligibility_text: newEligibility }])
-      setNewEligibility('')
-    }
-  }
-
-  const handleAddEligibility = () => {
-    setEligibilities([...eligibilities, { eligibility_text: '' }])
-  }
-
-  const handleEligibilityChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const updatedEligibility = [...eligibilities]
-    updatedEligibility[index].eligibility_text = e.target.value
-    setEligibilities(updatedEligibility)
-  }
-
-  const handleAddNewRequirement = () => {
-    if (newRequirement.trim() !== '') {
-      setRequirements([...requirements, { requirements_text: newRequirement }])
-      setNewRequirement('')
-    }
-  }
-
-  const handleAddRequirement = () => {
-    setRequirements([...requirements, { requirements_text: '' }])
-  }
-
-  const handleRequirementChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    index: number
-  ) => {
-    const updatedRequirement = [...requirements]
-    updatedRequirement[index].requirements_text = e.target.value
-    setRequirements(updatedRequirement)
+  const handleRequirementChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setRequirements(e.target.value)
   }
 
   const handleScholarshipTypeSelect = (
@@ -196,9 +139,9 @@ const ScholarshipEditorPage = () => {
           setStartDate(null)
           setDueDate(null)
           setApplicationLink('')
-          setBenefits([])
-          setEligibilities([])
-          setRequirements([])
+          setBenefits('')
+          setEligibilities('')
+          setRequirements('')
           setSchoolYear('')
           setStatus('')
           setScholarshipTypeId('')
@@ -325,40 +268,15 @@ const ScholarshipEditorPage = () => {
             >
               Requirements
             </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '20px',
-              }}
-            >
-              {requirements.length > 0 ? (
-                requirements.map((requirement, index) => (
-                  <TextField
-                    key={index}
-                    id={`outlined-multiline-static-${index}`}
-                    multiline
-                    value={requirement.requirements_text}
-                    name="requirements"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleRequirementChange(e, index)
-                    }
-                  />
-                ))
-              ) : (
-                <TextField
-                  id="outlined-multiline-static"
-                  multiline
-                  value={newRequirement}
-                  onChange={(e) => setNewRequirement(e.target.value)}
-                  onBlur={handleAddNewRequirement}
-                  name="newRequirement"
-                />
-              )}
-              <IconButton onClick={handleAddRequirement}>
-                <AddBoxIcon fontSize="large" sx={{ color: 'primary.main' }} />
-              </IconButton>
-            </Box>
+            <TextField
+              id={`outlined-multiline-static`}
+              multiline
+              value={requirements}
+              name="requirements"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleRequirementChange(e)
+              }
+            />
           </Box>
           <Box sx={{ width: '100%' }}>
             <Typography
@@ -371,40 +289,15 @@ const ScholarshipEditorPage = () => {
             >
               Benefits
             </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '20px',
-              }}
-            >
-              {benefits.length > 0 ? (
-                benefits.map((benefit, index) => (
-                  <TextField
-                    key={index}
-                    id={`outlined-multiline-static-${index}`}
-                    multiline
-                    value={benefit.benefit_name}
-                    name="benefits"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleBenefitChange(e, index)
-                    }
-                  />
-                ))
-              ) : (
-                <TextField
-                  id="outlined-multiline-static"
-                  multiline
-                  value={newBenefit}
-                  onChange={(e) => setNewBenefit(e.target.value)}
-                  onBlur={handleAddNewBenefit}
-                  name="newBenefit"
-                />
-              )}
-              <IconButton onClick={handleAddBenefit}>
-                <AddBoxIcon fontSize="large" sx={{ color: 'primary.main' }} />
-              </IconButton>
-            </Box>
+            <TextField
+              id={`outlined-multiline-static`}
+              multiline
+              value={benefits}
+              name="benefits"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleBenefitChange(e)
+              }
+            />
           </Box>
           <Box sx={{ width: '100%' }}>
             <Typography
@@ -417,40 +310,15 @@ const ScholarshipEditorPage = () => {
             >
               Eligibility
             </Typography>
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '20px',
-              }}
-            >
-              {eligibilities.length > 0 ? (
-                eligibilities.map((eligibility, index) => (
-                  <TextField
-                    key={index}
-                    id={`outlined-multiline-static-${index}`}
-                    multiline
-                    value={eligibility.eligibility_text}
-                    name="eligibilities"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                      handleEligibilityChange(e, index)
-                    }
-                  />
-                ))
-              ) : (
-                <TextField
-                  id="outlined-multiline-static"
-                  multiline
-                  value={newEligibility}
-                  onChange={(e) => setNewEligibility(e.target.value)}
-                  onBlur={handleAddNewEligibility}
-                  name="newEligibility"
-                />
-              )}
-              <IconButton onClick={handleAddEligibility}>
-                <AddBoxIcon fontSize="large" sx={{ color: 'primary.main' }} />
-              </IconButton>
-            </Box>
+            <TextField
+              id={`outlined-multiline-static`}
+              multiline
+              value={eligibilities}
+              name="eligibilities"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleEligibilityChange(e)
+              }
+            />
           </Box>
           <Box sx={{ width: '100%' }}>
             <Typography
