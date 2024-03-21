@@ -148,7 +148,7 @@ export default function DataTable() {
         <Alert
           onClose={() => setIsSnackbarOpen(false)}
           severity={successMessage ? 'success' : 'warning'}
-          variant="filled"
+          variant={successMessage ? 'filled' : 'standard'}
           sx={{ width: '100%' }}
         >
           {successMessage ? (
@@ -156,13 +156,29 @@ export default function DataTable() {
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography>Are you sure you want to delete?</Typography>
-              <Button
-                color="inherit"
-                onClick={handleDelete}
-                sx={{ alignSelf: 'center' }}
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: '20px',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}
               >
-                Delete
-              </Button>
+                <Button
+                  color="primary"
+                  onClick={() => setIsSnackbarOpen(false)}
+                  sx={{ alignSelf: 'center' }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  color="inherit"
+                  onClick={handleDelete}
+                  sx={{ alignSelf: 'center' }}
+                >
+                  Delete
+                </Button>
+              </Box>
             </Box>
           )}
         </Alert>
