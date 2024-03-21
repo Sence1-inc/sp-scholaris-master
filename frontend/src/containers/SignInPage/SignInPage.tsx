@@ -1,23 +1,22 @@
-import { useState, Fragment } from 'react'
+import CloseIcon from '@mui/icons-material/Close'
 import {
   Button,
   Container,
+  IconButton,
+  Link as MuiLink,
+  Snackbar,
   TextField,
   Typography,
-  Snackbar,
-  IconButton,
 } from '@mui/material'
-import { useNavigate } from 'react-router-dom'
-import { Link as MuiLink } from '@mui/material'
-import { Link as RouterLink } from 'react-router-dom'
-import CloseIcon from '@mui/icons-material/Close'
+import { Fragment, useState } from 'react'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 
 interface SignInPageProps {}
 
 const SignInPage: React.FC<SignInPageProps> = () => {
   const [userCredentials, setUserCredentials] = useState({
-    email: 'Enter your email',
-    password: 'Password',
+    email: '',
+    password: '',
   })
 
   const [open, setOpen] = useState(false)
@@ -66,11 +65,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       </IconButton>
     </Fragment>
   )
-
-  const focusedInputLabelStyle = {
-    position: 'relative',
-    color: 'pink',
-  }
 
   return (
     <Container
@@ -208,17 +202,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         </MuiLink>
       </Container>
 
-      <Typography
-        variant="body1"
-        sx={{
-          textDecoration: 'underline',
-          fontSize: '24px',
-          color: 'var(--primary-color)',
-          textAlign: 'center',
-        }}
-      >
-        OR
-      </Typography>
       <Button
         onClick={handleCredentials}
         variant="contained"
