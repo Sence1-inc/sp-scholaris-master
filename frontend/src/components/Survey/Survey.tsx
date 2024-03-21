@@ -1,5 +1,4 @@
 import {
-  Button,
   Container,
   MenuItem,
   Select,
@@ -13,7 +12,6 @@ import {
   SurveyResponse,
 } from '../../containers/SurveyPage/SurveyPage'
 import { useAppSelector } from '../../redux/store'
-import { ctaButtonStyle } from '../../styles/globalStyles'
 
 interface SurveyProps {
   surveyQuestions: SurveyQuestion[] | null
@@ -23,18 +21,14 @@ interface SurveyProps {
     field: string,
     survey_question_id?: number
   ) => void
-  handleSubmit: () => void
   subscriber: { email: string; user_type: string }
   pathname: string
-  message: string
 }
 
 const Survey: React.FC<SurveyProps> = ({
   surveyQuestions,
   surveyResponses,
   handleChange,
-  handleSubmit,
-  message,
 }) => {
   const subscriber = useAppSelector((state) => state.subscriber)
 
@@ -151,15 +145,6 @@ const Survey: React.FC<SurveyProps> = ({
           />
         </Container>
       ))}
-      {message && <Typography color="error">{message}</Typography>}
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleSubmit}
-        sx={{ ...ctaButtonStyle, marginBottom: '60px' }}
-      >
-        Submit
-      </Button>
     </>
   )
 }
