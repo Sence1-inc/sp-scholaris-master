@@ -1,4 +1,4 @@
-import { Box, Button, Link, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import DashboardTable from '../../components/DashboardTable/DashboardTable'
@@ -24,20 +24,6 @@ const ProviderDashboardPage: React.FC = () => {
           rowGap: '30px',
         }}
       >
-        <Link
-          href="#"
-          sx={{
-            fontFamily: 'Open Sans',
-            fontStyle: 'italic',
-            fontSize: '1rem',
-            color: '#686868',
-            display: 'flex',
-            alignSelf: 'flex-end',
-            textDecorationColor: '#686868',
-          }}
-        >
-          scholarship_template.csv
-        </Link>
         <Box
           sx={{
             display: 'flex',

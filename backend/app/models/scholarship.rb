@@ -1,4 +1,7 @@
 class Scholarship < ApplicationRecord
+  before_save :check_deleted_at, unless: :destroying?
+  before_destroy :soft_delete_associations
+
   belongs_to :scholarship_provider
   belongs_to :scholarship_type
   has_and_belongs_to_many :courses, join_table: "course_scholarship_schools"
@@ -19,7 +22,7 @@ class Scholarship < ApplicationRecord
   validate :valid_dates
 
   scope :filtered, ->(params) {
-    results = all
+    results = all.where(deleted_at: nil)
     results = results.includes(:courses, :schools, :scholarship_provider, :benefits)
     results = results.joins(:courses).where("courses.course_name = ?", params[:course]) if params[:course].present?
     results = results.joins(:schools).where("schools.school_name = ?", params[:school]) if params[:school].present?
@@ -45,5 +48,22 @@ class Scholarship < ApplicationRecord
     if due_date.present? && start_date.present? && due_date <= start_date
       errors.add(:due_date, "must be after the start date")
     end
+  end
+
+  def check_deleted_at
+    if deleted_at.present?
+      errors.add(:base, "Cannot create or update a scholarship that is deleted")
+      throw(:abort)
+    end
+  end
+
+  def soft_delete_associations
+    self.requirements.update_all(deleted_at: Time.current) if self.requirements.deleted_at == nil
+    self.benefits.update_all(deleted_at: Time.current) if self.benefits.deleted_at == nil
+    self.eligibilities.update_all(deleted_at: Time.current) if self.eligibilities.deleted_at == nil
+  end
+
+  def destroying?
+    _destroy
   end
 end
