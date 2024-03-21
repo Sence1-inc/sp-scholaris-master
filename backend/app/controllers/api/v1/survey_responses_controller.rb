@@ -29,13 +29,18 @@ module Api
           return
         end
 
-        if !params[:email].match?(URI::MailTo::EMAIL_REGEXP)
-          render json: { error: 'Email is not in the proper format' }, status: :unprocessable_entity
+        if params[:classification].blank?
+          render json: { error: 'Classification cannot be empty' }, status: :unprocessable_entity
           return
         end
 
         if params[:responses].empty?
           render json: { error: 'Responses cannot be empty' }, status: :unprocessable_entity
+          return
+        end
+
+        if !params[:email].match?(URI::MailTo::EMAIL_REGEXP)
+          render json: { error: 'Email is not in the proper format' }, status: :unprocessable_entity
           return
         end
 
