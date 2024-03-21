@@ -18,6 +18,10 @@ import dayjs, { Dayjs } from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import {
+  ScholarshipType,
+  SCHOLARSHIP_TYPES,
+} from '../../data/ScholarshipContent'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
 const ScholarshipEditorPage = () => {
@@ -235,6 +239,7 @@ const ScholarshipEditorPage = () => {
               value={scholarshipName}
               onChange={(e) => setScholarshipName(e.target.value)}
               name="scholarship_name"
+              placeholder="e.g. Excellence in Science Scholarship"
             />
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -255,6 +260,7 @@ const ScholarshipEditorPage = () => {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               name="description"
+              placeholder="e.g. The Excellence in Science Scholarship aims to support outstanding students who demonstrate exceptional academic achievement and a passion for scientific inquiry."
             />
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -276,6 +282,7 @@ const ScholarshipEditorPage = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleRequirementChange(e)
               }
+              placeholder="e.g. Applicants must have a minimum GPA of 3.5 on a 4.0 scale, provide two letters of recommendation from science teachers or professors, and submit a personal statement outlining their academic and career goals in the field of science."
             />
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -297,6 +304,7 @@ const ScholarshipEditorPage = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleBenefitChange(e)
               }
+              placeholder="e.g. The scholarship provides a one-time award of P25000 to be used towards tuition, books, or other educational expenses."
             />
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -318,6 +326,7 @@ const ScholarshipEditorPage = () => {
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleEligibilityChange(e)
               }
+              placeholder="e.g. Open to high school seniors or college freshmen and sophomores pursuing a degree in a scientific discipline."
             />
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -347,9 +356,9 @@ const ScholarshipEditorPage = () => {
               name="scholarship_type"
               onChange={(e: any) => handleScholarshipTypeSelect(e)}
             >
-              <MenuItem value={'1'}>1</MenuItem>
-              <MenuItem value={'2'}>2</MenuItem>
-              <MenuItem value={'3'}>3</MenuItem>
+              {SCHOLARSHIP_TYPES.map((type: ScholarshipType) => {
+                return <MenuItem value={type.id}>{type.name}</MenuItem>
+              })}
             </Select>
           </Box>
           <Box sx={{ width: '100%' }}>
@@ -369,6 +378,7 @@ const ScholarshipEditorPage = () => {
               value={applicationLink}
               name="application_link"
               onChange={(e) => setApplicationLink(e.target.value)}
+              placeholder="e.g. www.excellenceinsciencescholarship.org"
             />
           </Box>
           <Box
@@ -459,6 +469,7 @@ const ScholarshipEditorPage = () => {
                 value={schoolYear}
                 onChange={(e) => setSchoolYear(e.target.value)}
                 name="school_year"
+                placeholder="e.g. 2024-2025"
               />
             </Box>
           </Box>
