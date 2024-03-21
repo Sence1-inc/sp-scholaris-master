@@ -94,7 +94,6 @@ module Api
     
       # PATCH/PUT /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def update
-        @scholarship = Scholarship.find(params[:id])
         scholarship_service = ScholarshipService.new(scholarship_params)
 
         result = scholarship_service.update_scholarship(@scholarship.id)
@@ -120,7 +119,7 @@ module Api
       private
         # Use callbacks to share common setup or constraints between actions.
         def set_scholarship
-          @scholarship = Scholarship.find_by(id: params[:id], deleted_at: nil)
+          @scholarship = Scholarship.find(params[:id])
         end
     
         # Only allow a list of trusted parameters through.

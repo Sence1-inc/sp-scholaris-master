@@ -1,5 +1,4 @@
 class Scholarship < ApplicationRecord
-  before_save :check_deleted_at, unless: :destroying?
   before_destroy :soft_delete_associations
 
   belongs_to :scholarship_provider
@@ -47,13 +46,6 @@ class Scholarship < ApplicationRecord
   def valid_dates
     if due_date.present? && start_date.present? && due_date <= start_date
       errors.add(:due_date, "must be after the start date")
-    end
-  end
-
-  def check_deleted_at
-    if deleted_at.present?
-      errors.add(:base, "Cannot create or update a scholarship that is deleted")
-      throw(:abort)
     end
   end
 
