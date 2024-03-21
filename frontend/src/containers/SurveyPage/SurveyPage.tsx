@@ -36,12 +36,14 @@ interface Response {
 
 export interface SurveyResponse {
   email: string
+  classification: string
   user_id?: number
   responses: Response[]
 }
 
 const initialSurveyResponses = {
   email: '',
+  classification: '',
   responses: [
     {
       survey_question_id: 1,
@@ -150,6 +152,12 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
     if (field === 'email') {
       setSurveyResponses((prevState) => {
         return { ...prevState, email: e.target.value }
+      })
+    }
+
+    if (field === 'classification') {
+      setSurveyResponses((prevState) => {
+        return { ...prevState, classification: e.target.value }
       })
     }
 
