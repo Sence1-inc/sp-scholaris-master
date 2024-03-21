@@ -1,16 +1,15 @@
-import { useState, Fragment } from 'react'
-import { useNavigate } from 'react-router-dom'
+import CloseIcon from '@mui/icons-material/Close'
 import {
   Button,
   Container,
+  IconButton,
+  Link as MuiLink,
+  Snackbar,
   TextField,
   Typography,
-  Snackbar,
-  IconButton,
 } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import { Link as MuiLink } from '@mui/material'
-import { Link as RouterLink } from 'react-router-dom'
+import { Fragment, useState } from 'react'
+import { Link as RouterLink, useNavigate } from 'react-router-dom'
 
 interface SignUpPageProps {}
 
@@ -25,8 +24,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     state: false,
     snackBarMessage: '',
   })
-
-  const [open, setOpen] = useState(false)
 
   const navigate = useNavigate()
 
@@ -247,16 +244,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       >
         Already have and account? Sign-in here
       </MuiLink>
-      <Typography
-        sx={{
-          textAlign: 'center',
-          color: '#767676',
-          fontSize: '24px',
-          textDecoration: 'underline',
-        }}
-      >
-        OR
-      </Typography>
       <Button
         onClick={handleSignUp}
         variant="contained"

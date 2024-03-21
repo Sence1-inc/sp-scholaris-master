@@ -1,10 +1,17 @@
-import { Button, Container, TextField, Typography } from '@mui/material'
+import {
+  Container,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+} from '@mui/material'
 import React from 'react'
+import { STUDENT_TYPE } from '../../constants/constants'
 import {
   SurveyQuestion,
   SurveyResponse,
 } from '../../containers/SurveyPage/SurveyPage'
-import { ctaButtonStyle } from '../../styles/globalStyles'
+import { useAppSelector } from '../../redux/store'
 
 interface SurveyProps {
   surveyQuestions: SurveyQuestion[] | null
@@ -14,21 +21,19 @@ interface SurveyProps {
     field: string,
     survey_question_id?: number
   ) => void
-  handleSubmit: () => void
   subscriber: { email: string; user_type: string }
   pathname: string
-  message: string
 }
 
 const Survey: React.FC<SurveyProps> = ({
   surveyQuestions,
   surveyResponses,
   handleChange,
-  handleSubmit,
-  subscriber,
-  pathname,
-  message,
 }) => {
+  const subscriber = useAppSelector((state) => state.subscriber)
+
+  const classifications = ['parent', 'guardian', 'teacher', 'student']
+
   return (
     <>
       <Typography
@@ -69,13 +74,45 @@ const Survey: React.FC<SurveyProps> = ({
           }
           value={surveyResponses.email}
         />
-        {subscriber.email && pathname.includes(subscriber.user_type) && (
-          <Typography
-            variant="subtitle2"
-            sx={{ textAlign: 'left', color: 'var(--secondary-color)' }}
+      </Container>
+      <Container sx={{ padding: '0!important' }}>
+        <Typography
+          variant="h6"
+          sx={{
+            marginBottom: '10px',
+            textAlign: 'start',
+          }}
+        >
+          What is your classification?
+        </Typography>
+        {subscriber.user_type === STUDENT_TYPE ? (
+          <Select
+            fullWidth
+            labelId="demo-simple-select-label"
+            id="demo-simple-select"
+            value={surveyResponses.classification}
+            sx={{ textAlign: 'left' }}
+            label="Classification"
+            onChange={(e: any) => handleChange(e, 'classification')}
           >
-            You are subscribed to our newsletter as {subscriber.user_type}
-          </Typography>
+            {classifications.map((classification: string) => {
+              return (
+                <MenuItem value="classification">{classification}</MenuItem>
+              )
+            })}
+          </Select>
+        ) : (
+          <TextField
+            required
+            size="medium"
+            inputProps={{
+              sx: { fontSize: '20px', color: 'var(--primary-color)' },
+            }}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleChange(e, 'classification')
+            }
+            value={surveyResponses.classification}
+          />
         )}
       </Container>
       {surveyQuestions?.map((questionText, index) => (
@@ -108,15 +145,6 @@ const Survey: React.FC<SurveyProps> = ({
           />
         </Container>
       ))}
-      {message && <Typography color="error">{message}</Typography>}
-      <Button
-        variant="contained"
-        color="secondary"
-        onClick={handleSubmit}
-        sx={{ ...ctaButtonStyle, marginBottom: '60px' }}
-      >
-        Submit
-      </Button>
     </>
   )
 }

@@ -1,9 +1,12 @@
 import {
+  Alert,
   Box,
+  Button,
   Checkbox,
   Container,
   FormControlLabel,
   FormGroup,
+  Snackbar,
   Typography,
 } from '@mui/material'
 import { AxiosResponse } from 'axios'
@@ -19,6 +22,7 @@ import Survey from '../../components/Survey/Survey'
 import { PROVIDER_TYPE, STUDENT_TYPE } from '../../constants/constants'
 import { initializeSubscirber } from '../../redux/reducers/SubscriberReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { ctaButtonStyle } from '../../styles/globalStyles'
 
 export interface SurveyQuestion {
   id: number
@@ -36,12 +40,14 @@ interface Response {
 
 export interface SurveyResponse {
   email: string
+  classification: string
   user_id?: number
   responses: Response[]
 }
 
 const initialSurveyResponses = {
   email: '',
+  classification: '',
   responses: [
     {
       survey_question_id: 1,
@@ -59,7 +65,6 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   const [isASubscriber, setIsASubscriber] = useState<boolean>(false)
   const [hasSubscriptionIntent, setHasSubscriptionIntent] =
     useState<boolean>(true)
-  const [message, setMessage] = useState<string>('')
   const [surveyQuestions, setSurveyQuestions] = useState<
     SurveyQuestion[] | null
   >(null)
@@ -67,6 +72,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
     initialSurveyResponses
   )
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
 
   useEffect(() => {
     if (surveyQuestions) {
@@ -138,7 +144,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         }
       })
       .catch((error) => {
-        setMessage(error.response.data.error)
+        setErrorMessage(error.response.data.error)
       })
   }
 
@@ -150,6 +156,12 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
     if (field === 'email') {
       setSurveyResponses((prevState) => {
         return { ...prevState, email: e.target.value }
+      })
+    }
+
+    if (field === 'classification') {
+      setSurveyResponses((prevState) => {
+        return { ...prevState, classification: e.target.value }
       })
     }
 
@@ -202,6 +214,14 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
     }
   }
 
+  useEffect(() => {
+    if (errorMessage) {
+      setIsSnackbarOpen(true)
+    } else {
+      setIsSnackbarOpen(false)
+    }
+  }, [errorMessage])
+
   return (
     <Container
       maxWidth="md"
@@ -213,81 +233,95 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         marginBlock: '40px',
       }}
     >
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={isSnackbarOpen}
+        onClose={() => setIsSnackbarOpen(false)}
+        autoHideDuration={6000}
+        key="topcenter"
+      >
+        <Alert
+          onClose={() => setIsSnackbarOpen(false)}
+          severity={'error'}
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          {errorMessage}
+        </Alert>
+      </Snackbar>
       {!isASubscriber && (
-        <>
-          {errorMessage && (
-            <Typography color="error" variant="body2">
-              {errorMessage}
-            </Typography>
-          )}
-          <Box>
-            <Typography
-              variant="h5"
-              sx={{
-                fontWeight: '700',
-                textAlign: 'center',
-                marginTop: '20px',
-              }}
-            >
-              You are currently not subscribed to our newsletter
-            </Typography>
-            <FormGroup>
-              <FormControlLabel
-                sx={{
-                  margin: 'auto',
-                  '& .MuiFormControlLabel-label ': {
-                    fontWeight: 700,
-                    fontSize: '24px',
-                    color: 'var(--secondary-color)',
-                  },
-                }}
-                control={
-                  <Checkbox
-                    sx={{
-                      color: 'var(--secondary-color)',
-                      '&.Mui-checked': {
-                        color: 'var(--secondary-color)',
-                      },
-                    }}
-                    defaultChecked
-                  />
-                }
-                label="I want to subscribe"
-                onChange={() =>
-                  setHasSubscriptionIntent(!hasSubscriptionIntent)
-                }
-              />
-            </FormGroup>
-            {hasSubscriptionIntent && (
-              <Typography variant="body2" className="newsletter-text__small">
-                By subscribing to the newsletter, I have read this form and
-                understand its content and voluntarily give my consent for the
-                collection, use, processing, storage and retention of my
-                personal data or information to Sence1 for the purpose(s)
-                described in the{' '}
-                <Link
-                  style={{ color: 'var(--primary-color)' }}
-                  to={'/privacy-consent'}
-                >
-                  Privacy Policy
-                </Link>{' '}
-                document
-              </Typography>
-            )}
-          </Box>
-        </>
+        <Typography
+          variant="h5"
+          sx={{
+            fontWeight: '700',
+            textAlign: 'center',
+            marginTop: '20px',
+          }}
+        >
+          You are currently not subscribed to our newsletter
+        </Typography>
       )}
       <Survey
         {...{
           surveyQuestions,
           surveyResponses,
           handleChange,
-          handleSubmit,
           subscriber,
           pathname,
-          message,
         }}
       />
+      {!isASubscriber && (
+        <Box>
+          <FormGroup>
+            <FormControlLabel
+              sx={{
+                margin: 'auto',
+                '& .MuiFormControlLabel-label ': {
+                  fontWeight: 700,
+                  fontSize: '24px',
+                  color: 'var(--secondary-color)',
+                },
+              }}
+              control={
+                <Checkbox
+                  sx={{
+                    color: 'var(--secondary-color)',
+                    '&.Mui-checked': {
+                      color: 'var(--secondary-color)',
+                    },
+                  }}
+                  defaultChecked
+                />
+              }
+              label="I want to subscribe"
+              onChange={() => setHasSubscriptionIntent(!hasSubscriptionIntent)}
+            />
+          </FormGroup>
+          {hasSubscriptionIntent && (
+            <Typography variant="body2" className="newsletter-text__small">
+              By subscribing to the newsletter, I have read this form and
+              understand its content and voluntarily give my consent for the
+              collection, use, processing, storage and retention of my personal
+              data or information to Sence1 for the purpose(s) described in the{' '}
+              <Link
+                style={{ color: 'var(--primary-color)' }}
+                to={'/privacy-consent'}
+              >
+                Privacy Policy
+              </Link>{' '}
+              document
+            </Typography>
+          )}
+        </Box>
+      )}
+      <Button
+        variant="contained"
+        color="secondary"
+        onClick={handleSubmit}
+        sx={{ ...ctaButtonStyle, marginBottom: '60px' }}
+      >
+        Submit
+      </Button>
     </Container>
   )
 }

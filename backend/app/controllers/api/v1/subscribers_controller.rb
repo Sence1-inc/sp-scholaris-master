@@ -82,7 +82,7 @@ module Api
       private
     
       def set_subscriber
-        @subscriber = Subscriber.find_by(id: params[:id], deleted_at: nil)
+        @subscriber = Subscriber.find(params[:id])
       end
   
       # Only allow a list of trusted parameters through.
