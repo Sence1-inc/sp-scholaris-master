@@ -96,7 +96,7 @@ module Api
     
         # Only allow a list of trusted parameters through.
         def survey_params
-          params.require(:survey_response).permit(:email, :user_id, responses: [:survey_question_id, :answer])
+          params.require(:survey_response).permit(:email, :classification, :user_id, responses: [:survey_question_id, :answer])
         end
     end
   end
