@@ -10,6 +10,7 @@ import AccountClose from '../../../components/AccountCard/AccountClose';
 import useGetProviderData from '../../../hooks/useGetProviderData';
 import { useAppSelector } from '../../../redux/store'
 import { ProviderData } from '../../../redux/types'
+import profileTheme from '../../../styles/profileTheme';
 
 interface Results {
   provider: ProviderData
@@ -51,10 +52,10 @@ const ProviderProfile: React.FC = () => {
   }, [providerData])
 
   return (
-    <Box sx={theme.simpleBoxStyle}>
+    <Box sx={profileTheme.container.rootContainer}>
       <Container>
-        <Typography sx={theme.headingStyle}>Account Profile</Typography>
-        <Box sx={theme.boxStyle}>
+        <Typography sx={profileTheme.heading.mainHeading}>Account Profile</Typography>
+        <Box sx={profileTheme.container.mainContainer}>
           <AccountSideBar activeContent={activeContent} setActiveContent={setActiveContent} id={id} provider={providerUserData}/>
           { activeContent && lastRoute === 'view-profile' && <AccountViewProfile provider={providerData} />}
           { activeContent && lastRoute === 'account-profile' && <AccountProfile provider={providerData}  />}
@@ -69,25 +70,3 @@ const ProviderProfile: React.FC = () => {
 }
 
 export default ProviderProfile;
-
-const theme = {
-  headingStyle: {
-    mb: 4,
-    fontSize: 48,
-    fontWeight: 'bold',
-    fontFamily: 'Roboto',
-    color: '#002147',
-    textAlign: 'left'
-  },
-  boxStyle: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-start',
-    gap: 3
-  },
-  simpleBoxStyle: {
-    width: '100%',
-    my: 10,
-  }
-}

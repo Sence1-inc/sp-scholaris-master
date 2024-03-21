@@ -107,6 +107,16 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               Dashboard
             </Typography>
           </ListItem>
+          <ListItem>
+            <Typography
+              variant="body1"
+              component={Link}
+              to="/provider/account/:id/view-profile"
+              sx={{ color: 'common.white', textDecoration: 'none' }}
+            >
+              Profile
+            </Typography>
+          </ListItem>
           <ListItem disablePadding sx={{ width: 'auto' }}>
             <Button
               sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}

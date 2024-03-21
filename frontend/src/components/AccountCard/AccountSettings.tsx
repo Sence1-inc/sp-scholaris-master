@@ -6,40 +6,7 @@ import AccountCard from './AccountCard';
 import { ErrorResponse, SuccessResponse } from '../../components/Newsletter/Newsletter';
 import Alert from '@mui/material/Alert';
 import { FormGroup, InputLabel, TextField, Box } from '@mui/material';
-
-const theme = {
-  formStyle: {
-    marginBottom: 2,
-  },
-  boxStyle: {
-    marginTop: 2,
-    display: 'flex',
-    flexDirection: 'row',
-    gap: 2,
-  },
-  labelStyle: {
-    fontFamily: 'Roboto',
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 1,
-    color: '#002147',
-  },
-  inputStyle: {  
-    backgroundColor: '#ffffff', 
-    borderRadius: 4, 
-    border: '1px solid #656565',
-    boxShadow: 'inset -1px -1px 4px #656565',
-    "& .MuiOutlinedInput-root": {
-      "& .MuiInputBase-input": {
-        height: 40,
-        fontSize: 20,
-      },
-      "& fieldset.MuiOutlinedInput-notchedOutline": {
-        border: "none",
-      },
-    },
-  },
-}
+import profileTheme from '../../styles/profileTheme';
 
 const AccountSettings: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState<string>('')
@@ -102,11 +69,11 @@ const AccountSettings: React.FC = () => {
 
   return (
     <AccountCard heading='Account Settings' subHeading='Edit your account billing and subscription in here'>
-      <FormGroup sx={theme.formStyle}>
-        <InputLabel htmlFor="account-name" sx={theme.labelStyle}>Newsletter Email</InputLabel>
-        <TextField disabled id="account-name" defaultValue="Registered Email: test@email.com" sx={theme.inputStyle} />
+      <FormGroup sx={profileTheme.form.formStyle}>
+        <InputLabel htmlFor="account-name" sx={profileTheme.form.formLabel}>Newsletter Email</InputLabel>
+        <TextField disabled id="account-name" defaultValue="Registered Email: test@email.com" sx={profileTheme.form.formInput} />
         {alertMessage ? <Alert sx={{ marginTop: 2 }} severity="success">{alertMessage}</Alert> : errorMessage && <Alert sx={{ marginTop: 2 }} severity="error">{errorMessage}</Alert>}
-        <Box sx={theme.boxStyle}>
+        <Box sx={profileTheme.box.boxBodyStyle2}>
           <Button handleClick={handleSubscribe}>Subscribe</Button>
           <Button handleClick={handleUnsubscribe}>Unsubscribe</Button>
         </Box>

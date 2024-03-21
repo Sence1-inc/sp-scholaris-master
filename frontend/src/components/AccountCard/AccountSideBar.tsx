@@ -7,6 +7,7 @@ import SecurityIcon from '@mui/icons-material/Security';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LockPersonIcon from '@mui/icons-material/LockPerson';
 import { useNavigate } from "react-router-dom";
+import profileTheme from '../../styles/profileTheme';
 
 interface AccountSideBarProps {
   activeContent: string | undefined,
@@ -18,6 +19,20 @@ interface AccountSideBarProps {
     user_id?: number | undefined
   } | null
 }
+
+type SideBarObject = {
+  id: string
+  title: string
+  Icon: JSX.Element
+}
+
+const sideItem: SideBarObject[] = [
+  { id: "view-profile", title: "View Scholarship Profile", Icon: <HomeIcon />},
+  { id: "account-profile", title: "Account Profile", Icon: <PersonIcon /> },
+  { id: "account-security", title: "Account Security",Icon: <SecurityIcon />  },
+  { id: "account-settings", title: "Settings", Icon: <SettingsIcon /> },
+  { id: "account-close", title: "Close Account", Icon: <LockPersonIcon /> }
+]
 
 const AccountSideBar: React.FC<AccountSideBarProps> = ({ activeContent, setActiveContent, id, provider }) => {
   const [activeButton, setActiveButton] = useState<string | undefined>('');
@@ -36,75 +51,21 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({ activeContent, setActiv
   }
 
   return (
-    <Card sx={
-      {
-        width: '30%',
-        backgroundColor: '#e2e1e1',
-        borderRadius: 8
-      }
-    }>
-      <Box sx={
-        {
-          width: '100%',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: 1,
-          backgroundColor: '#d2d2d2',
-          px: 4,
-          py: 2
-        }
-      }>
+    <Card sx={profileTheme.container.cardSideContainer}>
+      <Box sx={profileTheme.box.boxSideContentstyle}>
         <img src={ProfileImage} alt="" />
-        <Typography sx={
-          {
-            fontSize: 24,
-            fontWeight: 'bold',
-            fontFamily: 'Roboto',
-            color: '#002147',
-            textAlign: 'center'
-          }
-        }>{provider?.provider_name}</Typography>
+        <Typography sx={profileTheme.text.textRegularSide}>{provider?.provider_name}</Typography>
       </Box>
       <Box>
         <List sx={{ p: 0 }}>
-          <ListItem sx={{ p: 0 }}>
-            <Button id="view-profile" sx={{ ...theme.buttonContainer, ...(activeButton === 'view-profile' && theme.buttonActive) }} onClick={onButtonClicked}>
-              <Box sx={{ height: '1.7em' }}><HomeIcon /></Box>
-              View Scholarship Profile
-            </Button>
-          </ListItem>
-          <ListItem sx={{ p: 0 }}>
-            <Button id="account-profile" sx={{ ...theme.buttonContainer, ...(activeButton === 'account-profile' && theme.buttonActive) }} onClick={onButtonClicked}>
-              <Box sx={{ height: '1.7em' }}><PersonIcon /></Box>
-              Account Profile
-            </Button>
-          </ListItem>
-          <ListItem sx={{ p: 0 }}>
-            <Button id="account-security" sx={{ ...theme.buttonContainer, ...(activeButton === 'account-security' && theme.buttonActive) }} onClick={onButtonClicked}>
-              <Box sx={{ height: '1.7em' }}><SecurityIcon /></Box>
-              Account Security
-            </Button>
-          </ListItem>
-          {/* <ListItem sx={{ p: 0 }}>
-            <Button id="account-subscription" sx={{ ...theme.buttonContainer, ...(activeButton === 'account-subscription' && theme.buttonActive) }} onClick={onButtonClicked}>
-              <Box sx={{ height: '1.7em' }}><CardMembershipIcon /></Box>
-              Subscription
-            </Button>
-          </ListItem> */}
-          <ListItem sx={{ p: 0 }}>
-            <Button id="account-settings" sx={{ ...theme.buttonContainer, ...(activeButton === 'account-settings' && theme.buttonActive) }} onClick={onButtonClicked}>
-              <Box sx={{ height: '1.7em' }}><SettingsIcon /></Box>
-              Settings
-            </Button>
-          </ListItem>
-          <ListItem sx={{ p: 0 }}>
-            <Button id="close-account" sx={{ ...theme.buttonContainer, ...(activeButton === 'close-account' && theme.buttonActive) }} onClick={onButtonClicked}>
-              <Box sx={{ height: '1.7em' }}><LockPersonIcon /></Box>
-              Close Account
-            </Button>
-          </ListItem>
+          { sideItem.map((item: { id: string, title: string, Icon: JSX.Element }) => (
+            <ListItem sx={{ p: 0 }} key={id}>
+              <Button id={item.id} sx={{ ...profileTheme.button.buttonMain, ...(activeButton ===  `${item.id}` && profileTheme.button.buttonActive) }} onClick={onButtonClicked}>
+                <Box sx={{ height: '1.7em' }}>{item.Icon}</Box>
+                {item.title}
+              </Button>
+            </ListItem>
+          ))}
         </List>
       </Box>
     </Card>
@@ -112,27 +73,3 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({ activeContent, setActiv
 }
 
 export default AccountSideBar;
-
-const theme = {
-  buttonContainer: {
-    py: 2, 
-    px: 4, 
-    width: '100%', 
-    display: 'flex', 
-    alignItems: 'center', 
-    justifyContent: 'flex-start', 
-    gap: 2, 
-    borderRadius: 0,
-    fontSize: 16,
-    fontWeight: 'meidum',
-    color: '#002147',
-    textAlign: 'left'
-  },
-  buttonActive: {
-    backgroundColor: '#f36b3b',
-    color: '#ffffff',
-    '&:hover': {
-      backgroundColor: '#d75e33'
-    }
-  }
-}
