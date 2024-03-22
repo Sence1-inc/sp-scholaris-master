@@ -99,7 +99,14 @@ const AddScholarshipViaCSVPage: React.FC = () => {
           variant="filled"
           sx={{ width: '100%' }}
         >
-          {successMessage && <Typography>{successMessage}</Typography>}
+          {successMessage && (
+            <Typography>
+              {successMessage}{' '}
+              {errorsCount > 0
+                ? `but there are ${errorsCount} row/s not saved due to incomplete details`
+                : ''}
+            </Typography>
+          )}
           {errorMessage && <Typography>{errorMessage}</Typography>}
         </Alert>
       </Snackbar>
