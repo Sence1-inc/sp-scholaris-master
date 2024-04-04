@@ -35,6 +35,8 @@ services:
       BACKEND_DATABASE_PASSWORD: prodpassword
     # dont terminate docker after running bin/dev
     tty: true
+    networks:
+      - mynetwork
   db:
     image: mysql:8.2.0
     container_name: db_mysql_container
@@ -53,3 +55,6 @@ services:
       - "8025:8025"
 volumes:
   node_modules:
+networks:
+  mynetwork:
+    name: mynetwork
