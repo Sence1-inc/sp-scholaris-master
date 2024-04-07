@@ -2,21 +2,11 @@ Rails.application.routes.draw do
   resources :roles
   get "up" => "rails/health#show", as: :rails_health_check
 
-  authenticated_routes = proc do
-    namespace :api do
-      namespace :v1 do
-        resources :scholarships, only: [:edit, :update, :destroy]
-        post 'scholarships/upload', to: 'scholarships#upload', as: 'scholarships_upload'
-        resources :scholarship_providers
-        resources :scholarship_provider_profiles
-      end
-    end
-  end
-
   namespace :api do
     namespace :v1 do
       post 'register', to: 'users#register', as: 'users_register'
       post 'login', to: 'users#login', as: 'users_login'
+      post 'refresh', to: 'users#refresh', as: 'users_refresh'
       resources :scholarships, only: [:index, :show]
       resources :survey_questions
       resources :subscribers
@@ -28,6 +18,17 @@ Rails.application.routes.draw do
       resources :newsletters
       resources :benefits
       resources :schools
+    end
+  end
+
+  authenticated_routes = proc do
+    namespace :api do
+      namespace :v1 do
+        resources :scholarships, only: [:edit, :update, :destroy]
+        post 'scholarships/upload', to: 'scholarships#upload', as: 'scholarships_upload'
+        resources :scholarship_providers
+        resources :scholarship_provider_profiles
+      end
     end
   end
 
