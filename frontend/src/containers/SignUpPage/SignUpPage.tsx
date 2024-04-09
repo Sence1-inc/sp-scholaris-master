@@ -8,16 +8,29 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs'
 import { Fragment, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
 
 interface SignUpPageProps {}
 
 const SignUpPage: React.FC<SignUpPageProps> = () => {
+  const navigate = useNavigate()
   const [userCredentials, setUserCredentials] = useState({
-    email: '',
+    email_address: '',
     password: '',
     password2: '',
+    first_name: '',
+    last_name: '',
+    middle_name: '',
+    birthdate: null,
+    is_active: 1,
+    service_id: 1,
+    service_key: process.env.REACT_APP_SERVICE_KEY,
+    role: 'provider',
   })
 
   const [snackBarState, setSnackBarState] = useState({
@@ -25,36 +38,20 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     snackBarMessage: '',
   })
 
-  const navigate = useNavigate()
-
-  function handleEmail(inputValue: string) {
+  const handleUserCredentials = (inputValue: string, key: string) => {
     setUserCredentials((prevUserCredentials) => ({
       ...prevUserCredentials,
-      email: inputValue,
+      [key]: inputValue,
     }))
   }
 
-  function handlePassword(inputValue: string) {
-    setUserCredentials((prevUserCredentials) => ({
-      ...prevUserCredentials,
-      password: inputValue,
-    }))
-  }
-
-  function handlePassword2(inputValue: string) {
-    setUserCredentials((prevUserCredentials) => ({
-      ...prevUserCredentials,
-      password2: inputValue,
-    }))
-  }
-
-  function handleSignUp() {
+  const handleSignUp = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const isValidEmail = emailRegex.test(userCredentials.email)
+    const isValidEmail = emailRegex.test(userCredentials.email_address)
     const isPasswordValid = userCredentials.password.length > 6
     const isPassword2 = userCredentials.password === userCredentials.password2
 
-    if (!isValidEmail || !userCredentials.email) {
+    if (!isValidEmail || !userCredentials.email_address) {
       setSnackBarState((prevState) => ({
         ...prevState,
         state: true,
@@ -73,7 +70,17 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         snackBarMessage: 'Password does not match.',
       }))
     } else {
-      navigate('/verify-email')
+      try {
+        const response = await axiosInstance.post(
+          '/api/v1/register',
+          userCredentials
+        )
+        if (response) {
+          navigate('/sign-in')
+        }
+      } catch (error) {
+        console.log('Error during registration: ', error)
+      }
     }
   }
 
@@ -126,27 +133,12 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         action={action}
       />
       <TextField
-        onChange={(e) => handleEmail(e.target.value)}
+        onChange={(e) => handleUserCredentials(e.target.value, 'email_address')}
+        value={userCredentials.email_address}
         type="email"
         id="email"
         label="Email address"
         placeholder="Input your email"
-        sx={{
-          backgroundColor: '#fff',
-          borderRadius: '16px',
-          marginTop: '35px',
-          width: '100%',
-          '& fieldset': { border: 'none' },
-          border: '1px solid #0E2F71',
-          boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
-        }}
-        inputProps={{
-          sx: {
-            fontSize: '24px',
-            color: 'var(--primary-color)',
-            padding: '30px',
-          },
-        }}
         InputProps={{
           placeholder: 'Input your email',
         }}
@@ -161,27 +153,12 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         }}
       />
       <TextField
-        onChange={(e) => handlePassword(e.target.value)}
+        onChange={(e) => handleUserCredentials(e.target.value, 'password')}
+        value={userCredentials.password}
         type="password"
         id="password"
         label="Password"
         placeholder="Input your password"
-        sx={{
-          backgroundColor: '#fff',
-          borderRadius: '16px',
-          marginTop: '35px',
-          width: '100%',
-          '& fieldset': { border: 'none' },
-          border: '1px solid #0E2F71',
-          boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
-        }}
-        inputProps={{
-          sx: {
-            fontSize: '24px',
-            color: 'var(--primary-color)',
-            padding: '30px',
-          },
-        }}
         InputProps={{
           placeholder: 'Input your password',
         }}
@@ -196,27 +173,12 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         }}
       />
       <TextField
-        onChange={(e) => handlePassword2(e.target.value)}
+        onChange={(e) => handleUserCredentials(e.target.value, 'password2')}
+        value={userCredentials.password2}
         type="password"
         id="password2"
         label="Confirm Password"
         placeholder="Input your password"
-        sx={{
-          backgroundColor: '#fff',
-          borderRadius: '16px',
-          marginTop: '35px',
-          width: '100%',
-          '& fieldset': { border: 'none' },
-          border: '1px solid #0E2F71',
-          boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
-        }}
-        inputProps={{
-          sx: {
-            fontSize: '24px',
-            color: 'var(--primary-color)',
-            padding: '30px',
-          },
-        }}
         InputProps={{
           placeholder: 'Input your password',
         }}
@@ -230,6 +192,88 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           shrink: false,
         }}
       />
+      <TextField
+        onChange={(e) => handleUserCredentials(e.target.value, 'first_name')}
+        value={userCredentials.first_name}
+        label="First Name"
+        placeholder="Input your first name"
+        InputProps={{
+          placeholder: 'Input your first name',
+        }}
+        InputLabelProps={{
+          sx: {
+            top: '-55px',
+            left: '-15px',
+            fontSize: '24px',
+            fontWeight: '700',
+          },
+          shrink: false,
+        }}
+      />
+      <TextField
+        onChange={(e) => handleUserCredentials(e.target.value, 'middle_name')}
+        value={userCredentials.middle_name}
+        label="Middle Name"
+        placeholder="Input your middle name"
+        InputProps={{
+          placeholder: 'Input your middle name',
+        }}
+        InputLabelProps={{
+          sx: {
+            top: '-55px',
+            left: '-15px',
+            fontSize: '24px',
+            fontWeight: '700',
+          },
+          shrink: false,
+        }}
+      />
+      <TextField
+        onChange={(e) => handleUserCredentials(e.target.value, 'last_name')}
+        value={userCredentials.last_name}
+        label="Last Name"
+        placeholder="Input your last name"
+        InputProps={{
+          placeholder: 'Input your last name',
+        }}
+        InputLabelProps={{
+          sx: {
+            top: '-55px',
+            left: '-15px',
+            fontSize: '24px',
+            fontWeight: '700',
+          },
+          shrink: false,
+        }}
+      />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <DatePicker
+          onChange={(date) =>
+            handleUserCredentials(date?.toString() as string, 'birthdate')
+          }
+          value={
+            userCredentials.birthdate === null
+              ? null
+              : dayjs(userCredentials.birthdate)
+          }
+          slotProps={{
+            textField: {
+              variant: 'outlined',
+              label: 'Birthdate',
+              InputLabelProps: {
+                sx: {
+                  top: '-55px',
+                  left: '-15px',
+                  fontSize: '24px',
+                  fontWeight: '700',
+                },
+                shrink: false,
+              },
+            },
+          }}
+        />
+      </LocalizationProvider>
+
       <MuiLink
         component={RouterLink}
         to="/sign-in"

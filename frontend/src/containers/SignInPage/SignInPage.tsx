@@ -10,13 +10,21 @@ import {
 } from '@mui/material'
 import { Fragment, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
+import { initializeProfile } from '../../redux/reducers/ProfileReducer'
+import { initializeUser } from '../../redux/reducers/UserReducer'
+import { useAppDispatch } from '../../redux/store'
 
 interface SignInPageProps {}
 
 const SignInPage: React.FC<SignInPageProps> = () => {
+  const dispatch = useAppDispatch()
   const [userCredentials, setUserCredentials] = useState({
-    email: '',
+    email_address: '',
     password: '',
+    service_id: 1,
+    service_key: process.env.REACT_APP_SERVICE_KEY,
+    role: 'provider',
   })
 
   const [open, setOpen] = useState(false)
@@ -26,7 +34,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   function handleEmail(inputValue: string) {
     setUserCredentials((prevUserCredentials) => ({
       ...prevUserCredentials,
-      email: inputValue,
+      email_address: inputValue,
     }))
   }
 
@@ -37,15 +45,31 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     }))
   }
 
-  function handleCredentials() {
+  const handleSignIn = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const isValidEmail = emailRegex.test(userCredentials.email) // && userCredentials.email === user's email;
+    const isValidEmail = emailRegex.test(userCredentials.email_address) // && userCredentials.email === user's email;
     const isPasswordValid = undefined // if password is the user's password
 
     if (!isValidEmail && !isPasswordValid) {
       setOpen(true)
     } else {
-      navigate('/dashboard')
+      try {
+        const response = await axiosInstance.post(
+          '/api/v1/login',
+          userCredentials,
+          {
+            withCredentials: true,
+          }
+        )
+
+        if (response) {
+          dispatch(initializeUser(response.data))
+          dispatch(initializeProfile(response.data.profile))
+          navigate('/provider/dashboard')
+        }
+      } catch (error) {
+        console.log(error)
+      }
     }
   }
 
@@ -96,7 +120,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       />
       <TextField
         onChange={(e) => handleEmail(e.target.value)}
-        value={userCredentials.email}
+        value={userCredentials.email_address}
         type="email"
         id="email"
         label="Email address"
@@ -203,7 +227,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       </Container>
 
       <Button
-        onClick={handleCredentials}
+        onClick={handleSignIn}
         variant="contained"
         color="primary"
         sx={{
