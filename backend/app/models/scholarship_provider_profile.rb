@@ -5,40 +5,7 @@ class ScholarshipProviderProfile < ApplicationRecord
   belongs_to :city
 
   def as_json(options = {})
-    super(
-      only: [
-        :id,
-        :provider_type,
-        :description
-      ],
-      include: {
-        scholarship_provider: {
-          only: [
-            :id,
-            :provider_name,
-            :user_id
-          ]
-        },
-        region: {
-          only: [
-            :id,
-            :region_name
-          ]
-        },
-        city: {
-          only: [
-            :id,
-            :city_name
-          ]
-        },
-        province: {
-          only: [
-            :id,
-            :province_name
-          ]
-        }
-      }
-    )
+    super(options.merge(include: [:scholarship_provider, :region, :province, :city], except: [:created_at, :updated_at, :deleted_at, :city_id, :province_id, :region_id, :scholarship_provider_id]))
   end
   
 

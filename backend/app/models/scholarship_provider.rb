@@ -6,6 +6,6 @@ class ScholarshipProvider < ApplicationRecord
   validates :provider_name, presence: true
 
   def as_json(options = {})
-    super(options.merge(include: [:scholarships, :scholarship_provider_profile], except: [:created_at, :updated_at, :deleted_at]))
+    super(options.merge(except: [:created_at, :updated_at, :deleted_at]))
   end
 end

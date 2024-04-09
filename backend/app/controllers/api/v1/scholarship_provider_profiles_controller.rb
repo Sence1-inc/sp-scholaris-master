@@ -48,7 +48,7 @@ module Api
       def update
         @scholarship_provider = ScholarshipProvider.find_by(user_id: params[:user_id])
 
-        if @scholarship_provider_profile.update(scholarship_provider_profile_params) && @scholarship_provider.update(provider_name: params[:provider_name])
+        if @scholarship_provider_profile.update(scholarship_provider_profile_params) && @scholarship_provider.update(provider_name: params[:provider_name], provider_link: params[:provider_link])
           render json: {
             message: "Provider details successfully saved.",
             profile: @scholarship_provider_profile
@@ -76,7 +76,7 @@ module Api
 
         # Only allow a list of trusted parameters through.
         def scholarship_provider_profile_params
-          params.require(:scholarship_provider_profile).permit(:user_id, :provider_name, :description, :provider_type, :region_id, :province_id, :city_id, :profile_picture)
+          params.require(:scholarship_provider_profile).permit(:user_id, :provider_name, :description, :provider_type, :region_id, :province_id, :city_id, :profile_picture, :provider_link)
         end
     end
   end
