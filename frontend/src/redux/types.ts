@@ -110,6 +110,21 @@ export type ScholarshipType = {
   name: string
 }
 
+export type City = {
+  id: number
+  city_name: string
+}
+
+export type Region = {
+  id: number
+  region_name: string
+}
+
+export type Province = {
+  id: number
+  province_name: string
+}
+
 export type School = {
   city_id: number
   id: number
