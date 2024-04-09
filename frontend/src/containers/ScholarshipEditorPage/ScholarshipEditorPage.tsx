@@ -22,10 +22,12 @@ import {
   ScholarshipType,
   SCHOLARSHIP_TYPES,
 } from '../../data/ScholarshipContent'
+import { useAppSelector } from '../../redux/store copy'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
 const ScholarshipEditorPage = () => {
   const { id } = useParams<{ id: string }>()
+  const user = useAppSelector((state) => state.user)
   const [scholarshipName, setScholarshipName] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [startDate, setStartDate] = useState<Date | Dayjs | null>(null)
@@ -34,7 +36,7 @@ const ScholarshipEditorPage = () => {
   const [schoolYear, setSchoolYear] = useState<string>('')
   const [scholarshipProviderId, setScholarshipProviderId] = useState<
     number | null
-  >()
+  >(null)
   const [requirements, setRequirements] = useState<string>('')
   const [eligibilities, setEligibilities] = useState<string>('')
   const [benefits, setBenefits] = useState<string>('')
@@ -75,8 +77,7 @@ const ScholarshipEditorPage = () => {
   }
 
   useEffect(() => {
-    // this will be updated during our Auth sprint
-    setScholarshipProviderId(2)
+    setScholarshipProviderId(user.scholarship_provider.id)
   }, [])
 
   useEffect(() => {
@@ -90,9 +91,9 @@ const ScholarshipEditorPage = () => {
           setStartDate(dayjs(data.start_date))
           setDueDate(dayjs(data.due_date))
           setApplicationLink(data.application_link)
-          setBenefits(data.benefits)
-          setEligibilities(data.eligibilities)
-          setRequirements(data.requirements)
+          setBenefits(data.benefits[0].benefit_name)
+          setEligibilities(data.eligibilities[0].eligibility_text)
+          setRequirements(data.requirements[0].requirements_text)
           setSchoolYear(data.school_year)
           setStatus(data.status)
           setScholarshipTypeId(data.scholarship_type.id.toString())

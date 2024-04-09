@@ -1,6 +1,7 @@
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import { Button } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
-import BackButton from '../../components/BackButton/BackButton'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import PrimaryButton from '../../components/Button/PrimaryButton'
 import TextLoading from '../../components/Loading/TextLoading'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
@@ -21,6 +22,7 @@ export const ScholarshipDetailsPage: React.FC<
   ScholarshipDataResultsPageProps
 > = () => {
   const { id } = useParams()
+  const navigate = useNavigate()
   const { getScholarshipData } = useGetScholarshipData()
   const result = useAppSelector((state) => state.scholarshipData) as Results
   const [scholarshipData, setScholarshipData] =
@@ -28,10 +30,12 @@ export const ScholarshipDetailsPage: React.FC<
 
   useEffect(() => {
     getScholarshipData(id)
+    // eslint-disable-next-line
   }, [id])
 
   useEffect(() => {
     setScholarshipData(result.scholarshipData)
+    // eslint-disable-next-line
   }, [result.scholarshipData])
 
   const getDate = (date: string): string => {
@@ -58,7 +62,21 @@ export const ScholarshipDetailsPage: React.FC<
       <section id="details">
         <div className="container">
           <aside id="aside">
-            <BackButton text="Back to Search Results" url="/scholarships" />
+            <Button
+              onClick={() => navigate(-1)}
+              sx={{
+                color: 'secondary.main',
+                marginLeft: '30px',
+                fontSize: '24px',
+                fontWeight: 700,
+                textDecoration: 'none',
+                '&:hover': {
+                  textDecoration: 'underline',
+                },
+              }}
+            >
+              <ArrowBackIosIcon /> Back to Search Results
+            </Button>
           </aside>
           <h2 className="title2">Scholarship Details</h2>
           {scholarshipData && (
