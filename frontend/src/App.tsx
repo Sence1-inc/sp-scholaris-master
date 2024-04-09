@@ -4,10 +4,12 @@ import { Route, Routes } from 'react-router-dom'
 import Disclaimer from './components/Disclaimer/Disclaimer'
 import Footer from './components/Footer/Footer'
 import Navbar from './components/Navigation/Navbar'
+import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import AddScholarshipViaCSVPage from './containers/AddScholarshipViaCSVPage/AddScholarshipViaCSVPage'
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage'
+import ProviderProfile from './containers/ProfilesPage/ProviderProfile/ProviderProfile'
 import ProviderDashboardPage from './containers/ProviderDashboardPage/ProviderDashboardPage'
 import { ScholarshipDetailsPage } from './containers/ScholarshipDetailsPage/ScholarshipDetailsPage'
 import ScholarshipEditorPage from './containers/ScholarshipEditorPage/ScholarshipEditorPage'
@@ -15,7 +17,6 @@ import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsP
 import SignInPage from './containers/SignInPage/SignInPage'
 import SignUpPage from './containers/SignUpPage/SignUpPage'
 import SurveyPage from './containers/SurveyPage/SurveyPage'
-import ProviderProfile from './containers/ProfilesPage/ProviderProfile/ProviderProfile'
 import TeaserProvider from './containers/TeaserPage/TeaserProvider'
 import TeaserStudent from './containers/TeaserPage/TeaserStudent'
 import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAndConditionsPage'
@@ -33,10 +34,16 @@ const StudentRoutes: React.FC = () => (
 
 const ProviderRoutes: React.FC = () => (
   <Routes>
-    <Route path="/dashboard" element={<ProviderDashboardPage />} />
+    <Route
+      path="/dashboard"
+      element={<PrivateRoute component={ProviderDashboardPage} />}
+    />
     <Route path="/" element={<TeaserProvider />} />
     <Route path="survey" element={<SurveyPage user_type="provider" />} />
-    <Route path="account/:id/:lastRoute" element={<ProviderProfile />} />
+    <Route
+      path="account/:id/:lastRoute"
+      element={<PrivateRoute component={ProviderProfile} />}
+    />
     <Route path="*" element={<PageNotFoundPage />} />
   </Routes>
 )
@@ -68,11 +75,11 @@ const App: React.FC = () => {
           />
           <Route
             path="/scholarships/:id/update"
-            element={<ScholarshipEditorPage />}
+            element={<PrivateRoute component={ScholarshipEditorPage} />}
           />
           <Route
             path="/scholarships/create"
-            element={<ScholarshipEditorPage />}
+            element={<PrivateRoute component={ScholarshipEditorPage} />}
           />
           <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
           <Route
@@ -86,7 +93,7 @@ const App: React.FC = () => {
           <Route path="*" element={<PageNotFoundPage />} />
           <Route
             path="/scholarships/create/upload"
-            element={<AddScholarshipViaCSVPage />}
+            element={<PrivateRoute component={AddScholarshipViaCSVPage} />}
           />
         </Routes>
       </Box>
