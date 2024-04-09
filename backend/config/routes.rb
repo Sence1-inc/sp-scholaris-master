@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :roles
   get "up" => "rails/health#show", as: :rails_health_check
 
   namespace :api do
@@ -23,6 +22,10 @@ Rails.application.routes.draw do
       resources :schools
       resources :scholarship_providers
       resources :scholarship_provider_profiles
+      resources :regions
+      resources :provinces
+      resources :cities
+      resources :roles
     end
   end
 end
