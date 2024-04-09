@@ -1,17 +1,11 @@
-import React, { useState } from 'react'
-import AccountCard from './AccountCard'
 import { FormGroup, InputLabel, TextField } from '@mui/material'
+import React from 'react'
 import profileTheme from '../../styles/profileTheme'
+import AccountCard from './AccountCard'
 
 const AccountClose: React.FC = () => {
-  const [isEditting, setIsEditting] = useState<boolean>(false)
   return (
-    <AccountCard
-      heading="Close Account"
-      subHeading="Delete your account"
-      handleEdit={(edit) => setIsEditting(edit)}
-      isEditting={isEditting}
-    >
+    <AccountCard heading="Close Account" subHeading="Delete your account">
       <FormGroup sx={profileTheme.form.formStyle}>
         <InputLabel htmlFor="account-name" sx={profileTheme.form.formLabel}>
           Close Account

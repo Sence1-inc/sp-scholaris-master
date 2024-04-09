@@ -1,17 +1,47 @@
-import { FormGroup, InputLabel, TextField } from '@mui/material'
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  FormGroup,
+  InputLabel,
+  TextField,
+} from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Profile } from '../../redux/types'
+import { useAppDispatch } from '../../redux/store'
+import { useAppSelector } from '../../redux/store copy'
 import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
+import axiosInstance from '../../axiosConfig'
+import { initializeProfile } from '../../redux/reducers/ProfileReducer'
+import { ProfileData } from './AccountViewProfile'
 
-interface ProfileProps {
-  profile: Profile | null
-}
-
-const AccountProfile: React.FC<ProfileProps> = ({ profile }) => {
+const AccountProfile: React.FC = () => {
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.user)
+  const data = useAppSelector((state) => state.profile)
+  const { profile } = data as ProfileData
   const [isEditting, setIsEditting] = useState<boolean>(false)
   const [details, setDetails] = useState<string>('')
   const [link, setLink] = useState<string>('')
+
+  const handleSave = async () => {
+    const data = {
+      provider_name: profile.scholarship_provider.provider_name,
+      description: details,
+      provider_link: link,
+      user_id: user.id,
+    }
+
+    try {
+      const response = await axiosInstance.put(
+        `/api/v1/scholarship_provider_profiles/${profile.id}`,
+        data
+      )
+      dispatch(initializeProfile({ ...response.data.profile }))
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     if (profile) {
@@ -23,8 +53,6 @@ const AccountProfile: React.FC<ProfileProps> = ({ profile }) => {
     <AccountCard
       heading="Account Profile"
       subHeading="Edit your account profile and change your profile contents and image here."
-      handleEdit={(edit) => setIsEditting(edit)}
-      isEditting={isEditting}
     >
       <FormGroup sx={profileTheme.form.formStyle}>
         <InputLabel htmlFor="account-details" sx={profileTheme.form.formLabel}>
@@ -52,6 +80,43 @@ const AccountProfile: React.FC<ProfileProps> = ({ profile }) => {
           sx={profileTheme.form.formInput}
         />
       </FormGroup>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100%',
+          p: 4,
+        }}
+      >
+        {!isEditting ? (
+          <Button
+            sx={{ borderRadius: '32px' }}
+            variant="contained"
+            onClick={() => setIsEditting(true)}
+          >
+            Edit
+          </Button>
+        ) : (
+          <ButtonGroup>
+            <Button
+              sx={{ borderRadius: '32px' }}
+              variant="contained"
+              onClick={() => setIsEditting(false)}
+            >
+              Cancel
+            </Button>
+            <Button
+              sx={{ borderRadius: '32px' }}
+              variant="contained"
+              color="secondary"
+              onClick={handleSave}
+            >
+              Save
+            </Button>
+          </ButtonGroup>
+        )}
+      </Box>
     </AccountCard>
   )
 }

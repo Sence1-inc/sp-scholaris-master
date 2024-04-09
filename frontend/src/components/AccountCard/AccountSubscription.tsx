@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import AccountCard from './AccountCard'
 import { FormGroup, InputLabel, TextField } from '@mui/material'
+import React from 'react'
+import AccountCard from './AccountCard'
 
 const theme = {
   formStyle: {
@@ -32,13 +32,10 @@ const theme = {
 }
 
 const AccountSubscription: React.FC = () => {
-  const [isEditting, setIsEditting] = useState<boolean>(false)
   return (
     <AccountCard
       heading="Account Subscription"
       subHeading="Edit your account billing and subscription in here"
-      handleEdit={(edit) => setIsEditting(edit)}
-      isEditting={isEditting}
     >
       <FormGroup sx={theme.formStyle}>
         <InputLabel htmlFor="account-name" sx={theme.labelStyle}>

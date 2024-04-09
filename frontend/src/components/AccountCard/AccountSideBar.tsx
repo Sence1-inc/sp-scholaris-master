@@ -70,7 +70,7 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
               item: { id: string; title: string; Icon: JSX.Element },
               index: number
             ) => (
-              <ListItem sx={{ p: 0 }} key={id}>
+              <ListItem sx={{ p: 0 }} key={item.id}>
                 <Button
                   id={item.id}
                   sx={{
