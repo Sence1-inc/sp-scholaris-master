@@ -55,11 +55,26 @@ export type ProviderData = {
   id: number
   provider_type: string
   description: string
-  scholarship_provider: {
-      id: number
-      provider_name: string
-      user_id: number
+  scholarship_provider: ScholarshipProvider
+  region: {
+    id: number
+    region_name: string
   }
+  city: {
+    id: number
+    city_name: string
+  }
+  province: {
+    id: number
+    province_name: string
+  }
+}
+
+export type Profile = {
+  id: number
+  provider_type: string
+  description: string
+  scholarship_provider: ScholarshipProvider
   region: {
     id: number
     region_name: string
@@ -76,4 +91,60 @@ export type ProviderData = {
 
 export type Params = {
   [key: string]: string | null | Date | number
+}
+
+export type ScholarshipProvider = {
+  id: number
+  provider_name: string
+  provider_link: string
+  user_id: number
+}
+
+export type Role = {
+  id: number | null
+  role_name: string
+}
+
+export type ScholarshipType = {
+  id: string
+  name: string
+}
+
+export type School = {
+  city_id: number
+  id: number
+  province_id: number
+  region_id: number
+  school_name: string
+}
+
+export type ProviderScholarship = {
+  application_link: string
+  description: string
+  due_date: string
+  start_date: string
+  scholarship_name: string
+  school_year: string
+  status: string
+  benefits: { id: number; benefit_name: string }[]
+  eligibilities: { id: number; eligibility_text: string }[]
+  requirements: { id: number; requirements_text: string }[]
+  courses: { id: number; course_name: string; degree_level: string }[]
+  schools: School[]
+  scholarship_provider: ScholarshipProvider
+  scholarship_type: ScholarshipType
+}
+
+export type User = {
+  birthdate: string
+  email_address: string
+  first_name: string
+  id: number
+  is_active: number
+  last_name: string
+  role_id: number
+  session_token: string
+  role: Role
+  scholarship_provider: ScholarshipProvider
+  scholarships: ProviderScholarship[]
 }

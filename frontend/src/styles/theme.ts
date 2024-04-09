@@ -138,6 +138,17 @@ const theme: Theme = createTheme({
         },
       },
     },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Roboto',
+          fontSize: '24px',
+          fontWeight: 'bold',
+          marginBottom: '1px',
+          color: '#002147',
+        },
+      },
+    },
   },
 })
 
