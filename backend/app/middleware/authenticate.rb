@@ -1,16 +1,47 @@
 require 'jwt'
 
 class Authenticate
+  EXCLUDED_ROUTES = [
+    '/api/v1/register',
+    '/api/v1/login',
+    '/api/v1/refresh',
+    '/api/v1/scholarships',
+    '/api/v1/scholarships/index',
+    '/api/v1/scholarships/show',
+    '/api/v1/scholarship_providers',
+    '/api/v1/scholarship_providers/index',
+    '/api/v1/scholarship_providers/show',
+    '/api/v1/scholarship_provider_profiles',
+    '/api/v1/scholarship_provider_profiles/index',
+    '/api/v1/scholarship_provider_profiles/show',
+    '/api/v1/survey_questions',
+    '/api/v1/subscribers',
+    '/api/v1/subscribers/soft_delete',
+    '/api/v1/subscribers/restore',
+    '/api/v1/scholarship_types',
+    '/api/v1/scholarship_types/index',
+    '/api/v1/courses',
+    '/api/v1/courses/index',
+    '/api/v1/benefits',
+    '/api/v1/benefits/index',
+    '/api/v1/schools',
+    '/api/v1/schools/index',
+    '/api/v1/survey_responses',
+    '/api/v1/newsletters',
+    '/api/v1/newsletters/create'
+  ].freeze
+
+
   def initialize(app)
     @app = app
   end
 
   def call(env)
     request = Rack::Request.new(env)
-    auth_routes = ['/api/v1/login', '/api/v1/register']
+    
     
     # Skip authentication if the request path matches a login route
-    if auth_routes.include?(request.path)
+    if excluded_route?(request.path_info)
       return @app.call(env)
     end
 
@@ -40,6 +71,10 @@ class Authenticate
     rescue JWT::DecodeError, JWT::ExpiredSignature
       false
     end
+  end
+
+  def excluded_route?(path)
+    EXCLUDED_ROUTES.any? { |pattern| path.match?(pattern) }
   end
 
   def unauthorized_response
