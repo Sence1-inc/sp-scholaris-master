@@ -12,6 +12,7 @@ module Api
     
       # GET /scholarship_providers/1 or /scholarship_providers/1.json
       def show
+        render json: @scholarship_provider.as_json
       end
     
       # GET /scholarship_providers/new
