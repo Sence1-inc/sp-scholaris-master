@@ -12,6 +12,7 @@ import { Fragment, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import { initializeProfile } from '../../redux/reducers/ProfileReducer'
+import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch } from '../../redux/store'
 
@@ -65,6 +66,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         if (response) {
           dispatch(initializeUser(response.data))
           dispatch(initializeProfile(response.data.profile))
+          dispatch(initializeScholarships(response.data.scholarships))
           navigate('/provider/dashboard')
         }
       } catch (error) {

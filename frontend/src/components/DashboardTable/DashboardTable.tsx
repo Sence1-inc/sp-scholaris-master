@@ -37,11 +37,6 @@ export default function DataTable() {
   const [successMessage, setSuccessMessage] = useState<string>('')
 
   useEffect(() => {
-    getScholarships(false)
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
     if (data.scholarships.length > 0) {
       setIsLoading(false)
     } else {
