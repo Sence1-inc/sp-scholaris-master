@@ -57,22 +57,22 @@ module Api
 
       if registration_response[:status] == 201
         @role = Role.find_by(role_name: params.dig(:role))
-        puts "role"
-        puts params.dig(:role)
-        puts @role
-        if (@role) 
-          @user = User.new(user_params.merge(role_id: @role.id))
-        else
-          render json: { error: 'Failed to save user details' }, status: :unprocessable_entity
+        existing_user = User.find_by(email_address: user_params.dig(:email_address))
+        
+        if !@role || existing_user
+          error_message = !@role ? 'Role not found' : 'User already exists'
+          render json: { error: error_message }, status: :unprocessable_entity
+          return
         end
 
+        @user = User.new(user_params.merge(uuid: registration_response[:user]['uuid'], role_id: @role.id))
+        
         if @user.save
           render json: { user: @user, msg: 'User registered and saved successfully' }, status: :created
         else
           render json: { error: 'Failed to save user details' }, status: :unprocessable_entity
         end
       else
-        # If registration fails, render error response
         render json: { error: registration_response[:error] }, status: registration_response[:status]
       end
     end
@@ -96,13 +96,57 @@ module Api
         parsed_response = JSON.parse(response.body)
 
         if parsed_response['status'] == 200
-          puts "RES MEOW"
-          puts parsed_response['tokens']['accessToken']
-          cookies[:access_token] = parsed_response['tokens']['accessToken']
-          cookies[:refresh_token] = parsed_response['tokens']['refreshToken']
+          cookies.encrypted[:user_email] = user_params.dig(:email_address)
+          cookies[:access_token] = {
+            value: parsed_response['tokens']['accessToken'],
+            httponly: true
+          }
+          cookies[:refresh_token] = {
+            value: parsed_response['tokens']['refreshToken'],
+            httponly: true
+          }
           user = User.find_by(email_address: user_params.dig(:email_address))
-
+          provider = ScholarshipProvider.find_by(user_id: user.id)
+          if provider
+            scholarships = Scholarship.where(scholarship_provider_id: provider.id)
+            profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id)
+          end
+          
+          scholarships_hash = scholarships.present? ? scholarships.map(&:as_json) : []
+          profile_hash = profile.present? ? profile.as_json : {}
+          
+          render json: user.as_json.merge(scholarships: scholarships_hash).merge(profile: profile_hash), status: parsed_response['status']
+                 
+        else
           render json: response, status: parsed_response['status']
+        end
+      rescue RestClient::ExceptionWithResponse => e
+        render json: response, status: e.response.code, error: e.response.body
+      end
+    end
+
+    def refresh
+      req = {
+        refreshToken: cookies[:refresh_token],
+        serviceId: 1,
+      }
+
+      begin
+        response = RestClient.post(ENV["AUTH_REFRESH"], req.to_json, headers)
+        parsed_response = JSON.parse(response.body)
+
+        if parsed_response['status'] == 200
+          cookies.encrypted[:user_email] = user_params.dig(:email_address)
+          cookies[:access_token] = {
+            value: parsed_response['tokens']['accessToken'],
+            httponly: true
+          }
+          cookies[:refresh_token] = {
+            value: parsed_response['tokens']['refreshToken'],
+            httponly: true
+          }
+          
+          render json: {message: parsed_response['msg']}, status: parsed_response['status']
         else
           render json: response, status: parsed_response['status']
         end
