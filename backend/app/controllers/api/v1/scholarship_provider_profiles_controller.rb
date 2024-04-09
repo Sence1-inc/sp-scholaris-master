@@ -46,14 +46,15 @@ module Api
 
       # PATCH/PUT /scholarship_provider_profiles/1 or /scholarship_provider_profiles/1.json
       def update
-        respond_to do |format|
-          if @scholarship_provider_profile.update(scholarship_provider_profile_params)
-            format.html { redirect_to provider_url(@scholarship_provider_profile), notice: "Provider was successfully updated." }
-            format.json { render :show, status: :ok, location: @scholarship_provider_profile }
-          else
-            format.html { render :edit, status: :unprocessable_entity }
-            format.json { render json: @scholarship_provider_profile.errors, status: :unprocessable_entity }
-          end
+        @scholarship_provider = ScholarshipProvider.find_by(user_id: params[:user_id])
+
+        if @scholarship_provider_profile.update(scholarship_provider_profile_params) && @scholarship_provider.update(provider_name: params[:provider_name])
+          render json: {
+            message: "Provider details successfully saved.",
+            profile: @scholarship_provider_profile
+          }, status: :ok
+        else
+          render json: { errors: [@scholarship_provider_profile.errors.full_messages, @scholarship_provider.errors.full_messages] }, status: :unprocessable_entity
         end
       end
 
