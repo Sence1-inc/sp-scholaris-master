@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       post 'register', to: 'users#register', as: 'users_register'
       post 'login', to: 'users#login', as: 'users_login'
       post 'refresh', to: 'users#refresh', as: 'users_refresh'
+      get 'check_token', to: 'users#check_token', as: 'users_check_token'
       resources :scholarships, only: [:index, :show, :edit, :update, :destroy] do
         post 'upload', on: :collection
       end          

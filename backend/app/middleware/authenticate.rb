@@ -5,6 +5,7 @@ class Authenticate
     '/api/v1/register',
     '/api/v1/login',
     '/api/v1/refresh',
+    '/api/v1/check_token',
     '/api/v1/scholarships',
     '/api/v1/scholarships/index',
     '/api/v1/scholarships/show',
@@ -45,8 +46,6 @@ class Authenticate
   def call(env)
     request = Rack::Request.new(env)
     
-    
-    # Skip authentication if the request path matches a login route
     if excluded_route?(request.path_info)
       return @app.call(env)
     end

@@ -155,6 +155,11 @@ module Api
       end
     end
 
+    def check_token
+      has_access_token = cookies[:access_token].present?
+      render json: { valid: has_access_token }, status: :ok
+    end
+
     private
       # Use callbacks to share common setup or constraints between actions.
       def set_user
