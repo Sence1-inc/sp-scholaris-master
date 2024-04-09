@@ -11,40 +11,7 @@ module Api
 
       # GET /scholarship_provider_profiles/1 or /scholarship_provider_profiles/1.json
       def show
-        render json: @scholarship_provider_profile.as_json(
-              :only => [ 
-                :id,  
-                :provider_type, 
-                :description,
-              ],
-              :include => {
-                scholarship_provider: {
-                  only: [
-                    :id, 
-                    :provider_name,
-                    :user_id
-                  ]
-                },
-                region: { 
-                  only: [
-                    :id, 
-                    :region_name
-                  ]
-                },
-                city: { 
-                  only: [
-                    :id, 
-                    :city_name
-                  ]
-                },
-                province: { 
-                  only: [
-                    :id, 
-                    :province_name
-                  ]
-                },
-              }
-            )
+        render json: @scholarship_provider_profile.as_json
       end
 
       # GET /scholarship_provider_profiles/new
