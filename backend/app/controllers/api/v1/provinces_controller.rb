@@ -6,6 +6,8 @@ module Api
       # GET /provinces or /provinces.json
       def index
         @provinces = Province.all
+
+        render json: @provinces
       end
 
       # GET /provinces/1 or /provinces/1.json

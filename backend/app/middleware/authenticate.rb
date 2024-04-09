@@ -28,7 +28,13 @@ class Authenticate
     '/api/v1/schools/index',
     '/api/v1/survey_responses',
     '/api/v1/newsletters',
-    '/api/v1/newsletters/create'
+    '/api/v1/newsletters/create',
+    '/api/v1/cities',
+    '/api/v1/cities/index',
+    '/api/v1/provinces',
+    '/api/v1/provinces/index',
+    '/api/v1/regions',
+    '/api/v1/regions/index',
   ].freeze
 
 

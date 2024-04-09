@@ -6,6 +6,8 @@ module Api
       # GET /cities or /cities.json
       def index
         @cities = City.all
+
+        render json: @cities
       end
 
       # GET /cities/1 or /cities/1.json
