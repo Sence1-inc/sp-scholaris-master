@@ -8,6 +8,7 @@ import {
   Link,
   MenuItem,
   Select,
+  SelectChangeEvent,
   Snackbar,
   TextField,
   Typography,
@@ -22,12 +23,15 @@ import {
   ScholarshipType,
   SCHOLARSHIP_TYPES,
 } from '../../data/ScholarshipContent'
-import { useAppSelector } from '../../redux/store copy'
+import { useAppSelector } from '../../redux/store'
+import { ScholarshipData } from '../../redux/types'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
 const ScholarshipEditorPage = () => {
   const { id } = useParams<{ id: string }>()
   const user = useAppSelector((state) => state.user)
+  const data = useAppSelector((state) => state.scholarshipData)
+  const { scholarshipData } = data as { scholarshipData: ScholarshipData }
   const [scholarshipName, setScholarshipName] = useState<string>('')
   const [description, setDescription] = useState<string>('')
   const [startDate, setStartDate] = useState<Date | Dayjs | null>(null)
@@ -40,7 +44,9 @@ const ScholarshipEditorPage = () => {
   const [requirements, setRequirements] = useState<string>('')
   const [eligibilities, setEligibilities] = useState<string>('')
   const [benefits, setBenefits] = useState<string>('')
-  const [scholarshipTypeId, setScholarshipTypeId] = useState<string>('')
+  const [scholarshipTypeId, setScholarshipTypeId] = useState<number | null>(
+    null
+  )
   const [status, setStatus] = useState<string>('')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
@@ -58,16 +64,6 @@ const ScholarshipEditorPage = () => {
     setRequirements(e.target.value)
   }
 
-  const handleScholarshipTypeSelect = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setScholarshipTypeId(e.target.value)
-  }
-
-  const handleStatusSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStatus(e.target.value)
-  }
-
   const handleStartDateChange = (date: Date | Dayjs | null) => {
     setStartDate(date)
   }
@@ -78,14 +74,17 @@ const ScholarshipEditorPage = () => {
 
   useEffect(() => {
     setScholarshipProviderId(user.scholarship_provider.id)
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    const getScholarship = async () => {
-      try {
-        const { data } = await axiosInstance.get(`/api/v1/scholarships/${id}`)
+    if (scholarshipData.id) {
+      const getScholarship = async () => {
+        try {
+          const { data } = await axiosInstance.get(
+            `/api/v1/scholarships/${scholarshipData.id}`
+          )
 
-        if (data) {
           setScholarshipName(data.scholarship_name)
           setDescription(data.description)
           setStartDate(dayjs(data.start_date))
@@ -96,15 +95,13 @@ const ScholarshipEditorPage = () => {
           setRequirements(data.requirements[0].requirements_text)
           setSchoolYear(data.school_year)
           setStatus(data.status)
-          setScholarshipTypeId(data.scholarship_type.id.toString())
-        }
-      } catch (error) {}
-    }
+          setScholarshipTypeId(data.scholarship_type.id)
+        } catch (error) {}
+      }
 
-    if (id) {
       getScholarship()
     }
-  }, [id])
+  }, [scholarshipData.id])
 
   const handleSubmit = async () => {
     const data = {
@@ -125,7 +122,7 @@ const ScholarshipEditorPage = () => {
     try {
       if (id) {
         const response = await axiosInstance.put(
-          `/api/v1/scholarships/${id}`,
+          `/api/v1/scholarships/${scholarshipData.id}`,
           data
         )
         if (response.data) {
@@ -149,7 +146,7 @@ const ScholarshipEditorPage = () => {
           setRequirements('')
           setSchoolYear('')
           setStatus('')
-          setScholarshipTypeId('')
+          setScholarshipTypeId(null)
         }
       }
     } catch (error: any) {
@@ -203,7 +200,7 @@ const ScholarshipEditorPage = () => {
             fontWeight: '700',
           }}
         >
-          {id ? 'Edit Scholarship' : 'Add New Scholarship'}
+          {scholarshipData.id ? 'Edit Scholarship' : 'Add New Scholarship'}
         </Typography>
 
         <Box
@@ -353,12 +350,18 @@ const ScholarshipEditorPage = () => {
                 boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
                 backgroundColor: 'white',
               }}
-              value={scholarshipTypeId}
+              value={scholarshipTypeId?.toString()}
               name="scholarship_type"
-              onChange={(e: any) => handleScholarshipTypeSelect(e)}
+              onChange={(e: SelectChangeEvent) =>
+                setScholarshipTypeId(Number(e.target.value))
+              }
             >
               {SCHOLARSHIP_TYPES.map((type: ScholarshipType) => {
-                return <MenuItem value={type.id}>{type.name}</MenuItem>
+                return (
+                  <MenuItem key={type.id} value={type.id}>
+                    {type.name}
+                  </MenuItem>
+                )
               })}
             </Select>
           </Box>
@@ -500,7 +503,7 @@ const ScholarshipEditorPage = () => {
                 backgroundColor: 'white',
               }}
               value={status}
-              onChange={(e: any) => handleStatusSelect(e)}
+              onChange={(e: SelectChangeEvent) => setStatus(e.target.value)}
               name="status"
             >
               <MenuItem value={'active'}>Active</MenuItem>
