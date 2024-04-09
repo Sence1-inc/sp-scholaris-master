@@ -17,13 +17,23 @@ const instance: AxiosInstance = axios.create({
   },
 })
 
+let lastRefreshTime = Date.now()
+
 instance.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response && error.response.status === 401) {
+    const currentTime = Date.now()
+    const elapsedTimeSinceLastRefresh = currentTime - lastRefreshTime
+
+    if (
+      elapsedTimeSinceLastRefresh >= 4 * 60 * 1000 ||
+      (error.response && error.response.status === 401)
+    ) {
       axios.post('/api/v1/refresh')
       console.log('Unauthorized, triggering /refresh endpoint')
+      lastRefreshTime = currentTime
     }
+
     return Promise.reject(error)
   }
 )
