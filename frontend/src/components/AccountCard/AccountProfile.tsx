@@ -7,8 +7,7 @@ import {
   TextField,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { useAppDispatch } from '../../redux/store'
-import { useAppSelector } from '../../redux/store copy'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
 import axiosInstance from '../../axiosConfig'

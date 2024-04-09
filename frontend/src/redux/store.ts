@@ -9,6 +9,7 @@ import ProfileReducer from './reducers/ProfileReducer'
 import UserReducer from './reducers/UserReducer'
 import reduxPersistMiddleware from './reduxPersistMiddleware'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import IsAuthenticatedReducer from './reducers/IsAuthenticatedReducer'
 
 const persistConfig = {
   key: 'root',
@@ -25,6 +26,7 @@ const persistedReducer = persistReducer(
     scholarshipData: ScholarshipDataReducer,
     profile: ProfileReducer,
     user: UserReducer,
+    isAuthenticated: IsAuthenticatedReducer,
   })
 )
 
