@@ -38,7 +38,7 @@ class Scholarship < ApplicationRecord
   }
 
   def as_json(options = {})
-    super(include: [:benefits, :eligibilities, :requirements, :scholarship_provider, :scholarship_type, :courses, :schools])
+    super(options.merge(include: [:benefits, :eligibilities, :requirements, :scholarship_provider, :scholarship_type, :courses, :schools], except: [:created_at, :updated_at, :deleted_at, :eligibility_id, :requirement_id, :scholarship_provider_id, :scholarship_type_id]))
   end
 
   private
