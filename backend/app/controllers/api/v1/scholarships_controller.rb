@@ -125,7 +125,6 @@ module Api
         # Only allow a list of trusted parameters through.
         def scholarship_params
           params
-          # .require(:scholarship)
           .permit(
             :scholarship_name, 
             :status, 
@@ -137,8 +136,9 @@ module Api
             :scholarship_type_id,
             :requirements,
             :eligibilities,
-            :benefits
-          ).merge(scholarship_provider_id: 1) # update this with the id of the authenticated user
+            :benefits,
+            :scholarship_provider_id
+          )
         end
     end
   end
