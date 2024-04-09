@@ -1,31 +1,59 @@
-import React from 'react';
-import { FormGroup, InputLabel, TextField } from '@mui/material';
-import { ProviderData } from '../../redux/types'
-import AccountCard from './AccountCard';
-import profileTheme from '../../styles/profileTheme';
+import { FormGroup, InputLabel, TextField } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Profile } from '../../redux/types'
+import profileTheme from '../../styles/profileTheme'
+import AccountCard from './AccountCard'
 
-interface ProviderDataProps {
-  provider: ProviderData | null
+interface ProfileProps {
+  profile: Profile | null
 }
 
-const AccountProfile: React.FC<ProviderDataProps> = ({ provider }) => {
+const AccountProfile: React.FC<ProfileProps> = ({ profile }) => {
+  const [isEditting, setIsEditting] = useState<boolean>(false)
+  const [details, setDetails] = useState<string>('')
+  const [link, setLink] = useState<string>('')
+
+  useEffect(() => {
+    if (profile) {
+      setDetails(profile.description)
+      setLink(profile.scholarship_provider.provider_link)
+    }
+  }, [profile])
   return (
-    provider &&
-    (<AccountCard heading='Account Profile' subHeading='Edit your account profile and change your profile contents and image here.'>
+    <AccountCard
+      heading="Account Profile"
+      subHeading="Edit your account profile and change your profile contents and image here."
+      handleEdit={(edit) => setIsEditting(edit)}
+      isEditting={isEditting}
+    >
       <FormGroup sx={profileTheme.form.formStyle}>
-        <InputLabel htmlFor="account-name" sx={profileTheme.form.formLabel}>Account Name</InputLabel>
-        <TextField disabled id="account-name" defaultValue={provider.scholarship_provider && provider.scholarship_provider.provider_name} sx={profileTheme.form.formInput} />
-      </FormGroup>
-      <FormGroup sx={profileTheme.form.formStyle}>
-        <InputLabel htmlFor="account-details" sx={profileTheme.form.formLabel}>Account Details</InputLabel>
-        <TextField disabled id="account-details" defaultValue={provider && provider.description} sx={profileTheme.form.formInput} />
+        <InputLabel htmlFor="account-details" sx={profileTheme.form.formLabel}>
+          Account Details
+        </InputLabel>
+        <TextField
+          disabled={!isEditting}
+          id="account-details"
+          value={details}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setDetails(e.target.value)
+          }
+          sx={profileTheme.form.formInput}
+        />
       </FormGroup>
       <FormGroup>
-        <InputLabel htmlFor="account-link" sx={profileTheme.form.formLabel}>Organization / Link</InputLabel>
-        <TextField disabled id="account-link" defaultValue="https://test.com" sx={profileTheme.form.formInput} />
+        <InputLabel htmlFor="account-link">Organization Link</InputLabel>
+        <TextField
+          disabled={!isEditting}
+          id="account-link"
+          value={link}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setLink(e.target.value)
+          }
+          sx={profileTheme.form.formInput}
+        />
       </FormGroup>
-    </AccountCard>)
+    </AccountCard>
   )
 }
 
-export default AccountProfile;
+export default AccountProfile
