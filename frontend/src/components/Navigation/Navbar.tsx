@@ -15,6 +15,7 @@ import {
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Logo from '../../public/images/logo.png'
+import { useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
 interface NavbarProps {
@@ -26,6 +27,7 @@ const drawerWidth = '90vw'
 const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const location = useLocation()
   const pathname = location.pathname
+  const user = useAppSelector((state) => state.user)
 
   const renderItems = () => {
     if (pathname.includes('/student')) {
@@ -111,7 +113,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             <Typography
               variant="body1"
               component={Link}
-              to="/provider/account/:id/view-profile"
+              to={`/provider/account/${user?.scholarship_provider?.id}/view-profile`}
               sx={{ color: 'common.white', textDecoration: 'none' }}
             >
               Profile
