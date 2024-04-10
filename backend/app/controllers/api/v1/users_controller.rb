@@ -96,7 +96,10 @@ module Api
         parsed_response = JSON.parse(response.body)
 
         if parsed_response['status'] == 200
-          cookies.encrypted[:user_email] = user_params.dig(:email_address)
+          cookies[:user_email] = {
+            value: user_params.dig(:email_address),
+            httponly: true
+          }
           cookies[:access_token] = {
             value: parsed_response['tokens']['accessToken'],
             httponly: true
@@ -136,7 +139,10 @@ module Api
         parsed_response = JSON.parse(response.body)
 
         if parsed_response['status'] == 200
-          cookies.encrypted[:user_email] = user_params.dig(:email_address)
+          cookies[:user_email] = {
+            value: user_params.dig(:email_address),
+            httponly: true
+          }
           cookies[:access_token] = {
             value: parsed_response['tokens']['accessToken'],
             httponly: true
@@ -161,10 +167,11 @@ module Api
     end
 
     def logout
-      cookies.delete(:access_token)
-      cookies.delete(:refresh_token) 
-      cookies.delete(:user_email)
-      head :no_content
+      cookies.delete :access_token
+      cookies.delete :refresh_token 
+      cookies.delete :user_email
+
+      render json: { deleted: !cookies[:access_token].present? }, status: :ok
     end
 
     private

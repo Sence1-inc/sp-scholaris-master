@@ -16,7 +16,8 @@ import React from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import Logo from '../../public/images/logo.png'
-import { useAppSelector } from '../../redux/store'
+import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
 interface NavbarProps {
@@ -30,13 +31,17 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const pathname = location.pathname
   const user = useAppSelector((state) => state.user)
   const isAuthenticated = useAppSelector((state) => state.isAuthenticated)
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   console.log(isAuthenticated)
   const handleDeleteCookie = async () => {
-    await axiosInstance.post('/api/v1/logout', {
+    const response = await axiosInstance.post('/api/v1/logout', {
       withCredentials: true,
     })
-    navigate('/sign-in')
+    if (response.data.deleted) {
+      dispatch(initializeIsAuthenticated(false))
+      navigate('/sign-in')
+    }
   }
 
   const renderItems = () => {
