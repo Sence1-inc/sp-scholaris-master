@@ -50,6 +50,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
           '/api/v1/scholarships/upload',
           formData,
           {
+            withCredentials: true,
             headers: {
               'Content-Type': 'multipart/form-data',
             },

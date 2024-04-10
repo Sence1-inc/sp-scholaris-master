@@ -14,7 +14,9 @@ const useGetProfile = () => {
   const getProfile = async (id: number | undefined) => {
     try {
       const response: AxiosResponse<Profile | ErrorResponse> =
-        await axiosInstance.get(`api/v1/scholarship_provider_profiles/${id}`)
+        await axiosInstance.get(`api/v1/scholarship_provider_profiles/${id}`, {
+          withCredentials: true,
+        })
 
       if (response.status === 200) {
         console.log('provider data', response.data)

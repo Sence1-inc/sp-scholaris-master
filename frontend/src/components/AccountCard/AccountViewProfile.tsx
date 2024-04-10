@@ -3,7 +3,6 @@ import {
   Button,
   ButtonGroup,
   FormControl,
-  InputLabel,
   MenuItem,
   Select,
   SelectChangeEvent,
@@ -11,13 +10,13 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import axiosInstance from '../../axiosConfig'
+import { initializeProfile } from '../../redux/reducers/ProfileReducer'
+import { useAppSelector } from '../../redux/store'
 import { City, Profile, Province, Region } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
-import axiosInstance from '../../axiosConfig'
-import { useAppSelector } from '../../redux/store'
-import { useDispatch } from 'react-redux'
-import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 
 export interface ProfileData {
   profile: Profile
@@ -43,20 +42,20 @@ const AccountViewProfile: React.FC = () => {
 
   useEffect(() => {
     if (profile) {
-      setProviderName(profile.scholarship_provider.provider_name)
-      setCityName(profile.city.city_name)
-      setProvinceName(profile.province.province_name)
-      setRegionName(profile.region.region_name)
-      setCityId(profile.city.id)
-      setProvinceId(profile.province.id)
-      setRegionId(profile.region.id)
+      setProviderName(profile.scholarship_provider?.provider_name ?? '')
+      setCityName(profile.city?.city_name ?? '')
+      setProvinceName(profile.province?.province_name ?? '')
+      setRegionName(profile.region?.region_name ?? '')
+      setCityId(profile.city?.id ?? null)
+      setProvinceId(profile.province?.id ?? null)
+      setRegionId(profile.region?.id ?? null)
       setProviderType(profile.provider_type)
     }
   }, [profile])
 
   const handleSave = async () => {
     const data = {
-      provider_link: profile.scholarship_provider.provider_link,
+      provider_link: profile?.scholarship_provider?.provider_link ?? '',
       provider_name: providerName,
       region_id: regionId,
       province_id: provinceId,
@@ -65,10 +64,19 @@ const AccountViewProfile: React.FC = () => {
     }
 
     try {
-      const response = await axiosInstance.put(
-        `/api/v1/scholarship_provider_profiles/${profile.id}`,
-        data
-      )
+      const api = profile.id
+        ? await axiosInstance.put(
+            `/api/v1/scholarship_provider_profiles/${profile.id}`,
+            data,
+            { withCredentials: true }
+          )
+        : await axiosInstance.post(
+            '/api/v1/scholarship_provider_profiles',
+            data,
+            { withCredentials: true }
+          )
+      const response = api
+
       dispatch(initializeProfile({ ...response.data.profile }))
     } catch (error) {
       console.log(error)
@@ -144,21 +152,13 @@ const AccountViewProfile: React.FC = () => {
         {!isEditting ? (
           <Typography
             sx={profileTheme.text.textRegular}
-          >{`${cityName}, ${provinceName}, ${regionName}`}</Typography>
+          >{`${cityName} ${provinceName} ${regionName}`}</Typography>
         ) : (
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
-            <FormControl fullWidth sx={{ paddingTop: '40px' }}>
-              <InputLabel
-                variant="standard"
-                sx={{
-                  top: '8px',
-                  fontSize: '24px',
-                  fontWeight: '700',
-                }}
-              >
-                City
-              </InputLabel>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <FormControl fullWidth>
+              <Typography variant="h6">City</Typography>
               <Select
+                displayEmpty
                 fullWidth
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -179,17 +179,9 @@ const AccountViewProfile: React.FC = () => {
               </Select>
             </FormControl>
             <FormControl fullWidth>
-              <InputLabel
-                variant="standard"
-                sx={{
-                  top: '-28px',
-                  fontSize: '24px',
-                  fontWeight: '700',
-                }}
-              >
-                Province
-              </InputLabel>
+              <Typography variant="h6">Province</Typography>
               <Select
+                displayEmpty
                 fullWidth
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -210,23 +202,14 @@ const AccountViewProfile: React.FC = () => {
               </Select>
             </FormControl>
             <FormControl fullWidth>
-              <InputLabel
-                variant="standard"
-                sx={{
-                  top: '-30px',
-                  fontSize: '24px',
-                  fontWeight: '700',
-                }}
-              >
-                Region
-              </InputLabel>
+              <Typography variant="h6">Region</Typography>
               <Select
+                displayEmpty
                 fullWidth
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={regionId?.toString()}
                 sx={{ textAlign: 'left' }}
-                // label="Region"
                 onChange={(e: SelectChangeEvent) =>
                   setRegionId(Number(e.target.value))
                 }

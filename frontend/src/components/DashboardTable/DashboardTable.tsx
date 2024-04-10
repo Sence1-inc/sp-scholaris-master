@@ -16,7 +16,8 @@ import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import useGetScholarships from '../../hooks/useGetScholarships'
-import { useAppSelector } from '../../redux/store'
+import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 
 interface GridRowDef {
@@ -29,6 +30,8 @@ interface GridRowDef {
 
 export default function DataTable() {
   const navigate = useNavigate()
+  const user = useAppSelector((state) => state.user)
+  const dispatch = useAppDispatch()
   const { getScholarships } = useGetScholarships()
   const { getScholarshipData } = useGetScholarshipsData()
   const data: any = useAppSelector((state) => state.scholarships)
@@ -37,6 +40,7 @@ export default function DataTable() {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [selectedRow, setSelectedRow] = useState<number>(0)
   const [successMessage, setSuccessMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   useEffect(() => {
     if (data.scholarships.length > 0) {
@@ -47,7 +51,7 @@ export default function DataTable() {
   }, [data])
 
   useEffect(() => {
-    if (data.scholarships) {
+    if (data.scholarships && data.scholarships.length > 0) {
       const row = data.scholarships.map((scholarship: Scholarship) => {
         return {
           id: scholarship.id,
@@ -71,18 +75,42 @@ export default function DataTable() {
   const handleDelete = async () => {
     try {
       const response = await axiosInstance.delete(
-        `/api/v1/scholarships/${selectedRow}`
+        `/api/v1/scholarships/${selectedRow}`,
+        { withCredentials: true }
       )
       console.log(response)
       if (response) {
         setIsSnackbarOpen(true)
         setSuccessMessage(response.data.message)
-        getScholarships(false)
+        dispatch(initializeScholarships(response.data.scholarships))
       }
     } catch (error) {
-      console.log(error)
+      setErrorMessage('Error deleting scholarship')
     }
   }
+
+  useEffect(() => {
+    const getProviderScholarships = async () => {
+      try {
+        const response = await axiosInstance.get(
+          `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships`,
+          { withCredentials: true }
+        )
+
+        if (response.status === 200) {
+          dispatch(initializeScholarships(response.data as Scholarship[]))
+        }
+      } catch (error: any) {
+        console.log()
+        dispatch(initializeScholarships([]))
+        if (error.response.status === 403) {
+          navigate('/')
+        }
+      }
+    }
+
+    getProviderScholarships()
+  }, [])
 
   const renderActions = (params: any) => {
     return (

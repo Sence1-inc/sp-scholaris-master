@@ -102,7 +102,10 @@ const ScholarshipEditorPage = () => {
   }
 
   useEffect(() => {
-    setScholarshipProviderId(user.scholarship_provider.id)
+    if (user.scholarship_provider) {
+      setScholarshipProviderId(user.scholarship_provider.id)
+    }
+
     // eslint-disable-next-line
   }, [])
 
@@ -126,13 +129,22 @@ const ScholarshipEditorPage = () => {
   }, [scholarshipData])
 
   useEffect(() => {
+    if (user.scholarship_provider) {
+      setScholarshipProviderId(user.scholarship_provider.id)
+    }
+  }, [user])
+
+  useEffect(() => {
     const getScholarshipTypes = async () => {
       const { data } = await axiosInstance.get('/api/v1/scholarship_types')
       setScholarshipTypes(data)
     }
 
     getScholarshipTypes()
-    getScholarshipData(id)
+    if (id) {
+      getScholarshipData(id)
+    }
+
     // eslint-disable-next-line
   }, [])
 
@@ -166,7 +178,8 @@ const ScholarshipEditorPage = () => {
       if (id) {
         const response = await axiosInstance.put(
           `/api/v1/scholarships/${scholarshipData.id}`,
-          data
+          data,
+          { withCredentials: true }
         )
         if (response.data) {
           dispatch(initializeScholarshipData(response.data.scholarship))
@@ -175,7 +188,11 @@ const ScholarshipEditorPage = () => {
           setErrorMessage('')
         }
       } else {
-        const response = await axiosInstance.post('/api/v1/scholarships', data)
+        const response = await axiosInstance.post(
+          '/api/v1/scholarships',
+          data,
+          { withCredentials: true }
+        )
         if (response.data) {
           setIsSnackbarOpen(true)
           setSuccessMessage(response.data.message)

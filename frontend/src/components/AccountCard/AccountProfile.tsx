@@ -7,11 +7,11 @@ import {
   TextField,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
+import axiosInstance from '../../axiosConfig'
+import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
-import axiosInstance from '../../axiosConfig'
-import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { ProfileData } from './AccountViewProfile'
 
 const AccountProfile: React.FC = () => {
@@ -25,17 +25,26 @@ const AccountProfile: React.FC = () => {
 
   const handleSave = async () => {
     const data = {
-      provider_name: profile.scholarship_provider.provider_name,
+      provider_name: profile?.scholarship_provider?.provider_name ?? '',
       description: details,
       provider_link: link,
       user_id: user.id,
     }
 
     try {
-      const response = await axiosInstance.put(
-        `/api/v1/scholarship_provider_profiles/${profile.id}`,
-        data
-      )
+      const api = profile.id
+        ? await axiosInstance.put(
+            `/api/v1/scholarship_provider_profiles/${profile.id}`,
+            data,
+            { withCredentials: true }
+          )
+        : await axiosInstance.post(
+            '/api/v1/scholarship_provider_profiles',
+            data,
+            { withCredentials: true }
+          )
+      const response = api
+
       dispatch(initializeProfile({ ...response.data.profile }))
     } catch (error) {
       console.log(error)
@@ -43,9 +52,9 @@ const AccountProfile: React.FC = () => {
   }
 
   useEffect(() => {
-    if (profile) {
-      setDetails(profile.description)
-      setLink(profile.scholarship_provider.provider_link)
+    if (Object.keys(profile).length > 0) {
+      setDetails(profile?.description ?? '')
+      setLink(profile?.scholarship_provider.provider_link ?? '')
     }
   }, [profile])
   return (

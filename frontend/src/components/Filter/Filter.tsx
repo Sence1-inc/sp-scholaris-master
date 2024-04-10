@@ -1,12 +1,12 @@
+import { Typography } from '@mui/material'
+import { format } from 'date-fns'
 import React, { useEffect, useState } from 'react'
 import { RangeKeyDict } from 'react-date-range'
+import axiosInstance from '../../axiosConfig'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import './Filter.css'
 import FilterOption from './FilterOption/FilterOption'
-import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { format } from 'date-fns'
-import axiosInstance from '../../axiosConfig'
-import { Typography } from '@mui/material'
 
 interface FilterProps {}
 
@@ -70,7 +70,10 @@ const Filter: React.FC<FilterProps> = () => {
       const benefits = await axiosInstance.get(`api/v1/benefits`)
       const courses = await axiosInstance.get(`api/v1/courses`)
       const schools = await axiosInstance.get(`api/v1/schools`)
-      const providers = await axiosInstance.get(`api/v1/scholarship_providers`)
+      const providers = await axiosInstance.get(
+        `api/v1/scholarship_providers`,
+        { withCredentials: true }
+      )
 
       setBenefits(mapToOptions(benefits.data, 'benefit_name'))
       setCourses(mapToOptions(courses.data, 'course_name'))
