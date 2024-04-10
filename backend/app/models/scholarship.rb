@@ -41,6 +41,11 @@ class Scholarship < ApplicationRecord
     super(options.merge(include: [:benefits, :eligibilities, :requirements, :scholarship_provider, :scholarship_type, :courses, :schools], except: [:created_at, :updated_at, :deleted_at, :eligibility_id, :requirement_id, :scholarship_provider_id, :scholarship_type_id]))
   end
 
+  def add_association_record(association_name, record)
+    association = self.send(association_name)
+    association << record unless association.exists?(record.id)
+  end
+
   private
 
   def valid_dates

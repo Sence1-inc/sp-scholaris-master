@@ -32,12 +32,11 @@ class ScholarshipService
 
   def update_scholarship(id)
     scholarship = Scholarship.find(id)
-    update_associated_text(id, :benefits, Benefit)
     update_associated_text(id, :requirements, Requirement)
+    update_associated_text(id, :benefits, Benefit)
     update_associated_text(id, :eligibilities, Eligibility)
-    
     if scholarship.update(@scholarship_params)
-      { message: 'Scholarship details successfully updated.' }
+      { message: 'Scholarship details successfully updated.', scholarship: scholarship }
     else
       { errors: scholarship.errors.full_messages }
     end
@@ -47,7 +46,7 @@ class ScholarshipService
 
   def update_associated_text(id, association, klass)
     scholarship = Scholarship.find(id)
-    text = scholarship_params.delete(association)
+    text = @scholarship_params.delete(association)
     return unless text.present?
 
     association_record = scholarship.send(association).first_or_initialize
@@ -60,6 +59,6 @@ class ScholarshipService
                       :benefit_name
                     end
     association_record.update(attribute_name => text)
-    scholarship.send(association) << association_record unless association_record.persisted?
+    scholarship.add_association_record(association, association_record)
   end
 end
