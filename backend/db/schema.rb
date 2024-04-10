@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_10_113336) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_10_162126) do
   create_table "benefits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "benefit_name"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
@@ -69,6 +69,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_10_113336) do
     t.timestamp "sent_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_newsletter_logs_on_deleted_at"
     t.index ["email"], name: "index_newsletter_logs_on_email"
     t.index ["newsletter_id"], name: "index_newsletter_logs_on_newsletter_id"
   end
@@ -79,6 +81,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_10_113336) do
     t.text "user_type", null: false
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_newsletters_on_deleted_at"
   end
 
   create_table "provinces", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
