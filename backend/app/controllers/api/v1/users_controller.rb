@@ -113,12 +113,15 @@ module Api
           if provider
             scholarships = Scholarship.where(scholarship_provider_id: provider.id)
             profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id)
+          else
+            provider = ScholarshipProvider.new(user_id: user.id)
+            provider.save
           end
           
           scholarships_hash = scholarships.present? ? scholarships.map(&:as_json) : []
           profile_hash = profile.present? ? profile.as_json : {}
           
-          render json: user.as_json.merge(scholarships: scholarships_hash).merge(profile: profile_hash), status: parsed_response['status']
+          render json: user.as_json.merge(scholarship_provider: provider).merge(scholarships: scholarships_hash).merge(profile: profile_hash), status: parsed_response['status']
                  
         else
           render json: response, status: parsed_response['status']
