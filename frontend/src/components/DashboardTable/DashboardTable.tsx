@@ -14,6 +14,7 @@ import { DataGrid } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import useGetScholarships from '../../hooks/useGetScholarships'
 import { useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
@@ -29,6 +30,7 @@ interface GridRowDef {
 export default function DataTable() {
   const navigate = useNavigate()
   const { getScholarships } = useGetScholarships()
+  const { getScholarshipData } = useGetScholarshipsData()
   const data: any = useAppSelector((state) => state.scholarships)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
@@ -95,7 +97,10 @@ export default function DataTable() {
         </Tooltip>
         <Tooltip title="Edit">
           <IconButton
-            onClick={() => navigate(`/scholarships/${params.row.id}/update`)}
+            onClick={() => {
+              getScholarshipData(params.row.id)
+              navigate(`/scholarships/${params.row.id}/update`)
+            }}
             sx={{ color: '#1F4BEA' }}
           >
             <EditIcon />

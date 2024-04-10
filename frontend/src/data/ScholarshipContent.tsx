@@ -1,9 +1,4 @@
-export interface ScholarshipType {
-  id: number
-  name: string
-}
-
-export const SCHOLARSHIP_TYPES: ScholarshipType[] = [
+export const SCHOLARSHIP_TYPES = [
   { id: 1, name: 'Merit-based' },
   { id: 2, name: 'Need-based' },
   { id: 3, name: 'Demographic-based' },

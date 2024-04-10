@@ -20,7 +20,7 @@ const useGetScholarshipsData = () => {
         dispatch(initializeScholarshipData(response.data as ScholarshipData))
       }
     } catch (error) {
-      dispatch(initializeScholarshipData([]))
+      dispatch(initializeScholarshipData({}))
       console.error('Error: ', error)
     }
   }

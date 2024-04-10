@@ -19,38 +19,67 @@ import dayjs, { Dayjs } from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
-import {
-  ScholarshipType,
-  SCHOLARSHIP_TYPES,
-} from '../../data/ScholarshipContent'
-import { useAppSelector } from '../../redux/store'
+import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
+import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData } from '../../redux/types'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
+export interface ScholarshipType {
+  id: number
+  scholarship_type_name: string
+}
+
 const ScholarshipEditorPage = () => {
   const { id } = useParams<{ id: string }>()
+  const { getScholarshipData } = useGetScholarshipsData()
+  const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.user)
   const data = useAppSelector((state) => state.scholarshipData)
   const { scholarshipData } = data as { scholarshipData: ScholarshipData }
-  const [scholarshipName, setScholarshipName] = useState<string>('')
-  const [description, setDescription] = useState<string>('')
-  const [startDate, setStartDate] = useState<Date | Dayjs | null>(null)
-  const [dueDate, setDueDate] = useState<Date | Dayjs | null>(null)
-  const [applicationLink, setApplicationLink] = useState<string>('')
-  const [schoolYear, setSchoolYear] = useState<string>('')
+  const [scholarshipName, setScholarshipName] = useState<string>(
+    scholarshipData?.scholarship_name ?? ''
+  )
+  const [description, setDescription] = useState<string>(
+    scholarshipData?.description ?? ''
+  )
+  const [startDate, setStartDate] = useState<Date | Dayjs | null>(
+    dayjs(scholarshipData?.start_date) ?? null
+  )
+  const [dueDate, setDueDate] = useState<Date | Dayjs | null>(
+    dayjs(scholarshipData?.due_date) ?? null
+  )
+  const [applicationLink, setApplicationLink] = useState<string>(
+    scholarshipData?.application_link ?? ''
+  )
+  const [schoolYear, setSchoolYear] = useState<string>(
+    scholarshipData?.school_year ?? ''
+  )
   const [scholarshipProviderId, setScholarshipProviderId] = useState<
     number | null
-  >(null)
-  const [requirements, setRequirements] = useState<string>('')
-  const [eligibilities, setEligibilities] = useState<string>('')
-  const [benefits, setBenefits] = useState<string>('')
-  const [scholarshipTypeId, setScholarshipTypeId] = useState<number | null>(
-    null
+  >(scholarshipData?.scholarship_provider?.id ?? null)
+  const [requirements, setRequirements] = useState<string>(
+    scholarshipData?.requirements?.[0]?.requirements_text ?? ''
   )
-  const [status, setStatus] = useState<string>('')
+  const [eligibilities, setEligibilities] = useState<string>(
+    scholarshipData?.eligibilities?.[0]?.eligibility_text ?? ''
+  )
+  const [benefits, setBenefits] = useState<string>(
+    scholarshipData?.benefits?.[0]?.benefit_name ?? ''
+  )
+  const [scholarshipTypeId, setScholarshipTypeId] = useState<number | null>(
+    scholarshipData?.scholarship_type?.id ?? null
+  )
+  const [scholarshipType, setScholarshipType] = useState<string>(
+    scholarshipData?.scholarship_type?.scholarship_type_name ?? ''
+  )
+  const [status, setStatus] = useState<string>(scholarshipData?.status ?? '')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('')
+  const [scholarshipTypes, setScholarshipTypes] = useState<
+    { id: number; scholarship_type_name: string }[] | []
+  >([])
 
   const handleBenefitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBenefits(e.target.value)
@@ -78,30 +107,44 @@ const ScholarshipEditorPage = () => {
   }, [])
 
   useEffect(() => {
-    if (scholarshipData.id) {
-      const getScholarship = async () => {
-        try {
-          const { data } = await axiosInstance.get(
-            `/api/v1/scholarships/${scholarshipData.id}`
-          )
-
-          setScholarshipName(data.scholarship_name)
-          setDescription(data.description)
-          setStartDate(dayjs(data.start_date))
-          setDueDate(dayjs(data.due_date))
-          setApplicationLink(data.application_link)
-          setBenefits(data.benefits[0].benefit_name)
-          setEligibilities(data.eligibilities[0].eligibility_text)
-          setRequirements(data.requirements[0].requirements_text)
-          setSchoolYear(data.school_year)
-          setStatus(data.status)
-          setScholarshipTypeId(data.scholarship_type.id)
-        } catch (error) {}
-      }
-
-      getScholarship()
+    if (scholarshipData) {
+      setScholarshipName(scholarshipData.scholarship_name)
+      setDescription(scholarshipData.description)
+      setStartDate(dayjs(scholarshipData.start_date))
+      setDueDate(dayjs(scholarshipData.due_date))
+      setApplicationLink(scholarshipData.application_link)
+      setBenefits(scholarshipData.benefits?.[0]?.benefit_name)
+      setEligibilities(scholarshipData.eligibilities?.[0]?.eligibility_text)
+      setRequirements(scholarshipData.requirements?.[0]?.requirements_text)
+      setSchoolYear(scholarshipData.school_year)
+      setStatus(scholarshipData.status)
+      setScholarshipTypeId(scholarshipData.scholarship_type?.id)
+      setScholarshipType(
+        scholarshipData.scholarship_type?.scholarship_type_name
+      )
     }
-  }, [scholarshipData.id])
+  }, [scholarshipData])
+
+  useEffect(() => {
+    const getScholarshipTypes = async () => {
+      const { data } = await axiosInstance.get('/api/v1/scholarship_types')
+      setScholarshipTypes(data)
+    }
+
+    getScholarshipTypes()
+    getScholarshipData(id)
+    // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    if (scholarshipType) {
+      setScholarshipTypeId(
+        scholarshipTypes.find(
+          (type) => type.scholarship_type_name === scholarshipType
+        )?.id ?? null
+      )
+    }
+  }, [scholarshipType, scholarshipTypes])
 
   const handleSubmit = async () => {
     const data = {
@@ -126,6 +169,7 @@ const ScholarshipEditorPage = () => {
           data
         )
         if (response.data) {
+          dispatch(initializeScholarshipData(response.data.scholarship))
           setIsSnackbarOpen(true)
           setSuccessMessage(response.data.message)
           setErrorMessage('')
@@ -350,16 +394,16 @@ const ScholarshipEditorPage = () => {
                 boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
                 backgroundColor: 'white',
               }}
-              value={scholarshipTypeId?.toString()}
+              value={scholarshipType}
               name="scholarship_type"
               onChange={(e: SelectChangeEvent) =>
-                setScholarshipTypeId(Number(e.target.value))
+                setScholarshipType(e.target.value)
               }
             >
-              {SCHOLARSHIP_TYPES.map((type: ScholarshipType) => {
+              {scholarshipTypes.map((type: ScholarshipType, index: number) => {
                 return (
-                  <MenuItem key={type.id} value={type.id}>
-                    {type.name}
+                  <MenuItem key={index} value={type.scholarship_type_name}>
+                    {type.scholarship_type_name}
                   </MenuItem>
                 )
               })}
