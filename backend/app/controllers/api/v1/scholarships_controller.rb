@@ -101,7 +101,7 @@ module Api
         if result[:errors].present?
           render json: result[:errors], status: :unprocessable_entity
         else
-          render json: { message: result[:message] }, status: :ok
+          render json: { message: result[:message], scholarship: result[:scholarship] }, status: :ok
         end
       end
     
@@ -134,11 +134,8 @@ module Api
             :application_link, 
             :school_year,
             :scholarship_type_id,
-            :requirements,
-            :eligibilities,
-            :benefits,
             :scholarship_provider_id
-          )
+          ).merge(eligibilities: params[:eligibilities]).merge(requirements: params[:requirements]).merge(benefits: params[:benefits])
         end
     end
   end
