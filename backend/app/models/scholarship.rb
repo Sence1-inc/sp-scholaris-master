@@ -20,6 +20,8 @@ class Scholarship < ApplicationRecord
   validates :status, presence: true
   validate :valid_dates
 
+  default_scope -> { where(deleted_at: nil) }
+
   scope :filtered, ->(params) {
     results = all.where(deleted_at: nil)
     results = results.includes(:courses, :schools, :scholarship_provider, :benefits)

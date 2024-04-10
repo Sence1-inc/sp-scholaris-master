@@ -4,4 +4,6 @@ class School < ApplicationRecord
   belongs_to :city
   belongs_to :province
   belongs_to :region
+
+  default_scope -> { where(deleted_at: nil) }
 end
