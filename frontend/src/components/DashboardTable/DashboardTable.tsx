@@ -15,7 +15,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
-import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
@@ -32,7 +31,6 @@ export default function DataTable() {
   const navigate = useNavigate()
   const user = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
-  const { getScholarships } = useGetScholarships()
   const { getScholarshipData } = useGetScholarshipsData()
   const data: any = useAppSelector((state) => state.scholarships)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
@@ -78,7 +76,7 @@ export default function DataTable() {
         `/api/v1/scholarships/${selectedRow}`,
         { withCredentials: true }
       )
-      console.log(response)
+
       if (response) {
         setIsSnackbarOpen(true)
         setSuccessMessage(response.data.message)
@@ -110,6 +108,7 @@ export default function DataTable() {
     }
 
     getProviderScholarships()
+    // eslint-disable-next-line
   }, [])
 
   const renderActions = (params: any) => {
@@ -175,12 +174,16 @@ export default function DataTable() {
       >
         <Alert
           onClose={() => setIsSnackbarOpen(false)}
-          severity={successMessage ? 'success' : 'warning'}
+          severity={
+            successMessage ? 'success' : errorMessage ? 'error' : 'warning'
+          }
           variant={successMessage ? 'filled' : 'standard'}
           sx={{ width: '100%' }}
         >
           {successMessage ? (
             <Typography>{successMessage}</Typography>
+          ) : errorMessage ? (
+            <Typography>{errorMessage}</Typography>
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'column' }}>
               <Typography>Are you sure you want to delete?</Typography>
