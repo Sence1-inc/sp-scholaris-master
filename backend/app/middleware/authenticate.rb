@@ -52,30 +52,6 @@ class Authenticate
     end
 
     if valid_token?(request)
-      if request.get? && scholarship_route?(request.path_info)
-        resource_id = request.path_info.split("/").last
-
-        begin
-          decoded_token = JWT.decode(access_token, nil, false)
-          payload = decoded_token.first
-          current_time = Time.now.to_i
-
-          user = payload[' email']
-
-          puts "COMPARE emails"
-          puts user
-          puts cookies[:user_email]
-
-          if user === cookies[:user_email]
-            return @app.call(env)
-          else
-            return unauthorized_response
-          end
-        rescue JWT::DecodeError, JWT::ExpiredSignature
-          unauthorized_response
-        end
-      end
-
       @app.call(env)
     else
       unauthorized_response
