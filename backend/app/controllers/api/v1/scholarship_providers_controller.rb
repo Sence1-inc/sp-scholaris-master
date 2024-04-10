@@ -1,7 +1,7 @@
 module Api
   module V1
     class ScholarshipProvidersController < ApplicationController
-      before_action :set_scholarship_provider, only: %i[ show edit update destroy ]
+      before_action :set_scholarship_provider, only: %i[ show edit update destroy scholarships ]
     
       # GET /scholarship_providers or /scholarship_providers.json
       def index
@@ -60,6 +60,17 @@ module Api
           format.html { redirect_to scholarship_providers_url, notice: "Scholarship provider was successfully destroyed." }
           format.json { head :no_content }
         end
+      end
+
+      def scholarships
+        if @scholarship_provider.user.email_address != cookies[:user_email]
+          render_unauthorized_response
+          return
+        end
+
+        @scholarships = Scholarship.where(scholarship_provider_id: @scholarship_provider.id)
+
+        render json: @scholarships.as_json, status: :ok
       end
     
       private

@@ -26,7 +26,7 @@ module Api
       # POST /scholarship_provider_profiles or /scholarship_provider_profiles.json
       def create
         @scholarship_provider_profile = ScholarshipProviderProfile.new(scholarship_provider_profile_params)
-        @scholarship_provider = ScholarshipProvider.new
+        @scholarship_provider = ScholarshipProvider.find_by(user_id: params[:user_id])
         @scholarship_provider.user_id = params[:user_id]
         @scholarship_provider.provider_name = params[:provider_name]
 
@@ -34,7 +34,8 @@ module Api
           @scholarship_provider_profile.scholarship_provider = @scholarship_provider
           if @scholarship_provider_profile.save
             render json: {
-              message: "Provider details successfully saved."
+              message: "Provider details successfully saved.",
+              profile: @scholarship_provider_profile
             }, status: :ok
           else
             render json: @scholarship_provider_profile.errors, status: :unprocessable_entity

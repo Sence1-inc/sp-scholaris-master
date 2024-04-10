@@ -26,6 +26,12 @@ module Api
     
       # GET /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def show
+        if @scholarship.scholarship_provider.user.email_address != cookies[:user_email]
+          render_unauthorized_response
+          return
+        end
+
+
         render json: @scholarship.as_json
       end
     
@@ -67,7 +73,9 @@ module Api
             file_params = data
             file_params.each do |file_param|
               begin
-                file_param[:scholarship_provider_id] = 1 # update this with the id of the authenticated user
+                user = User.find_by(email_address: cookies[:user_email])
+
+                file_param[:scholarship_provider_id] = user.scholarship_provider.id
                 scholarship_service = ScholarshipService.new(file_param)
                 result = scholarship_service.create_scholarship
                 if result.key?(:errors)
@@ -94,6 +102,11 @@ module Api
     
       # PATCH/PUT /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def update
+        if @scholarship.scholarship_provider.user.email_address != cookies[:user_email]
+          render_unauthorized_response
+          return
+        end
+
         scholarship_service = ScholarshipService.new(scholarship_params)
 
         result = scholarship_service.update_scholarship(@scholarship.id)
@@ -107,10 +120,16 @@ module Api
     
       # DELETE /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def destroy
+        if @scholarship.scholarship_provider.user.email_address != cookies[:user_email]
+          render_unauthorized_response
+          return
+        end
+        
         if Scholarship.is_soft_deleted(@scholarship)
           Scholarship.soft_delete(@scholarship)
+          scholarships = Scholarship.where(scholarship_provider_id: @scholarship.scholarship_provider.id)
           
-          render json: {message: "Scholarship deleted.", status: :ok}
+          render json: {message: "Scholarship deleted.", scholarships: scholarships, status: :ok}
         else
           render json: {message: "Unable to delete scholarship", status: :unprocessable_entity}, status: 422
         end
