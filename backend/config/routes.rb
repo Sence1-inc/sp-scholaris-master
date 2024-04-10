@@ -8,9 +8,9 @@ Rails.application.routes.draw do
       post 'refresh', to: 'users#refresh', as: 'users_refresh'
       get 'check_token', to: 'users#check_token', as: 'users_check_token'
       post 'logout', to: 'users#logout', as: 'users_logout'
-      resources :scholarships, only: [:index, :show, :edit, :update, :destroy] do
+      resources :scholarships, only: [:index, :create, :show, :edit, :update, :destroy] do
         post 'upload', on: :collection
-      end          
+      end
       resources :survey_questions
       resources :subscribers do
         post 'soft_delete', on: :member, to: 'subscribers#soft_del', as: 'soft_delete'
@@ -22,7 +22,9 @@ Rails.application.routes.draw do
       resources :newsletters
       resources :benefits
       resources :schools
-      resources :scholarship_providers
+      resources :scholarship_providers do
+        get 'scholarships', on: :member, to: 'scholarship_providers#scholarships', as: 'scholarship_providers_scholarships'
+      end
       resources :scholarship_provider_profiles
       resources :regions
       resources :provinces
