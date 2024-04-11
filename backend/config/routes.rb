@@ -13,8 +13,8 @@ Rails.application.routes.draw do
       end
       resources :survey_questions
       resources :subscribers do
-        post 'soft_delete', on: :member, to: 'subscribers#soft_del', as: 'soft_delete'
-        post 'restore', on: :member, to: 'subscribers#restore'
+        post 'soft_delete', on: :collection, to: 'subscribers#soft_del', as: 'soft_delete'
+        post 'restore', on: :collection, to: 'subscribers#restore'
       end
       resources :scholarship_types
       resources :courses

@@ -2,7 +2,7 @@ module Api
   module V1
     class ScholarshipsController < ApplicationController
       skip_before_action :verify_authenticity_token
-      before_action :set_scholarship, only: %i[ show edit update destroy ]
+      before_action :set_scholarship, :authorize, only: %i[ show edit update destroy ]
     
       # GET /api/v1/scholarships or /api/v1/scholarships.json
       def index
@@ -24,12 +24,6 @@ module Api
     
       # GET /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def show
-        if @scholarship.scholarship_provider.user.email_address != cookies[:user_email]
-          render_unauthorized_response
-          return
-        end
-
-
         render json: @scholarship.as_json
       end
     
@@ -100,11 +94,6 @@ module Api
     
       # PATCH/PUT /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def update
-        if @scholarship.scholarship_provider.user.email_address != cookies[:user_email]
-          render_unauthorized_response
-          return
-        end
-
         scholarship_service = ScholarshipService.new(scholarship_params)
 
         result = scholarship_service.update_scholarship(@scholarship.id)
@@ -118,11 +107,6 @@ module Api
     
       # DELETE /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def destroy
-        if @scholarship.scholarship_provider.user.email_address != cookies[:user_email]
-          render_unauthorized_response
-          return
-        end
-        
         if Scholarship.is_soft_deleted(@scholarship)
           Scholarship.soft_delete(@scholarship)
           scholarships = Scholarship.where(scholarship_provider_id: @scholarship.scholarship_provider.id)
@@ -153,6 +137,13 @@ module Api
             :scholarship_type_id,
             :scholarship_provider_id
           ).merge(eligibilities: params[:eligibilities]).merge(requirements: params[:requirements]).merge(benefits: params[:benefits])
+        end
+
+        def authorize
+          if @scholarship.scholarship_provider.user.email_address != cookies[:user_email]
+            render_unauthorized_response
+            return
+          end
         end
     end
   end
