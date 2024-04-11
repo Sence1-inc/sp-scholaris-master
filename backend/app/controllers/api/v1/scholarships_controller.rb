@@ -9,9 +9,7 @@ module Api
         @scholarships = Scholarship.filtered(params)
     
         if @scholarships.present?
-          if params[:limit].present?
-            @scholarships = @scholarships.page(params[:page]).per(params[:limit])
-          end
+          @scholarships = @scholarships.page(params[:page]).per(params[:limit])
           
           render json: @scholarships.as_json(
             :only => [:id, :scholarship_name, :start_date, :due_date],
