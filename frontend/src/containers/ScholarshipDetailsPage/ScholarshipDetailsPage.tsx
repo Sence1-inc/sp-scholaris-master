@@ -24,7 +24,9 @@ export const ScholarshipDetailsPage: React.FC<
   const { id } = useParams()
   const navigate = useNavigate()
   const { getScholarshipData } = useGetScholarshipData()
-  const result = useAppSelector((state) => state.scholarshipData) as Results
+  const result = useAppSelector(
+    (state) => state.persistedReducer.scholarshipData
+  ) as Results
   const [scholarshipData, setScholarshipData] =
     useState<ScholarshipData | null>(null)
 

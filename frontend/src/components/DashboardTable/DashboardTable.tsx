@@ -29,10 +29,12 @@ interface GridRowDef {
 
 export default function DataTable() {
   const navigate = useNavigate()
-  const user = useAppSelector((state) => state.user)
+  const user = useAppSelector((state) => state.persistedReducer.user)
   const dispatch = useAppDispatch()
   const { getScholarshipData } = useGetScholarshipsData()
-  const data: any = useAppSelector((state) => state.scholarships)
+  const data: any = useAppSelector(
+    (state) => state.persistedReducer.scholarships
+  )
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)

@@ -29,8 +29,10 @@ const drawerWidth = '90vw'
 const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const location = useLocation()
   const pathname = location.pathname
-  const user = useAppSelector((state) => state.user)
-  const isAuthenticated = useAppSelector((state) => state.isAuthenticated)
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const isAuthenticated = useAppSelector(
+    (state) => state.persistedReducer.isAuthenticated
+  )
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   console.log(isAuthenticated)

@@ -14,7 +14,7 @@ import profileTheme from '../../../styles/profileTheme'
 const ProviderProfile: React.FC = () => {
   const [activeContent, setActiveContent] = useState<string>('view-profile')
   const { id, lastRoute } = useParams()
-  const data: any = useAppSelector((state) => state.profile)
+  const data: any = useAppSelector((state) => state.persistedReducer.profile)
 
   return (
     <Box sx={profileTheme.container.rootContainer}>

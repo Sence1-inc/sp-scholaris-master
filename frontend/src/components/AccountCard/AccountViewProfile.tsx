@@ -24,8 +24,8 @@ export interface ProfileData {
 
 const AccountViewProfile: React.FC = () => {
   const dispatch = useDispatch()
-  const user = useAppSelector((state) => state.user)
-  const data = useAppSelector((state) => state.profile)
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const data = useAppSelector((state) => state.persistedReducer.profile)
   const { profile } = data as ProfileData
   const [providerName, setProviderName] = useState<string>('')
   const [cityName, setCityName] = useState<string>('')

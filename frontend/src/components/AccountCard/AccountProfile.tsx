@@ -16,8 +16,8 @@ import { ProfileData } from './AccountViewProfile'
 
 const AccountProfile: React.FC = () => {
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.user)
-  const data = useAppSelector((state) => state.profile)
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const data = useAppSelector((state) => state.persistedReducer.profile)
   const { profile } = data as ProfileData
   const [isEditting, setIsEditting] = useState<boolean>(false)
   const [details, setDetails] = useState<string>('')

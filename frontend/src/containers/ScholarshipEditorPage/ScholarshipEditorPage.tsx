@@ -34,8 +34,8 @@ const ScholarshipEditorPage = () => {
   const { id } = useParams<{ id: string }>()
   const { getScholarshipData } = useGetScholarshipsData()
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.user)
-  const data = useAppSelector((state) => state.scholarshipData)
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const data = useAppSelector((state) => state.persistedReducer.scholarshipData)
   const { scholarshipData } = data as { scholarshipData: ScholarshipData }
   const [scholarshipName, setScholarshipName] = useState<string>(
     scholarshipData?.scholarship_name ?? ''
