@@ -14,18 +14,19 @@ interface ErrorResponse {
 const useGetScholarships = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const params = useAppSelector((state) => state.searchParams)
+  const data = useAppSelector((state) => state.searchParams)
+  const { params } = data
 
   const getScholarships = async (isRedirected = true) => {
     try {
       const response: AxiosResponse<Scholarship[] | ErrorResponse> =
         await axiosInstance.get('api/v1/scholarships', {
-          params: { ...params },
+          params: { ...params, ...{ limit: 10 } },
         })
 
       if (response.status === 200) {
         dispatch(initializeScholarships(response.data as Scholarship[]))
-        const queryParams = queryString.stringify(params.params)
+        const queryParams = queryString.stringify(params)
         isRedirected && navigate(`/scholarships?${queryParams}`)
       }
     } catch (error) {

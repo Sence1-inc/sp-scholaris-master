@@ -33,7 +33,9 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const due_date = searchParams.get('due_date')
   const location = searchParams.get('location')
   const name = searchParams.get('name')
-  const result = useAppSelector((state) => state.scholarships) as Results
+  const result = useAppSelector(
+    (state) => state.persistedReducer.scholarships
+  ) as Results
   const [scholarships, setScholarships] = useState<Scholarship[]>([])
   const [page, setPage] = useState<number>(1)
   const params = useAppSelector((state) => state.searchParams)

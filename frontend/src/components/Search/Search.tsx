@@ -1,4 +1,12 @@
-import { Box, Button, TextField, Typography, useTheme } from '@mui/material'
+import {
+  Box,
+  Button,
+  Chip,
+  Stack,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
@@ -20,13 +28,15 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const dispatch = useAppDispatch()
   const params = useAppSelector((state) => state.searchParams)
   const navigate = useNavigate()
-  const scholarships = useAppSelector((state) => state.scholarships)
+  const scholarships = useAppSelector(
+    (state) => state.persistedReducer.scholarships
+  )
   const { getScholarships } = useGetScholarships()
   const [name, setName] = useState<string>(params.params.name as string)
   const [hasScrolled, setHasScrolled] = useState(false)
   const { hash } = useLocation()
   const searchRef = useRef<HTMLElement>(null)
-
+  const { name: nameParam, page, limit, ...restParams } = params.params
   const data: any = scholarships
 
   useEffect(() => {
@@ -35,6 +45,12 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSection])
+
+  useEffect(() => {
+    if (page) {
+      getScholarships()
+    }
+  }, [page])
 
   useEffect(() => {
     if (searchRef.current && hash === '#search' && !hasScrolled) {
@@ -56,8 +72,16 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const handleSearch: (e: React.MouseEvent<HTMLButtonElement>) => void = async (
     e
   ) => {
-    e.preventDefault()
-    dispatch(initializeParams({ ...params.params, ...(name ? { name } : {}) }))
+    // e.preventDefault()
+
+    if (isSection) {
+      const queryParams = queryString.stringify({ name })
+      navigate(`/scholarships?${queryParams}`)
+    } else {
+      console.log('MEOW', name)
+
+      getScholarships()
+    }
   }
 
   const handleChange = async (value: string) => {
@@ -65,16 +89,21 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   }
 
   useEffect(() => {
-    if (!params.params.name) {
+    dispatch(initializeParams({ ...params.params, ...(name ? { name } : {}) }))
+  }, [name])
+
+  useEffect(() => {
+    if (!isSection && Object.keys(params.params).length === 0) {
+      getScholarships()
       setName('')
     }
-
-    if (Object.keys(params.params).length > 0) {
-      const queryParams = queryString.stringify(params.params)
-      navigate(`/scholarships?${queryParams}`)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.params])
+
+  const handleChipDelete = (key: string) => {
+    const currentParams = { ...params.params }
+    delete currentParams[key]
+    dispatch(initializeParams(currentParams))
+  }
 
   return (
     <section ref={searchRef} id="search" className="search">
@@ -149,6 +178,22 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               Search
             </Button>
           </Box>
+          {Object.keys(restParams).length > 0 && (
+            <Box>
+              <Stack direction="row" spacing={1}>
+                {Object.entries(restParams)?.map(([key, value]) => {
+                  return (
+                    <Chip
+                      key={key}
+                      label={value as string}
+                      variant="outlined"
+                      onDelete={() => handleChipDelete(key)}
+                    />
+                  )
+                })}
+              </Stack>
+            </Box>
+          )}
           <Filter />
         </div>
       )}

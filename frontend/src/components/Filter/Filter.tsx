@@ -47,6 +47,12 @@ const Filter: React.FC<FilterProps> = () => {
   const handleOptionClick = (option: Option) => {
     const key: string | null = activeDropdown
     if (activeDropdown) {
+      dispatch(
+        initializeParams({
+          ...params.params,
+          ...{ [key as string]: option.label },
+        })
+      )
       setSelectedParams((prevParams) => ({
         ...prevParams,
         [key as string]: option.label,
@@ -103,8 +109,6 @@ const Filter: React.FC<FilterProps> = () => {
   useEffect(() => {
     if (!activeDropdown) {
       dispatch(initializeParams({}))
-    } else {
-      dispatch(initializeParams({ ...params.params, ...selectedParams }))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedParams, dispatch])
