@@ -27,6 +27,8 @@ const useGetScholarshipsData = () => {
       dispatch(initializeScholarshipData({}))
       if (error.response.status === 403) {
         navigate('/404')
+      } else {
+        navigate(-1)
       }
       console.error('Error: ', error)
     }

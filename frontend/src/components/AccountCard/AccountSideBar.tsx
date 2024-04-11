@@ -1,12 +1,11 @@
-import React, { useState, useEffect, Dispatch } from 'react'
-import { Typography, Box, Card, List, ListItem, Button } from '@mui/material'
-import ProfileImage from '../../public/images/profile.png'
-import PersonIcon from '@mui/icons-material/Person'
 import HomeIcon from '@mui/icons-material/Home'
+import PersonIcon from '@mui/icons-material/Person'
 import SecurityIcon from '@mui/icons-material/Security'
 import SettingsIcon from '@mui/icons-material/Settings'
-import LockPersonIcon from '@mui/icons-material/LockPerson'
+import { Box, Button, Card, List, ListItem, Typography } from '@mui/material'
+import React, { Dispatch, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ProfileImage from '../../public/images/profile.png'
 import profileTheme from '../../styles/profileTheme'
 
 interface AccountSideBarProps {
@@ -31,7 +30,7 @@ const sideItem: SideBarObject[] = [
   { id: 'account-profile', title: 'Account Profile', Icon: <PersonIcon /> },
   { id: 'account-security', title: 'Account Security', Icon: <SecurityIcon /> },
   { id: 'account-settings', title: 'Settings', Icon: <SettingsIcon /> },
-  { id: 'account-close', title: 'Close Account', Icon: <LockPersonIcon /> },
+  // { id: 'account-close', title: 'Close Account', Icon: <LockPersonIcon /> },
 ]
 
 const AccountSideBar: React.FC<AccountSideBarProps> = ({

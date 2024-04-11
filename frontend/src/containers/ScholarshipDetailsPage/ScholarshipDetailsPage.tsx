@@ -31,7 +31,10 @@ export const ScholarshipDetailsPage: React.FC<
     useState<ScholarshipData | null>(null)
 
   useEffect(() => {
-    getScholarshipData(id)
+    if (id) {
+      getScholarshipData(id)
+    }
+
     // eslint-disable-next-line
   }, [id])
 

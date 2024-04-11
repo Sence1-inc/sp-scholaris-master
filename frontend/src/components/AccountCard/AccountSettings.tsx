@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from 'react'
+import { Box, FormGroup, InputLabel, TextField } from '@mui/material'
+import Alert from '@mui/material/Alert'
 import { AxiosResponse } from 'axios'
+import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
-import Button from '../Button/Button'
-import AccountCard from './AccountCard'
 import {
   ErrorResponse,
   SuccessResponse,
 } from '../../components/Newsletter/Newsletter'
-import Alert from '@mui/material/Alert'
-import { FormGroup, InputLabel, TextField, Box } from '@mui/material'
+import { useAppSelector } from '../../redux/store'
 import profileTheme from '../../styles/profileTheme'
+import Button from '../Button/Button'
+import AccountCard from './AccountCard'
 
 const AccountSettings: React.FC = () => {
+  const user = useAppSelector((state) => state.persistedReducer.user)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [alertMessage, setAlertMessage] = useState<string>('')
 
@@ -54,7 +56,11 @@ const AccountSettings: React.FC = () => {
 
     try {
       const response: AxiosResponse<SuccessResponse | ErrorResponse> =
-        await axiosInstance.post(`api/v1/subscribers/soft_delete`, { id: 1 })
+        await axiosInstance.post(
+          `api/v1/subscribers/soft_delete`,
+          { id: 1 },
+          { withCredentials: true }
+        )
 
       if (response.status === 200) {
         const successData = response.data as SuccessResponse
@@ -65,8 +71,12 @@ const AccountSettings: React.FC = () => {
           `Error: ${errorData.error}. ${errorData.details.join(' ')}`
         )
       }
-    } catch (error) {
-      setErrorMessage('Error Unsubscribing. Please try again.')
+    } catch (error: any) {
+      if (error.response.status === 404) {
+        setErrorMessage('Email already unsubscribed.')
+      } else {
+        setErrorMessage('Error Unsubscribing. Please try again.')
+      }
     }
   }
 
@@ -82,7 +92,7 @@ const AccountSettings: React.FC = () => {
         <TextField
           disabled
           id="account-name"
-          defaultValue="Registered Email: test@email.com"
+          value={user.email_address}
           sx={profileTheme.form.formInput}
         />
         {alertMessage ? (
