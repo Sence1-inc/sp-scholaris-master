@@ -73,8 +73,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const handleSearch: (e: React.MouseEvent<HTMLButtonElement>) => void = async (
     e
   ) => {
-    // e.preventDefault()
-
     if (isSection) {
       const queryParams = queryString.stringify({ name })
       navigate(`/scholarships?${queryParams}`)
