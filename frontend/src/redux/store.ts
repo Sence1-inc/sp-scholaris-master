@@ -21,7 +21,6 @@ const persistedReducer = persistReducer(
   persistConfig,
   combineReducers({
     scholarships: ScholarshipsReducer,
-    searchParams: SearchParamsReducer,
     subscriber: SubscriberReducer,
     scholarshipData: ScholarshipDataReducer,
     profile: ProfileReducer,
@@ -31,7 +30,10 @@ const persistedReducer = persistReducer(
 )
 
 const store = configureStore({
-  reducer: persistedReducer,
+  reducer: {
+    persistedReducer,
+    searchParams: SearchParamsReducer,
+  },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(reduxPersistMiddleware),
 })
