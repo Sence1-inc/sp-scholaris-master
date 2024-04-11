@@ -50,6 +50,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     if (page) {
       getScholarships()
     }
+    // eslint-disable-next-line
   }, [page])
 
   useEffect(() => {
@@ -90,6 +91,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
 
   useEffect(() => {
     dispatch(initializeParams({ ...params.params, ...(name ? { name } : {}) }))
+    // eslint-disable-next-line
   }, [name])
 
   useEffect(() => {
@@ -97,7 +99,8 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
       getScholarships()
       setName('')
     }
-  }, [params.params])
+    // eslint-disable-next-line
+  }, [params.params, isSection])
 
   const handleChipDelete = (key: string) => {
     const currentParams = { ...params.params }
