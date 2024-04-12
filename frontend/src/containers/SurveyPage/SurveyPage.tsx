@@ -1,18 +1,17 @@
 import {
-  Alert,
   Box,
   Button,
   Checkbox,
   Container,
   FormControlLabel,
   FormGroup,
-  Snackbar,
   Typography,
 } from '@mui/material'
 import { AxiosResponse } from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import {
   ErrorResponse,
   SubscriberData,
@@ -235,22 +234,11 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         marginBlock: '40px',
       }}
     >
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={isSnackbarOpen}
-        onClose={() => setIsSnackbarOpen(false)}
-        autoHideDuration={6000}
-        key="topcenter"
-      >
-        <Alert
-          onClose={() => setIsSnackbarOpen(false)}
-          severity={'error'}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {errorMessage}
-        </Alert>
-      </Snackbar>
+      <CustomSnackbar
+        errorMessage={errorMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+      />
       {!isASubscriber && (
         <Typography
           variant="h5"

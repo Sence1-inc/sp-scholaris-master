@@ -161,5 +161,5 @@ export type User = {
   session_token: string
   role: Role
   scholarship_provider: ScholarshipProvider
-  scholarships: ProviderScholarship[]
+  scholarships?: ProviderScholarship[]
 }

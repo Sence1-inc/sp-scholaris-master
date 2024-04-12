@@ -1,15 +1,7 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import {
-  Alert,
-  Box,
-  Button,
-  IconButton,
-  Snackbar,
-  Tooltip,
-  Typography,
-} from '@mui/material'
+import { Box, IconButton, Tooltip } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -18,6 +10,7 @@ import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
+import CustomSnackbar from '../CustomSnackbar/CustomSnackbar'
 
 interface GridRowDef {
   id: number
@@ -41,6 +34,7 @@ export default function DataTable() {
   const [selectedRow, setSelectedRow] = useState<number>(0)
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [warningMessage, setWarningMessage] = useState<string>('')
 
   useEffect(() => {
     if (data.scholarships.length > 0) {
@@ -81,10 +75,12 @@ export default function DataTable() {
 
       if (response) {
         setIsSnackbarOpen(true)
+        setWarningMessage('')
         setSuccessMessage(response.data.message)
         dispatch(initializeScholarships(response.data.scholarships))
       }
     } catch (error) {
+      setWarningMessage('')
       setErrorMessage('Error deleting scholarship')
     }
   }
@@ -138,6 +134,7 @@ export default function DataTable() {
         <Tooltip title="Delete">
           <IconButton
             onClick={() => {
+              setWarningMessage('Are you sure you want to delete?')
               setSelectedRow(params.row.id)
               setIsSnackbarOpen(true)
             }}
@@ -167,55 +164,14 @@ export default function DataTable() {
 
   return (
     <div style={{ height: 'auto', width: '100%', borderRadius: '16px' }}>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={isSnackbarOpen}
-        onClose={() => setIsSnackbarOpen(false)}
-        autoHideDuration={6000}
-        key="topcenter"
-      >
-        <Alert
-          onClose={() => setIsSnackbarOpen(false)}
-          severity={
-            successMessage ? 'success' : errorMessage ? 'error' : 'warning'
-          }
-          variant={successMessage ? 'filled' : 'standard'}
-          sx={{ width: '100%' }}
-        >
-          {successMessage ? (
-            <Typography>{successMessage}</Typography>
-          ) : errorMessage ? (
-            <Typography>{errorMessage}</Typography>
-          ) : (
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Typography>Are you sure you want to delete?</Typography>
-              <Box
-                sx={{
-                  display: 'flex',
-                  gap: '20px',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Button
-                  color="primary"
-                  onClick={() => setIsSnackbarOpen(false)}
-                  sx={{ alignSelf: 'center' }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  color="inherit"
-                  onClick={handleDelete}
-                  sx={{ alignSelf: 'center' }}
-                >
-                  Delete
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </Alert>
-      </Snackbar>
+      <CustomSnackbar
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+        warningMessage={warningMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+        handleWarningProceed={handleDelete}
+      />
       <DataGrid
         rows={rowData}
         columns={columns}

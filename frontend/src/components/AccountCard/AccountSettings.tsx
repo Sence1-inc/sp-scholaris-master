@@ -1,30 +1,30 @@
-import { Box, FormGroup, InputLabel, TextField } from '@mui/material'
-import Alert from '@mui/material/Alert'
+import { Box, Button, FormGroup, InputLabel, TextField } from '@mui/material'
 import { AxiosResponse } from 'axios'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import axiosInstance from '../../axiosConfig'
 import {
   ErrorResponse,
   SuccessResponse,
 } from '../../components/Newsletter/Newsletter'
 import { useAppSelector } from '../../redux/store'
+import { ctaButtonStyle } from '../../styles/globalStyles'
 import profileTheme from '../../styles/profileTheme'
-import Button from '../Button/Button'
 import AccountCard from './AccountCard'
 
-const AccountSettings: React.FC = () => {
-  const user = useAppSelector((state) => state.persistedReducer.user)
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [alertMessage, setAlertMessage] = useState<string>('')
+interface AccountSettingsProps {
+  handleSetIsSnackbarOpen: (value: boolean) => void
+  handleSetSuccessMessage: (value: string) => void
+  handleSetErrorMessage: (value: string) => void
+  handleSetWarningMessage: (value: string) => void
+}
 
-  useEffect(() => {
-    if (alertMessage || errorMessage) {
-      setTimeout(() => {
-        setAlertMessage('')
-        setErrorMessage('')
-      }, 4000)
-    }
-  }, [alertMessage, errorMessage])
+const AccountSettings: React.FC<AccountSettingsProps> = ({
+  handleSetIsSnackbarOpen,
+  handleSetSuccessMessage,
+  handleSetWarningMessage,
+  handleSetErrorMessage,
+}) => {
+  const user = useAppSelector((state) => state.persistedReducer.user)
 
   const handleSubscribe: (
     e: React.MouseEvent<HTMLButtonElement>
@@ -37,46 +37,21 @@ const AccountSettings: React.FC = () => {
 
       if (response.status === 200) {
         const successData = response.data as SuccessResponse
-        setAlertMessage(successData.message)
+        handleSetSuccessMessage(successData.message)
+        handleSetErrorMessage('')
+        handleSetIsSnackbarOpen(true)
       } else {
         const errorData = response.data as ErrorResponse
-        setErrorMessage(
+        handleSetIsSnackbarOpen(true)
+        handleSetSuccessMessage('')
+        handleSetErrorMessage(
           `Error: ${errorData.error}. ${errorData.details.join(' ')}`
         )
       }
     } catch (error) {
-      setErrorMessage('Error Subscribing. Please try again.')
-    }
-  }
-
-  const handleUnsubscribe: (
-    e: React.MouseEvent<HTMLButtonElement>
-  ) => void = async (e) => {
-    e.preventDefault()
-
-    try {
-      const response: AxiosResponse<SuccessResponse | ErrorResponse> =
-        await axiosInstance.post(
-          `api/v1/subscribers/soft_delete`,
-          { id: 1 },
-          { withCredentials: true }
-        )
-
-      if (response.status === 200) {
-        const successData = response.data as SuccessResponse
-        setAlertMessage(successData.message)
-      } else {
-        const errorData = response.data as ErrorResponse
-        setErrorMessage(
-          `Error: ${errorData.error}. ${errorData.details.join(' ')}`
-        )
-      }
-    } catch (error: any) {
-      if (error.response.status === 404) {
-        setErrorMessage('Email already unsubscribed.')
-      } else {
-        setErrorMessage('Error Unsubscribing. Please try again.')
-      }
+      handleSetIsSnackbarOpen(true)
+      handleSetSuccessMessage('')
+      handleSetErrorMessage('Error Subscribing. Please try again.')
     }
   }
 
@@ -95,20 +70,26 @@ const AccountSettings: React.FC = () => {
           value={user.email_address}
           sx={profileTheme.form.formInput}
         />
-        {alertMessage ? (
-          <Alert sx={{ marginTop: 2 }} severity="success">
-            {alertMessage}
-          </Alert>
-        ) : (
-          errorMessage && (
-            <Alert sx={{ marginTop: 2 }} severity="error">
-              {errorMessage}
-            </Alert>
-          )
-        )}
         <Box sx={profileTheme.box.boxBodyStyle2}>
-          <Button handleClick={handleSubscribe}>Subscribe</Button>
-          <Button handleClick={handleUnsubscribe}>Unsubscribe</Button>
+          <Button
+            variant="contained"
+            sx={ctaButtonStyle}
+            onClick={handleSubscribe}
+          >
+            Subscribe
+          </Button>
+          <Button
+            variant="contained"
+            sx={ctaButtonStyle}
+            onClick={(e: any) => {
+              handleSetSuccessMessage('')
+              handleSetErrorMessage('')
+              handleSetIsSnackbarOpen(true)
+              handleSetWarningMessage('Are you sure you want to unsubscribe?')
+            }}
+          >
+            Unsubscribe
+          </Button>
         </Box>
       </FormGroup>
     </AccountCard>

@@ -14,7 +14,17 @@ import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
 import { ProfileData } from './AccountViewProfile'
 
-const AccountProfile: React.FC = () => {
+interface AccountProfileProps {
+  handleSetIsSnackbarOpen: (value: boolean) => void
+  handleSetSuccessMessage: (value: string) => void
+  handleSetErrorMessage: (value: string) => void
+}
+
+const AccountProfile: React.FC<AccountProfileProps> = ({
+  handleSetIsSnackbarOpen,
+  handleSetSuccessMessage,
+  handleSetErrorMessage,
+}) => {
   const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.persistedReducer.user)
   const data = useAppSelector((state) => state.persistedReducer.profile)
@@ -44,9 +54,14 @@ const AccountProfile: React.FC = () => {
             { withCredentials: true }
           )
       const response = api
-
+      handleSetSuccessMessage('Successfully saved!')
+      handleSetErrorMessage('')
+      handleSetIsSnackbarOpen(true)
       dispatch(initializeProfile({ ...response.data.profile }))
     } catch (error) {
+      handleSetIsSnackbarOpen(true)
+      handleSetSuccessMessage('')
+      handleSetErrorMessage('Error saving details')
       console.log(error)
     }
   }

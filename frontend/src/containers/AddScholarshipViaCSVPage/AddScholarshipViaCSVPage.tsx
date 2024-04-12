@@ -1,17 +1,10 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import {
-  Alert,
-  Box,
-  Button,
-  Container,
-  Link,
-  Snackbar,
-  Typography,
-} from '@mui/material'
-import React, { useState } from 'react'
+import { Box, Button, Container, Link, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import { PrimaryButton } from '../../styles/globalStyles'
 
 const AddScholarshipViaCSVPage: React.FC = () => {
@@ -80,6 +73,15 @@ const AddScholarshipViaCSVPage: React.FC = () => {
     }
   }
 
+  useEffect(() => {
+    if (errorsCount > 0) {
+      setErrorMessage(
+        `${successMessage} but there are ${errorsCount} row/s not saved due to incomplete details`
+      )
+    }
+    // eslint-disable-next-line
+  }, [errorsCount])
+
   return (
     <Container
       component="section"
@@ -87,30 +89,12 @@ const AddScholarshipViaCSVPage: React.FC = () => {
         padding: '20px 10px 50px',
       }}
     >
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={isSnackbarOpen}
-        onClose={() => setIsSnackbarOpen(false)}
-        autoHideDuration={6000}
-        key="topcenter"
-      >
-        <Alert
-          onClose={() => setIsSnackbarOpen(false)}
-          severity={successMessage ? 'success' : 'error'}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {successMessage && (
-            <Typography>
-              {successMessage}{' '}
-              {errorsCount > 0
-                ? `but there are ${errorsCount} row/s not saved due to incomplete details`
-                : ''}
-            </Typography>
-          )}
-          {errorMessage && <Typography>{errorMessage}</Typography>}
-        </Alert>
-      </Snackbar>
+      <CustomSnackbar
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+      />
       <Box p={'20px 0 40px'}>
         <Link
           href="/provider/dashboard"

@@ -10,10 +10,10 @@ const PageNotFoundPage = () => {
   return (
     <Box
       sx={{
-        height: '80vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        margin: '40px 0',
       }}
     >
       <Box
@@ -33,7 +33,7 @@ const PageNotFoundPage = () => {
         <Typography variant="h3">
           We are sorry, the page you requested was not found.
         </Typography>
-        <Box sx={{ display: 'flex', gap: '40px' }}>
+        <Box sx={{ display: 'flex', gap: '40px', margin: '40px 0' }}>
           <Button sx={{ ...ctaButtonStyle }} onClick={() => navigate(-2)}>
             Go Back
           </Button>

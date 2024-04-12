@@ -22,7 +22,17 @@ export interface ProfileData {
   profile: Profile
 }
 
-const AccountViewProfile: React.FC = () => {
+interface AccountViewProfileProps {
+  handleSetIsSnackbarOpen: (value: boolean) => void
+  handleSetSuccessMessage: (value: string) => void
+  handleSetErrorMessage: (value: string) => void
+}
+
+const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
+  handleSetIsSnackbarOpen,
+  handleSetSuccessMessage,
+  handleSetErrorMessage,
+}) => {
   const dispatch = useDispatch()
   const user = useAppSelector((state) => state.persistedReducer.user)
   const data = useAppSelector((state) => state.persistedReducer.profile)
@@ -76,10 +86,14 @@ const AccountViewProfile: React.FC = () => {
             { withCredentials: true }
           )
       const response = api
-
+      handleSetSuccessMessage('Successfully saved!')
+      handleSetErrorMessage('')
+      handleSetIsSnackbarOpen(true)
       dispatch(initializeProfile({ ...response.data.profile }))
     } catch (error) {
-      console.log(error)
+      handleSetIsSnackbarOpen(true)
+      handleSetSuccessMessage('')
+      handleSetErrorMessage('Error saving details')
     }
   }
 
