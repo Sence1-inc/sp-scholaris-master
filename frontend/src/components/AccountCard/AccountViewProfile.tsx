@@ -50,6 +50,9 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
   const [provinces, setProvinces] = useState<Province[] | []>([])
   const [regions, setRegions] = useState<Region[] | []>([])
 
+  console.log('suhkjshfkjsdhf', user)
+  console.log('profile', profile)
+
   useEffect(() => {
     if (profile) {
       setProviderName(profile.scholarship_provider?.provider_name ?? '')
@@ -91,9 +94,11 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
       handleSetIsSnackbarOpen(true)
       dispatch(initializeProfile({ ...response.data.profile }))
     } catch (error) {
-      handleSetIsSnackbarOpen(true)
-      handleSetSuccessMessage('')
-      handleSetErrorMessage('Error saving details')
+      if (error) {
+        handleSetIsSnackbarOpen(true)
+        handleSetSuccessMessage('')
+        handleSetErrorMessage('Error saving details')
+      }
     }
   }
 
@@ -105,7 +110,9 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
           setCities(response.data)
         }
       } catch (error) {
-        console.log('Error in fetching cities : ', error)
+        if (error) {
+          console.log('Error in fetching cities : ', error)
+        }
       }
     }
 
@@ -116,7 +123,9 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
           setProvinces(response.data)
         }
       } catch (error) {
-        console.log('Error in fetching provinces : ', error)
+        if (error) {
+          console.log('Error in fetching provinces : ', error)
+        }
       }
     }
 
@@ -127,7 +136,9 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
           setRegions(response.data)
         }
       } catch (error) {
-        console.log('Error in fetching regions : ', error)
+        if (error) {
+          console.log('Error in fetching regions : ', error)
+        }
       }
     }
 

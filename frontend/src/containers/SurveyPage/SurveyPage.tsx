@@ -98,7 +98,9 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         )
         setSurveyQuestions(response.data.survey_questions || [])
       } catch (error) {
-        console.error('Error fetching survey questions:', error)
+        if (error) {
+          console.error('Error fetching survey questions:', error)
+        }
       }
     }
 
@@ -145,7 +147,9 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         }
       })
       .catch((error) => {
-        setErrorMessage(error.response.data.error)
+        if (error) {
+          setErrorMessage(error.response.data.error)
+        }
       })
   }
 
@@ -211,7 +215,9 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         )
       }
     } catch (error) {
-      setErrorMessage('Error creating new subscriber. Please try again.')
+      if (error) {
+        setErrorMessage('Error creating new subscriber. Please try again.')
+      }
     }
   }
 

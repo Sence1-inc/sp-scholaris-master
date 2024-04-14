@@ -21,7 +21,9 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
         setErrorMessage('Failed verifying account')
       }
     } catch (error) {
-      setErrorMessage('Failed verifying account')
+      if (error) {
+        setErrorMessage('Failed verifying account')
+      }
     }
   }
 

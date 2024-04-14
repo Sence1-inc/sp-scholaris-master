@@ -24,8 +24,10 @@ const useGetScholarshipsData = () => {
         dispatch(initializeScholarshipData(response.data as ScholarshipData))
       }
     } catch (error: any) {
-      dispatch(initializeScholarshipData({}))
-      navigate('/404')
+      if (error) {
+        dispatch(initializeScholarshipData({}))
+        navigate('/404')
+      }
     }
   }
 

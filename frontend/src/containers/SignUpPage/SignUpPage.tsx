@@ -84,22 +84,24 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           )
         }
       } catch (error: any) {
-        let errorMessage = 'Registration failed. Please try again.'
-        if (
-          error.response &&
-          error.response.data &&
-          error.response.data.error
-        ) {
-          errorMessage = error.response.data.error
-        } else if (error.message) {
-          errorMessage = error.message
-        }
+        if (error) {
+          let errorMessage = 'Registration failed. Please try again.'
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.error
+          ) {
+            errorMessage = error.response.data.error
+          } else if (error.message) {
+            errorMessage = error.message
+          }
 
-        setSnackBarState((prevState) => ({
-          ...prevState,
-          state: true,
-          snackBarMessage: errorMessage,
-        }))
+          setSnackBarState((prevState) => ({
+            ...prevState,
+            state: true,
+            snackBarMessage: errorMessage,
+          }))
+        }
       }
     }
   }

@@ -210,9 +210,11 @@ const ScholarshipEditorPage = () => {
         }
       }
     } catch (error: any) {
-      setIsSnackbarOpen(true)
-      setSuccessMessage('')
-      setErrorMessage(error.message)
+      if (error) {
+        setIsSnackbarOpen(true)
+        setSuccessMessage('')
+        setErrorMessage(error.message)
+      }
     }
   }
 

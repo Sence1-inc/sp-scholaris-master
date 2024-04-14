@@ -43,28 +43,30 @@ const ProviderProfile: React.FC = () => {
         )
       }
     } catch (error: any) {
-      setIsSnackbarOpen(true)
-      setSuccessMessage('')
-      if (axios.isAxiosError(error)) {
-        if (error.response) {
-          if (error.response.status === 404) {
-            setErrorMessage('Email already unsubscribed.')
+      if (error) {
+        setIsSnackbarOpen(true)
+        setSuccessMessage('')
+        if (axios.isAxiosError(error)) {
+          if (error.response) {
+            if (error.response.status === 404) {
+              setErrorMessage('Email already unsubscribed.')
+            } else {
+              const errorDetails = error.response.data?.details
+                ? error.response.data.details.join(' ')
+                : ''
+              const errorMessage = `Error: ${error.response.data?.error || 'Unsubscribing failed'}. ${errorDetails}`
+              setErrorMessage(errorMessage)
+            }
+          } else if (error.request) {
+            setErrorMessage(
+              'No response from server. Please check your network connection.'
+            )
           } else {
-            const errorDetails = error.response.data?.details
-              ? error.response.data.details.join(' ')
-              : ''
-            const errorMessage = `Error: ${error.response.data?.error || 'Unsubscribing failed'}. ${errorDetails}`
-            setErrorMessage(errorMessage)
+            setErrorMessage('Error setting up unsubscribe request.')
           }
-        } else if (error.request) {
-          setErrorMessage(
-            'No response from server. Please check your network connection.'
-          )
         } else {
-          setErrorMessage('Error setting up unsubscribe request.')
+          setErrorMessage('Error Unsubscribing. Please try again.')
         }
-      } else {
-        setErrorMessage('Error Unsubscribing. Please try again.')
       }
     }
   }

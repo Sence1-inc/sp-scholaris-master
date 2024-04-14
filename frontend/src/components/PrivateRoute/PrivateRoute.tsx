@@ -23,9 +23,10 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
         setAuthenticated(response.data.valid)
         dispatch(initializeIsAuthenticated(response.data.valid))
       } catch (error) {
-        console.error('Error checking authentication:', error)
-        setAuthenticated(false)
-        dispatch(initializeIsAuthenticated(false))
+        if (error) {
+          setAuthenticated(false)
+          dispatch(initializeIsAuthenticated(false))
+        }
       }
     }
 

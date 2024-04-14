@@ -30,8 +30,10 @@ const useGetScholarships = () => {
         isRedirected && navigate(`/scholarships?${queryParams}`)
       }
     } catch (error) {
-      dispatch(initializeScholarships([]))
-      console.error('Error: ', error)
+      if (error) {
+        dispatch(initializeScholarships([]))
+        console.error('Error: ', error)
+      }
     }
   }
 

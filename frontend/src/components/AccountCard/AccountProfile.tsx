@@ -59,10 +59,11 @@ const AccountProfile: React.FC<AccountProfileProps> = ({
       handleSetIsSnackbarOpen(true)
       dispatch(initializeProfile({ ...response.data.profile }))
     } catch (error) {
-      handleSetIsSnackbarOpen(true)
-      handleSetSuccessMessage('')
-      handleSetErrorMessage('Error saving details')
-      console.log(error)
+      if (error) {
+        handleSetIsSnackbarOpen(true)
+        handleSetSuccessMessage('')
+        handleSetErrorMessage('Error saving details')
+      }
     }
   }
 

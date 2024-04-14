@@ -23,8 +23,9 @@ const useGetProfile = () => {
         dispatch(initializeProfile(response.data as Profile))
       }
     } catch (error) {
-      dispatch(initializeProfile({}))
-      console.error('Error: ', error)
+      if (error) {
+        dispatch(initializeProfile({}))
+      }
     }
   }
 

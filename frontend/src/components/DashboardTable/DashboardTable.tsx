@@ -80,8 +80,10 @@ export default function DataTable() {
         dispatch(initializeScholarships(response.data.scholarships))
       }
     } catch (error) {
-      setWarningMessage('')
-      setErrorMessage('Error deleting scholarship')
+      if (error) {
+        setWarningMessage('')
+        setErrorMessage('Error deleting scholarship')
+      }
     }
   }
 
@@ -97,10 +99,11 @@ export default function DataTable() {
           dispatch(initializeScholarships(response.data as Scholarship[]))
         }
       } catch (error: any) {
-        console.log()
-        dispatch(initializeScholarships([]))
-        if (error.response.status === 403) {
-          navigate('/')
+        if (error) {
+          dispatch(initializeScholarships([]))
+          if (error.response.status === 403) {
+            navigate('/')
+          }
         }
       }
     }
