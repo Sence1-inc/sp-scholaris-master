@@ -76,10 +76,29 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           userCredentials
         )
         if (response) {
-          navigate('/sign-in')
+          if (response.data.status === 'verified') {
+            navigate('/sign-in')
+          } else {
+            console.log('Error verifying account')
+          }
         }
-      } catch (error) {
-        console.log('Error during registration: ', error)
+      } catch (error: any) {
+        let errorMessage = 'Registration failed. Please try again.'
+        if (
+          error.response &&
+          error.response.data &&
+          error.response.data.error
+        ) {
+          errorMessage = error.response.data.error
+        } else if (error.message) {
+          errorMessage = error.message
+        }
+
+        setSnackBarState((prevState) => ({
+          ...prevState,
+          state: true,
+          snackBarMessage: errorMessage,
+        }))
       }
     }
   }

@@ -1,23 +1,30 @@
+import { Button, Container, Typography } from '@mui/material'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Button, Container, Typography, Alert, IconButton } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import CheckIcon from '../../public/images/checkIcon.svg'
+import { useNavigate, useParams } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 
 interface VerifyEmailProps {}
 
 const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
-  const [showAlert, setShowAlert] = useState(false)
+  const { token } = useParams()
   const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
 
-  const handleVerifyEmail = () => {
-    setShowAlert(true)
-
-    setTimeout(() => {
-      setShowAlert(false)
-    }, 5000)
+  const handleVerifyEmail = async () => {
+    try {
+      const response = await axiosInstance.get(`/api/v1/verify_email/${token}`)
+      if (response.data.status === 'verified') {
+        navigate('/sign-in')
+      } else {
+        setErrorMessage('Failed verifying account')
+      }
+    } catch (error) {
+      setErrorMessage('Failed verifying account')
+    }
   }
-
+  console.log(token)
   return (
     <Container
       maxWidth="md"
@@ -29,49 +36,11 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
         paddingBlock: '120px',
       }}
     >
-      {showAlert && (
-        <Alert
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            position: 'absolute',
-            right: '20px',
-            top: '120px',
-            padding: '10px 25px',
-            fontSize: '26px',
-            color: '#fff',
-            backgroundColor: '#1AA5D8',
-            borderRadius: '16px',
-          }}
-          iconMapping={{
-            success: (
-              <img
-                src={CheckIcon}
-                alt="Check Icon"
-                style={{ width: 'inherit', height: 'inherit' }}
-              />
-            ),
-            error: <CloseIcon fontSize="inherit" />,
-          }}
-          action={
-            <IconButton
-              color="inherit"
-              size="medium"
-              sx={{
-                width: '50px',
-                height: '50px',
-              }}
-              edge="end"
-              onClick={() => setShowAlert(false)}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
-        >
-          Signed up successfully
-        </Alert>
-      )}
+      <CustomSnackbar
+        errorMessage={errorMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+      />
       <Typography
         variant="h2"
         sx={{
