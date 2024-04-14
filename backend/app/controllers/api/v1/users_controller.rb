@@ -67,6 +67,7 @@ module Api
 
         @user = User.new(user_params.merge(uuid: registration_response[:user]['uuid'], role_id: @role.id))
         @user.verification_token = SecureRandom.hex(10)
+        @user.verification_expires_at = 24.hours.from_now
         if @user.save
           verified_status = UserMailer.email_verification(@user).deliver_now
           render json: { user: @user, msg: 'User registered and saved successfully' }, status: :created
@@ -80,8 +81,9 @@ module Api
 
     def verify
       user = User.find_by(verification_token: params[:token])
-      if user
-        user.update(is_verified: true, verification_token: nil)
+      if user.nil? || Time.current > user.verification_expires_at
+        render json: { status: "expired" }, status: :not_found
+      elsif user.update(is_verified: true, verification_token: nil, verification_expires_at: nil)
         render json: { status: "verified" }, status: :ok
       else
         render json: { status: "not verified" }, status: :not_found
