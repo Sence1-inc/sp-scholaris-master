@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_04_14_155524) do
+ActiveRecord::Schema[7.1].define(version: 2024_04_14_192737) do
   create_table "benefits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "benefit_name"
+    t.text "benefit_name"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
@@ -189,7 +189,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_04_14_155524) do
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
-    t.string "description"
+    t.text "description"
     t.string "status"
     t.index ["eligibility_id"], name: "index_scholarships_on_eligibility_id"
     t.index ["requirement_id"], name: "index_scholarships_on_requirement_id"

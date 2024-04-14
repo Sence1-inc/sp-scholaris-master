@@ -69,7 +69,7 @@ module Api
         @user.verification_token = SecureRandom.hex(10)
         if @user.save
           verified_status = UserMailer.email_verification(@user).deliver_now
-          render json: { user: @user, msg: 'User registered and saved successfully', status: verified_status['status'] }, status: :created
+          render json: { user: @user, msg: 'User registered and saved successfully' }, status: :created
         else
           render json: { error: 'Failed to save user details' }, status: :unprocessable_entity
         end
