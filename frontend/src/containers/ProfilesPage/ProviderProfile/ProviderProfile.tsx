@@ -1,6 +1,8 @@
 import { Box, Container, Typography } from '@mui/material'
+import axios from 'axios'
 import React, { useState } from 'react'
 import { useParams } from 'react-router-dom'
+import axiosInstance from '../../../axiosConfig'
 import AccountClose from '../../../components/AccountCard/AccountClose'
 import AccountProfile from '../../../components/AccountCard/AccountProfile'
 import AccountSecurity from '../../../components/AccountCard/AccountSecurity'
@@ -11,7 +13,6 @@ import CustomSnackbar from '../../../components/CustomSnackbar/CustomSnackbar'
 import { useAppSelector } from '../../../redux/store'
 import { ScholarshipProvider } from '../../../redux/types'
 import profileTheme from '../../../styles/profileTheme'
-import axiosInstance from '../../../axiosConfig'
 
 const ProviderProfile: React.FC = () => {
   const [activeContent, setActiveContent] = useState<string>('view-profile')
@@ -21,9 +22,8 @@ const ProviderProfile: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [warningMessage, setWarningMessage] = useState<string>('')
-  console.log(warningMessage)
+
   const handleUnsubscribe = async () => {
-    console.log('clicked')
     try {
       const response = await axiosInstance.post(
         `api/v1/subscribers/soft_delete`,
@@ -43,13 +43,27 @@ const ProviderProfile: React.FC = () => {
         )
       }
     } catch (error: any) {
-      if (error.response.status === 404) {
-        setIsSnackbarOpen(true)
-        setSuccessMessage('')
-        setErrorMessage('Email already unsubscribed.')
+      setIsSnackbarOpen(true)
+      setSuccessMessage('')
+      if (axios.isAxiosError(error)) {
+        if (error.response) {
+          if (error.response.status === 404) {
+            setErrorMessage('Email already unsubscribed.')
+          } else {
+            const errorDetails = error.response.data?.details
+              ? error.response.data.details.join(' ')
+              : ''
+            const errorMessage = `Error: ${error.response.data?.error || 'Unsubscribing failed'}. ${errorDetails}`
+            setErrorMessage(errorMessage)
+          }
+        } else if (error.request) {
+          setErrorMessage(
+            'No response from server. Please check your network connection.'
+          )
+        } else {
+          setErrorMessage('Error setting up unsubscribe request.')
+        }
       } else {
-        setIsSnackbarOpen(true)
-        setSuccessMessage('')
         setErrorMessage('Error Unsubscribing. Please try again.')
       }
     }
