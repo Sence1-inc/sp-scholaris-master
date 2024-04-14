@@ -14,6 +14,7 @@ import dayjs from 'dayjs'
 import { Fragment, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 
 interface SignUpPageProps {}
 
@@ -32,6 +33,8 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     service_key: process.env.REACT_APP_SERVICE_KEY,
     role: 'provider',
   })
+  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
 
   const [snackBarState, setSnackBarState] = useState({
     state: false,
@@ -75,12 +78,10 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           '/api/v1/register',
           userCredentials
         )
-        if (response) {
-          if (response.data.status === 'verified') {
-            navigate('/sign-in')
-          } else {
-            console.log('Error verifying account')
-          }
+        if (response.data) {
+          setSuccessMessage(
+            "We've sent you a verification email. Please confirm your email address before you log in."
+          )
         }
       } catch (error: any) {
         let errorMessage = 'Registration failed. Please try again.'
@@ -133,6 +134,11 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         marginBlock: '40px',
       }}
     >
+      <CustomSnackbar
+        successMessage={successMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+      />
       <Typography
         variant="h2"
         sx={{
