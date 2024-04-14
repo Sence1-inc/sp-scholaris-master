@@ -11,10 +11,11 @@ import {
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
-import { Fragment, useState } from 'react'
+import { Fragment, useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
+import { useAppSelector } from '../../redux/store'
 
 interface SignUpPageProps {}
 
@@ -35,11 +36,20 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
   })
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
+  const isAuthenticated = useAppSelector(
+    (state) => state.persistedReducer.isAuthenticated
+  )
 
   const [snackBarState, setSnackBarState] = useState({
     state: false,
     snackBarMessage: '',
   })
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/provider/dashboard')
+    }
+  }, [isAuthenticated])
 
   const handleUserCredentials = (inputValue: string, key: string) => {
     setUserCredentials((prevUserCredentials) => ({

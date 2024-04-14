@@ -5,19 +5,23 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
 import { initializeUser } from '../../redux/reducers/UserReducer'
-import { useAppDispatch } from '../../redux/store'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 
 interface SignInPageProps {}
 
 const SignInPage: React.FC<SignInPageProps> = () => {
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  const isAuthenticated = useAppSelector(
+    (state) => state.persistedReducer.isAuthenticated
+  )
   const [userCredentials, setUserCredentials] = useState({
     email_address: '',
     password: '',
@@ -28,7 +32,11 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
 
-  const navigate = useNavigate()
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/provider/dashboard')
+    }
+  }, [isAuthenticated])
 
   function handleEmail(inputValue: string) {
     setUserCredentials((prevUserCredentials) => ({
