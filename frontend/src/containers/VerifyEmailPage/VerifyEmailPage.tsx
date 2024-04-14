@@ -24,7 +24,7 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
       setErrorMessage('Failed verifying account')
     }
   }
-  console.log(token)
+
   return (
     <Container
       maxWidth="md"
@@ -95,26 +95,6 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
       >
         Check your email to verify your account
       </Typography>
-      <Button
-        onClick={() => navigate('/sign-in')}
-        variant="contained"
-        sx={{
-          backgroundColor: 'transparent',
-          border: 'none',
-          boxShadow: 'none',
-          padding: '0',
-          margin: '0 auto',
-          width: '100%',
-          maxWidth: '320px',
-          '&:hover': { backgroundColor: 'transparent', boxShadow: 'none' },
-          textTransform: 'inherit',
-          fontStyle: 'italic',
-          fontSize: '24px',
-          color: '#1AA5D8',
-        }}
-      >
-        Sign-in Account
-      </Button>
     </Container>
   )
 }

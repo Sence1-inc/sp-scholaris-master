@@ -1,16 +1,14 @@
-import CloseIcon from '@mui/icons-material/Close'
 import {
   Button,
   Container,
-  IconButton,
   Link as MuiLink,
-  Snackbar,
   TextField,
   Typography,
 } from '@mui/material'
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
 import { initializeUser } from '../../redux/reducers/UserReducer'
@@ -27,8 +25,8 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     service_key: process.env.REACT_APP_SERVICE_KEY,
     role: 'provider',
   })
-
-  const [open, setOpen] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
 
   const navigate = useNavigate()
 
@@ -52,7 +50,8 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     const isPasswordValid = undefined // if password is the user's password
 
     if (!isValidEmail && !isPasswordValid) {
-      setOpen(true)
+      setIsSnackbarOpen(true)
+      setErrorMessage('Invalid email or password.')
     } else {
       try {
         const response = await axiosInstance.post(
@@ -64,33 +63,21 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         )
 
         if (response) {
+          setIsSnackbarOpen(false)
+          setErrorMessage('')
           dispatch(initializeUser(response.data))
           dispatch(initializeProfile(response.data.profile))
           dispatch(initializeScholarships(response.data.scholarships))
           navigate('/provider/dashboard')
         }
       } catch (error) {
-        console.log(error)
+        if (error) {
+          setIsSnackbarOpen(true)
+          setErrorMessage('Log in failed. Make sure to verify your email.')
+        }
       }
     }
   }
-
-  const handleClose = (event: React.SyntheticEvent | Event) => {
-    setOpen(false)
-  }
-
-  const action = (
-    <Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </Fragment>
-  )
 
   return (
     <Container
@@ -102,6 +89,11 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         marginBlock: '40px',
       }}
     >
+      <CustomSnackbar
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+        errorMessage={errorMessage}
+      />
       <Typography
         variant="h2"
         sx={{
@@ -113,13 +105,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       >
         Sign-in
       </Typography>
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="Password and email does not match"
-        action={action}
-      />
       <TextField
         onChange={(e) => handleEmail(e.target.value)}
         value={userCredentials.email_address}
