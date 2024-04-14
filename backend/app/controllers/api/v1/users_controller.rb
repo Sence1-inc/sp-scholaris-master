@@ -66,14 +66,25 @@ module Api
         end
 
         @user = User.new(user_params.merge(uuid: registration_response[:user]['uuid'], role_id: @role.id))
-        
+        @user.verification_token = SecureRandom.hex(10)
         if @user.save
-          render json: { user: @user, msg: 'User registered and saved successfully' }, status: :created
+          verified_status = UserMailer.email_verification(@user).deliver_now
+          render json: { user: @user, msg: 'User registered and saved successfully', status: verified_status['status'] }, status: :created
         else
           render json: { error: 'Failed to save user details' }, status: :unprocessable_entity
         end
       else
         render json: { error: registration_response[:error] }, status: registration_response[:status]
+      end
+    end
+
+    def verify
+      user = User.find_by(verification_token: params[:token])
+      if user
+        user.update(is_verified: true, verification_token: nil)
+        render json: { status: "verified" }, status: :ok
+      else
+        render json: { status: "not verified" }, status: :not_found
       end
     end
 
@@ -109,20 +120,23 @@ module Api
             httponly: true
           }
           user = User.find_by(email_address: user_params.dig(:email_address))
-          provider = ScholarshipProvider.find_by(user_id: user.id)
-          if provider
-            scholarships = Scholarship.where(scholarship_provider_id: provider.id)
-            profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id)
+          if !user.is_verified
+            render json: {status: "error", message: "Email must be verified"}, status: :unprocessable_entity
           else
-            provider = ScholarshipProvider.new(user_id: user.id)
-            provider.save
-          end
-          
-          scholarships_hash = scholarships.present? ? scholarships.map(&:as_json) : []
-          profile_hash = profile.present? ? profile.as_json : {}
-          
-          render json: user.as_json.merge(scholarship_provider: provider).merge(scholarships: scholarships_hash).merge(profile: profile_hash), status: parsed_response['status']
-                 
+            provider = ScholarshipProvider.find_by(user_id: user.id)
+            if provider
+              scholarships = Scholarship.where(scholarship_provider_id: provider.id)
+              profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id)
+            else
+              provider = ScholarshipProvider.new(user_id: user.id)
+              provider.save
+            end
+            
+            scholarships_hash = scholarships.present? ? scholarships.map(&:as_json) : []
+            profile_hash = profile.present? ? profile.as_json : {}
+            
+            render json: user.as_json.merge(scholarship_provider: provider).merge(scholarships: scholarships_hash).merge(profile: profile_hash), status: parsed_response['status']
+          end 
         else
           render json: response, status: parsed_response['status']
         end

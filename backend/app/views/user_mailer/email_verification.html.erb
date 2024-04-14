@@ -1,0 +1,12 @@
+<html>
+<head>
+  <title>Email Verification</title>
+</head>
+<body>
+  <h1>Hello <%= @user.first_name %>,</h1>
+  <p>Please click the link below to verify your email address and activate your account:</p>
+  <!-- Correctly concatenate the URL and the verification token using ERB tags -->
+  <p><a href="http://localhost:3000/verify-email/<%= @user.verification_token %>">Verify Email</a></p>
+  <p>Thank you!</p>
+</body>
+</html>
