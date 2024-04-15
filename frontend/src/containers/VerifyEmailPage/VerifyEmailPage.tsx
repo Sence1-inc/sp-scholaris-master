@@ -13,24 +13,35 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [isExpired, setIsExpired] = useState<boolean>(false)
+  const [isAlreadyVerified, setIsAlreadyVerified] = useState<boolean>(false)
 
   const handleVerifyEmail = async () => {
     try {
       const response = await axiosInstance.get(`/api/v1/verify_email/${token}`)
-      console.log('THIS', response)
+
       if (response.data.status === 'verified') {
         navigate('/sign-in')
+      } else if (response.data.status === 'already verified') {
+        setIsSnackbarOpen(true)
+        setIsExpired(false)
+        setErrorMessage('Your account is already verified')
+        setIsAlreadyVerified(true)
       } else {
+        setIsSnackbarOpen(true)
         setErrorMessage('Failed verifying account')
         setIsExpired(false)
+        setIsAlreadyVerified(false)
       }
     } catch (error: any) {
       if (error) {
-        console.log(error)
         if (error?.response?.data?.status === 'expired') {
+          setIsSnackbarOpen(true)
           setIsExpired(true)
+          setIsAlreadyVerified(false)
         } else {
+          setIsSnackbarOpen(true)
           setIsExpired(false)
+          setIsAlreadyVerified(false)
           setErrorMessage('Failed verifying account')
         }
       }
@@ -99,24 +110,45 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
             dui. Integer efficitur diam sed tellus feugiat, et posuere tortor
             vestibulum.
           </Typography>
-          <Button
-            onClick={handleVerifyEmail}
-            variant="contained"
-            color="primary"
-            sx={{
-              borderRadius: '16px',
-              backgroundColor: '#f36b3b',
-              padding: '20px',
-              margin: '0 auto',
-              width: '100%',
-              maxWidth: '550px',
-              '&:hover': { backgroundColor: '#d2522b' },
-              textTransform: 'inherit',
-              fontSize: '24px',
-            }}
-          >
-            Verify Email
-          </Button>
+          {isAlreadyVerified ? (
+            <Button
+              onClick={() => navigate('/sign-in')}
+              variant="contained"
+              color="primary"
+              sx={{
+                borderRadius: '16px',
+                backgroundColor: '#f36b3b',
+                padding: '20px',
+                margin: '0 auto',
+                width: '100%',
+                maxWidth: '550px',
+                '&:hover': { backgroundColor: '#d2522b' },
+                textTransform: 'inherit',
+                fontSize: '24px',
+              }}
+            >
+              Sign in
+            </Button>
+          ) : (
+            <Button
+              onClick={handleVerifyEmail}
+              variant="contained"
+              color="primary"
+              sx={{
+                borderRadius: '16px',
+                backgroundColor: '#f36b3b',
+                padding: '20px',
+                margin: '0 auto',
+                width: '100%',
+                maxWidth: '550px',
+                '&:hover': { backgroundColor: '#d2522b' },
+                textTransform: 'inherit',
+                fontSize: '24px',
+              }}
+            >
+              Verify Email
+            </Button>
+          )}
         </>
       )}
     </Container>

@@ -41,7 +41,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   function handleEmail(inputValue: string) {
     setUserCredentials((prevUserCredentials) => ({
       ...prevUserCredentials,
-      email_address: inputValue,
+      email_address: inputValue.toLowerCase(),
     }))
   }
 
@@ -115,7 +115,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       </Typography>
       <TextField
         onChange={(e) => handleEmail(e.target.value)}
-        value={userCredentials.email_address}
+        value={userCredentials.email_address.toLowerCase()}
         type="email"
         id="email"
         label="Email address"

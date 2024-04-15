@@ -35,15 +35,11 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     role: 'provider',
   })
   const [successMessage, setSuccessMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const isAuthenticated = useAppSelector(
     (state) => state.persistedReducer.isAuthenticated
   )
-
-  const [snackBarState, setSnackBarState] = useState({
-    state: false,
-    snackBarMessage: '',
-  })
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -65,23 +61,17 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     const isPassword2 = userCredentials.password === userCredentials.password2
 
     if (!isValidEmail || !userCredentials.email_address) {
-      setSnackBarState((prevState) => ({
-        ...prevState,
-        state: true,
-        snackBarMessage: 'Please provide a valid email address.',
-      }))
+      setSuccessMessage('')
+      setIsSnackbarOpen(true)
+      setErrorMessage('Please provide a valid email address.')
     } else if (!isPasswordValid) {
-      setSnackBarState((prevState) => ({
-        ...prevState,
-        state: true,
-        snackBarMessage: 'Please provide a valid password.',
-      }))
+      setSuccessMessage('')
+      setIsSnackbarOpen(true)
+      setErrorMessage('Please provide a valid password.')
     } else if (!isPassword2) {
-      setSnackBarState((prevState) => ({
-        ...prevState,
-        state: true,
-        snackBarMessage: 'Password does not match.',
-      }))
+      setSuccessMessage('')
+      setIsSnackbarOpen(true)
+      setErrorMessage('Password does not match.')
     } else {
       try {
         const response = await axiosInstance.post(
@@ -89,52 +79,31 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           userCredentials
         )
         if (response.data) {
+          setIsSnackbarOpen(true)
+          setErrorMessage('')
           setSuccessMessage(
             "We've sent you a verification email. Please confirm your email address before you log in."
           )
         }
       } catch (error: any) {
+        setSuccessMessage('')
         if (error) {
-          let errorMessage = 'Registration failed. Please try again.'
+          let errorMsg = 'Registration failed. Please try again.'
           if (
             error.response &&
             error.response.data &&
             error.response.data.error
           ) {
-            errorMessage = error.response.data.error
+            errorMsg = error.response.data.error
           } else if (error.message) {
-            errorMessage = error.message
+            errorMsg = error.message
           }
-
-          setSnackBarState((prevState) => ({
-            ...prevState,
-            state: true,
-            snackBarMessage: errorMessage,
-          }))
+          setIsSnackbarOpen(true)
+          setErrorMessage(errorMsg)
         }
       }
     }
   }
-
-  const handleClose = (event: React.SyntheticEvent | Event) => {
-    setSnackBarState((prevState) => ({
-      ...prevState,
-      state: false,
-    }))
-  }
-
-  const action = (
-    <Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </Fragment>
-  )
 
   return (
     <Container
@@ -147,6 +116,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       }}
     >
       <CustomSnackbar
+        errorMessage={errorMessage}
         successMessage={successMessage}
         isSnackbarOpen={isSnackbarOpen}
         handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
@@ -162,16 +132,11 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       >
         Sign-up
       </Typography>
-      <Snackbar
-        open={snackBarState.state}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message={snackBarState.snackBarMessage}
-        action={action}
-      />
       <TextField
-        onChange={(e) => handleUserCredentials(e.target.value, 'email_address')}
-        value={userCredentials.email_address}
+        onChange={(e) =>
+          handleUserCredentials(e.target.value.toLowerCase(), 'email_address')
+        }
+        value={userCredentials.email_address.toLowerCase()}
         type="email"
         id="email"
         label="Email address"
