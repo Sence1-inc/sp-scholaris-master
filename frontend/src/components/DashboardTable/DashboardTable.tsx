@@ -58,6 +58,8 @@ export default function DataTable() {
 
       setRowData(row)
     }
+
+    setIsLoading(false)
   }, [data])
 
   useEffect(() => {
@@ -152,7 +154,11 @@ export default function DataTable() {
 
   const columns = [
     { field: 'id', headerName: 'ID', flex: 0.3 },
-    { field: 'scholarshipName', headerName: 'Scholarship Name', flex: 1.5 },
+    {
+      field: 'scholarshipName',
+      headerName: 'Scholarship Name',
+      flex: 1.5,
+    },
     { field: 'startDate', headerName: 'Start Date', type: 'date', flex: 0.5 },
     { field: 'endDate', headerName: 'End Date', type: 'date', flex: 0.5 },
     { field: 'status', headerName: 'Status', flex: 0.5 },
@@ -176,6 +182,7 @@ export default function DataTable() {
         handleWarningProceed={handleDelete}
       />
       <DataGrid
+        localeText={{ noRowsLabel: 'No saved data' }}
         rows={rowData}
         columns={columns}
         initialState={{
@@ -187,6 +194,7 @@ export default function DataTable() {
         checkboxSelection
         loading={isLoading}
         sx={{
+          height: 200,
           '.MuiDataGrid-root': {
             border: 'none',
           },
@@ -211,6 +219,9 @@ export default function DataTable() {
             '&:nth-of-type(even)': {
               backgroundColor: '#F1F1F1', // Change background color of odd rows
             },
+          },
+          '& .MuiDataGrid-overlay': {
+            zIndex: '20',
           },
           borderRadius: '16px',
           fontFamily: 'Outfit',
