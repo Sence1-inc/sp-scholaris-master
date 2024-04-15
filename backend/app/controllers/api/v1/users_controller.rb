@@ -188,11 +188,20 @@ module Api
     end
 
     def logout
+      if params[:email] != cookies[:user_email]
+        render_unauthorized_response
+        return
+      end
+      
       cookies.delete :access_token
-      cookies.delete :refresh_token 
+      cookies.delete :refresh_token
       cookies.delete :user_email
 
-      render json: { deleted: !cookies[:access_token].present? }, status: :ok
+      response.headers["Cache-Control"] = "no-cache, no-store"
+      response.headers["Pragma"] = "no-cache"
+      response.headers["Expires"] = "Wed, 31 Dec 1980 05:00:00 GMT"
+
+      render json: { deleted: cookies[:access_token].nil? }, status: :ok
     end
 
     private

@@ -38,9 +38,14 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const navigate = useNavigate()
   console.log(isAuthenticated)
   const handleDeleteCookie = async () => {
-    const response = await axiosInstance.post('/api/v1/logout', {
+    const data = {
+      email: user.email_address,
+    }
+
+    const response = await axiosInstance.post('/api/v1/logout', data, {
       withCredentials: true,
     })
+
     if (response.data.deleted) {
       dispatch(
         initializeUser({
