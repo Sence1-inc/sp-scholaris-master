@@ -1,17 +1,14 @@
-import CloseIcon from '@mui/icons-material/Close'
 import {
   Button,
   Container,
-  IconButton,
   Link as MuiLink,
-  Snackbar,
   TextField,
   Typography,
 } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
-import { Fragment, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
@@ -45,6 +42,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     if (isAuthenticated) {
       navigate('/provider/dashboard')
     }
+    // eslint-disable-next-line
   }, [isAuthenticated])
 
   const handleUserCredentials = (inputValue: string, key: string) => {

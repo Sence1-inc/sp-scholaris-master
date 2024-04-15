@@ -36,6 +36,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     if (isAuthenticated) {
       navigate('/provider/dashboard')
     }
+    // eslint-disable-next-line
   }, [isAuthenticated])
 
   function handleEmail(inputValue: string) {
