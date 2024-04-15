@@ -70,6 +70,22 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       setSuccessMessage('')
       setIsSnackbarOpen(true)
       setErrorMessage('Password does not match.')
+    } else if (!userCredentials.first_name) {
+      setSuccessMessage('')
+      setIsSnackbarOpen(true)
+      setErrorMessage('Please provide first name.')
+    } else if (!userCredentials.middle_name) {
+      setSuccessMessage('')
+      setIsSnackbarOpen(true)
+      setErrorMessage('Please provide middle name.')
+    } else if (!userCredentials.last_name) {
+      setSuccessMessage('')
+      setIsSnackbarOpen(true)
+      setErrorMessage('Please provide last name.')
+    } else if (!isPasswordValid) {
+      setSuccessMessage('')
+      setIsSnackbarOpen(true)
+      setErrorMessage('Please provide birthdate.')
     } else {
       try {
         const response = await axiosInstance.post(
