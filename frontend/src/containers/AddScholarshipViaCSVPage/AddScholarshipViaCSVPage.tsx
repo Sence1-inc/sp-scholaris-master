@@ -65,6 +65,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
         }
       } catch (error) {
         if (error) {
+          setIsSnackbarOpen(true)
           setSuccessMessage('')
           setErrorMessage('Error uploading file')
         }

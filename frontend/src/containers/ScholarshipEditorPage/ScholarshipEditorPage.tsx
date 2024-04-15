@@ -213,7 +213,7 @@ const ScholarshipEditorPage = () => {
       if (error) {
         setIsSnackbarOpen(true)
         setSuccessMessage('')
-        setErrorMessage(error.message)
+        setErrorMessage(error.response.data.errors.join(', '))
       }
     }
   }
