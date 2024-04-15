@@ -83,6 +83,8 @@ module Api
       user = User.find_by(verification_token: params[:token])
       if user && Time.current > user.verification_expires_at
         render json: { status: "expired" }, status: :not_found
+      elsif user.nil?
+        render json: { status: "invalid link" }, status: :ok
       elsif user.update(is_verified: true, verification_token: nil, verification_expires_at: nil)
         render json: { status: "verified" }, status: :ok
       else

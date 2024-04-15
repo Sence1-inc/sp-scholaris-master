@@ -1,4 +1,11 @@
-import { Button, Container, Typography } from '@mui/material'
+import {
+  Button,
+  Container,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+} from '@mui/material'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
@@ -21,10 +28,10 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
 
       if (response.data.status === 'verified') {
         navigate('/sign-in')
-      } else if (response.data.status === 'already verified') {
+      } else if (response.data.status === 'invalid link') {
         setIsSnackbarOpen(true)
         setIsExpired(false)
-        setErrorMessage('Your account is already verified')
+        setErrorMessage('Invalid link. Your account may already be verified.')
         setIsAlreadyVerified(true)
       } else {
         setIsSnackbarOpen(true)
@@ -54,7 +61,7 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '50px',
+        gap: '30px',
         alignItems: 'center',
         paddingBlock: '120px',
       }}
@@ -91,6 +98,7 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
               fontWeight: '700',
               color: 'var(--secondary-color)',
               textAlign: 'center',
+              paddingBottom: '50px',
             }}
           >
             Thank you for signing up
@@ -103,12 +111,31 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
               color: '#767676',
             }}
           >
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit
-            amet purus nulla. Suspendisse egestas erat eu lectus semper, quis
-            sollicitudin diam blandit. Sed rhoncus, nisi ac sollicitudin
-            ultricies, ante turpis fermentum elit, id euismod dolor augue mollis
-            dui. Integer efficitur diam sed tellus feugiat, et posuere tortor
-            vestibulum.
+            Before you can start enjoying all the features of your account, we
+            need to make sure your email address is valid. Click on the Verify
+            Email button below.
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: '16px',
+              fontWeight: '300px',
+              textAlign: 'center',
+              color: '#767676',
+            }}
+          >
+            If you need any help or have any questions, please contact our
+            support team at scholaris@sence1.com.
+          </Typography>
+          <Typography
+            sx={{
+              fontSize: '16px',
+              fontWeight: '300px',
+              textAlign: 'center',
+              color: '#767676',
+            }}
+          >
+            Thank you for taking the time to verify your email. We look forward
+            to bringing you the best experience possible!
           </Typography>
           {isAlreadyVerified ? (
             <Button
@@ -138,7 +165,7 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
                 borderRadius: '16px',
                 backgroundColor: '#f36b3b',
                 padding: '20px',
-                margin: '0 auto',
+                margin: '50px auto',
                 width: '100%',
                 maxWidth: '550px',
                 '&:hover': { backgroundColor: '#d2522b' },
