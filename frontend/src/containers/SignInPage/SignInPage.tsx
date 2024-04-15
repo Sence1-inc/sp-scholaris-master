@@ -1,10 +1,4 @@
-import {
-  Button,
-  Container,
-  Link as MuiLink,
-  TextField,
-  Typography,
-} from '@mui/material'
+import { Button, Container, TextField, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
@@ -30,6 +24,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     role: 'provider',
   })
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [infoMessage, setInfoMessage] = useState<string>('')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
 
   useEffect(() => {
@@ -102,6 +97,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         isSnackbarOpen={isSnackbarOpen}
         handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
         errorMessage={errorMessage}
+        infoMessage={infoMessage}
       />
       <Typography
         variant="h2"
@@ -191,35 +187,50 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           padding: '0 !important',
         }}
       >
-        <MuiLink
-          underline="none"
+        <Button
+          disableRipple
+          variant="text"
           sx={{
             cursor: 'pointer',
             fontSize: '16px',
             color: '#767676',
             fontWeight: '300',
             fontStyle: 'italic',
-            marginBottom: '10px',
             textAlign: 'start',
+            textTransform: 'none',
+            backgroundColor: 'transparent',
+            '&:hover': {
+              backgroundColor: '#FFF',
+            },
+          }}
+          onClick={() => {
+            setIsSnackbarOpen(true)
+            setInfoMessage('Contact scholaris@sence1.com to change password.')
           }}
         >
           Forgot password?
-        </MuiLink>
-        <MuiLink
+        </Button>
+        <Button
+          disableRipple
           component={RouterLink}
           to="/sign-up"
-          underline="none"
-          variant="body1"
+          variant="text"
           sx={{
             cursor: 'pointer',
             fontSize: '16px',
             color: '#767676',
-            marginBottom: '10px',
-            textAlign: 'start',
+            fontWeight: '300',
+            fontStyle: 'italic',
+            textAlign: 'center',
+            textTransform: 'none',
+            backgroundColor: 'transparent',
+            '&:hover': {
+              backgroundColor: '#FFF',
+            },
           }}
         >
           No account yet? Sign-up here
-        </MuiLink>
+        </Button>
       </Container>
 
       <Button
