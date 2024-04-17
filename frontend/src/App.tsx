@@ -2,6 +2,7 @@ import { Box } from '@mui/material'
 import React from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Disclaimer from './components/Disclaimer/Disclaimer'
+import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 import Footer from './components/Footer/Footer'
 import Navbar from './components/Navigation/Navbar'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
@@ -60,44 +61,45 @@ const App: React.FC = () => {
     >
       <ScrollToTop />
       <Navbar />
-      <Box sx={{ flexGrow: 1, postion: 'absolute' }}>
-        <Routes>
-          <Route path="/" element={<WelcomePage />} />
-          <Route path="/student/*" element={<StudentRoutes />} />
-          <Route path="/provider/*" element={<ProviderRoutes />} />
-          <Route
-            path="/scholarships"
-            element={<SearchResultsPage isASection={false} />}
-          />
-          <Route
-            path="/scholarships/:id"
-            element={<ScholarshipDetailsPage isASection={false} />}
-          />
-          <Route
-            path="/scholarships/:id/update"
-            element={<PrivateRoute component={ScholarshipEditorPage} />}
-          />
-          <Route
-            path="/scholarships/create"
-            element={<PrivateRoute component={ScholarshipEditorPage} />}
-          />
-          <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
-          <Route
-            path="/terms-and-conditions"
-            element={<TermsAndConditionsPage />}
-          />
-          <Route path="/thank-you" element={<ThankYouPage />} />
-          <Route path="/sign-in" element={<SignInPage />} />
-          <Route path="/sign-up" element={<SignUpPage />} />
-          <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
-          <Route path="*" element={<PageNotFoundPage />} />
-          <Route
-            path="/scholarships/create/upload"
-            element={<PrivateRoute component={AddScholarshipViaCSVPage} />}
-          />
-        </Routes>
-      </Box>
-
+      <ErrorBoundary>
+        <Box sx={{ flexGrow: 1, postion: 'absolute' }}>
+          <Routes>
+            <Route path="/" element={<WelcomePage />} />
+            <Route path="/student/*" element={<StudentRoutes />} />
+            <Route path="/provider/*" element={<ProviderRoutes />} />
+            <Route
+              path="/scholarships"
+              element={<SearchResultsPage isASection={false} />}
+            />
+            <Route
+              path="/scholarships/:id"
+              element={<ScholarshipDetailsPage isASection={false} />}
+            />
+            <Route
+              path="/scholarships/:id/update"
+              element={<PrivateRoute component={ScholarshipEditorPage} />}
+            />
+            <Route
+              path="/scholarships/create"
+              element={<PrivateRoute component={ScholarshipEditorPage} />}
+            />
+            <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
+            <Route
+              path="/terms-and-conditions"
+              element={<TermsAndConditionsPage />}
+            />
+            <Route path="/thank-you" element={<ThankYouPage />} />
+            <Route path="/sign-in" element={<SignInPage />} />
+            <Route path="/sign-up" element={<SignUpPage />} />
+            <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+            <Route path="*" element={<PageNotFoundPage />} />
+            <Route
+              path="/scholarships/create/upload"
+              element={<PrivateRoute component={AddScholarshipViaCSVPage} />}
+            />
+          </Routes>
+        </Box>
+      </ErrorBoundary>
       <Disclaimer />
       <Footer />
     </Box>
