@@ -1,3 +1,5 @@
+require 'date'
+
 module Api
   module V1
     class ScholarshipsController < ApplicationController
@@ -66,24 +68,32 @@ module Api
             file_params.each do |file_param|
               begin
                 user = User.find_by(email_address: cookies[:user_email])
+                start_date = DateTime.strptime(file_param['start_date'], '%d-%m-%Y')
+                due_date = DateTime.strptime(file_param['due_date'], '%d-%m-%Y')
+                scholarship = Scholarship.find_by(scholarship_name: file_param['scholarship_name'], start_date: start_date, due_date: due_date)
 
-                file_param[:scholarship_provider_id] = user.scholarship_provider.id
-                scholarship_service = ScholarshipService.new(file_param)
-                result = scholarship_service.create_scholarship
-                if result.key?(:errors)
+                if scholarship
                   errors_count += 1
+                  result = { errors: [ "Scholarship already exists." ] }
                 else
-                  success_count += 1
+                  file_param[:scholarship_provider_id] = user.scholarship_provider.id
+                  scholarship_service = ScholarshipService.new(file_param)
+                  result = scholarship_service.create_scholarship
+                  if result.key?(:errors)
+                    errors_count += 1
+                  else
+                    success_count += 1
+                  end
                 end
                 results << result
               rescue StandardError => e
-                render json: { error: e.message }, status: :unprocessable_entity
+                results << { errors: [e.message] }
+                errors_count += 1
               end
             end
 
             render json: { results: results, errors_count: errors_count, success_count: success_count, total_count: file_params.size }, status: :created
           ensure
-            # Ensure to close and unlink the temporary file
             temp_file.close
             temp_file.unlink
           end
