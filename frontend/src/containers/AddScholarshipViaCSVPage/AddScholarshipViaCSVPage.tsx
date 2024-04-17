@@ -19,10 +19,10 @@ const AddScholarshipViaCSVPage: React.FC = () => {
   const [isUploading, setIsUploading] = useState<boolean>(false)
 
   const handleDownload = () => {
-    const fileUrl = `${process.env.PUBLIC_URL}/files/scholarship_data.xlsx`
+    const fileUrl = `${process.env.PUBLIC_URL}/files/scholarship_data.csv`
     const link = document.createElement('a')
     link.href = fileUrl
-    link.setAttribute('download', 'scholarship_data.xlsx')
+    link.setAttribute('download', 'scholarship_data.csv')
     document.body.appendChild(link)
     link.click()
 
