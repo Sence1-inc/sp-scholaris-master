@@ -217,7 +217,7 @@ export default function DataTable() {
         paginationMode="server"
         loading={isLoading}
         sx={{
-          height: data.scholarships.length > 0 ? 'auto' : 200,
+          height: rowCount > 0 ? 'auto' : 200,
           '.MuiDataGrid-root': {
             border: 'none',
           },
