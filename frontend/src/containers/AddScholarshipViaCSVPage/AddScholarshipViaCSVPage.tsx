@@ -43,7 +43,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
     if (file) {
       try {
         const formData = new FormData()
-        formData.append('file', file) // Ensure that 'file' matches the expected parameter name in your Rails controller
+        formData.append('file', file)
         const response = await axiosInstance.post(
           '/api/v1/scholarships/upload',
           formData,
@@ -56,13 +56,15 @@ const AddScholarshipViaCSVPage: React.FC = () => {
           }
         )
         setIsSnackbarOpen(true)
-        const { success_count, errors_count, total_count, error } =
+        const { success_count, errors_count, total_count, results } =
           response.data
 
-        if (error) {
+        const { errors } = results[0]
+
+        if (errors.length > 0) {
           setIsUploading(false)
           setSuccessMessage('')
-          setErrorMessage(`Error uploading file: ${error}`)
+          setErrorMessage(errors.join(', '))
         } else {
           setIsUploading(false)
           setSuccessCount(success_count)
@@ -212,7 +214,12 @@ const AddScholarshipViaCSVPage: React.FC = () => {
               <span>{file ? file.name : 'Upload File'}</span>
             </Typography>
           </Box>
-          <PrimaryButton variant="contained" fullWidth onClick={handleUpload}>
+          <PrimaryButton
+            variant="contained"
+            disabled={isUploading}
+            fullWidth
+            onClick={handleUpload}
+          >
             Save Scholarship
           </PrimaryButton>
           <Box display={'flex'} justifyContent={'flex-end'} p={'20px 0 0'}>
