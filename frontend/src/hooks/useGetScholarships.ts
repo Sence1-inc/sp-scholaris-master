@@ -23,7 +23,6 @@ const useGetScholarships = () => {
         await axiosInstance.get('api/v1/scholarships', {
           params: { ...params, ...{ limit: 10 } },
         })
-
       if (response.status === 200) {
         dispatch(initializeScholarships(response.data as Scholarship[]))
         const queryParams = queryString.stringify(params)

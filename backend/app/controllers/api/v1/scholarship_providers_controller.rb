@@ -69,8 +69,19 @@ module Api
         end
 
         @scholarships = Scholarship.where(scholarship_provider_id: @scholarship_provider.id)
+        if @scholarships.exists?
+          @scholarships = @scholarships.page(params[:page] || 1).per(params[:limit] || 10)
 
-        render json: @scholarships.as_json, status: :ok
+          render json: {
+            scholarships: @scholarships.as_json,
+            total_count: @scholarships.total_count,
+            total_pages: @scholarships.total_pages,
+            current_page: @scholarships.current_page,
+            limit: params[:limit] || 10
+          }, status: :ok
+        else
+          render json: {message: "No scholarships found."}, status: :ok
+        end
       end
     
       private

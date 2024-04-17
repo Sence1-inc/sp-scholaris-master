@@ -35,14 +35,15 @@ export default function DataTable() {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [warningMessage, setWarningMessage] = useState<string>('')
+  const [page, setPage] = useState<number>(0)
+  const [pageSize, setPageSize] = useState<number>(10)
+  const [rowCount, setRowCount] = useState<number>(0)
 
   useEffect(() => {
-    if (data.scholarships.length > 0) {
+    if (rowCount === 0) {
       setIsLoading(false)
-    } else {
-      setIsLoading(true)
     }
-  }, [data])
+  }, [rowCount])
 
   useEffect(() => {
     if (data.scholarships && data.scholarships.length > 0) {
@@ -59,7 +60,9 @@ export default function DataTable() {
       setRowData(row)
     }
 
-    setIsLoading(false)
+    if (data.scholarships.length === 0) {
+      setIsLoading(false)
+    }
   }, [data])
 
   useEffect(() => {
@@ -89,30 +92,42 @@ export default function DataTable() {
     }
   }
 
-  useEffect(() => {
-    const getProviderScholarships = async () => {
-      try {
-        const response = await axiosInstance.get(
-          `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships`,
-          { withCredentials: true }
-        )
+  const getProviderScholarships = async () => {
+    try {
+      if (rowCount > 0) {
+        setIsLoading(true)
+      }
+      const response = await axiosInstance.get(
+        `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships?page=${page + 1}&limit=${pageSize}`,
+        { withCredentials: true }
+      )
 
-        if (response.status === 200) {
-          dispatch(initializeScholarships(response.data as Scholarship[]))
-        }
-      } catch (error: any) {
-        if (error) {
-          dispatch(initializeScholarships([]))
-          if (error.response.status === 403) {
-            navigate('/')
-          }
+      if (response.status === 200) {
+        setIsLoading(false)
+        setRowCount(response.data.total_count)
+        dispatch(
+          initializeScholarships(response.data.scholarships as Scholarship[])
+        )
+      }
+    } catch (error: any) {
+      if (error) {
+        dispatch(initializeScholarships([]))
+        if (error.response.status === 403) {
+          navigate('/')
         }
       }
     }
+  }
 
+  useEffect(() => {
     getProviderScholarships()
     // eslint-disable-next-line
   }, [])
+
+  useEffect(() => {
+    getProviderScholarships()
+    // eslint-disable-next-line
+  }, [page, pageSize])
 
   const renderActions = (params: any) => {
     return (
@@ -171,6 +186,11 @@ export default function DataTable() {
     },
   ]
 
+  const handlePageChange = (params: { page: number; pageSize: number }) => {
+    setPage(params.page)
+    setPageSize(params.pageSize)
+  }
+
   return (
     <div style={{ height: 'auto', width: '100%', borderRadius: '16px' }}>
       <CustomSnackbar
@@ -184,17 +204,20 @@ export default function DataTable() {
       <DataGrid
         localeText={{ noRowsLabel: 'No saved data' }}
         rows={rowData}
+        rowCount={rowCount}
         columns={columns}
+        onPaginationModelChange={handlePageChange}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
+            paginationModel: { page: page, pageSize: 10 },
           },
         }}
         pageSizeOptions={[5, 10]}
-        checkboxSelection
+        pagination
+        paginationMode="server"
         loading={isLoading}
         sx={{
-          height: 200,
+          height: data.scholarships.length > 0 ? 'auto' : 200,
           '.MuiDataGrid-root': {
             border: 'none',
           },
