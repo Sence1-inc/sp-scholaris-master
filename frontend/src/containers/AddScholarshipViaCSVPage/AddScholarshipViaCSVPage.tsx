@@ -13,8 +13,10 @@ const AddScholarshipViaCSVPage: React.FC = () => {
   const [errorsCount, setErrorsCount] = useState<number>(0)
   const [totalCount, setTotalCount] = useState<number>(0)
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
+  const [infoMessage, setInfoMessage] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [isUploading, setIsUploading] = useState<boolean>(false)
 
   const handleDownload = () => {
     const fileUrl = `${process.env.PUBLIC_URL}/files/scholarship_data.xlsx`
@@ -35,6 +37,9 @@ const AddScholarshipViaCSVPage: React.FC = () => {
   }
 
   const handleUpload = async () => {
+    setIsSnackbarOpen(true)
+    setIsUploading(true)
+    setInfoMessage('Saving scholarships. Please wait.')
     if (file) {
       try {
         const formData = new FormData()
@@ -44,6 +49,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
           formData,
           {
             withCredentials: true,
+            timeout: 100000,
             headers: {
               'Content-Type': 'multipart/form-data',
             },
@@ -54,9 +60,11 @@ const AddScholarshipViaCSVPage: React.FC = () => {
           response.data
 
         if (error) {
+          setIsUploading(false)
           setSuccessMessage('')
           setErrorMessage(`Error uploading file: ${error}`)
         } else {
+          setIsUploading(false)
           setSuccessCount(success_count)
           setErrorsCount(errors_count)
           setTotalCount(total_count)
@@ -65,12 +73,14 @@ const AddScholarshipViaCSVPage: React.FC = () => {
         }
       } catch (error) {
         if (error) {
+          setIsUploading(false)
           setIsSnackbarOpen(true)
           setSuccessMessage('')
           setErrorMessage('Error uploading file')
         }
       }
     } else {
+      setIsUploading(false)
       setIsSnackbarOpen(true)
       setErrorMessage('No file uploaded')
     }
@@ -93,6 +103,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
       }}
     >
       <CustomSnackbar
+        infoMessage={infoMessage}
         successMessage={successMessage}
         errorMessage={errorMessage}
         isSnackbarOpen={isSnackbarOpen}
@@ -183,7 +194,11 @@ const AddScholarshipViaCSVPage: React.FC = () => {
               },
             }}
           >
-            <input type="file" onChange={handleFileChange} />
+            <input
+              type="file"
+              onChange={handleFileChange}
+              disabled={isUploading}
+            />
             <Typography
               variant="body1"
               sx={{
