@@ -74,7 +74,7 @@ export default function DataTable() {
   const handleDelete = async () => {
     try {
       const response = await axiosInstance.delete(
-        `/api/v1/scholarships/${selectedRow}`,
+        `/api/v1/scholarships/${selectedRow}?page=${page + 1}&limit=${pageSize}`,
         { withCredentials: true }
       )
 

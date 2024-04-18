@@ -121,7 +121,7 @@ module Api
           Scholarship.soft_delete(@scholarship)
           scholarships = Scholarship.where(scholarship_provider_id: @scholarship.scholarship_provider.id)
           
-          render json: {message: "Scholarship deleted.", scholarships: scholarships, status: :ok}
+          render json: {message: "Scholarship deleted.", scholarships: scholarships.page(params[:page]).per(params[:limit]), status: :ok}
         else
           render json: {message: "Unable to delete scholarship", status: :unprocessable_entity}, status: 422
         end
