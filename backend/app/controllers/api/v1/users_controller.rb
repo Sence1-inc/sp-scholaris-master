@@ -136,10 +136,9 @@ module Api
               provider.save
             end
             
-            scholarships_hash = scholarships.present? ? scholarships.map(&:as_json) : []
             profile_hash = profile.present? ? profile.as_json : {}
             
-            render json: user.as_json.merge(scholarship_provider: provider).merge(scholarships: scholarships_hash).merge(profile: profile_hash), status: parsed_response['status']
+            render json: user.as_json.merge(scholarship_provider: provider).merge(profile: profile_hash), status: parsed_response['status']
           end 
         else
           render json: response, status: parsed_response['status']
