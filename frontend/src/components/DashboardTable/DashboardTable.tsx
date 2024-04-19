@@ -7,7 +7,10 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
-import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
+import {
+  initializeScholarships,
+  Scholarships,
+} from '../../redux/reducers/ScholarshipsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 import CustomSnackbar from '../CustomSnackbar/CustomSnackbar'
@@ -46,16 +49,18 @@ export default function DataTable() {
   }, [rowCount])
 
   useEffect(() => {
-    if (data.scholarships && data.scholarships.length > 0) {
-      const row = data.scholarships.map((scholarship: Scholarship) => {
-        return {
-          id: scholarship.id,
-          scholarshipName: scholarship.scholarship_name,
-          startDate: new Date(scholarship.start_date),
-          endDate: new Date(scholarship.due_date),
-          status: scholarship.status,
+    if (data.scholarships && data.scholarships.scholarships.length > 0) {
+      const row = data.scholarships.scholarships.map(
+        (scholarship: Scholarship) => {
+          return {
+            id: scholarship.id,
+            scholarshipName: scholarship.scholarship_name,
+            startDate: new Date(scholarship.start_date),
+            endDate: new Date(scholarship.due_date),
+            status: scholarship.status,
+          }
         }
-      })
+      )
 
       setRowData(row)
     }
@@ -105,9 +110,7 @@ export default function DataTable() {
       if (response.status === 200) {
         setIsLoading(false)
         setRowCount(response.data.total_count)
-        dispatch(
-          initializeScholarships(response.data.scholarships as Scholarship[])
-        )
+        dispatch(initializeScholarships(response.data as Scholarships))
       }
     } catch (error: any) {
       if (error) {
@@ -217,8 +220,7 @@ export default function DataTable() {
         paginationMode="server"
         loading={isLoading}
         sx={{
-          height:
-            data.scholarships && data.scholarships.length > 0 ? 'auto' : 200,
+          height: rowData.length > 0 ? 'auto' : 200,
           '.MuiDataGrid-root': {
             border: 'none',
           },
