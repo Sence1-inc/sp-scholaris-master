@@ -59,17 +59,18 @@ const AddScholarshipViaCSVPage: React.FC = () => {
         const { success_count, errors_count, total_count, results } =
           response.data
 
+        setIsUploading(false)
+        setSuccessCount(success_count)
+        setErrorsCount(errors_count)
+        setTotalCount(total_count)
+
         const { errors } = results[0]
 
-        if (errors.length > 0) {
-          setIsUploading(false)
+        if (errors && errors.length > 0) {
           setSuccessMessage('')
           setErrorMessage(errors.join(', '))
         } else {
           setIsUploading(false)
-          setSuccessCount(success_count)
-          setErrorsCount(errors_count)
-          setTotalCount(total_count)
           setSuccessMessage('File successfully uploaded')
           setErrorMessage('')
         }

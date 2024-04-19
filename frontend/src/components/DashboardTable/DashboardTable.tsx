@@ -82,7 +82,7 @@ export default function DataTable() {
         setIsSnackbarOpen(true)
         setWarningMessage('')
         setSuccessMessage(response.data.message)
-        dispatch(initializeScholarships(response.data.scholarships))
+        dispatch(initializeScholarships(response.data))
       }
     } catch (error) {
       if (error) {

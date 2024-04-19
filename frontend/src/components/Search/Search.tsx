@@ -145,7 +145,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
           {window.innerWidth > theme.breakpoints.values.md ? (
             <Table
               hasPagination={false}
-              scholarships={data.scholarships as Scholarship[]}
+              scholarships={data.scholarships.scholarships as Scholarship[]}
             />
           ) : (
             <Typography sx={{ textAlign: 'center' }}>

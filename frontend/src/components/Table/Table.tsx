@@ -1,14 +1,15 @@
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { Typography } from '@mui/material'
 import { format } from 'date-fns'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import viewSvg from '../../public/images/view.svg'
 import { Scholarship } from '../../redux/types'
 import './Table.css'
 
 interface TableProps {
   hasPagination: boolean
   scholarships: Scholarship[]
+  total_count?: number
   page?: number
   handlePrevious?: () => void
   handleNext?: () => void
@@ -18,6 +19,7 @@ export const Table: React.FC<TableProps> = ({
   hasPagination,
   scholarships,
   page,
+  total_count,
   handlePrevious,
   handleNext,
 }) => {
@@ -47,13 +49,21 @@ export const Table: React.FC<TableProps> = ({
                 <p className="search__results-item">
                   {scholarship.scholarship_provider.provider_name}
                 </p>
-                <Link
+                <Typography
+                  color="secondary"
+                  component={Link}
                   to={`/scholarships/${scholarship.id}`}
-                  className="seach__results-link"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    width: '150px',
+                  }}
                 >
                   View
-                  <img src={viewSvg} alt="View icon" />
-                </Link>
+                  <OpenInNewIcon fontSize="small" />
+                </Typography>
               </li>
             </ul>
           ))
@@ -68,7 +78,7 @@ export const Table: React.FC<TableProps> = ({
       {hasPagination && (
         <div className="search__results-pagination">
           <Typography variant="h6" sx={{ color: 'secondary.main' }}>
-            Results: <span>{scholarships.length}</span>
+            Total Results: <span>{total_count}</span>
           </Typography>
           <Typography
             variant="h6"

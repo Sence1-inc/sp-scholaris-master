@@ -10,10 +10,6 @@ import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 import './SearchResultsPage.css'
 
-interface Results {
-  scholarships: Scholarship[]
-}
-
 interface SearchResultsPageProps {
   isASection: boolean
 }
@@ -33,16 +29,16 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const due_date = searchParams.get('due_date')
   const location = searchParams.get('location')
   const name = searchParams.get('name')
-  const result = useAppSelector(
+  const result: any = useAppSelector(
     (state) => state.persistedReducer.scholarships
-  ) as Results
+  )
   const [scholarships, setScholarships] = useState<Scholarship[]>([])
   const [page, setPage] = useState<number>(1)
   const params = useAppSelector((state) => state.searchParams)
 
   useEffect(() => {
-    setScholarships(result.scholarships)
-  }, [result.scholarships])
+    setScholarships(result.scholarships.scholarships)
+  }, [result.scholarships.scholarships])
 
   const handleNext = () => {
     if (scholarships.length === 10) {
@@ -99,6 +95,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         <Search isSection={false} />
         {window.innerWidth > theme.breakpoints.values.md ? (
           <Table
+            total_count={result.scholarships.total_count}
             page={page}
             hasPagination={true}
             handleNext={handleNext}
