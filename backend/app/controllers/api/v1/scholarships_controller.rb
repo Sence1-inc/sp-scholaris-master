@@ -4,21 +4,28 @@ module Api
   module V1
     class ScholarshipsController < ApplicationController
       skip_before_action :verify_authenticity_token
-      before_action :set_scholarship, :authorize, only: %i[ show edit update destroy ]
-    
+      before_action :set_scholarship, only: %i[show edit update destroy]
+      before_action :authorize, only: %i[edit update destroy]
+
       # GET /api/v1/scholarships or /api/v1/scholarships.json
       def index
         @scholarships = Scholarship.filtered(params)
     
         if @scholarships.present?
           @scholarships = @scholarships.page(params[:page]).per(params[:limit])
-          
-          render json: @scholarships.as_json(
-            :only => [:id, :scholarship_name, :start_date, :due_date],
-            :include => {
-              :scholarship_provider => { :only => [:id, :provider_name] }
-            }
-          )
+
+          render json: {
+            scholarships: @scholarships.as_json(
+              :only => [:id, :scholarship_name, :start_date, :due_date],
+              :include => {
+                :scholarship_provider => { :only => [:id, :provider_name] }
+              }
+            ),
+            total_count: @scholarships.total_count,
+            total_pages: @scholarships.total_pages,
+            current_page: @scholarships.current_page,
+            limit: params[:limit] || 10
+          }, status: :ok
         else
           render json: { message: 'No scholarships found' }, status: :not_found
         end
