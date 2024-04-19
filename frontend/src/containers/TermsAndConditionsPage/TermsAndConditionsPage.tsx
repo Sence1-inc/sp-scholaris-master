@@ -51,7 +51,9 @@ const TermsAndConditionsPage: React.FC = () => {
         )
         setData(response.data.record)
       } catch (error) {
-        console.error('Error:', error)
+        if (error) {
+          console.error('Error:', error)
+        }
       }
     }
 

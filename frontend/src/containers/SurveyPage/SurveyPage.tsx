@@ -1,18 +1,17 @@
 import {
-  Alert,
   Box,
   Button,
   Checkbox,
   Container,
   FormControlLabel,
   FormGroup,
-  Snackbar,
   Typography,
 } from '@mui/material'
 import { AxiosResponse } from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import {
   ErrorResponse,
   SubscriberData,
@@ -61,7 +60,9 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   const { pathname } = location
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const subscriber = useAppSelector((state) => state.subscriber)
+  const subscriber = useAppSelector(
+    (state) => state.persistedReducer.subscriber
+  )
   const [isASubscriber, setIsASubscriber] = useState<boolean>(false)
   const [hasSubscriptionIntent, setHasSubscriptionIntent] =
     useState<boolean>(true)
@@ -97,7 +98,9 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         )
         setSurveyQuestions(response.data.survey_questions || [])
       } catch (error) {
-        console.error('Error fetching survey questions:', error)
+        if (error) {
+          console.error('Error fetching survey questions:', error)
+        }
       }
     }
 
@@ -144,7 +147,9 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         }
       })
       .catch((error) => {
-        setErrorMessage(error.response.data.error)
+        if (error) {
+          setErrorMessage(error.response.data.error)
+        }
       })
   }
 
@@ -210,7 +215,9 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         )
       }
     } catch (error) {
-      setErrorMessage('Error creating new subscriber. Please try again.')
+      if (error) {
+        setErrorMessage('Error creating new subscriber. Please try again.')
+      }
     }
   }
 
@@ -233,22 +240,11 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         marginBlock: '40px',
       }}
     >
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={isSnackbarOpen}
-        onClose={() => setIsSnackbarOpen(false)}
-        autoHideDuration={6000}
-        key="topcenter"
-      >
-        <Alert
-          onClose={() => setIsSnackbarOpen(false)}
-          severity={'error'}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {errorMessage}
-        </Alert>
-      </Snackbar>
+      <CustomSnackbar
+        errorMessage={errorMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+      />
       {!isASubscriber && (
         <Typography
           variant="h5"

@@ -13,8 +13,12 @@ import {
   Typography,
 } from '@mui/material'
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
 import Logo from '../../public/images/logo.png'
+import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
+import { initializeUser } from '../../redux/reducers/UserReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
 interface NavbarProps {
@@ -26,6 +30,46 @@ const drawerWidth = '90vw'
 const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const location = useLocation()
   const pathname = location.pathname
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const isAuthenticated = useAppSelector(
+    (state) => state.persistedReducer.isAuthenticated
+  )
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+  console.log(isAuthenticated)
+  const handleDeleteCookie = async () => {
+    const data = {
+      email: user.email_address,
+    }
+
+    const response = await axiosInstance.post('/api/v1/logout', data, {
+      withCredentials: true,
+    })
+
+    if (response.data.deleted) {
+      dispatch(
+        initializeUser({
+          birthdate: '',
+          email_address: '',
+          first_name: '',
+          id: 0,
+          is_active: 0,
+          last_name: '',
+          role_id: 0,
+          session_token: '',
+          role: { id: null, role_name: '' },
+          scholarship_provider: {
+            id: 0,
+            provider_name: '',
+            user_id: 0,
+            provider_link: '',
+          },
+        })
+      )
+      dispatch(initializeIsAuthenticated(false))
+      navigate('/sign-in')
+    }
+  }
 
   const renderItems = () => {
     if (pathname.includes('/student')) {
@@ -70,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
     }
 
     if (pathname.includes('/provider')) {
-      return (
+      return !isAuthenticated ? (
         <List
           sx={{
             display: 'flex',
@@ -97,6 +141,23 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               Survey
             </Typography>
           </ListItem>
+          <ListItem disablePadding sx={{ width: 'auto' }}>
+            <Button
+              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
+              component={Link}
+              to="/scholarships"
+            >
+              Scholarship Search
+            </Button>
+          </ListItem>
+        </List>
+      ) : (
+        <List
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+          }}
+        >
           <ListItem>
             <Typography
               variant="body1"
@@ -108,29 +169,32 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             </Typography>
           </ListItem>
           <ListItem>
-            <Typography
-              variant="body1"
-              component={Link}
-              to="/provider/account/:id/view-profile"
+            <Button
+              variant="text"
               sx={{ color: 'common.white', textDecoration: 'none' }}
+              onClick={handleDeleteCookie}
             >
-              Profile
-            </Typography>
+              Logout
+            </Button>
           </ListItem>
           <ListItem disablePadding sx={{ width: 'auto' }}>
             <Button
-              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
+              sx={{
+                ...ctaButtonStyle,
+                whiteSpace: 'nowrap',
+                backgroundColor: 'primary.light',
+              }}
               component={Link}
-              to="/scholarships"
+              to={`/provider/account/${user?.scholarship_provider?.id}/view-profile`}
             >
-              Scholarship Search
+              Account
             </Button>
           </ListItem>
         </List>
       )
     }
 
-    return (
+    return !isAuthenticated ? (
       <List
         sx={{
           display: 'flex',
@@ -147,6 +211,46 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               Scholarship Search
             </Button>
           </ListItemButton>
+        </ListItem>
+      </List>
+    ) : (
+      <List
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+        }}
+      >
+        <ListItem>
+          <Typography
+            variant="body1"
+            component={Link}
+            to="/provider/dashboard"
+            sx={{ color: 'common.white', textDecoration: 'none' }}
+          >
+            Dashboard
+          </Typography>
+        </ListItem>
+        <ListItem>
+          <Button
+            variant="text"
+            sx={{ color: 'common.white', textDecoration: 'none' }}
+            onClick={handleDeleteCookie}
+          >
+            Logout
+          </Button>
+        </ListItem>
+        <ListItem disablePadding sx={{ width: 'auto' }}>
+          <Button
+            sx={{
+              ...ctaButtonStyle,
+              whiteSpace: 'nowrap',
+              backgroundColor: 'primary.light',
+            }}
+            component={Link}
+            to={`/provider/account/${user?.scholarship_provider?.id}/view-profile`}
+          >
+            Account
+          </Button>
         </ListItem>
       </List>
     )

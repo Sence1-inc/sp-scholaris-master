@@ -7,4 +7,9 @@ individual_statements.each do |statement|
   ActiveRecord::Base.connection.execute("#{statement};")
 end
 
+Dir[Rails.root.join('db', 'seeds', 'survey', '*.rb')].sort.each do |file|
+  load file
+  puts "Loaded #{file}"
+end
+
 puts 'Seed data loaded successfully.'

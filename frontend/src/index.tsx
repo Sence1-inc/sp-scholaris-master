@@ -2,9 +2,10 @@ import { ThemeProvider } from '@mui/material/styles'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
+import { PersistGate } from 'redux-persist/integration/react'
 import App from './App'
 import './index.css'
-import store from './redux/store'
+import store, { persistor } from './redux/store'
 import reportWebVitals from './reportWebVitals'
 import './reset.css'
 import theme from './styles/theme'
@@ -14,7 +15,9 @@ root.render(
   <Provider store={store}>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
-        <App />
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+        </PersistGate>
       </ThemeProvider>
     </BrowserRouter>
   </Provider>

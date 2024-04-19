@@ -4,10 +4,9 @@ class ScholarshipProviderProfile < ApplicationRecord
   belongs_to :province
   belongs_to :city
 
-  validates :description, presence: true
-  validates :provider_type, presence: true
-  validates :region, presence: true
-  validates :province, presence: true
-  validates :city, presence: true
-  validates :scholarship_provider, presence: true
+  default_scope -> { where(deleted_at: nil) }
+
+  def as_json(options = {})
+    super(options.merge(include: [:scholarship_provider, :region, :province, :city], except: [:created_at, :updated_at, :deleted_at, :city_id, :province_id, :region_id, :scholarship_provider_id]))
+  end
 end

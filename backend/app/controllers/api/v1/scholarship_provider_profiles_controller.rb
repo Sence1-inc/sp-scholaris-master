@@ -11,40 +11,7 @@ module Api
 
       # GET /scholarship_provider_profiles/1 or /scholarship_provider_profiles/1.json
       def show
-        render json: @scholarship_provider_profile.as_json(
-              :only => [ 
-                :id,  
-                :provider_type, 
-                :description,
-              ],
-              :include => {
-                scholarship_provider: {
-                  only: [
-                    :id, 
-                    :provider_name,
-                    :user_id
-                  ]
-                },
-                region: { 
-                  only: [
-                    :id, 
-                    :region_name
-                  ]
-                },
-                city: { 
-                  only: [
-                    :id, 
-                    :city_name
-                  ]
-                },
-                province: { 
-                  only: [
-                    :id, 
-                    :province_name
-                  ]
-                },
-              }
-            )
+        render json: @scholarship_provider_profile.as_json
       end
 
       # GET /scholarship_provider_profiles/new
@@ -59,7 +26,7 @@ module Api
       # POST /scholarship_provider_profiles or /scholarship_provider_profiles.json
       def create
         @scholarship_provider_profile = ScholarshipProviderProfile.new(scholarship_provider_profile_params)
-        @scholarship_provider = ScholarshipProvider.new
+        @scholarship_provider = ScholarshipProvider.find_by(user_id: params[:user_id])
         @scholarship_provider.user_id = params[:user_id]
         @scholarship_provider.provider_name = params[:provider_name]
 
@@ -67,7 +34,8 @@ module Api
           @scholarship_provider_profile.scholarship_provider = @scholarship_provider
           if @scholarship_provider_profile.save
             render json: {
-              message: "Provider details successfully saved."
+              message: "Provider details successfully saved.",
+              profile: @scholarship_provider_profile
             }, status: :ok
           else
             render json: @scholarship_provider_profile.errors, status: :unprocessable_entity
@@ -79,14 +47,15 @@ module Api
 
       # PATCH/PUT /scholarship_provider_profiles/1 or /scholarship_provider_profiles/1.json
       def update
-        respond_to do |format|
-          if @scholarship_provider_profile.update(scholarship_provider_profile_params)
-            format.html { redirect_to provider_url(@scholarship_provider_profile), notice: "Provider was successfully updated." }
-            format.json { render :show, status: :ok, location: @scholarship_provider_profile }
-          else
-            format.html { render :edit, status: :unprocessable_entity }
-            format.json { render json: @scholarship_provider_profile.errors, status: :unprocessable_entity }
-          end
+        @scholarship_provider = ScholarshipProvider.find_by(user_id: params[:user_id])
+
+        if @scholarship_provider_profile.update(scholarship_provider_profile_params) && @scholarship_provider.update(provider_name: params[:provider_name], provider_link: params[:provider_link])
+          render json: {
+            message: "Provider details successfully saved.",
+            profile: @scholarship_provider_profile
+          }, status: :ok
+        else
+          render json: { errors: [@scholarship_provider_profile.errors.full_messages, @scholarship_provider.errors.full_messages] }, status: :unprocessable_entity
         end
       end
 
@@ -108,7 +77,7 @@ module Api
 
         # Only allow a list of trusted parameters through.
         def scholarship_provider_profile_params
-          params.require(:scholarship_provider_profile).permit(:user_id, :provider_name, :description, :provider_type, :region_id, :province_id, :city_id, :profile_picture)
+          params.require(:scholarship_provider_profile).permit(:user_id, :provider_name, :description, :provider_type, :region_id, :province_id, :city_id, :profile_picture, :provider_link)
         end
     end
   end

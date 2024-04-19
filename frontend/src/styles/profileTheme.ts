@@ -1,4 +1,4 @@
-import theme from './theme';
+import theme from './theme'
 
 const profiletheme = {
   heading: {
@@ -8,7 +8,7 @@ const profiletheme = {
       fontWeight: 'bold',
       fontFamily: 'Roboto',
       color: theme.palette.primary.main,
-      textAlign: 'left'
+      textAlign: 'left',
     },
     titleHeading1: {
       marginBottom: 1,
@@ -16,7 +16,7 @@ const profiletheme = {
       fontWeight: 'bold',
       fontFamily: 'Roboto',
       color: theme.palette.primary.main,
-      textAlign: 'center'
+      textAlign: 'center',
     },
     titleHeading2: {
       fontFamily: 'Roboto',
@@ -32,7 +32,7 @@ const profiletheme = {
       fontWeight: 'light',
       fontFamily: 'Roboto',
       color: theme.palette.primary.main,
-      textAlign: 'center'
+      textAlign: 'center',
     },
     textRegular: {
       fontFamily: 'Roboto',
@@ -45,9 +45,9 @@ const profiletheme = {
       fontWeight: 'bold',
       fontFamily: 'Roboto',
       color: '#002147',
-      textAlign: 'center'
-    }
-  }, 
+      textAlign: 'center',
+    },
+  },
   container: {
     rootContainer: {
       width: '100%',
@@ -58,31 +58,31 @@ const profiletheme = {
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'flex-start',
-      gap: 3
+      gap: 3,
     },
     cardContainer: {
       width: '70%',
       height: 'auto',
       backgroundColor: '#afc3d9',
-      borderRadius: 8
+      borderRadius: 8,
     },
     cardSideContainer: {
       width: '30%',
       backgroundColor: '#e2e1e1',
-      borderRadius: 8
-    }
+      borderRadius: 8,
+    },
   },
   box: {
     boxStyle: {
-      py: 3, 
+      py: 3,
       px: 4,
-      backgroundColor: '#95a8bd'
+      backgroundColor: '#95a8bd',
     },
     boxBodyStyle: {
       width: '100%',
       p: 4,
       display: 'flex',
-      flexDirection: 'column'
+      flexDirection: 'column',
     },
     boxBodyStyle2: {
       marginTop: 2,
@@ -103,9 +103,9 @@ const profiletheme = {
       gap: 1,
       backgroundColor: '#d2d2d2',
       px: 4,
-      py: 2
-    }
-  }, 
+      py: 2,
+    },
+  },
   form: {
     formStyle: {
       marginBottom: 2,
@@ -117,46 +117,45 @@ const profiletheme = {
       marginBottom: 1,
       color: '#002147',
     },
-    formInput: {  
-      backgroundColor: '#ffffff', 
-      borderRadius: 4, 
+    formInput: {
+      backgroundColor: '#ffffff',
+      borderRadius: 4,
       border: '1px solid #656565',
       boxShadow: 'inset -1px -1px 4px #656565',
-      "& .MuiOutlinedInput-root": {
-        "& .MuiInputBase-input": {
+      '& .MuiOutlinedInput-root': {
+        '& .MuiInputBase-input': {
           height: 40,
           fontSize: 20,
         },
-        "& fieldset.MuiOutlinedInput-notchedOutline": {
-          border: "none",
+        '& fieldset.MuiOutlinedInput-notchedOutline': {
+          border: 'none',
         },
       },
     },
   },
   button: {
     buttonMain: {
-      py: 2, 
-      px: 4, 
-      width: '100%', 
-      display: 'flex', 
-      alignItems: 'center', 
-      justifyContent: 'flex-start', 
-      gap: 2, 
+      py: 2,
+      px: 4,
+      width: '100%',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      gap: 2,
       borderRadius: 0,
       fontSize: 16,
       fontWeight: 'meidum',
       color: '#002147',
-      textAlign: 'left'
+      textAlign: 'left',
     },
     buttonActive: {
       backgroundColor: '#f36b3b',
       color: '#ffffff',
       '&:hover': {
-        backgroundColor: '#d75e33'
-      }
-    }
-  }
+        backgroundColor: '#d75e33',
+      },
+    },
+  },
 }
 
-
-export default profiletheme;
+export default profiletheme

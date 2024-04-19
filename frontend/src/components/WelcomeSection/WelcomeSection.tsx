@@ -29,9 +29,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
         <div className="section__buttons">
           <PrimaryButton
             url={
-              location.pathname === '/student'
-                ? '/student#search'
-                : '/provider#features'
+              location.pathname === '/student' ? '/student#search' : '/sign-up'
             }
             label={
               location.pathname === '/student'

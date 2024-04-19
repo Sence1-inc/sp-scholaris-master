@@ -1,17 +1,10 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import {
-  Alert,
-  Box,
-  Button,
-  Container,
-  Link,
-  Snackbar,
-  Typography,
-} from '@mui/material'
-import React, { useState } from 'react'
+import { Box, Button, Container, Link, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import { PrimaryButton } from '../../styles/globalStyles'
 
 const AddScholarshipViaCSVPage: React.FC = () => {
@@ -20,14 +13,16 @@ const AddScholarshipViaCSVPage: React.FC = () => {
   const [errorsCount, setErrorsCount] = useState<number>(0)
   const [totalCount, setTotalCount] = useState<number>(0)
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
+  const [infoMessage, setInfoMessage] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
+  const [isUploading, setIsUploading] = useState<boolean>(false)
 
   const handleDownload = () => {
-    const fileUrl = `${process.env.PUBLIC_URL}/files/scholarship_data.xlsx`
+    const fileUrl = `${process.env.PUBLIC_URL}/files/scholarship_data.csv`
     const link = document.createElement('a')
     link.href = fileUrl
-    link.setAttribute('download', 'scholarship_data.xlsx')
+    link.setAttribute('download', 'scholarship_data.csv')
     document.body.appendChild(link)
     link.click()
 
@@ -42,27 +37,36 @@ const AddScholarshipViaCSVPage: React.FC = () => {
   }
 
   const handleUpload = async () => {
+    setIsSnackbarOpen(true)
+    setIsUploading(true)
+    setInfoMessage('Saving scholarships. Please wait.')
     if (file) {
       try {
         const formData = new FormData()
-        formData.append('file', file) // Ensure that 'file' matches the expected parameter name in your Rails controller
+        formData.append('file', file)
         const response = await axiosInstance.post(
           '/api/v1/scholarships/upload',
           formData,
           {
+            withCredentials: true,
+            timeout: 100000,
             headers: {
               'Content-Type': 'multipart/form-data',
             },
           }
         )
         setIsSnackbarOpen(true)
-        const { success_count, errors_count, total_count, error } =
+        const { success_count, errors_count, total_count, results } =
           response.data
 
-        if (error) {
+        const { errors } = results[0]
+
+        if (errors.length > 0) {
+          setIsUploading(false)
           setSuccessMessage('')
-          setErrorMessage(`Error uploading file: ${error}`)
+          setErrorMessage(errors.join(', '))
         } else {
+          setIsUploading(false)
           setSuccessCount(success_count)
           setErrorsCount(errors_count)
           setTotalCount(total_count)
@@ -70,14 +74,28 @@ const AddScholarshipViaCSVPage: React.FC = () => {
           setErrorMessage('')
         }
       } catch (error) {
-        setSuccessMessage('')
-        setErrorMessage('Error uploading file')
+        if (error) {
+          setIsUploading(false)
+          setIsSnackbarOpen(true)
+          setSuccessMessage('')
+          setErrorMessage('Error uploading file')
+        }
       }
     } else {
+      setIsUploading(false)
       setIsSnackbarOpen(true)
       setErrorMessage('No file uploaded')
     }
   }
+
+  useEffect(() => {
+    if (errorsCount > 0) {
+      setErrorMessage(
+        `${successMessage} but there are ${errorsCount} row/s not saved due to incomplete details`
+      )
+    }
+    // eslint-disable-next-line
+  }, [errorsCount])
 
   return (
     <Container
@@ -86,30 +104,13 @@ const AddScholarshipViaCSVPage: React.FC = () => {
         padding: '20px 10px 50px',
       }}
     >
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={isSnackbarOpen}
-        onClose={() => setIsSnackbarOpen(false)}
-        autoHideDuration={6000}
-        key="topcenter"
-      >
-        <Alert
-          onClose={() => setIsSnackbarOpen(false)}
-          severity={successMessage ? 'success' : 'error'}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {successMessage && (
-            <Typography>
-              {successMessage}{' '}
-              {errorsCount > 0
-                ? `but there are ${errorsCount} row/s not saved due to incomplete details`
-                : ''}
-            </Typography>
-          )}
-          {errorMessage && <Typography>{errorMessage}</Typography>}
-        </Alert>
-      </Snackbar>
+      <CustomSnackbar
+        infoMessage={infoMessage}
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+      />
       <Box p={'20px 0 40px'}>
         <Link
           href="/provider/dashboard"
@@ -195,7 +196,11 @@ const AddScholarshipViaCSVPage: React.FC = () => {
               },
             }}
           >
-            <input type="file" onChange={handleFileChange} />
+            <input
+              type="file"
+              onChange={handleFileChange}
+              disabled={isUploading}
+            />
             <Typography
               variant="body1"
               sx={{
@@ -209,7 +214,12 @@ const AddScholarshipViaCSVPage: React.FC = () => {
               <span>{file ? file.name : 'Upload File'}</span>
             </Typography>
           </Box>
-          <PrimaryButton variant="contained" fullWidth onClick={handleUpload}>
+          <PrimaryButton
+            variant="contained"
+            disabled={isUploading}
+            fullWidth
+            onClick={handleUpload}
+          >
             Save Scholarship
           </PrimaryButton>
           <Box display={'flex'} justifyContent={'flex-end'} p={'20px 0 0'}>

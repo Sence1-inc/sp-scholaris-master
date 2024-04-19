@@ -30,7 +30,9 @@ const Survey: React.FC<SurveyProps> = ({
   surveyResponses,
   handleChange,
 }) => {
-  const subscriber = useAppSelector((state) => state.subscriber)
+  const subscriber = useAppSelector(
+    (state) => state.persistedReducer.subscriber
+  )
 
   const classifications = ['parent', 'guardian', 'teacher', 'student']
 

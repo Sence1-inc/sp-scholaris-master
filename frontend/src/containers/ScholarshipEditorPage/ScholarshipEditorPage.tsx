@@ -1,6 +1,5 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
-  Alert,
   Box,
   Button,
   Container,
@@ -8,7 +7,7 @@ import {
   Link,
   MenuItem,
   Select,
-  Snackbar,
+  SelectChangeEvent,
   TextField,
   Typography,
 } from '@mui/material'
@@ -18,31 +17,68 @@ import dayjs, { Dayjs } from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
-import {
-  ScholarshipType,
-  SCHOLARSHIP_TYPES,
-} from '../../data/ScholarshipContent'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
+import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
+import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { ScholarshipData } from '../../redux/types'
 import { ctaButtonStyle } from '../../styles/globalStyles'
+
+export interface ScholarshipType {
+  id: number
+  scholarship_type_name: string
+}
 
 const ScholarshipEditorPage = () => {
   const { id } = useParams<{ id: string }>()
-  const [scholarshipName, setScholarshipName] = useState<string>('')
-  const [description, setDescription] = useState<string>('')
-  const [startDate, setStartDate] = useState<Date | Dayjs | null>(null)
-  const [dueDate, setDueDate] = useState<Date | Dayjs | null>(null)
-  const [applicationLink, setApplicationLink] = useState<string>('')
-  const [schoolYear, setSchoolYear] = useState<string>('')
+  const { getScholarshipData } = useGetScholarshipsData()
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const data = useAppSelector((state) => state.persistedReducer.scholarshipData)
+  const { scholarshipData } = data as { scholarshipData: ScholarshipData }
+  const [scholarshipName, setScholarshipName] = useState<string>(
+    scholarshipData?.scholarship_name ?? ''
+  )
+  const [description, setDescription] = useState<string>(
+    scholarshipData?.description ?? ''
+  )
+  const [startDate, setStartDate] = useState<Date | Dayjs | null>(
+    dayjs(scholarshipData?.start_date) ?? null
+  )
+  const [dueDate, setDueDate] = useState<Date | Dayjs | null>(
+    dayjs(scholarshipData?.due_date) ?? null
+  )
+  const [applicationLink, setApplicationLink] = useState<string>(
+    scholarshipData?.application_link ?? ''
+  )
+  const [schoolYear, setSchoolYear] = useState<string>(
+    scholarshipData?.school_year ?? ''
+  )
   const [scholarshipProviderId, setScholarshipProviderId] = useState<
     number | null
-  >()
-  const [requirements, setRequirements] = useState<string>('')
-  const [eligibilities, setEligibilities] = useState<string>('')
-  const [benefits, setBenefits] = useState<string>('')
-  const [scholarshipTypeId, setScholarshipTypeId] = useState<string>('')
-  const [status, setStatus] = useState<string>('')
+  >(scholarshipData?.scholarship_provider?.id ?? null)
+  const [requirements, setRequirements] = useState<string>(
+    scholarshipData?.requirements?.[0]?.requirements_text ?? ''
+  )
+  const [eligibilities, setEligibilities] = useState<string>(
+    scholarshipData?.eligibilities?.[0]?.eligibility_text ?? ''
+  )
+  const [benefits, setBenefits] = useState<string>(
+    scholarshipData?.benefits?.[0]?.benefit_name ?? ''
+  )
+  const [scholarshipTypeId, setScholarshipTypeId] = useState<number | null>(
+    scholarshipData?.scholarship_type?.id ?? null
+  )
+  const [scholarshipType, setScholarshipType] = useState<string>(
+    scholarshipData?.scholarship_type?.scholarship_type_name ?? ''
+  )
+  const [status, setStatus] = useState<string>(scholarshipData?.status ?? '')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('')
+  const [scholarshipTypes, setScholarshipTypes] = useState<
+    { id: number; scholarship_type_name: string }[] | []
+  >([])
 
   const handleBenefitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBenefits(e.target.value)
@@ -56,16 +92,6 @@ const ScholarshipEditorPage = () => {
     setRequirements(e.target.value)
   }
 
-  const handleScholarshipTypeSelect = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setScholarshipTypeId(e.target.value)
-  }
-
-  const handleStatusSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setStatus(e.target.value)
-  }
-
   const handleStartDateChange = (date: Date | Dayjs | null) => {
     setStartDate(date)
   }
@@ -75,35 +101,61 @@ const ScholarshipEditorPage = () => {
   }
 
   useEffect(() => {
-    // this will be updated during our Auth sprint
-    setScholarshipProviderId(2)
+    if (user.scholarship_provider) {
+      setScholarshipProviderId(user.scholarship_provider.id)
+    }
+
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    const getScholarship = async () => {
-      try {
-        const { data } = await axiosInstance.get(`/api/v1/scholarships/${id}`)
+    if (scholarshipData) {
+      setScholarshipName(scholarshipData.scholarship_name)
+      setDescription(scholarshipData.description)
+      setStartDate(dayjs(scholarshipData.start_date))
+      setDueDate(dayjs(scholarshipData.due_date))
+      setApplicationLink(scholarshipData.application_link)
+      setBenefits(scholarshipData.benefits?.[0]?.benefit_name)
+      setEligibilities(scholarshipData.eligibilities?.[0]?.eligibility_text)
+      setRequirements(scholarshipData.requirements?.[0]?.requirements_text)
+      setSchoolYear(scholarshipData.school_year)
+      setStatus(scholarshipData.status)
+      setScholarshipTypeId(scholarshipData.scholarship_type?.id)
+      setScholarshipType(
+        scholarshipData.scholarship_type?.scholarship_type_name
+      )
+    }
+  }, [scholarshipData])
 
-        if (data) {
-          setScholarshipName(data.scholarship_name)
-          setDescription(data.description)
-          setStartDate(dayjs(data.start_date))
-          setDueDate(dayjs(data.due_date))
-          setApplicationLink(data.application_link)
-          setBenefits(data.benefits)
-          setEligibilities(data.eligibilities)
-          setRequirements(data.requirements)
-          setSchoolYear(data.school_year)
-          setStatus(data.status)
-          setScholarshipTypeId(data.scholarship_type.id.toString())
-        }
-      } catch (error) {}
+  useEffect(() => {
+    if (user.scholarship_provider) {
+      setScholarshipProviderId(user.scholarship_provider.id)
+    }
+  }, [user])
+
+  useEffect(() => {
+    const getScholarshipTypes = async () => {
+      const { data } = await axiosInstance.get('/api/v1/scholarship_types')
+      setScholarshipTypes(data)
     }
 
+    getScholarshipTypes()
     if (id) {
-      getScholarship()
+      getScholarshipData(id)
     }
-  }, [id])
+
+    // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
+    if (scholarshipType) {
+      setScholarshipTypeId(
+        scholarshipTypes.find(
+          (type) => type.scholarship_type_name === scholarshipType
+        )?.id ?? null
+      )
+    }
+  }, [scholarshipType, scholarshipTypes])
 
   const handleSubmit = async () => {
     const data = {
@@ -124,16 +176,22 @@ const ScholarshipEditorPage = () => {
     try {
       if (id) {
         const response = await axiosInstance.put(
-          `/api/v1/scholarships/${id}`,
-          data
+          `/api/v1/scholarships/${scholarshipData.id}`,
+          data,
+          { withCredentials: true }
         )
         if (response.data) {
+          dispatch(initializeScholarshipData(response.data.scholarship))
           setIsSnackbarOpen(true)
           setSuccessMessage(response.data.message)
           setErrorMessage('')
         }
       } else {
-        const response = await axiosInstance.post('/api/v1/scholarships', data)
+        const response = await axiosInstance.post(
+          '/api/v1/scholarships',
+          data,
+          { withCredentials: true }
+        )
         if (response.data) {
           setIsSnackbarOpen(true)
           setSuccessMessage(response.data.message)
@@ -148,35 +206,26 @@ const ScholarshipEditorPage = () => {
           setRequirements('')
           setSchoolYear('')
           setStatus('')
-          setScholarshipTypeId('')
+          setScholarshipTypeId(null)
         }
       }
     } catch (error: any) {
-      setIsSnackbarOpen(true)
-      setSuccessMessage('')
-      setErrorMessage(error.message)
+      if (error) {
+        setIsSnackbarOpen(true)
+        setSuccessMessage('')
+        setErrorMessage(error.response.data.errors.join(', '))
+      }
     }
   }
 
   return (
     <FormGroup>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={isSnackbarOpen}
-        onClose={() => setIsSnackbarOpen(false)}
-        autoHideDuration={6000}
-        key="topcenter"
-      >
-        <Alert
-          onClose={() => setIsSnackbarOpen(false)}
-          severity={successMessage ? 'success' : 'error'}
-          variant="filled"
-          sx={{ width: '100%' }}
-        >
-          {successMessage && successMessage}
-          {errorMessage && errorMessage}
-        </Alert>
-      </Snackbar>
+      <CustomSnackbar
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+      />
       <Container sx={{ padding: { sm: '60px 100px', lg: '120px' } }}>
         <Box p={'50px 0 0'}>
           <Link
@@ -202,7 +251,7 @@ const ScholarshipEditorPage = () => {
             fontWeight: '700',
           }}
         >
-          {id ? 'Edit Scholarship' : 'Add New Scholarship'}
+          {scholarshipData.id ? 'Edit Scholarship' : 'Add New Scholarship'}
         </Typography>
 
         <Box
@@ -352,12 +401,18 @@ const ScholarshipEditorPage = () => {
                 boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
                 backgroundColor: 'white',
               }}
-              value={scholarshipTypeId}
+              value={scholarshipType}
               name="scholarship_type"
-              onChange={(e: any) => handleScholarshipTypeSelect(e)}
+              onChange={(e: SelectChangeEvent) =>
+                setScholarshipType(e.target.value)
+              }
             >
-              {SCHOLARSHIP_TYPES.map((type: ScholarshipType) => {
-                return <MenuItem value={type.id}>{type.name}</MenuItem>
+              {scholarshipTypes.map((type: ScholarshipType, index: number) => {
+                return (
+                  <MenuItem key={index} value={type.scholarship_type_name}>
+                    {type.scholarship_type_name}
+                  </MenuItem>
+                )
               })}
             </Select>
           </Box>
@@ -499,7 +554,7 @@ const ScholarshipEditorPage = () => {
                 backgroundColor: 'white',
               }}
               value={status}
-              onChange={(e: any) => handleStatusSelect(e)}
+              onChange={(e: SelectChangeEvent) => setStatus(e.target.value)}
               name="status"
             >
               <MenuItem value={'active'}>Active</MenuItem>

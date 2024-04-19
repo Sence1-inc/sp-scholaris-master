@@ -87,9 +87,11 @@ const Newsletter: React.FC<NewsletterProps> = ({
         setSuccessMessage('')
       }
     } catch (error) {
-      setIsLoading(false)
-      setErrorMessage('Error creating new subscriber. Please try again.')
-      setSuccessMessage('')
+      if (error) {
+        setIsLoading(false)
+        setErrorMessage('Error creating new subscriber. Please try again.')
+        setSuccessMessage('')
+      }
     }
   }
 

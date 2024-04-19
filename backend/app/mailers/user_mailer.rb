@@ -27,4 +27,9 @@ class UserMailer < ApplicationMailer
 
     mail(to: ["no-reply@sence1.com"], bcc: email, subject: subject) if user.present?
   end
+
+  def email_verification(user)
+    @user = user
+    mail(to: @user.email_address, subject: 'Verify your email')
+  end
 end

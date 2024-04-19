@@ -1,32 +1,43 @@
-import CloseIcon from '@mui/icons-material/Close'
-import {
-  Button,
-  Container,
-  IconButton,
-  Link as MuiLink,
-  Snackbar,
-  TextField,
-  Typography,
-} from '@mui/material'
-import { Fragment, useState } from 'react'
+import { Button, Container, TextField, Typography } from '@mui/material'
+import { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
+import { initializeProfile } from '../../redux/reducers/ProfileReducer'
+import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
+import { initializeUser } from '../../redux/reducers/UserReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 
 interface SignInPageProps {}
 
 const SignInPage: React.FC<SignInPageProps> = () => {
-  const [userCredentials, setUserCredentials] = useState({
-    email: '',
-    password: '',
-  })
-
-  const [open, setOpen] = useState(false)
-
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const isAuthenticated = useAppSelector(
+    (state) => state.persistedReducer.isAuthenticated
+  )
+  const [userCredentials, setUserCredentials] = useState({
+    email_address: '',
+    password: '',
+    service_id: 1,
+    service_key: process.env.REACT_APP_SERVICE_KEY,
+    role: 'provider',
+  })
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [infoMessage, setInfoMessage] = useState<string>('')
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/provider/dashboard')
+    }
+    // eslint-disable-next-line
+  }, [isAuthenticated])
 
   function handleEmail(inputValue: string) {
     setUserCredentials((prevUserCredentials) => ({
       ...prevUserCredentials,
-      email: inputValue,
+      email_address: inputValue.toLowerCase(),
     }))
   }
 
@@ -37,34 +48,40 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     }))
   }
 
-  function handleCredentials() {
+  const handleSignIn = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const isValidEmail = emailRegex.test(userCredentials.email) // && userCredentials.email === user's email;
+    const isValidEmail = emailRegex.test(userCredentials.email_address) // && userCredentials.email === user's email;
     const isPasswordValid = undefined // if password is the user's password
 
     if (!isValidEmail && !isPasswordValid) {
-      setOpen(true)
+      setIsSnackbarOpen(true)
+      setErrorMessage('Invalid email or password.')
     } else {
-      navigate('/dashboard')
+      try {
+        const response = await axiosInstance.post(
+          '/api/v1/login',
+          userCredentials,
+          {
+            withCredentials: true,
+          }
+        )
+
+        if (response) {
+          setIsSnackbarOpen(false)
+          setErrorMessage('')
+          dispatch(initializeUser(response.data))
+          dispatch(initializeProfile(response.data.profile))
+          dispatch(initializeScholarships(response.data.scholarships))
+          navigate('/provider/dashboard')
+        }
+      } catch (error) {
+        if (error) {
+          setIsSnackbarOpen(true)
+          setErrorMessage('Log in failed. Make sure to verify your email.')
+        }
+      }
     }
   }
-
-  const handleClose = (event: React.SyntheticEvent | Event) => {
-    setOpen(false)
-  }
-
-  const action = (
-    <Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </Fragment>
-  )
 
   return (
     <Container
@@ -76,6 +93,12 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         marginBlock: '40px',
       }}
     >
+      <CustomSnackbar
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+        errorMessage={errorMessage}
+        infoMessage={infoMessage}
+      />
       <Typography
         variant="h2"
         sx={{
@@ -87,16 +110,9 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       >
         Sign-in
       </Typography>
-      <Snackbar
-        open={open}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message="Password and email does not match"
-        action={action}
-      />
       <TextField
         onChange={(e) => handleEmail(e.target.value)}
-        value={userCredentials.email}
+        value={userCredentials.email_address.toLowerCase()}
         type="email"
         id="email"
         label="Email address"
@@ -171,39 +187,54 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           padding: '0 !important',
         }}
       >
-        <MuiLink
-          underline="none"
+        <Button
+          disableRipple
+          variant="text"
           sx={{
             cursor: 'pointer',
             fontSize: '16px',
             color: '#767676',
             fontWeight: '300',
             fontStyle: 'italic',
-            marginBottom: '10px',
             textAlign: 'start',
+            textTransform: 'none',
+            backgroundColor: 'transparent',
+            '&:hover': {
+              backgroundColor: '#FFF',
+            },
+          }}
+          onClick={() => {
+            setIsSnackbarOpen(true)
+            setInfoMessage('Contact scholaris@sence1.com to change password.')
           }}
         >
           Forgot password?
-        </MuiLink>
-        <MuiLink
+        </Button>
+        <Button
+          disableRipple
           component={RouterLink}
           to="/sign-up"
-          underline="none"
-          variant="body1"
+          variant="text"
           sx={{
             cursor: 'pointer',
             fontSize: '16px',
             color: '#767676',
-            marginBottom: '10px',
-            textAlign: 'start',
+            fontWeight: '300',
+            fontStyle: 'italic',
+            textAlign: 'center',
+            textTransform: 'none',
+            backgroundColor: 'transparent',
+            '&:hover': {
+              backgroundColor: '#FFF',
+            },
           }}
         >
           No account yet? Sign-up here
-        </MuiLink>
+        </Button>
       </Container>
 
       <Button
-        onClick={handleCredentials}
+        onClick={handleSignIn}
         variant="contained"
         color="primary"
         sx={{

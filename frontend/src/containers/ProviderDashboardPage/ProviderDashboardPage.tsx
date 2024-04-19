@@ -2,9 +2,12 @@ import { Box, Button, Typography } from '@mui/material'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import DashboardTable from '../../components/DashboardTable/DashboardTable'
+import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
+import { useAppDispatch } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
 const ProviderDashboardPage: React.FC = () => {
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   return (
     <Box
@@ -72,7 +75,10 @@ const ProviderDashboardPage: React.FC = () => {
             <Button
               variant="contained"
               sx={ctaButtonStyle}
-              onClick={() => navigate('/scholarships/create')}
+              onClick={() => {
+                dispatch(initializeScholarshipData({}))
+                navigate('/scholarships/create')
+              }}
             >
               Add Scholarship
             </Button>

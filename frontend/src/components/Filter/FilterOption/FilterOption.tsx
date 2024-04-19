@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
-import DropdownArrow from '../../../public/images/dropdownArr.svg'
-import './FilterOption.css'
+import { DateRange, RangeKeyDict } from 'react-date-range'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
-import { DateRange, RangeKeyDict } from 'react-date-range'
+import DropdownArrow from '../../../public/images/dropdownArr.svg'
 import { DateRangeItem } from '../Filter'
+import './FilterOption.css'
 
 interface Option {
   label: string
@@ -51,9 +51,12 @@ const FilterOption: React.FC<FilterOptionProps> = ({
     }
   }
 
-  const filteredOptions = options.filter((option) =>
-    option.label.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredOptions =
+    options.length > 0
+      ? options.filter((option) =>
+          option.label?.toLowerCase().includes(searchTerm?.toLowerCase())
+        )
+      : []
 
   return (
     <div className="dropdown">
@@ -92,18 +95,22 @@ const FilterOption: React.FC<FilterOptionProps> = ({
                 onChange={handleInputChange}
                 value={searchTerm}
               />
-              {filteredOptions.map((option, index) => (
-                <div
-                  className="dropdown-option"
-                  key={option.label + index}
-                  onClick={() => handleOptionClick && handleOptionClick(option)}
-                >
-                  {option.label}
-                </div>
-              ))}
+              {filteredOptions.length > 0 &&
+                filteredOptions.map((option, index) => (
+                  <div
+                    className="dropdown-option"
+                    key={option.label + index}
+                    onClick={() =>
+                      handleOptionClick && handleOptionClick(option)
+                    }
+                  >
+                    {option.label}
+                  </div>
+                ))}
             </>
           )}
           {type !== 'search' &&
+            options.length > 0 &&
             options.map((option, index) => (
               <div
                 className="dropdown-option"
