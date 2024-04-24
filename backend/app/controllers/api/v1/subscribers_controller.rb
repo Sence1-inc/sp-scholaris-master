@@ -70,6 +70,11 @@ module Api
       end
     
       def restore
+        if !@subscriber.nil?
+          user = User.find(params[:id])
+          @subscriber = Subscriber.new(email: user.email, user_type: "provider")
+        end
+
         if !Subscriber.is_soft_deleted(@subscriber)
           Subscriber.restore(@subscriber)
           render json: {message: "Subscriber restored", status: :ok}
