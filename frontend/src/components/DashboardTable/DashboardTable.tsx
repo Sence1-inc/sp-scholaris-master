@@ -50,7 +50,11 @@ export default function DataTable() {
 
   useEffect(() => {
     console.log('data.scholarships', data.scholarships)
-    if (data.scholarships && data.scholarships.scholarships.length > 0) {
+    if (
+      data.scholarships &&
+      data.scholarships.scholarships.isArray() &&
+      data.scholarships.scholarships.length > 0
+    ) {
       const row = data.scholarships.scholarships.map(
         (scholarship: Scholarship) => {
           return {
@@ -66,7 +70,11 @@ export default function DataTable() {
       setRowData(row)
     }
 
-    if (data.scholarships && data.scholarships.length === 0) {
+    if (
+      data.scholarships &&
+      data.scholarships.scholarships.isArray() &&
+      data.scholarships.length === 0
+    ) {
       setIsLoading(false)
     }
   }, [data])
