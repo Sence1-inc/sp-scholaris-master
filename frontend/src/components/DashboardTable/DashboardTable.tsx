@@ -7,10 +7,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
-import {
-  initializeScholarships,
-  Scholarships,
-} from '../../redux/reducers/ScholarshipsReducer'
+import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 import CustomSnackbar from '../CustomSnackbar/CustomSnackbar'
@@ -52,7 +49,7 @@ export default function DataTable() {
     console.log('data.scholarships', data.scholarships)
     if (
       data.scholarships &&
-      data?.scholarships?.scholarships?.isArray() &&
+      Array.isArray(data?.scholarships?.scholarships) &&
       data?.scholarships?.scholarships?.length > 0
     ) {
       const row = data.scholarships.scholarships.map(
@@ -72,7 +69,7 @@ export default function DataTable() {
 
     if (
       data.scholarships &&
-      data?.scholarships?.scholarships?.isArray() &&
+      Array.isArray(data?.scholarships?.scholarships) &&
       data?.scholarships?.scholarships?.length === 0
     ) {
       setIsLoading(false)
@@ -120,7 +117,7 @@ export default function DataTable() {
         console.log('DATA', response.data)
         setIsLoading(false)
         setRowCount(response.data.total_count)
-        dispatch(initializeScholarships(response.data as Scholarships))
+        dispatch(initializeScholarships(response.data))
       }
     } catch (error: any) {
       if (error) {
