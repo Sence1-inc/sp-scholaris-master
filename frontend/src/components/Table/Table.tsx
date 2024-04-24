@@ -33,7 +33,7 @@ export const Table: React.FC<TableProps> = ({
           <Typography variant="body1">Provider</Typography>
           <Typography variant="body1">Actions</Typography>
         </div>
-        {scholarships.length > 0 ? (
+        {(total_count as number) > 0 ? (
           scholarships.map((scholarship: Scholarship, index: number) => (
             <ul key={index}>
               <li className="search__results-content">
@@ -78,7 +78,7 @@ export const Table: React.FC<TableProps> = ({
       {hasPagination && (
         <div className="search__results-pagination">
           <Typography variant="h6" sx={{ color: 'secondary.main' }}>
-            Total Results: <span>{total_count}</span>
+            Total Results: <span>{total_count as number}</span>
           </Typography>
           <Typography
             variant="h6"
@@ -97,9 +97,9 @@ export const Table: React.FC<TableProps> = ({
             variant="h6"
             sx={{
               color: 'secondary.main',
-              cursor: scholarships.length < 10 ? 'not-allowed' : 'pointer',
+              cursor: (total_count as number) < 10 ? 'not-allowed' : 'pointer',
             }}
-            {...(scholarships.length >= 10 && { onClick: handleNext })}
+            {...((total_count as number) >= 10 && { onClick: handleNext })}
           >
             Next
           </Typography>
