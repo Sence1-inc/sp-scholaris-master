@@ -71,7 +71,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           setErrorMessage('')
           dispatch(initializeUser(response.data))
           dispatch(initializeProfile(response.data.profile))
-          dispatch(initializeScholarships(response.data))
           navigate('/provider/dashboard')
         }
       } catch (error) {
