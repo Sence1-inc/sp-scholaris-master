@@ -52,8 +52,8 @@ export default function DataTable() {
     console.log('data.scholarships', data.scholarships)
     if (
       data.scholarships &&
-      data.scholarships.scholarships.isArray() &&
-      data.scholarships.scholarships.length > 0
+      data?.scholarships?.scholarships?.isArray() &&
+      data?.scholarships?.scholarships?.length > 0
     ) {
       const row = data.scholarships.scholarships.map(
         (scholarship: Scholarship) => {
@@ -72,8 +72,8 @@ export default function DataTable() {
 
     if (
       data.scholarships &&
-      data.scholarships.scholarships.isArray() &&
-      data.scholarships.length === 0
+      data?.scholarships?.scholarships?.isArray() &&
+      data?.scholarships?.scholarships?.length === 0
     ) {
       setIsLoading(false)
     }
