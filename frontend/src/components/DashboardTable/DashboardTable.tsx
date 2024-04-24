@@ -108,6 +108,7 @@ export default function DataTable() {
       )
 
       if (response.status === 200) {
+        console.log('DATA', response.data)
         setIsLoading(false)
         setRowCount(response.data.total_count)
         dispatch(initializeScholarships(response.data as Scholarships))
