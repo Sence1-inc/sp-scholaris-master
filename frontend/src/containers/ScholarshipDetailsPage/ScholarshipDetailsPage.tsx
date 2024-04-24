@@ -6,7 +6,8 @@ import PrimaryButton from '../../components/Button/PrimaryButton'
 import TextLoading from '../../components/Loading/TextLoading'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
 import ProviderProfile from '../../public/images/pro-profile.png'
-import { useAppSelector } from '../../redux/store'
+import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData } from '../../redux/types'
 import './ScholarshipDetailsPage.css'
 
@@ -22,6 +23,7 @@ export const ScholarshipDetailsPage: React.FC<
   ScholarshipDataResultsPageProps
 > = () => {
   const { id } = useParams()
+  const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { getScholarshipData } = useGetScholarshipData()
   const result = useAppSelector(
@@ -82,7 +84,10 @@ export const ScholarshipDetailsPage: React.FC<
         <div className="container">
           <aside id="aside">
             <Button
-              onClick={() => navigate(-1)}
+              onClick={() => {
+                dispatch(initializeScholarshipData({}))
+                navigate(-1)
+              }}
               sx={{
                 color: 'secondary.main',
                 marginLeft: '30px',

@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
+import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
@@ -138,6 +139,7 @@ export default function DataTable() {
   }
 
   useEffect(() => {
+    dispatch(initializeScholarshipData({}))
     // getProviderScholarships()
     // eslint-disable-next-line
   }, [])
