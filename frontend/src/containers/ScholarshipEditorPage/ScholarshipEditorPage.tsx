@@ -1,7 +1,9 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
+  Backdrop,
   Box,
   Button,
+  CircularProgress,
   Container,
   FormGroup,
   Link,
@@ -79,6 +81,7 @@ const ScholarshipEditorPage = () => {
   const [scholarshipTypes, setScholarshipTypes] = useState<
     { id: number; scholarship_type_name: string }[] | []
   >([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleBenefitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBenefits(e.target.value)
@@ -109,6 +112,7 @@ const ScholarshipEditorPage = () => {
   }, [])
 
   useEffect(() => {
+    setIsLoading(true)
     if (scholarshipData) {
       setScholarshipName(scholarshipData.scholarship_name)
       setDescription(scholarshipData.description)
@@ -124,6 +128,7 @@ const ScholarshipEditorPage = () => {
       setScholarshipType(
         scholarshipData.scholarship_type?.scholarship_type_name
       )
+      setIsLoading(false)
     }
   }, [scholarshipData])
 
@@ -220,6 +225,12 @@ const ScholarshipEditorPage = () => {
 
   return (
     <FormGroup>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <CustomSnackbar
         successMessage={successMessage}
         errorMessage={errorMessage}
