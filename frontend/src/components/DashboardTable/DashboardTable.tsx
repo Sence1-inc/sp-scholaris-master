@@ -122,7 +122,7 @@ export default function DataTable() {
     } catch (error: any) {
       if (error) {
         dispatch(initializeScholarships([]))
-        if (error.response.status === 403) {
+        if (error.response && error.response.status === 403) {
           navigate('/')
         }
       }
