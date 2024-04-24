@@ -110,7 +110,10 @@ export default function DataTable() {
       }
       const response = await axiosInstance.get(
         `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships?page=${page + 1}&limit=${pageSize}`,
-        { withCredentials: true }
+        {
+          timeout: 100000,
+          withCredentials: true,
+        }
       )
 
       if (response.status === 200) {
