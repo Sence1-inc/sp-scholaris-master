@@ -4,7 +4,6 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import { initializeProfile } from '../../redux/reducers/ProfileReducer'
-import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 
