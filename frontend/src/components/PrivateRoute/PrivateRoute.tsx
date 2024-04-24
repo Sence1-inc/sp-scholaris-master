@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
-import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { useAppDispatch } from '../../redux/store'
 
 interface PrivateRouteProps {
   component: any
