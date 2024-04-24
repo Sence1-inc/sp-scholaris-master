@@ -120,6 +120,7 @@ export default function DataTable() {
         dispatch(initializeScholarships(response.data))
       }
     } catch (error: any) {
+      console.log('Error', error)
       if (error) {
         dispatch(initializeScholarships([]))
         if (error.response && error.response.status === 403) {
