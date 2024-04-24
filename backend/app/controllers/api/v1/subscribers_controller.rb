@@ -70,7 +70,7 @@ module Api
       end
     
       def restore
-        if !@subscriber.nil?
+        if @subscriber.nil?
           user = User.find(params[:id])
           @subscriber = Subscriber.new(email: user.email, user_type: "provider")
         end
