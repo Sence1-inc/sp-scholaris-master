@@ -49,6 +49,7 @@ export default function DataTable() {
   }, [rowCount])
 
   useEffect(() => {
+    console.log('data.scholarships', data.scholarships)
     if (data.scholarships && data.scholarships.scholarships.length > 0) {
       const row = data.scholarships.scholarships.map(
         (scholarship: Scholarship) => {
