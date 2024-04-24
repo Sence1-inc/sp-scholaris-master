@@ -225,10 +225,7 @@ const ScholarshipEditorPage = () => {
 
   return (
     <FormGroup>
-      <Backdrop
-        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-        open={isLoading}
-      >
+      <Backdrop sx={{ color: '#fff', zIndex: 10 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
       <CustomSnackbar
