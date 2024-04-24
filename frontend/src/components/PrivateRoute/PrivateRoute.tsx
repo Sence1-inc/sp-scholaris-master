@@ -1,6 +1,6 @@
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
 import { useAppDispatch } from '../../redux/store'
 
@@ -17,12 +17,9 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const response = await axios.get(
-          'https://scholaris-backend.fly.dev/api/v1/check_token',
-          {
-            withCredentials: true,
-          }
-        )
+        const response = await axiosInstance.get('/api/v1/check_token', {
+          withCredentials: true,
+        })
         setAuthenticated(response.data.valid)
         dispatch(initializeIsAuthenticated(response.data.valid))
       } catch (error) {
