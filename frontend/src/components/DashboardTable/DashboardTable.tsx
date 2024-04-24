@@ -83,12 +83,16 @@ export default function DataTable() {
   }, [isSnackbarOpen])
 
   const handleDelete = async () => {
+    setIsLoading(true)
     try {
       const response = await axiosInstance.delete(
         `/api/v1/scholarships/${selectedRow}?page=${page + 1}&limit=${pageSize}`,
-        { withCredentials: true }
+        {
+          timeout: 100000,
+          withCredentials: true,
+        }
       )
-
+      setIsLoading(false)
       if (response) {
         setIsSnackbarOpen(true)
         setWarningMessage('')
@@ -96,6 +100,7 @@ export default function DataTable() {
         dispatch(initializeScholarships(response.data))
       }
     } catch (error) {
+      setIsLoading(false)
       if (error) {
         setWarningMessage('')
         setErrorMessage('Error deleting scholarship')
@@ -105,9 +110,7 @@ export default function DataTable() {
 
   const getProviderScholarships = async () => {
     try {
-      if (rowCount > 0) {
-        setIsLoading(true)
-      }
+      setIsLoading(true)
       const response = await axiosInstance.get(
         `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships?page=${page + 1}&limit=${pageSize}`,
         {
@@ -124,6 +127,7 @@ export default function DataTable() {
       }
     } catch (error: any) {
       console.log('Error', error)
+      setIsLoading(false)
       if (error) {
         dispatch(initializeScholarships([]))
         if (error.response && error.response.status === 403) {
