@@ -112,7 +112,15 @@ const ScholarshipEditorPage = () => {
   }, [])
 
   useEffect(() => {
-    setIsLoading(true)
+    if (
+      Object.keys(scholarshipData).length > 0 &&
+      !scholarshipData.scholarship_name
+    ) {
+      setIsLoading(true)
+    } else {
+      setIsLoading(false)
+    }
+
     if (scholarshipData) {
       setScholarshipName(scholarshipData.scholarship_name)
       setDescription(scholarshipData.description)
@@ -128,7 +136,6 @@ const ScholarshipEditorPage = () => {
       setScholarshipType(
         scholarshipData.scholarship_type?.scholarship_type_name
       )
-      setIsLoading(false)
     }
   }, [scholarshipData])
 
@@ -139,6 +146,7 @@ const ScholarshipEditorPage = () => {
   }, [user])
 
   useEffect(() => {
+    setIsLoading(true)
     const getScholarshipTypes = async () => {
       const { data } = await axiosInstance.get('/api/v1/scholarship_types')
       setScholarshipTypes(data)
@@ -147,6 +155,7 @@ const ScholarshipEditorPage = () => {
     getScholarshipTypes()
     if (id) {
       getScholarshipData(id)
+      setIsLoading(false)
     }
 
     // eslint-disable-next-line

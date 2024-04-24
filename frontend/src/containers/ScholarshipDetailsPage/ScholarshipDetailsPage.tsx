@@ -43,6 +43,14 @@ export const ScholarshipDetailsPage: React.FC<
 
   useEffect(() => {
     setScholarshipData(result.scholarshipData)
+    if (
+      Object.keys(result.scholarshipData).length > 0 &&
+      !result.scholarshipData.scholarship_name
+    ) {
+      setIsLoading(true)
+    } else {
+      setIsLoading(false)
+    }
     // eslint-disable-next-line
   }, [result.scholarshipData])
 
