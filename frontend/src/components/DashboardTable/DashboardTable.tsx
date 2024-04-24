@@ -35,7 +35,7 @@ export default function DataTable() {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [warningMessage, setWarningMessage] = useState<string>('')
-  const [page, setPage] = useState<number>(1)
+  const [page, setPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
   const [rowCount, setRowCount] = useState<number>(0)
 
