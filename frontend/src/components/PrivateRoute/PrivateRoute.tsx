@@ -13,13 +13,11 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
 }) => {
   const dispatch = useAppDispatch()
   const [authenticated, setAuthenticated] = useState<boolean | null>(null)
-  const user = useAppSelector((state) => state.persistedReducer.user)
 
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
         const response = await axiosInstance.get('/api/v1/check_token', {
-          params: { email: user.email_address },
           withCredentials: true,
         })
         setAuthenticated(response.data.valid)
