@@ -1,5 +1,5 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import { Button } from '@mui/material'
+import { Backdrop, Button, CircularProgress } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import PrimaryButton from '../../components/Button/PrimaryButton'
@@ -29,10 +29,13 @@ export const ScholarshipDetailsPage: React.FC<
   ) as Results
   const [scholarshipData, setScholarshipData] =
     useState<ScholarshipData | null>(null)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   useEffect(() => {
+    setIsLoading(true)
     if (id) {
       getScholarshipData(id)
+      setIsLoading(false)
     }
 
     // eslint-disable-next-line
@@ -64,6 +67,12 @@ export const ScholarshipDetailsPage: React.FC<
 
   return (
     <>
+      <Backdrop
+        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={isLoading}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
       <section id="details">
         <div className="container">
           <aside id="aside">
