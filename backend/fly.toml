@@ -13,10 +13,11 @@ console_command = '/rails/bin/rails console'
 
   [build.args]
     USER="admin"
-    MODE="development"
+    MODE="production"
 
 [env]
   RAILS_ENV = "production"
+  REACT_URL = "https://scholaris.netlify.app/"
   DATABASE_URL = "mysql2://admin:pWfjApfXCVkhYQ8@scholaris-db.cboibzju9stw.us-east-1.rds.amazonaws.com:3306/app"
 
 [http_service]
