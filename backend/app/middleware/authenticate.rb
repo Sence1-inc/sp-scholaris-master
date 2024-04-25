@@ -19,6 +19,7 @@ class Authenticate
     '/api/v1/scholarship_provider_profiles/show',
     '/api/v1/survey_questions',
     '/api/v1/subscribers',
+    '/api/v1/subscribers/show',
     '/api/v1/subscribers/soft_delete',
     '/api/v1/subscribers/restore',
     '/api/v1/scholarship_types',
