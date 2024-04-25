@@ -35,7 +35,7 @@ const ProviderProfile: React.FC = () => {
   useEffect(() => {
     const getSubscriber = async () => {
       const subscriber = await axiosInstance.get(
-        `api/v1/subscribers/${user.id}`
+        `api/v1/subscribers/${user.scholarship_provider.id}`
       )
 
       if (subscriber.data) {
@@ -112,7 +112,7 @@ const ProviderProfile: React.FC = () => {
           <AccountSideBar
             activeContent={activeContent}
             setActiveContent={setActiveContent}
-            id={user.id.toString()}
+            id={user.scholarship_provider.id.toString()}
             provider={data.profile.scholarship_provider as ScholarshipProvider}
           />
           {activeContent && lastRoute === 'view-profile' && (

@@ -38,7 +38,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       let response: AxiosResponse<SuccessResponse | ErrorResponse>
       if (subscriber.status === 200) {
         response = await axiosInstance.post(`api/v1/subscribers/restore`, {
-          id: id,
+          id: subscriber.data.id,
         })
       } else {
         response = await axiosInstance.post(`api/v1/subscribers`, {
