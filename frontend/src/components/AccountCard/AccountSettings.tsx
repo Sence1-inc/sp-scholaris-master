@@ -67,12 +67,14 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
           user_type: 'provider',
         })
         if (response.status === 200) {
+          handleSetIsSnackbarOpen(false)
           const successData = response.data as SuccessResponse
           handleSetSuccessMessage(successData.message)
           handleSetErrorMessage('')
           handleSetIsSnackbarOpen(true)
           handleSetInfoMessage('')
         } else {
+          handleSetIsSnackbarOpen(false)
           const errorData = response.data as ErrorResponse
           handleSetIsSnackbarOpen(true)
           handleSetSuccessMessage('')
