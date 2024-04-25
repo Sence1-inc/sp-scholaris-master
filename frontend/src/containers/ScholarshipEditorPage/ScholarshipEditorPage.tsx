@@ -1,9 +1,7 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
-  Backdrop,
   Box,
   Button,
-  CircularProgress,
   Container,
   FormGroup,
   Link,
@@ -81,7 +79,6 @@ const ScholarshipEditorPage = () => {
   const [scholarshipTypes, setScholarshipTypes] = useState<
     { id: number; scholarship_type_name: string }[] | []
   >([])
-  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleBenefitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBenefits(e.target.value)
@@ -112,15 +109,6 @@ const ScholarshipEditorPage = () => {
   }, [])
 
   useEffect(() => {
-    if (
-      Object.keys(scholarshipData).length > 0 &&
-      !scholarshipData.scholarship_name
-    ) {
-      setIsLoading(true)
-    } else {
-      setIsLoading(false)
-    }
-
     if (scholarshipData) {
       setScholarshipName(scholarshipData.scholarship_name)
       setDescription(scholarshipData.description)
@@ -146,7 +134,6 @@ const ScholarshipEditorPage = () => {
   }, [user])
 
   useEffect(() => {
-    setIsLoading(true)
     const getScholarshipTypes = async () => {
       const { data } = await axiosInstance.get('/api/v1/scholarship_types')
       setScholarshipTypes(data)
@@ -155,7 +142,6 @@ const ScholarshipEditorPage = () => {
     getScholarshipTypes()
     if (id) {
       getScholarshipData(id)
-      setIsLoading(false)
     }
 
     // eslint-disable-next-line
@@ -234,9 +220,6 @@ const ScholarshipEditorPage = () => {
 
   return (
     <FormGroup>
-      <Backdrop sx={{ color: '#fff', zIndex: 10 }} open={isLoading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
       <CustomSnackbar
         successMessage={successMessage}
         errorMessage={errorMessage}
