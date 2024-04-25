@@ -11,7 +11,17 @@ module Api
     
       # GET /subscribers/{id}
       def show
-        render json: @subscriber
+        user = User.find(params[:id])
+        if user 
+          subscriber = Subscriber.find_by(email: user.email)
+          if subscriber
+            render json: subscriber, status: :ok
+          else
+            render json: {message: "No subscriber found"}, status: 404
+          end
+        else
+          render json: {message: "No user found"}, status: 404
+        end
       end
     
       # GET /subscribers/new
