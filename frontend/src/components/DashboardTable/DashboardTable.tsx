@@ -143,9 +143,7 @@ export default function DataTable() {
       }
     }
 
-    if (page) {
-      getProviderScholarships()
-    }
+    getProviderScholarships()
     // eslint-disable-next-line
   }, [page, pageSize])
 
