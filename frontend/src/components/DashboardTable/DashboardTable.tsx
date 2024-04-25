@@ -235,7 +235,8 @@ export default function DataTable() {
         paginationMode="server"
         loading={isLoading}
         sx={{
-          height: rowData.length > 0 ? 'auto' : 200,
+          // height: rowData.length > 0 ? 'auto' : 200,
+          height: 'auto',
           '.MuiDataGrid-root': {
             border: 'none',
           },
