@@ -24,6 +24,7 @@ const useGetScholarships = () => {
       const response: AxiosResponse<Scholarships | ErrorResponse> =
         await axiosInstance.get('api/v1/scholarships', {
           params: { ...params, ...{ limit: 10 } },
+          timeout: 100000,
         })
 
       if (response.status === 200) {
