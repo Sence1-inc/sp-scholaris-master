@@ -27,7 +27,7 @@ module Api
             limit: params[:limit] || 10
           }, status: :ok
         else
-          render json: { message: 'No scholarships found' }, status: :not_found
+          render json: { message: 'No scholarships found', scholarships: [], total_count: 0 }, status: :not_found
         end
       end
     
