@@ -1,6 +1,6 @@
 import { Box, Container, Typography } from '@mui/material'
 import axios from 'axios'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../../axiosConfig'
 import AccountClose from '../../../components/AccountCard/AccountClose'
@@ -14,20 +14,43 @@ import { useAppSelector } from '../../../redux/store'
 import { ScholarshipProvider } from '../../../redux/types'
 import profileTheme from '../../../styles/profileTheme'
 
+interface Subscriber {
+  id: number
+  email: string
+  user_type: string
+  subscribed_at: string
+}
+
 const ProviderProfile: React.FC = () => {
   const [activeContent, setActiveContent] = useState<string>('view-profile')
-  const { id, lastRoute } = useParams()
+  const { lastRoute } = useParams()
   const data: any = useAppSelector((state) => state.persistedReducer.profile)
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [warningMessage, setWarningMessage] = useState<string>('')
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const [subscriber, setSubscriber] = useState<Subscriber | null>(null)
+
+  useEffect(() => {
+    const getSubscriber = async () => {
+      const subscriber = await axiosInstance.get(
+        `api/v1/subscribers/${user.id}`
+      )
+
+      if (subscriber.data) {
+        setSubscriber(subscriber.data)
+      }
+    }
+
+    getSubscriber()
+  }, [])
 
   const handleUnsubscribe = async () => {
     try {
       const response = await axiosInstance.post(
         `api/v1/subscribers/soft_delete`,
-        { id: 1 },
+        { id: subscriber?.id },
         { withCredentials: true }
       )
 
@@ -89,7 +112,7 @@ const ProviderProfile: React.FC = () => {
           <AccountSideBar
             activeContent={activeContent}
             setActiveContent={setActiveContent}
-            id={id}
+            id={user.id.toString()}
             provider={data.profile.scholarship_provider as ScholarshipProvider}
           />
           {activeContent && lastRoute === 'view-profile' && (
