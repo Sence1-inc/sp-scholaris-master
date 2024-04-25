@@ -47,7 +47,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   }, [isSection])
 
   useEffect(() => {
-    if (page) {
+    if (page && !isSection) {
       getScholarships()
     }
     // eslint-disable-next-line
