@@ -1,7 +1,7 @@
 module Api
   module V1
     class SubscribersController < ApplicationController
-      before_action :set_subscriber, only: %i[ show edit update destroy soft_del restore]
+      before_action :set_subscriber, only: %i[ edit update destroy soft_del restore]
       skip_before_action :verify_authenticity_token
     
       # GET /subscribers
