@@ -66,7 +66,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
           email: user.email_address,
           user_type: 'provider',
         })
-        if (response.status === 200) {
+        if (response.status === 201) {
           handleSetIsSnackbarOpen(false)
           const successData = response.data as SuccessResponse
           handleSetSuccessMessage(successData.message)
