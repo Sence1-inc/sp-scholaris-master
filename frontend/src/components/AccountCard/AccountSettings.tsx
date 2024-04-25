@@ -39,7 +39,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       const response = await axiosInstance.post(`api/v1/subscribers/restore`, {
         id: subscriber.data.id,
       })
-
+      handleSetWarningMessage('')
+      handleSetInfoMessage('')
       if (response.status === 200) {
         const successData = response.data as SuccessResponse
         handleSetSuccessMessage(successData.message)
@@ -54,6 +55,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         )
       }
     } catch (error: any) {
+      handleSetWarningMessage('')
       handleSetIsSnackbarOpen(false)
       if (error.response && error.response.status === 404) {
         handleSetErrorMessage('')
@@ -82,6 +84,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       } else {
         handleSetIsSnackbarOpen(true)
         handleSetSuccessMessage('')
+        handleSetWarningMessage('')
         handleSetErrorMessage('Error Subscribing. Please try again.')
       }
     }
@@ -116,6 +119,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             onClick={(e: any) => {
               handleSetSuccessMessage('')
               handleSetErrorMessage('')
+              handleSetInfoMessage('')
               handleSetIsSnackbarOpen(true)
               handleSetWarningMessage('Are you sure you want to unsubscribe?')
             }}
