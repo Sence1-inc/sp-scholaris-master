@@ -2,10 +2,6 @@ import { Box, Button, FormGroup, InputLabel, TextField } from '@mui/material'
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
-import {
-  ErrorResponse,
-  SuccessResponse,
-} from '../../components/Newsletter/Newsletter'
 import { useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 import profileTheme from '../../styles/profileTheme'
@@ -42,17 +38,15 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       handleSetWarningMessage('')
       handleSetInfoMessage('')
       if (response.status === 200) {
-        const successData = response.data as SuccessResponse
+        const successData = response.data
         handleSetSuccessMessage(successData.message)
         handleSetErrorMessage('')
         handleSetIsSnackbarOpen(true)
       } else {
-        const errorData = response.data as ErrorResponse
+        const errorData = response.data
         handleSetIsSnackbarOpen(true)
         handleSetSuccessMessage('')
-        handleSetErrorMessage(
-          `Error: ${errorData.error}. ${errorData.details.join(' ')}`
-        )
+        handleSetErrorMessage(errorData.message)
       }
     } catch (error: any) {
       handleSetWarningMessage('')
@@ -68,19 +62,17 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         })
         if (response.status === 201) {
           handleSetIsSnackbarOpen(false)
-          const successData = response.data as SuccessResponse
+          const successData = response.data
           handleSetSuccessMessage(successData.message)
           handleSetErrorMessage('')
           handleSetIsSnackbarOpen(true)
           handleSetInfoMessage('')
         } else {
           handleSetIsSnackbarOpen(false)
-          const errorData = response.data as ErrorResponse
+          const errorData = response.data
           handleSetIsSnackbarOpen(true)
           handleSetSuccessMessage('')
-          handleSetErrorMessage(
-            `Error: ${errorData.error}. ${errorData.details.join(' ')}`
-          )
+          handleSetErrorMessage(errorData.message)
           handleSetInfoMessage('')
         }
       } else {
