@@ -29,6 +29,7 @@ const ProviderProfile: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [warningMessage, setWarningMessage] = useState<string>('')
+  const [infoMessage, setInfoMessage] = useState<string>('')
   const user = useAppSelector((state) => state.persistedReducer.user)
   const [subscriber, setSubscriber] = useState<Subscriber | null>(null)
 
@@ -100,6 +101,7 @@ const ProviderProfile: React.FC = () => {
         successMessage={successMessage}
         errorMessage={errorMessage}
         warningMessage={warningMessage}
+        infoMessage={infoMessage}
         handleWarningProceed={handleUnsubscribe}
         isSnackbarOpen={isSnackbarOpen}
         handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
@@ -138,6 +140,7 @@ const ProviderProfile: React.FC = () => {
               handleSetSuccessMessage={(value) => setSuccessMessage(value)}
               handleSetErrorMessage={(value) => setErrorMessage(value)}
               handleSetWarningMessage={(value) => setWarningMessage(value)}
+              handleSetInfoMessage={(value) => setInfoMessage(value)}
               handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
             />
           )}

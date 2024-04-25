@@ -16,12 +16,14 @@ interface AccountSettingsProps {
   handleSetSuccessMessage: (value: string) => void
   handleSetErrorMessage: (value: string) => void
   handleSetWarningMessage: (value: string) => void
+  handleSetInfoMessage: (value: string) => void
 }
 
 const AccountSettings: React.FC<AccountSettingsProps> = ({
   handleSetIsSnackbarOpen,
   handleSetSuccessMessage,
   handleSetWarningMessage,
+  handleSetInfoMessage,
   handleSetErrorMessage,
 }) => {
   const user = useAppSelector((state) => state.persistedReducer.user)
@@ -52,7 +54,12 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         )
       }
     } catch (error: any) {
+      handleSetIsSnackbarOpen(false)
       if (error.response && error.response.status === 404) {
+        handleSetErrorMessage('')
+        handleSetSuccessMessage('')
+        handleSetInfoMessage('Subscribing, please wait.')
+        handleSetIsSnackbarOpen(true)
         const response = await axiosInstance.post(`api/v1/subscribers`, {
           email: user.email_address,
           user_type: 'provider',
@@ -62,6 +69,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
           handleSetSuccessMessage(successData.message)
           handleSetErrorMessage('')
           handleSetIsSnackbarOpen(true)
+          handleSetInfoMessage('')
         } else {
           const errorData = response.data as ErrorResponse
           handleSetIsSnackbarOpen(true)
@@ -69,6 +77,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
           handleSetErrorMessage(
             `Error: ${errorData.error}. ${errorData.details.join(' ')}`
           )
+          handleSetInfoMessage('')
         }
       } else {
         handleSetIsSnackbarOpen(true)
