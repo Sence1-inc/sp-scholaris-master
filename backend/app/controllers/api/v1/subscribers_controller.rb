@@ -11,9 +11,10 @@ module Api
     
       # GET /subscribers/{id}
       def show
-        user = User.find(params[:id])
-        if user 
-          subscriber = Subscriber.find_by(email: user.email)
+        provider = ScholarshipProvider.find(params[:id])
+
+        if provider 
+          subscriber = Subscriber.find_by(email: provider.user.email)
           if subscriber
             render json: subscriber, status: :ok
           else
