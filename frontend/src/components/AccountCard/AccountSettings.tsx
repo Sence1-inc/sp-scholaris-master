@@ -79,7 +79,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         handleSetIsSnackbarOpen(true)
         handleSetSuccessMessage('')
         handleSetWarningMessage('')
-        handleSetErrorMessage('Error Subscribing. Please try again.')
+        handleSetErrorMessage(error.response.data.message)
       }
     }
   }
