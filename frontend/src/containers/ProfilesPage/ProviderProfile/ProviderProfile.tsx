@@ -44,7 +44,7 @@ const ProviderProfile: React.FC = () => {
     }
 
     getSubscriber()
-  }, [])
+  }, [user])
 
   const handleUnsubscribe = async () => {
     try {
