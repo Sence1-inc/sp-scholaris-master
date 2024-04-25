@@ -70,6 +70,8 @@ module Api
       end
     
       def restore
+        @subscriber = Subscriber.find_by(id: params[:id])
+
         if @subscriber.nil?
           user = User.find(params[:id])
           @subscriber = Subscriber.new(email: user.email, user_type: "provider")
@@ -77,13 +79,12 @@ module Api
 
         if !Subscriber.is_soft_deleted(@subscriber)
           Subscriber.restore(@subscriber)
-          render json: {message: "Subscriber restored", status: :ok}
+          render json: { message: "Subscriber restored", status: :ok }
         else
-          render json: {message: "Already subscribed", status: :unprocessable_entity}, status: 422
+          render json: { message: "Already subscribed", status: :unprocessable_entity }, status: 422
         end
-
       end
-    
+
       private
     
       def set_subscriber
