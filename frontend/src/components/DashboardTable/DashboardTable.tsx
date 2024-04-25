@@ -93,24 +93,10 @@ export default function DataTable() {
         }
       )
       setIsLoading(false)
-      if (response) {
+      if (response.data) {
         setIsSnackbarOpen(true)
         setWarningMessage('')
         dispatch(initializeScholarships(response.data))
-
-        const row = response.data.scholarships.map(
-          (scholarship: Scholarship) => {
-            return {
-              id: scholarship.id,
-              scholarshipName: scholarship.scholarship_name,
-              startDate: new Date(scholarship.start_date),
-              endDate: new Date(scholarship.due_date),
-              status: scholarship.status,
-            }
-          }
-        )
-
-        setRowData(row)
       }
     } catch (error) {
       setIsLoading(false)
