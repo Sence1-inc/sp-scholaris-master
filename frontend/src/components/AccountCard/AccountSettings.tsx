@@ -1,5 +1,4 @@
 import { Box, Button, FormGroup, InputLabel, TextField } from '@mui/material'
-import { AxiosResponse } from 'axios'
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
@@ -35,17 +34,9 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
 
     try {
       const subscriber = await axiosInstance.get(`api/v1/subscribers/${id}`)
-      let response: AxiosResponse<SuccessResponse | ErrorResponse>
-      if (subscriber.status === 200) {
-        response = await axiosInstance.post(`api/v1/subscribers/restore`, {
-          id: subscriber.data.id,
-        })
-      } else {
-        response = await axiosInstance.post(`api/v1/subscribers`, {
-          email: user.email_address,
-          user_type: 'provider',
-        })
-      }
+      const response = await axiosInstance.post(`api/v1/subscribers/restore`, {
+        id: subscriber.data.id,
+      })
 
       if (response.status === 200) {
         const successData = response.data as SuccessResponse
@@ -60,8 +51,26 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
           `Error: ${errorData.error}. ${errorData.details.join(' ')}`
         )
       }
-    } catch (error) {
-      if (error) {
+    } catch (error: any) {
+      if (error.response && error.response.status === 404) {
+        const response = await axiosInstance.post(`api/v1/subscribers`, {
+          email: user.email_address,
+          user_type: 'provider',
+        })
+        if (response.status === 200) {
+          const successData = response.data as SuccessResponse
+          handleSetSuccessMessage(successData.message)
+          handleSetErrorMessage('')
+          handleSetIsSnackbarOpen(true)
+        } else {
+          const errorData = response.data as ErrorResponse
+          handleSetIsSnackbarOpen(true)
+          handleSetSuccessMessage('')
+          handleSetErrorMessage(
+            `Error: ${errorData.error}. ${errorData.details.join(' ')}`
+          )
+        }
+      } else {
         handleSetIsSnackbarOpen(true)
         handleSetSuccessMessage('')
         handleSetErrorMessage('Error Subscribing. Please try again.')
