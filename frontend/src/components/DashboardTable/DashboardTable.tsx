@@ -47,7 +47,6 @@ export default function DataTable() {
   }, [rowCount])
 
   useEffect(() => {
-    console.log('data.scholarships', data.scholarships)
     if (
       data.scholarships &&
       Array.isArray(data?.scholarships?.scholarships) &&
@@ -97,8 +96,21 @@ export default function DataTable() {
       if (response) {
         setIsSnackbarOpen(true)
         setWarningMessage('')
-        setSuccessMessage(response.data.message)
         dispatch(initializeScholarships(response.data))
+
+        const row = response.data.scholarships.map(
+          (scholarship: Scholarship) => {
+            return {
+              id: scholarship.id,
+              scholarshipName: scholarship.scholarship_name,
+              startDate: new Date(scholarship.start_date),
+              endDate: new Date(scholarship.due_date),
+              status: scholarship.status,
+            }
+          }
+        )
+
+        setRowData(row)
       }
     } catch (error) {
       setIsLoading(false)
@@ -109,43 +121,45 @@ export default function DataTable() {
     }
   }
 
-  const getProviderScholarships = async () => {
-    try {
-      setIsLoading(true)
-      const response = await axiosInstance.get(
-        `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships?page=${page + 1}&limit=${pageSize}`,
-        {
-          timeout: 100000,
-          withCredentials: true,
-        }
-      )
-
-      if (response.status === 200) {
-        console.log('DATA', response.data)
-        setIsLoading(false)
-        setRowCount(response.data.total_count)
-        dispatch(initializeScholarships(response.data))
-      }
-    } catch (error: any) {
-      console.log('Error', error)
-      setIsLoading(false)
-      if (error) {
-        dispatch(initializeScholarships([]))
-        if (error.response && error.response.status === 403) {
-          navigate('/')
-        }
-      }
-    }
-  }
-
   useEffect(() => {
     dispatch(initializeScholarshipData({}))
-    // getProviderScholarships()
     // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
-    getProviderScholarships()
+    const getProviderScholarships = async () => {
+      try {
+        setIsLoading(true)
+        const response = await axiosInstance.get(
+          `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships?page=${page + 1}&limit=${pageSize}`,
+          {
+            timeout: 100000,
+            withCredentials: true,
+          }
+        )
+
+        if (response.status === 200) {
+          console.log('DATA', response.data)
+          setIsLoading(false)
+          setRowCount(response.data.total_count)
+          setRowData(response.data.scholarships)
+          dispatch(initializeScholarships(response.data))
+        }
+      } catch (error: any) {
+        console.log('Error', error)
+        setIsLoading(false)
+        if (error) {
+          dispatch(initializeScholarships({}))
+          if (error.response && error.response.status === 403) {
+            navigate('/')
+          }
+        }
+      }
+    }
+
+    if (page) {
+      getProviderScholarships()
+    }
     // eslint-disable-next-line
   }, [page, pageSize])
 
