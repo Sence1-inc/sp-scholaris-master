@@ -144,6 +144,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
           <Filter />
           {window.innerWidth > theme.breakpoints.values.md ? (
             <Table
+              total_count={data.scholarships.total_count}
               hasPagination={false}
               scholarships={data.scholarships.scholarships as Scholarship[]}
             />
