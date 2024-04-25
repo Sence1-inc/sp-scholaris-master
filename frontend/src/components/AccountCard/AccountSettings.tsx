@@ -1,6 +1,7 @@
 import { Box, Button, FormGroup, InputLabel, TextField } from '@mui/material'
 import { AxiosResponse } from 'axios'
 import React from 'react'
+import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import {
   ErrorResponse,
@@ -25,6 +26,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   handleSetErrorMessage,
 }) => {
   const user = useAppSelector((state) => state.persistedReducer.user)
+  const { id } = useParams()
 
   const handleSubscribe: (
     e: React.MouseEvent<HTMLButtonElement>
@@ -32,8 +34,18 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
     e.preventDefault()
 
     try {
-      const response: AxiosResponse<SuccessResponse | ErrorResponse> =
-        await axiosInstance.post(`api/v1/subscribers/restore`, { id: 1 })
+      const subscriber = await axiosInstance.get(`api/v1/subscribers/${id}`)
+      let response: AxiosResponse<SuccessResponse | ErrorResponse>
+      if (subscriber.status === 200) {
+        response = await axiosInstance.post(`api/v1/subscribers/restore`, {
+          id: id,
+        })
+      } else {
+        response = await axiosInstance.post(`api/v1/subscribers`, {
+          email: user.email_address,
+          user_type: 'provider',
+        })
+      }
 
       if (response.status === 200) {
         const successData = response.data as SuccessResponse
