@@ -93,132 +93,113 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
         isSnackbarOpen={isSnackbarOpen}
         handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
       />
-      {isExpired ? (
-        <>
-          <Typography
-            variant="h2"
+      <>
+        <Typography
+          variant="h2"
+          sx={{
+            textTransform: 'capitalize',
+            fontSize: '64px',
+            fontWeight: '700',
+            color: 'var(--secondary-color)',
+            textAlign: 'center',
+            paddingBottom: '50px',
+          }}
+        >
+          Thank you for signing up
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: '16px',
+            fontWeight: '300px',
+            textAlign: 'center',
+            color: '#767676',
+          }}
+        >
+          Before you can start enjoying all the features of your account, we
+          need to make sure your email address is valid. Click on the Verify
+          Email button below.
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: '16px',
+            fontWeight: '300px',
+            textAlign: 'center',
+            color: '#767676',
+          }}
+        >
+          If you need any help or have any questions, please contact our support
+          team at scholaris@sence1.com.
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: '16px',
+            fontWeight: '300px',
+            textAlign: 'center',
+            color: '#767676',
+          }}
+        >
+          Thank you for taking the time to verify your email. We look forward to
+          bringing you the best experience possible!
+        </Typography>
+        {isAlreadyVerified ? (
+          <Button
+            onClick={() => navigate('/sign-in')}
+            variant="contained"
+            color="primary"
             sx={{
-              fontSize: '64px',
-              fontWeight: '700',
-              color: 'primary.main',
-              textAlign: 'center',
+              borderRadius: '16px',
+              backgroundColor: '#f36b3b',
+              padding: '20px',
+              margin: '0 auto',
+              width: '100%',
+              maxWidth: '550px',
+              '&:hover': { backgroundColor: '#d2522b' },
+              textTransform: 'inherit',
+              fontSize: '24px',
             }}
           >
-            Send email to scholaris@sence1.com for a new link
-          </Typography>
-          <Button sx={{ ...ctaButtonStyle }} onClick={() => navigate('/')}>
-            Go to Home
+            Sign in
           </Button>
-        </>
-      ) : (
-        <>
-          <Typography
-            variant="h2"
+        ) : isExpired ? (
+          <Button
+            onClick={handleResendVerificationEmail}
+            variant="contained"
+            color="primary"
             sx={{
-              textTransform: 'capitalize',
-              fontSize: '64px',
-              fontWeight: '700',
-              color: 'var(--secondary-color)',
-              textAlign: 'center',
-              paddingBottom: '50px',
+              borderRadius: '16px',
+              backgroundColor: '#f36b3b',
+              padding: '20px',
+              margin: '50px auto',
+              width: '100%',
+              maxWidth: '550px',
+              '&:hover': { backgroundColor: '#d2522b' },
+              textTransform: 'inherit',
+              fontSize: '24px',
             }}
           >
-            Thank you for signing up
-          </Typography>
-          <Typography
+            Resend Verification Email
+          </Button>
+        ) : (
+          <Button
+            onClick={handleVerifyEmail}
+            variant="contained"
+            color="primary"
             sx={{
-              fontSize: '16px',
-              fontWeight: '300px',
-              textAlign: 'center',
-              color: '#767676',
+              borderRadius: '16px',
+              backgroundColor: '#f36b3b',
+              padding: '20px',
+              margin: '50px auto',
+              width: '100%',
+              maxWidth: '550px',
+              '&:hover': { backgroundColor: '#d2522b' },
+              textTransform: 'inherit',
+              fontSize: '24px',
             }}
           >
-            Before you can start enjoying all the features of your account, we
-            need to make sure your email address is valid. Click on the Verify
-            Email button below.
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: '16px',
-              fontWeight: '300px',
-              textAlign: 'center',
-              color: '#767676',
-            }}
-          >
-            If you need any help or have any questions, please contact our
-            support team at scholaris@sence1.com.
-          </Typography>
-          <Typography
-            sx={{
-              fontSize: '16px',
-              fontWeight: '300px',
-              textAlign: 'center',
-              color: '#767676',
-            }}
-          >
-            Thank you for taking the time to verify your email. We look forward
-            to bringing you the best experience possible!
-          </Typography>
-          {isAlreadyVerified ? (
-            <Button
-              onClick={() => navigate('/sign-in')}
-              variant="contained"
-              color="primary"
-              sx={{
-                borderRadius: '16px',
-                backgroundColor: '#f36b3b',
-                padding: '20px',
-                margin: '0 auto',
-                width: '100%',
-                maxWidth: '550px',
-                '&:hover': { backgroundColor: '#d2522b' },
-                textTransform: 'inherit',
-                fontSize: '24px',
-              }}
-            >
-              Sign in
-            </Button>
-          ) : isExpired ? (
-            <Button
-              onClick={handleResendVerificationEmail}
-              variant="contained"
-              color="primary"
-              sx={{
-                borderRadius: '16px',
-                backgroundColor: '#f36b3b',
-                padding: '20px',
-                margin: '50px auto',
-                width: '100%',
-                maxWidth: '550px',
-                '&:hover': { backgroundColor: '#d2522b' },
-                textTransform: 'inherit',
-                fontSize: '24px',
-              }}
-            >
-              Resend Verification Email
-            </Button>
-          ) : (
-            <Button
-              onClick={handleVerifyEmail}
-              variant="contained"
-              color="primary"
-              sx={{
-                borderRadius: '16px',
-                backgroundColor: '#f36b3b',
-                padding: '20px',
-                margin: '50px auto',
-                width: '100%',
-                maxWidth: '550px',
-                '&:hover': { backgroundColor: '#d2522b' },
-                textTransform: 'inherit',
-                fontSize: '24px',
-              }}
-            >
-              Verify Email
-            </Button>
-          )}
-        </>
-      )}
+            Verify Email
+          </Button>
+        )}
+      </>
     </Container>
   )
 }
