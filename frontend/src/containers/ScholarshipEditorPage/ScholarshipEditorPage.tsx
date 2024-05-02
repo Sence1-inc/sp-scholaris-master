@@ -1,7 +1,6 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
   Box,
-  Button,
   Container,
   FormGroup,
   Link,
@@ -17,16 +16,30 @@ import dayjs, { Dayjs } from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
+import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData } from '../../redux/types'
-import { ctaButtonStyle } from '../../styles/globalStyles'
 
 export interface ScholarshipType {
   id: number
   scholarship_type_name: string
+}
+
+type Errors = {
+  scholarship_name: string
+  description: string
+  benefits: string
+  requirements: string
+  eligibilities: string
+  start_date: string
+  due_date: string
+  application_link: string
+  school_year: string
+  status: string
 }
 
 const ScholarshipEditorPage = () => {
@@ -79,6 +92,19 @@ const ScholarshipEditorPage = () => {
   const [scholarshipTypes, setScholarshipTypes] = useState<
     { id: number; scholarship_type_name: string }[] | []
   >([])
+  const [errors, setErrors] = useState<Errors>({
+    scholarship_name: '',
+    description: '',
+    requirements: '',
+    eligibilities: '',
+    benefits: '',
+    start_date: '',
+    due_date: '',
+    application_link: '',
+    school_year: '',
+    status: '',
+  })
+  const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false)
 
   const handleBenefitChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setBenefits(e.target.value)
@@ -158,62 +184,140 @@ const ScholarshipEditorPage = () => {
   }, [scholarshipType, scholarshipTypes])
 
   const handleSubmit = async () => {
-    const data = {
-      scholarship_name: scholarshipName,
-      description: description,
-      requirements: requirements,
-      eligibilities: eligibilities,
-      scholarship_type_id: Number(scholarshipTypeId),
-      benefits: benefits,
-      application_link: applicationLink,
-      start_date: startDate?.toISOString(),
-      due_date: dueDate?.toISOString(),
-      school_year: schoolYear,
-      status: status,
-      scholarship_provider_id: scholarshipProviderId,
-    }
+    const validationConditions = [
+      {
+        condition: !scholarshipName,
+        field: 'scholarship_name',
+        message: 'Please provide the scholarship name.',
+      },
+      {
+        condition: !description,
+        field: 'description',
+        message: 'Please provide the description.',
+      },
+      {
+        condition: !requirements,
+        field: 'requirements',
+        message: 'Please provide the requirements.',
+      },
+      {
+        condition: !eligibilities,
+        field: 'eligibilities',
+        message: 'Please provide the eligibilities.',
+      },
+      {
+        condition: !benefits,
+        field: 'benefits',
+        message: 'Please provide the benefits.',
+      },
+      {
+        condition: !startDate,
+        field: 'start_date',
+        message: 'Please provide the application start date.',
+      },
+      {
+        condition: !dueDate,
+        field: 'due_date',
+        message: 'Please provide the application due date.',
+      },
+      {
+        condition: !applicationLink,
+        field: 'application_link',
+        message: 'Please provide the application link.',
+      },
+      {
+        condition: !schoolYear,
+        field: 'school_year',
+        message: 'Please provide the school year.',
+      },
+      {
+        condition: !status,
+        field: 'status',
+        message: 'Please provide the status.',
+      },
+    ]
 
-    try {
-      if (id) {
-        const response = await axiosInstance.put(
-          `/api/v1/scholarships/${scholarshipData.id}`,
-          data,
-          { withCredentials: true }
-        )
-        if (response.data) {
-          dispatch(initializeScholarshipData(response.data.scholarship))
-          setIsSnackbarOpen(true)
-          setSuccessMessage(response.data.message)
-          setErrorMessage('')
-        }
-      } else {
-        const response = await axiosInstance.post(
-          '/api/v1/scholarships',
-          data,
-          { withCredentials: true }
-        )
-        if (response.data) {
-          setIsSnackbarOpen(true)
-          setSuccessMessage(response.data.message)
-          setErrorMessage('')
-          setScholarshipName('')
-          setDescription('')
-          setStartDate(null)
-          setDueDate(null)
-          setApplicationLink('')
-          setBenefits('')
-          setEligibilities('')
-          setRequirements('')
-          setSchoolYear('')
-          setStatus('')
-          setScholarshipTypeId(null)
-        }
+    const errorMessages = validationConditions
+      .filter(({ condition }) => condition)
+      .map(({ message }) => message)
+    const hasErrors = errorMessages.length > 0
+
+    if (hasErrors) {
+      setIsSnackbarOpen(true)
+      setErrorMessage('Please fill in the required details.')
+      const newErrors = validationConditions.reduce<{ [key: string]: string }>(
+        (acc, { condition, field, message }) => {
+          if (condition) {
+            acc[field] = message
+          }
+          return acc
+        },
+        {}
+      )
+
+      setErrors({ ...errors, ...newErrors })
+    } else {
+      setIsButtonLoading(true)
+      const data = {
+        scholarship_name: scholarshipName,
+        description: description,
+        requirements: requirements,
+        eligibilities: eligibilities,
+        scholarship_type_id: Number(scholarshipTypeId),
+        benefits: benefits,
+        application_link: applicationLink,
+        start_date: startDate?.toISOString(),
+        due_date: dueDate?.toISOString(),
+        school_year: schoolYear,
+        status: status,
+        scholarship_provider_id: scholarshipProviderId,
       }
-    } catch (error: any) {
-      if (error) {
-        setIsSnackbarOpen(true)
-        setSuccessMessage('')
-        setErrorMessage(error.response.data.errors.join(', '))
+
+      try {
+        if (id) {
+          const response = await axiosInstance.put(
+            `/api/v1/scholarships/${scholarshipData.id}`,
+            data,
+            { withCredentials: true }
+          )
+          if (response.data) {
+            setIsButtonLoading(false)
+            dispatch(initializeScholarshipData(response.data.scholarship))
+            setIsSnackbarOpen(true)
+            setSuccessMessage(response.data.message)
+            setErrorMessage('')
+          }
+        } else {
+          const response = await axiosInstance.post(
+            '/api/v1/scholarships',
+            data,
+            { withCredentials: true }
+          )
+          if (response.data) {
+            setIsButtonLoading(false)
+            setIsSnackbarOpen(true)
+            setSuccessMessage(response.data.message)
+            setErrorMessage('')
+            setScholarshipName('')
+            setDescription('')
+            setStartDate(null)
+            setDueDate(null)
+            setApplicationLink('')
+            setBenefits('')
+            setEligibilities('')
+            setRequirements('')
+            setSchoolYear('')
+            setStatus('')
+            setScholarshipTypeId(null)
+          }
+        }
+      } catch (error: any) {
+        setIsButtonLoading(false)
+        if (error) {
+          setIsSnackbarOpen(true)
+          setSuccessMessage('')
+          setErrorMessage(error.response.data.errors.join(', '))
+        }
       }
     }
   }
@@ -270,7 +374,64 @@ const ScholarshipEditorPage = () => {
             paddingBottom: '40px',
           }}
         >
-          <Box sx={{ width: '100%' }}>
+          <CustomTextfield
+            label="Scholarship Name"
+            error={errors.scholarship_name}
+            value={scholarshipName}
+            handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setScholarshipName(e.target.value)
+            }
+            placeholder="e.g. Excellence in Science Scholarship"
+          />
+          <CustomTextfield
+            label="Scholarship Description"
+            multiline
+            rows={4}
+            error={errors.description}
+            value={description}
+            handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setDescription(e.target.value)
+            }
+            placeholder="e.g. The Excellence in Science Scholarship aims to support outstanding students who demonstrate exceptional academic achievement and a passion for scientific inquiry."
+          />
+          <CustomTextfield
+            label="Requirements"
+            multiline
+            error={errors.requirements}
+            value={requirements}
+            handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleRequirementChange(e)
+            }
+            placeholder="e.g. Applicants must have a minimum GPA of 3.5 on a 4.0 scale, provide two letters of recommendation from science teachers or professors, and submit a personal statement outlining their academic and career goals in the field of science."
+          />
+          <CustomTextfield
+            label="Benefits"
+            multiline
+            error={errors.benefits}
+            value={benefits}
+            handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleBenefitChange(e)
+            }
+            placeholder="e.g. The scholarship provides a one-time award of P25000 to be used towards tuition, books, or other educational expenses."
+          />
+          <CustomTextfield
+            label="Eligibility"
+            multiline
+            error={errors.eligibilities}
+            value={eligibilities}
+            handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              handleEligibilityChange(e)
+            }
+            placeholder="e.g. Open to high school seniors or college freshmen and sophomores pursuing a degree in a scientific discipline."
+          />
+          {/* <CustomTextfield
+            label=""
+            error={}
+            value={}
+            handleChange={()}
+            placeholder = ''
+          /> */}
+          {/* <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -290,8 +451,8 @@ const ScholarshipEditorPage = () => {
               name="scholarship_name"
               placeholder="e.g. Excellence in Science Scholarship"
             />
-          </Box>
-          <Box sx={{ width: '100%' }}>
+          </Box> */}
+          {/* <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -311,8 +472,8 @@ const ScholarshipEditorPage = () => {
               name="description"
               placeholder="e.g. The Excellence in Science Scholarship aims to support outstanding students who demonstrate exceptional academic achievement and a passion for scientific inquiry."
             />
-          </Box>
-          <Box sx={{ width: '100%' }}>
+          </Box> */}
+          {/* <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -333,8 +494,8 @@ const ScholarshipEditorPage = () => {
               }
               placeholder="e.g. Applicants must have a minimum GPA of 3.5 on a 4.0 scale, provide two letters of recommendation from science teachers or professors, and submit a personal statement outlining their academic and career goals in the field of science."
             />
-          </Box>
-          <Box sx={{ width: '100%' }}>
+          </Box> */}
+          {/* <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -355,8 +516,8 @@ const ScholarshipEditorPage = () => {
               }
               placeholder="e.g. The scholarship provides a one-time award of P25000 to be used towards tuition, books, or other educational expenses."
             />
-          </Box>
-          <Box sx={{ width: '100%' }}>
+          </Box> */}
+          {/* <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -377,7 +538,7 @@ const ScholarshipEditorPage = () => {
               }
               placeholder="e.g. Open to high school seniors or college freshmen and sophomores pursuing a degree in a scientific discipline."
             />
-          </Box>
+          </Box> */}
           <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
@@ -416,7 +577,17 @@ const ScholarshipEditorPage = () => {
               })}
             </Select>
           </Box>
-          <Box sx={{ width: '100%' }}>
+          <CustomTextfield
+            label="Application link"
+            multiline
+            error={errors.application_link}
+            value={applicationLink}
+            handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setApplicationLink(e.target.value)
+            }
+            placeholder="e.g. www.excellenceinsciencescholarship.org"
+          />
+          {/* <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
                 fontFamily: 'Roboto',
@@ -435,7 +606,7 @@ const ScholarshipEditorPage = () => {
               onChange={(e) => setApplicationLink(e.target.value)}
               placeholder="e.g. www.excellenceinsciencescholarship.org"
             />
-          </Box>
+          </Box> */}
           <Box
             sx={{
               width: '100%',
@@ -561,7 +732,12 @@ const ScholarshipEditorPage = () => {
               <MenuItem value={'inactive'}>Inactive</MenuItem>
             </Select>
           </Box>
-          <Button
+          <CTAButton
+            handleClick={handleSubmit}
+            label="Save Scholarship"
+            loading={isButtonLoading}
+          />
+          {/* <Button
             fullWidth
             onClick={handleSubmit}
             type="submit"
@@ -571,7 +747,7 @@ const ScholarshipEditorPage = () => {
             <Typography variant="body1" sx={{ fontWeight: 700 }}>
               Save Scholarship
             </Typography>
-          </Button>
+          </Button> */}
         </Box>
       </Container>
     </FormGroup>
