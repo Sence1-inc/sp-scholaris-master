@@ -497,6 +497,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
               slotProps={{
                 textField: {
                   variant: 'outlined',
+                  sx: { borderColor: errors.birthdate ? 'red' : '' },
                 },
               }}
             />

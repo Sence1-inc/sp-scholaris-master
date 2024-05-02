@@ -69,8 +69,11 @@ module Api
         @user.verification_token = SecureRandom.hex(10)
         @user.verification_expires_at = 24.hours.from_now
         if @user.save
-          verified_status = UserMailer.email_verification(@user).deliver_now
-          render json: { user: @user, msg: 'User registered and saved successfully' }, status: :created
+          if UserMailer.email_verification(@user).deliver_now
+            render json: { user: @user, msg: 'User registered, email sent, and saved successfully' }, status: :created
+          else
+            render json: { msg: 'User registered and saved successfully, but email sending failed' }, status: :created
+          end
         else
           render json: { error: 'Failed to save user details' }, status: :unprocessable_entity
         end
