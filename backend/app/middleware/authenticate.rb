@@ -7,6 +7,7 @@ class Authenticate
     '/api/v1/refresh',
     '/api/v1/check_token',
     '/api/v1/verify',
+    '/api/v1/resend_verification',
     '/api/v1/logout',
     '/api/v1/scholarships',
     '/api/v1/scholarships/index',

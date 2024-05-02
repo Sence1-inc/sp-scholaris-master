@@ -79,10 +79,27 @@ module Api
       end
     end
 
+    def resend_verification
+      user = User.find_by(verification_token: params[:token], id: params[:id])
+      
+      if user.nil?
+        render json: { msg: "No user found. Contact scholaris@sence1.com" }, status: :not_found
+      elsif user.verification_expires_at > Time.now
+        render json: { msg: "Verification not yet expired. Contact scholaris@sence1.com" }, status: :unprocessable_entity
+      else
+        if UserMailer.email_verification(user).deliver_now
+          render json: { user: user, msg: 'Verification email has been sent' }, status: :ok
+        else
+          render json: { msg: 'Failed to send verification email' }, status: :unprocessable_entity
+        end
+      end
+    end
+
+
     def verify
       user = User.find_by(verification_token: params[:token])
       if user && Time.current > user.verification_expires_at
-        render json: { status: "expired" }, status: :not_found
+        render json: { status: "expired", user: user }, status: :not_found
       elsif user.nil?
         render json: { status: "invalid link" }, status: :ok
       elsif user.update(is_verified: true, verification_token: nil, verification_expires_at: nil)
@@ -107,7 +124,7 @@ module Api
       }
 
       begin
-        response = RestClient.post(ENV["AUTH_LOGIN"], req.to_json, headers)
+        response = RestClient.post('http://authtest.sence1.com/login', req.to_json, headers)
         parsed_response = JSON.parse(response.body)
 
         if parsed_response['status'] == 200
@@ -155,7 +172,7 @@ module Api
       }
 
       begin
-        response = RestClient.post(ENV["AUTH_REFRESH"], req.to_json, headers)
+        response = RestClient.post('http://authtest.sence1.com/refresh_token', req.to_json, headers)
         parsed_response = JSON.parse(response.body)
 
         if parsed_response['status'] == 200
@@ -229,7 +246,7 @@ module Api
         }
 
         begin
-          response = RestClient.post(ENV["AUTH_REGISTER"], req.to_json, headers)
+          response = RestClient.post('http://authtest.sence1.com/register', req.to_json, headers)
           parsed_response = JSON.parse(response.body)
 
           if parsed_response['status'] == 201

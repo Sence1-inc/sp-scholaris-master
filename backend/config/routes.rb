@@ -7,6 +7,7 @@ Rails.application.routes.draw do
       post 'login', to: 'users#login', as: 'users_login'
       post 'refresh', to: 'users#refresh', as: 'users_refresh'
       get 'verify_email/:token', to: 'users#verify', as: 'users_verify_email'
+      post 'resend_verification', to: 'users#resend_verification', as: 'users_resend_verification'
       get 'check_token', to: 'users#check_token', as: 'users_check_token'
       post 'logout', to: 'users#logout', as: 'users_logout'
       resources :scholarships, only: [:index, :create, :show, :edit, :update, :destroy] do
