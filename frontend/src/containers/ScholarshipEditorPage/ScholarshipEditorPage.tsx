@@ -18,6 +18,7 @@ import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
+import HelperText from '../../components/HelperText/HelperText'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -678,13 +679,13 @@ const ScholarshipEditorPage = () => {
             </Box>
             <CustomTextfield
               label="School year"
-              multiline={true}
               error={errors.school_year}
               value={schoolYear}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setSchoolYear(e.target.value)
               }
               placeholder="e.g. 2024-2025"
+              styles={{ padding: 0 }}
             />
             {/* <Box>
               <Typography
@@ -742,6 +743,7 @@ const ScholarshipEditorPage = () => {
               <MenuItem value={'active'}>Active</MenuItem>
               <MenuItem value={'inactive'}>Inactive</MenuItem>
             </Select>
+            <HelperText error={errors.status} />
           </Box>
           <CTAButton
             handleClick={handleSubmit}

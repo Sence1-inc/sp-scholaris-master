@@ -10,6 +10,7 @@ interface CustomTextfieldProps {
   placeholder: string
   multiline?: boolean
   rows?: number
+  styles?: any
 }
 
 const CustomTextfield: React.FC<CustomTextfieldProps> = ({
@@ -20,6 +21,7 @@ const CustomTextfield: React.FC<CustomTextfieldProps> = ({
   placeholder,
   multiline = false,
   rows,
+  styles,
 }) => {
   return (
     <Box sx={{ width: '100%' }}>
@@ -41,6 +43,7 @@ const CustomTextfield: React.FC<CustomTextfieldProps> = ({
         variant="outlined"
         sx={{
           borderColor: error ? 'red' : '',
+          ...styles,
         }}
         onChange={handleChange}
         value={value}
