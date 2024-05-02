@@ -1,16 +1,11 @@
-import {
-  Box,
-  Button,
-  Container,
-  Link as MuiLink,
-  Typography,
-} from '@mui/material'
+import { Box, Container, Link as MuiLink, Typography } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
@@ -58,6 +53,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     middle_name: '',
     birthdate: '',
   })
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -138,12 +134,14 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
 
       setErrors({ ...errors, ...newErrors })
     } else {
+      setButtonLoading(true)
       try {
         const response = await axiosInstance.post(
           '/api/v1/register',
           userCredentials
         )
         if (response.data) {
+          setButtonLoading(false)
           setIsSnackbarOpen(true)
           setErrorMessage('')
           setSuccessMessage(
@@ -155,6 +153,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         console.log('Error', error)
         setSuccessMessage('')
         if (error) {
+          setButtonLoading(false)
           let errorMsg = 'Registration failed. Please try again.'
           if (
             error.response &&
@@ -519,7 +518,14 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       >
         Already have and account? Sign-in here
       </MuiLink>
-      <Button
+      <CTAButton
+        label="Sign up"
+        loading={buttonLoading}
+        handleClick={handleSignUp}
+        styles={{ fontSize: '24px' }}
+      />
+
+      {/* <Button
         onClick={handleSignUp}
         variant="contained"
         color="primary"
@@ -536,7 +542,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         }}
       >
         Sign up
-      </Button>
+      </Button> */}
     </Container>
   )
 }
