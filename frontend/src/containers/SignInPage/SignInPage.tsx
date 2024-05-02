@@ -1,13 +1,19 @@
-import { Button, Container, TextField, Typography } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { Button, Container, Typography } from '@mui/material'
+import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
+import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 
 interface SignInPageProps {}
+
+type Errors = {
+  email_address: string
+  password: string
+}
 
 const SignInPage: React.FC<SignInPageProps> = () => {
   const dispatch = useAppDispatch()
@@ -25,6 +31,10 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [infoMessage, setInfoMessage] = useState<string>('')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
+  const [errors, setErrors] = useState<Errors>({
+    email_address: '',
+    password: '',
+  })
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -41,6 +51,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   }
 
   function handlePassword(inputValue: string) {
+    console.log(inputValue)
     setUserCredentials((prevUserCredentials) => ({
       ...prevUserCredentials,
       password: inputValue,
@@ -49,12 +60,40 @@ const SignInPage: React.FC<SignInPageProps> = () => {
 
   const handleSignIn = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const isValidEmail = emailRegex.test(userCredentials.email_address) // && userCredentials.email === user's email;
-    const isPasswordValid = undefined // if password is the user's password
+    const isValidEmail = emailRegex.test(userCredentials.email_address)
 
-    if (!isValidEmail && !isPasswordValid) {
+    const validationConditions = [
+      {
+        condition: !isValidEmail || !userCredentials.email_address,
+        field: 'email_address',
+        message: 'Please provide a valid registered email address.',
+      },
+      {
+        condition: !userCredentials.password,
+        field: 'password',
+        message: 'Please provide a valid password.',
+      },
+    ]
+
+    const errorMessages = validationConditions
+      .filter(({ condition }) => condition)
+      .map(({ message }) => message)
+    const hasErrors = errorMessages.length > 0
+
+    if (hasErrors) {
       setIsSnackbarOpen(true)
-      setErrorMessage('Invalid email or password.')
+      setErrorMessage('Please fill in the required details.')
+      const newErrors = validationConditions.reduce<{ [key: string]: string }>(
+        (acc, { condition, field, message }) => {
+          if (condition) {
+            acc[field] = message
+          }
+          return acc
+        },
+        {}
+      )
+
+      setErrors({ ...errors, ...newErrors })
     } else {
       try {
         const response = await axiosInstance.post(
@@ -72,10 +111,10 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           dispatch(initializeProfile(response.data.profile))
           navigate('/provider/dashboard')
         }
-      } catch (error) {
+      } catch (error: any) {
         if (error) {
           setIsSnackbarOpen(true)
-          setErrorMessage('Log in failed. Make sure to verify your email.')
+          setErrorMessage(error.response.data.message ?? 'Login failed.')
         }
       }
     }
@@ -108,7 +147,25 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       >
         Sign-in
       </Typography>
-      <TextField
+      <CustomTextfield
+        label="Email address"
+        value={userCredentials.email_address.toLowerCase()}
+        handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          handleEmail(e.target.value)
+        }
+        placeholder="Input your email"
+        error={errors.email_address ?? ''}
+      />
+      <CustomTextfield
+        label="Password"
+        value={userCredentials.password}
+        handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          handlePassword(e.target.value)
+        }
+        placeholder="Input your password"
+        error={errors.password ?? ''}
+      />
+      {/* <TextField
         onChange={(e) => handleEmail(e.target.value)}
         value={userCredentials.email_address.toLowerCase()}
         type="email"
@@ -142,8 +199,8 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           },
           shrink: false,
         }}
-      />
-      <TextField
+      /> */}
+      {/* <TextField
         onChange={(e) => handlePassword(e.target.value)}
         value={userCredentials.password}
         type="password"
@@ -177,7 +234,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           },
           shrink: false,
         }}
-      />
+      /> */}
       <Container
         sx={{
           display: 'flex',
