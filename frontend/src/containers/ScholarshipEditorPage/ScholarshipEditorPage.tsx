@@ -685,7 +685,7 @@ const ScholarshipEditorPage = () => {
                 setSchoolYear(e.target.value)
               }
               placeholder="e.g. 2024-2025"
-              styles={{ padding: 0 }}
+              styles={{ padding: '20px' }}
             />
             {/* <Box>
               <Typography
