@@ -187,11 +187,11 @@ const ScholarshipEditorPage = () => {
 
   const handleSubmit = async () => {
     const validationConditions = [
-      // {
-      //   condition: !scholarshipName,
-      //   field: 'scholarship_name',
-      //   message: 'Please provide the scholarship name.',
-      // },
+      {
+        condition: !scholarshipName,
+        field: 'scholarship_name',
+        message: 'Please provide the scholarship name.',
+      },
       {
         condition: !description,
         field: 'description',
@@ -351,17 +351,39 @@ const ScholarshipEditorPage = () => {
           setSuccessMessage('')
           setErrorMessage(error.response.data.errors.join(', '))
           setErrors({
-            scholarship_name: '',
-            description: '',
-            requirements: '',
-            eligibilities: '',
-            benefits: '',
-            start_date: '',
-            due_date: '',
-            application_link: '',
-            school_year: '',
-            status: '',
-            scholarship_type: '',
+            scholarship_name: error.response.data.errors
+              .filter((str: string) => !str.includes('Scholarship name'))
+              .join(', '),
+            description: error.response.data.errors
+              .filter((str: string) => !str.includes('Description'))
+              .join(', '),
+            requirements: error.response.data.errors
+              .filter((str: string) => !str.includes('Requirements'))
+              .join(', '),
+            eligibilities: error.response.data.errors
+              .filter((str: string) => !str.includes('Eligibilities'))
+              .join(', '),
+            benefits: error.response.data.errors
+              .filter((str: string) => !str.includes('Benefits'))
+              .join(', '),
+            start_date: error.response.data.errors
+              .filter((str: string) => !str.includes('Start date'))
+              .join(', '),
+            due_date: error.response.data.errors
+              .filter((str: string) => !str.includes('Due date'))
+              .join(', '),
+            application_link: error.response.data.errors
+              .filter((str: string) => !str.includes('Application link'))
+              .join(', '),
+            school_year: error.response.data.errors
+              .filter((str: string) => !str.includes('School year'))
+              .join(', '),
+            status: error.response.data.errors
+              .filter((str: string) => !str.includes('Status'))
+              .join(', '),
+            scholarship_type: error.response.data.errors
+              .filter((str: string) => !str.includes('Scholarship type'))
+              .join(', '),
           })
         }
       }
@@ -470,121 +492,6 @@ const ScholarshipEditorPage = () => {
             }
             placeholder="e.g. Open to high school seniors or college freshmen and sophomores pursuing a degree in a scientific discipline."
           />
-          {/* <CustomTextfield
-            label=""
-            error={}
-            value={}
-            handleChange={()}
-            placeholder = ''
-          /> */}
-          {/* <Box sx={{ width: '100%' }}>
-            <Typography
-              sx={{
-                fontFamily: 'Roboto',
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#002147',
-              }}
-            >
-              Scholarship Name
-            </Typography>
-            <TextField
-              required
-              id="outlined-basic"
-              variant="outlined"
-              value={scholarshipName}
-              onChange={(e) => setScholarshipName(e.target.value)}
-              name="scholarship_name"
-              placeholder="e.g. Excellence in Science Scholarship"
-            />
-          </Box> */}
-          {/* <Box sx={{ width: '100%' }}>
-            <Typography
-              sx={{
-                fontFamily: 'Roboto',
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#002147',
-              }}
-            >
-              Scholarship Description
-            </Typography>
-            <TextField
-              id="outlined-multiline-static"
-              multiline
-              rows={4}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              name="description"
-              placeholder="e.g. The Excellence in Science Scholarship aims to support outstanding students who demonstrate exceptional academic achievement and a passion for scientific inquiry."
-            />
-          </Box> */}
-          {/* <Box sx={{ width: '100%' }}>
-            <Typography
-              sx={{
-                fontFamily: 'Roboto',
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#002147',
-              }}
-            >
-              Requirements
-            </Typography>
-            <TextField
-              id={`outlined-multiline-static`}
-              multiline
-              value={requirements}
-              name="requirements"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleRequirementChange(e)
-              }
-              placeholder="e.g. Applicants must have a minimum GPA of 3.5 on a 4.0 scale, provide two letters of recommendation from science teachers or professors, and submit a personal statement outlining their academic and career goals in the field of science."
-            />
-          </Box> */}
-          {/* <Box sx={{ width: '100%' }}>
-            <Typography
-              sx={{
-                fontFamily: 'Roboto',
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#002147',
-              }}
-            >
-              Benefits
-            </Typography>
-            <TextField
-              id={`outlined-multiline-static`}
-              multiline
-              value={benefits}
-              name="benefits"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleBenefitChange(e)
-              }
-              placeholder="e.g. The scholarship provides a one-time award of P25000 to be used towards tuition, books, or other educational expenses."
-            />
-          </Box> */}
-          {/* <Box sx={{ width: '100%' }}>
-            <Typography
-              sx={{
-                fontFamily: 'Roboto',
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#002147',
-              }}
-            >
-              Eligibility
-            </Typography>
-            <TextField
-              id={`outlined-multiline-static`}
-              multiline
-              value={eligibilities}
-              name="eligibilities"
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                handleEligibilityChange(e)
-              }
-              placeholder="e.g. Open to high school seniors or college freshmen and sophomores pursuing a degree in a scientific discipline."
-            />
-          </Box> */}
           <Box sx={{ width: '100%' }}>
             <Typography
               sx={{
@@ -634,26 +541,6 @@ const ScholarshipEditorPage = () => {
             }
             placeholder="e.g. www.excellenceinsciencescholarship.org"
           />
-          {/* <Box sx={{ width: '100%' }}>
-            <Typography
-              sx={{
-                fontFamily: 'Roboto',
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#002147',
-              }}
-            >
-              Application Link
-            </Typography>
-            <TextField
-              id="standard-helperText"
-              variant="outlined"
-              value={applicationLink}
-              name="application_link"
-              onChange={(e) => setApplicationLink(e.target.value)}
-              placeholder="e.g. www.excellenceinsciencescholarship.org"
-            />
-          </Box> */}
           <Box
             sx={{
               width: '100%',
@@ -734,27 +621,6 @@ const ScholarshipEditorPage = () => {
               placeholder="e.g. 2024-2025"
               styles={{ padding: '20px' }}
             />
-            {/* <Box>
-              <Typography
-                sx={{
-                  fontFamily: 'Roboto',
-                  fontSize: '24px',
-                  fontWeight: '700',
-                  color: '#002147',
-                  textAlign: 'start',
-                }}
-              >
-                School Year
-              </Typography>
-              <TextField
-                id="standard-helperText"
-                variant="outlined"
-                value={schoolYear}
-                onChange={(e) => setSchoolYear(e.target.value)}
-                name="school_year"
-                placeholder="e.g. 2024-2025"
-              />
-            </Box> */}
           </Box>
           <Box sx={{ width: '100%' }}>
             <Typography
@@ -797,17 +663,6 @@ const ScholarshipEditorPage = () => {
             label="Save Scholarship"
             loading={isButtonLoading}
           />
-          {/* <Button
-            fullWidth
-            onClick={handleSubmit}
-            type="submit"
-            variant="contained"
-            sx={ctaButtonStyle}
-          >
-            <Typography variant="body1" sx={{ fontWeight: 700 }}>
-              Save Scholarship
-            </Typography>
-          </Button> */}
         </Box>
       </Container>
     </FormGroup>
