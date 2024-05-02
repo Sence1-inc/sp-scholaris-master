@@ -582,6 +582,7 @@ const ScholarshipEditorPage = () => {
                   }}
                 />
               </LocalizationProvider>
+              <HelperText error={errors.start_date} />
             </Box>
             <Box>
               <Typography
@@ -610,6 +611,7 @@ const ScholarshipEditorPage = () => {
                   }}
                 />
               </LocalizationProvider>
+              <HelperText error={errors.due_date} />
             </Box>
             <CustomTextfield
               label="School year"
