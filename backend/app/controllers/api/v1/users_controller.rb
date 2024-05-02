@@ -90,7 +90,7 @@ module Api
       elsif user.verification_expires_at > Time.now
         render json: { msg: "Verification not yet expired. Contact scholaris@sence1.com" }, status: :unprocessable_entity
       else
-        if user.update(verification_expires_at: 24.hours.from_now) && UserMailer.email_verification(user).deliver_now
+        if user.update(verification_token: SecureRandom.hex(10), verification_expires_at: 24.hours.from_now) && UserMailer.email_verification(user).deliver_now
           render json: { user: user, msg: 'Verification email has been sent' }, status: :ok
         else
           render json: { msg: 'Failed to send verification email' }, status: :unprocessable_entity
