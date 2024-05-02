@@ -16,6 +16,7 @@ const CTAButton: React.FC<CTAButtonProps> = ({
 }) => {
   return (
     <LoadingButton
+      fullWidth
       loading={loading}
       loadingPosition="center"
       onClick={handleClick}

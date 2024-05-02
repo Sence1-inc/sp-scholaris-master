@@ -677,7 +677,17 @@ const ScholarshipEditorPage = () => {
                 />
               </LocalizationProvider>
             </Box>
-            <Box>
+            <CustomTextfield
+              label="School year"
+              multiline={true}
+              error={errors.school_year}
+              value={schoolYear}
+              handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setSchoolYear(e.target.value)
+              }
+              placeholder="e.g. 2024-2025"
+            />
+            {/* <Box>
               <Typography
                 sx={{
                   fontFamily: 'Roboto',
@@ -697,7 +707,7 @@ const ScholarshipEditorPage = () => {
                 name="school_year"
                 placeholder="e.g. 2024-2025"
               />
-            </Box>
+            </Box> */}
           </Box>
           <Box sx={{ width: '100%' }}>
             <Typography
@@ -720,7 +730,9 @@ const ScholarshipEditorPage = () => {
                 '& fieldset': {
                   border: 'none',
                 },
-                border: '1px solid var(--primary-color)',
+                border: errors.status
+                  ? '1px solid red'
+                  : '1px solid var(--primary-color)',
                 boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
                 backgroundColor: 'white',
               }}
