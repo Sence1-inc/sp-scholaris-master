@@ -385,7 +385,7 @@ const ScholarshipEditorPage = () => {
           />
           <CustomTextfield
             label="Scholarship Description"
-            multiline
+            multiline={true}
             rows={4}
             error={errors.description}
             value={description}
@@ -396,7 +396,7 @@ const ScholarshipEditorPage = () => {
           />
           <CustomTextfield
             label="Requirements"
-            multiline
+            multiline={true}
             error={errors.requirements}
             value={requirements}
             handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -406,7 +406,7 @@ const ScholarshipEditorPage = () => {
           />
           <CustomTextfield
             label="Benefits"
-            multiline
+            multiline={true}
             error={errors.benefits}
             value={benefits}
             handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -416,7 +416,7 @@ const ScholarshipEditorPage = () => {
           />
           <CustomTextfield
             label="Eligibility"
-            multiline
+            multiline={true}
             error={errors.eligibilities}
             value={eligibilities}
             handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -579,7 +579,7 @@ const ScholarshipEditorPage = () => {
           </Box>
           <CustomTextfield
             label="Application link"
-            multiline
+            multiline={true}
             error={errors.application_link}
             value={applicationLink}
             handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
