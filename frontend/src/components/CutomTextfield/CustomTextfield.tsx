@@ -5,9 +5,11 @@ import HelperText from '../HelperText/HelperText'
 interface CustomTextfieldProps {
   label: string
   error: string
-  handleChange: any
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   value: string
   placeholder: string
+  multiline?: boolean
+  rows?: number
 }
 
 const CustomTextfield: React.FC<CustomTextfieldProps> = ({
@@ -16,6 +18,8 @@ const CustomTextfield: React.FC<CustomTextfieldProps> = ({
   handleChange,
   value,
   placeholder,
+  multiline = false,
+  rows,
 }) => {
   return (
     <Box sx={{ width: '100%' }}>
@@ -30,6 +34,8 @@ const CustomTextfield: React.FC<CustomTextfieldProps> = ({
         {label}
       </Typography>
       <TextField
+        multiline={multiline}
+        rows={rows}
         required
         id="outlined-basic"
         variant="outlined"
