@@ -86,9 +86,9 @@ module Api
       user = User.find_by(verification_token: params[:token], id: params[:id])
       
       if user.nil?
-        render json: { msg: "No user found. Contact scholaris@sence1.com" }, status: :not_found
+        render json: { msg: "No user found" }, status: :not_found
       elsif user.verification_expires_at > Time.now
-        render json: { msg: "Verification not yet expired. Contact scholaris@sence1.com" }, status: :unprocessable_entity
+        render json: { msg: "Verification link has expired" }, status: :unprocessable_entity
       else
         if user.update(verification_token: SecureRandom.hex(10), verification_expires_at: 24.hours.from_now) && UserMailer.email_verification(user).deliver_now
           render json: { user: user, msg: 'Verification email has been sent' }, status: :ok

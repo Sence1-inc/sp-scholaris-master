@@ -4,8 +4,8 @@ import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
 import { Box, Button, Container, Link, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
+import PrimaryButton from '../../components/CustomButton/PrimaryButton'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
-import { PrimaryButton } from '../../styles/globalStyles'
 
 const AddScholarshipViaCSVPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null)
@@ -216,13 +216,10 @@ const AddScholarshipViaCSVPage: React.FC = () => {
             </Typography>
           </Box>
           <PrimaryButton
-            variant="contained"
-            disabled={isUploading}
-            fullWidth
-            onClick={handleUpload}
-          >
-            Save Scholarship
-          </PrimaryButton>
+            handleClick={handleUpload}
+            label="Save Scholarship"
+            loading={isUploading}
+          />
           <Box display={'flex'} justifyContent={'flex-end'} p={'20px 0 0'}>
             <Typography
               sx={{

@@ -36,14 +36,14 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
       }
     } catch (error: any) {
       setSuccessMessage('')
+      setIsSnackbarOpen(true)
       if (error) {
         if (error?.response?.data?.status === 'expired') {
-          setIsSnackbarOpen(true)
           setIsExpired(true)
           setUser(error?.response?.data?.user)
           setIsAlreadyVerified(false)
+          setErrorMessage(error?.response?.data?.msg)
         } else {
-          setIsSnackbarOpen(true)
           setIsExpired(false)
           setIsAlreadyVerified(false)
           setErrorMessage('Failed verifying account')
