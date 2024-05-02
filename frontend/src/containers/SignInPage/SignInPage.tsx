@@ -108,6 +108,10 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         )
 
         if (response) {
+          setErrors({
+            email_address: '',
+            password: '',
+          })
           setIsButtonLoading(false)
           setIsSnackbarOpen(false)
           setErrorMessage('')
@@ -120,6 +124,10 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         if (error) {
           setIsSnackbarOpen(true)
           setErrorMessage(error.response.data.message ?? 'Login failed.')
+          setErrors({
+            email_address: '',
+            password: '',
+          })
         }
       }
     }

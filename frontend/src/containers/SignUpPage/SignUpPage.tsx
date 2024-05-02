@@ -147,10 +147,17 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           setSuccessMessage(
             "We've sent you a verification email. Please confirm your email address before you log in."
           )
+          setErrors({
+            email_address: '',
+            password: '',
+            password2: '',
+            first_name: '',
+            last_name: '',
+            middle_name: '',
+            birthdate: '',
+          })
         }
-        console.log(response)
       } catch (error: any) {
-        console.log('Error', error)
         setSuccessMessage('')
         if (error) {
           setButtonLoading(false)
@@ -166,6 +173,15 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           }
           setIsSnackbarOpen(true)
           setErrorMessage(errorMsg)
+          setErrors({
+            email_address: '',
+            password: '',
+            password2: '',
+            first_name: '',
+            last_name: '',
+            middle_name: '',
+            birthdate: '',
+          })
         }
       }
     }

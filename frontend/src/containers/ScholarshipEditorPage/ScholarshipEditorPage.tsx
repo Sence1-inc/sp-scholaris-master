@@ -187,11 +187,11 @@ const ScholarshipEditorPage = () => {
 
   const handleSubmit = async () => {
     const validationConditions = [
-      {
-        condition: !scholarshipName,
-        field: 'scholarship_name',
-        message: 'Please provide the scholarship name.',
-      },
+      // {
+      //   condition: !scholarshipName,
+      //   field: 'scholarship_name',
+      //   message: 'Please provide the scholarship name.',
+      // },
       {
         condition: !description,
         field: 'description',
@@ -293,6 +293,19 @@ const ScholarshipEditorPage = () => {
             setIsSnackbarOpen(true)
             setSuccessMessage(response.data.message)
             setErrorMessage('')
+            setErrors({
+              scholarship_name: '',
+              description: '',
+              requirements: '',
+              eligibilities: '',
+              benefits: '',
+              start_date: '',
+              due_date: '',
+              application_link: '',
+              school_year: '',
+              status: '',
+              scholarship_type: '',
+            })
           }
         } else {
           const response = await axiosInstance.post(
@@ -316,6 +329,19 @@ const ScholarshipEditorPage = () => {
             setSchoolYear('')
             setStatus('')
             setScholarshipTypeId(null)
+            setErrors({
+              scholarship_name: '',
+              description: '',
+              requirements: '',
+              eligibilities: '',
+              benefits: '',
+              start_date: '',
+              due_date: '',
+              application_link: '',
+              school_year: '',
+              status: '',
+              scholarship_type: '',
+            })
           }
         }
       } catch (error: any) {
@@ -324,6 +350,19 @@ const ScholarshipEditorPage = () => {
           setIsSnackbarOpen(true)
           setSuccessMessage('')
           setErrorMessage(error.response.data.errors.join(', '))
+          setErrors({
+            scholarship_name: '',
+            description: '',
+            requirements: '',
+            eligibilities: '',
+            benefits: '',
+            start_date: '',
+            due_date: '',
+            application_link: '',
+            school_year: '',
+            status: '',
+            scholarship_type: '',
+          })
         }
       }
     }
