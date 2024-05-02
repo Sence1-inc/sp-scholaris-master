@@ -40,6 +40,7 @@ type Errors = {
   application_link: string
   school_year: string
   status: string
+  scholarship_type: string
 }
 
 const ScholarshipEditorPage = () => {
@@ -103,6 +104,7 @@ const ScholarshipEditorPage = () => {
     application_link: '',
     school_year: '',
     status: '',
+    scholarship_type: '',
   })
   const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false)
 
@@ -234,6 +236,11 @@ const ScholarshipEditorPage = () => {
         condition: !status,
         field: 'status',
         message: 'Please provide the status.',
+      },
+      {
+        condition: !scholarshipType,
+        field: 'scholarship_type',
+        message: 'Please provide the scholarship type.',
       },
     ]
 
@@ -576,6 +583,7 @@ const ScholarshipEditorPage = () => {
                 )
               })}
             </Select>
+            <HelperText error={errors.scholarship_type} />
           </Box>
           <CustomTextfield
             label="Application link"
