@@ -4,7 +4,6 @@ import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import { User } from '../../redux/types'
-import { ctaButtonStyle } from '../../styles/globalStyles'
 
 interface VerifyEmailProps {}
 
