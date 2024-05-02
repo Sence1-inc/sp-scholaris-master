@@ -2,6 +2,7 @@ import { Button, Container, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import { initializeProfile } from '../../redux/reducers/ProfileReducer'
@@ -35,6 +36,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     email_address: '',
     password: '',
   })
+  const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -95,6 +97,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
 
       setErrors({ ...errors, ...newErrors })
     } else {
+      setIsButtonLoading(true)
       try {
         const response = await axiosInstance.post(
           '/api/v1/login',
@@ -105,6 +108,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         )
 
         if (response) {
+          setIsButtonLoading(false)
           setIsSnackbarOpen(false)
           setErrorMessage('')
           dispatch(initializeUser(response.data))
@@ -112,6 +116,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           navigate('/provider/dashboard')
         }
       } catch (error: any) {
+        setIsButtonLoading(false)
         if (error) {
           setIsSnackbarOpen(true)
           setErrorMessage(error.response.data.message ?? 'Login failed.')
@@ -288,7 +293,14 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         </Button>
       </Container>
 
-      <Button
+      <CTAButton
+        handleClick={handleSignIn}
+        label="Login"
+        loading={isButtonLoading}
+        styles={{ fontSize: '24px' }}
+      />
+
+      {/* <Button
         onClick={handleSignIn}
         variant="contained"
         color="primary"
@@ -305,7 +317,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         }}
       >
         Login
-      </Button>
+      </Button> */}
     </Container>
   )
 }
