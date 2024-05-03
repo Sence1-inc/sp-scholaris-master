@@ -16,6 +16,7 @@ import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { useAppSelector } from '../../redux/store'
 import { City, Profile, Province, Region } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
+import CTAButton from '../CustomButton/CTAButton'
 import AccountCard from './AccountCard'
 
 export interface ProfileData {
@@ -44,14 +45,11 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
   const [cityId, setCityId] = useState<number | null>(null)
   const [provinceId, setProvinceId] = useState<number | null>(null)
   const [regionId, setRegionId] = useState<number | null>(null)
-  const [providerType, setProviderType] = useState<string>('')
   const [isEditting, setIsEditting] = useState<boolean>(false)
   const [cities, setCities] = useState<City[] | []>([])
   const [provinces, setProvinces] = useState<Province[] | []>([])
   const [regions, setRegions] = useState<Region[] | []>([])
-
-  console.log('suhkjshfkjsdhf', user)
-  console.log('profile', profile)
+  const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false)
 
   useEffect(() => {
     if (profile) {
@@ -62,7 +60,6 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
       setCityId(profile.city?.id ?? null)
       setProvinceId(profile.province?.id ?? null)
       setRegionId(profile.region?.id ?? null)
-      setProviderType(profile.provider_type)
     }
   }, [profile])
 
@@ -77,6 +74,7 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
     }
 
     try {
+      setIsButtonLoading(true)
       const api = profile.id
         ? await axiosInstance.put(
             `/api/v1/scholarship_provider_profiles/${profile.id}`,
@@ -89,11 +87,13 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
             { withCredentials: true }
           )
       const response = api
+      setIsButtonLoading(false)
       handleSetSuccessMessage('Successfully saved!')
       handleSetErrorMessage('')
       handleSetIsSnackbarOpen(true)
       dispatch(initializeProfile({ ...response.data.profile }))
     } catch (error) {
+      setIsButtonLoading(false)
       if (error) {
         handleSetIsSnackbarOpen(true)
         handleSetSuccessMessage('')
@@ -251,24 +251,6 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
           </Box>
         )}
       </Box>
-      <Box>
-        <Typography sx={profileTheme.heading.titleHeading2}>
-          Provider Type:
-        </Typography>
-        {!isEditting ? (
-          <Typography sx={profileTheme.text.textRegular}>
-            {providerType}
-          </Typography>
-        ) : (
-          <TextField
-            variant="outlined"
-            value={providerType}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setProviderType(e.target.value)
-            }
-          />
-        )}
-      </Box>
       <Box
         sx={{
           display: 'flex',
@@ -295,14 +277,20 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
             >
               Cancel
             </Button>
-            <Button
+            <CTAButton
+              label="Save"
+              handleClick={handleSave}
+              loading={isButtonLoading}
+              styles={{ borderRadius: '32px' }}
+            />
+            {/* <Button
               sx={{ borderRadius: '32px' }}
               variant="contained"
               color="secondary"
               onClick={handleSave}
             >
               Save
-            </Button>
+            </Button> */}
           </ButtonGroup>
         )}
       </Box>
