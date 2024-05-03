@@ -16,7 +16,6 @@ import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { useAppSelector } from '../../redux/store'
 import { City, Profile, Province, Region } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
-import CTAButton from '../CustomButton/CTAButton'
 import AccountCard from './AccountCard'
 
 export interface ProfileData {
@@ -49,7 +48,6 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
   const [cities, setCities] = useState<City[] | []>([])
   const [provinces, setProvinces] = useState<Province[] | []>([])
   const [regions, setRegions] = useState<Region[] | []>([])
-  const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false)
 
   useEffect(() => {
     if (profile) {
@@ -74,7 +72,6 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
     }
 
     try {
-      setIsButtonLoading(true)
       const api = profile.id
         ? await axiosInstance.put(
             `/api/v1/scholarship_provider_profiles/${profile.id}`,
@@ -87,13 +84,11 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
             { withCredentials: true }
           )
       const response = api
-      setIsButtonLoading(false)
       handleSetSuccessMessage('Successfully saved!')
       handleSetErrorMessage('')
       handleSetIsSnackbarOpen(true)
       dispatch(initializeProfile({ ...response.data.profile }))
     } catch (error) {
-      setIsButtonLoading(false)
       if (error) {
         handleSetIsSnackbarOpen(true)
         handleSetSuccessMessage('')
@@ -277,20 +272,14 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
             >
               Cancel
             </Button>
-            <CTAButton
-              label="Save"
-              handleClick={handleSave}
-              loading={isButtonLoading}
-              styles={{ borderRadius: '32px' }}
-            />
-            {/* <Button
+            <Button
               sx={{ borderRadius: '32px' }}
               variant="contained"
               color="secondary"
               onClick={handleSave}
             >
               Save
-            </Button> */}
+            </Button>
           </ButtonGroup>
         )}
       </Box>
