@@ -69,6 +69,30 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     }))
   }
 
+  useEffect(() => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    const isValidEmail = emailRegex.test(userCredentials.email_address)
+    const isPasswordValid = userCredentials.password.length > 6
+    if (userCredentials.email_address !== '' && isValidEmail) {
+      setErrors({ ...errors, email_address: '' })
+    } else if (userCredentials.password !== '' && isPasswordValid) {
+      setErrors({ ...errors, password: '' })
+    } else if (
+      userCredentials.password2 !== '' &&
+      userCredentials.password === userCredentials.password2
+    ) {
+      setErrors({ ...errors, password2: '' })
+    } else if (userCredentials.first_name !== '') {
+      setErrors({ ...errors, first_name: '' })
+    } else if (userCredentials.middle_name !== '') {
+      setErrors({ ...errors, middle_name: '' })
+    } else if (userCredentials.last_name !== '') {
+      setErrors({ ...errors, last_name: '' })
+    } else {
+      console.log(errors)
+    }
+  }, [userCredentials, errors, setErrors])
+
   const handleSignUp = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const isValidEmail = emailRegex.test(userCredentials.email_address)
@@ -82,9 +106,9 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         message: 'Please provide a valid email address.',
       },
       {
-        condition: !isPasswordValid,
+        condition: !isPasswordValid || !userCredentials.password,
         field: 'password',
-        message: 'Please provide a valid password.',
+        message: 'Password must be atleast 6 characters.',
       },
       {
         condition: !isPassword2 || !userCredentials.password2,
