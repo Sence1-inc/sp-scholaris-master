@@ -75,7 +75,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     const isPasswordValid = userCredentials.password.length > 6
     if (userCredentials.email_address !== '' && isValidEmail) {
       setErrors({ ...errors, email_address: '' })
-    } else if (userCredentials.password !== '' && isPasswordValid) {
+    } else if (isPasswordValid) {
       setErrors({ ...errors, password: '' })
     } else if (
       userCredentials.password2 !== '' &&
