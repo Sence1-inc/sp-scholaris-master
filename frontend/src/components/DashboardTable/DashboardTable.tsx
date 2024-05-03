@@ -97,12 +97,15 @@ export default function DataTable() {
       if (response.data) {
         setIsSnackbarOpen(true)
         setWarningMessage('')
+        setSuccessMessage('Successfully deleted')
         dispatch(initializeScholarships(response.data))
       }
     } catch (error) {
       setIsLoading(false)
       if (error) {
+        setIsSnackbarOpen(true)
         setWarningMessage('')
+        setSuccessMessage('')
         setErrorMessage('Error deleting scholarship')
       }
     }
