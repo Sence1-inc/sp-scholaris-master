@@ -23,7 +23,7 @@ const useGetScholarships = () => {
     try {
       const response: AxiosResponse<Scholarships | ErrorResponse> =
         await axiosInstance.get('api/v1/scholarships', {
-          params: { ...params, ...{ limit: 10 } },
+          params: { ...params, ...{ page: 1, limit: 10 } },
           timeout: 100000,
         })
 
