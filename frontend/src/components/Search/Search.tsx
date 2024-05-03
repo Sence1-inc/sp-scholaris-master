@@ -39,15 +39,15 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const { name: nameParam, page, limit, ...restParams } = params.params
   const data: any = scholarships
 
-  useEffect(() => {
-    if (isSection) {
-      getScholarships(false)
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isSection])
+  // useEffect(() => {
+  //   if (isSection) {
+  //     getScholarships(false)
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [isSection])
 
   useEffect(() => {
-    if (page && !isSection) {
+    if (page) {
       getScholarships()
     }
     // eslint-disable-next-line
