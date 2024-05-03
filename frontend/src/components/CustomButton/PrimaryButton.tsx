@@ -16,6 +16,7 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
 }) => {
   return (
     <LoadingButton
+      fullWidth
       loading={loading}
       loadingPosition="center"
       onClick={handleClick}
