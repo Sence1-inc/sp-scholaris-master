@@ -117,7 +117,7 @@ module Api
         email: params.dig(:email_address),
         password: params.dig(:password),
         serviceId: params.dig(:service_id),
-        serviceKey: params.dig(:service_key),
+        serviceKey: ENV["APP_SERVICE_KEY"],
         role: params.dig(:role)
       }
 
@@ -231,7 +231,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def user_params
-        params.require(:user).permit(:email_address, :password, :first_name, :last_name, :birthdate, :is_active, :role, :session_token, :service_id, :service_key)
+        params.require(:user).permit(:email_address, :password, :first_name, :last_name, :birthdate, :is_active, :role, :session_token, :service_id)
       end
 
       def authenticate_registration
@@ -239,7 +239,7 @@ module Api
           email: params.dig(:email_address),
           password: params.dig(:password),
           serviceId: params.dig(:service_id),
-          serviceKey: params.dig(:service_key),
+          serviceKey: ENV["APP_SERVICE_KEY"],
           role: params.dig(:role)
         }
 

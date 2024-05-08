@@ -35,7 +35,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     birthdate: null,
     is_active: 1,
     service_id: 1,
-    service_key: process.env.REACT_APP_SERVICE_KEY,
     role: 'provider',
   })
   const [successMessage, setSuccessMessage] = useState<string>('')

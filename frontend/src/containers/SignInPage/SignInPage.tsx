@@ -26,7 +26,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     email_address: '',
     password: '',
     service_id: 1,
-    service_key: process.env.REACT_APP_SERVICE_KEY,
     role: 'provider',
   })
   const [errorMessage, setErrorMessage] = useState<string>('')
