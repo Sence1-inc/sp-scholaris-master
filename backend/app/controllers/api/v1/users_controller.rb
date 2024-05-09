@@ -127,7 +127,7 @@ module Api
       }
 
       begin
-        response = RestClient.post('http://authtest.sence1.com/login', req.to_json, headers)
+        response = RestClient.post(ENV['AUTH_LOGIN'], req.to_json, headers)
         parsed_response = JSON.parse(response.body)
 
         if parsed_response['status'] == 200
@@ -175,7 +175,7 @@ module Api
       }
 
       begin
-        response = RestClient.post('http://authtest.sence1.com/refresh_token', req.to_json, headers)
+        response = RestClient.post(ENV['AUTH_REFRESH'], req.to_json, headers)
         parsed_response = JSON.parse(response.body)
 
         if parsed_response['status'] == 200
@@ -249,7 +249,7 @@ module Api
         }
 
         begin
-          response = RestClient.post('http://authtest.sence1.com/register', req.to_json, headers)
+          response = RestClient.post(ENV['AUTH_REGISTER'], req.to_json, headers)
           parsed_response = JSON.parse(response.body)
 
           if parsed_response['status'] == 201

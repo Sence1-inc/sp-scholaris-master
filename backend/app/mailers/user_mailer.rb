@@ -1,5 +1,5 @@
 class UserMailer < ApplicationMailer
-  default from: 'roan.dino@sence1.com'
+  default from: 'inquire@scholaris.sence1.com'
 
   def send_to_providers(subject, content, email, subscriber_id)
     @content = content
