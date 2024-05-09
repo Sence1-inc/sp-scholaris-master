@@ -50,6 +50,16 @@ test:
 #
 production:
   <<: *default
-  database: backend_production
-  username: backend
-  password: <%= ENV["BACKEND_DATABASE_PASSWORD"] %>
+  adapter: <%= ENV['DB_ADAPTER'] %>
+  pool: 5
+  timeout: 5000
+  database: <%= ENV['DB_DATABASE'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  host: <%= ENV['DB_HOST'] %>
+  port: 3306
+  socket: <%= ENV['DB_SOCKET'] %>
+  sslkey: 'config/certs/scholaris-client-key.pem'
+  sslcert: 'config/certs/scholaris-client-cert.pem'
+  sslca: 'config/certs/scholaris-server-ca.pem'
+  sslmode: 'required'
