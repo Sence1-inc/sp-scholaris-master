@@ -101,7 +101,7 @@ COPY --chown=$USER ./backend ./
 
 # RUN SECRET_KEY_BASE=1 bundle exec rake assets:precompile
 
-# Expose port 3000 for the application.
+# Expose port 5001 for the application.
 EXPOSE 5001
 
 # Run the command to start the Rails server.
