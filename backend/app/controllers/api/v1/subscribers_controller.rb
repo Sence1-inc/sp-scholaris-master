@@ -84,7 +84,7 @@ module Api
       def restore
         if !Subscriber.is_soft_deleted(@subscriber)
           Subscriber.restore(@subscriber)
-          render json: { message: "Subscriber restored", status: :ok }
+          render json: { message: "Subscriber restored", subscriber: @subscriber, status: :ok }
         else
           render json: { message: "Already subscribed", status: :unprocessable_entity }, status: 422
         end

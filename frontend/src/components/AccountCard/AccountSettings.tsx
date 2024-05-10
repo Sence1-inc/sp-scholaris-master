@@ -2,7 +2,8 @@ import { Box, Button, FormGroup, InputLabel, TextField } from '@mui/material'
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
-import { useAppSelector } from '../../redux/store'
+import { initializeSubscirber } from '../../redux/reducers/SubscriberReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
@@ -24,6 +25,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
 }) => {
   const user = useAppSelector((state) => state.persistedReducer.user)
   const { id } = useParams()
+  const dispatch = useAppDispatch()
 
   const handleSubscribe: (
     e: React.MouseEvent<HTMLButtonElement>
@@ -39,11 +41,18 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       handleSetInfoMessage('')
       if (response.status === 200) {
         const successData = response.data
+        dispatch(initializeSubscirber(successData.subscriber))
         handleSetSuccessMessage(successData.message)
         handleSetErrorMessage('')
         handleSetIsSnackbarOpen(true)
       } else {
         const errorData = response.data
+        dispatch(
+          initializeSubscirber({
+            email: '',
+            user_type: '',
+          })
+        )
         handleSetIsSnackbarOpen(true)
         handleSetSuccessMessage('')
         handleSetErrorMessage(errorData.message)
@@ -63,6 +72,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         if (response.status === 201) {
           handleSetIsSnackbarOpen(false)
           const successData = response.data
+          dispatch(initializeSubscirber(successData.subscriber))
           handleSetSuccessMessage(successData.message)
           handleSetErrorMessage('')
           handleSetIsSnackbarOpen(true)
@@ -70,6 +80,12 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         } else {
           handleSetIsSnackbarOpen(false)
           const errorData = response.data
+          dispatch(
+            initializeSubscirber({
+              email: '',
+              user_type: '',
+            })
+          )
           handleSetIsSnackbarOpen(true)
           handleSetSuccessMessage('')
           handleSetErrorMessage(errorData.message)
