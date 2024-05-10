@@ -40,7 +40,11 @@ const AddScholarshipViaCSVPage: React.FC = () => {
     setIsSnackbarOpen(true)
     setIsUploading(true)
     setInfoMessage('Saving scholarships. Please wait.')
-    if (file) {
+    if (file && file.size > 1024 * 1024) {
+      setIsUploading(false)
+      setIsSnackbarOpen(true)
+      setErrorMessage('The selected file must be 1MB or less')
+    } else if (file && file.size < 1024 * 1024) {
       try {
         const formData = new FormData()
         formData.append('file', file)
