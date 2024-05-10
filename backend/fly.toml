@@ -17,7 +17,7 @@ console_command = '/rails/bin/rails console'
 
 [env]
   RAILS_ENV = "production"
-  REACT_URL = "https://scholaris.netlify.app/"
+  REACT_URL = "https://scholaristest.sence1.com/"
   DATABASE_URL = "mysql2://admin:pWfjApfXCVkhYQ8@scholaris-db.cboibzju9stw.us-east-1.rds.amazonaws.com:3306/app"
 
 [http_service]
@@ -28,21 +28,6 @@ console_command = '/rails/bin/rails console'
   auto_start_machines = true
   min_machines_running = 1
   processes = ['app']
-
-[checks]
-  [checks.status]
-    port = 5001
-    type = 'http'
-    interval = '10s'
-    timeout = '60s'
-    grace_period = '60s'
-    method = 'GET'
-    path = '/up'
-    protocol = 'http'
-    tls_skip_verify = false
-
-    [checks.status.headers]
-      X-Forwarded-Proto = 'https'
 
 [[vm]]
   cpu_kind = 'shared'
