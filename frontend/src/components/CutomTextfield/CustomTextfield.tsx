@@ -11,6 +11,7 @@ interface CustomTextfieldProps {
   multiline?: boolean
   rows?: number
   styles?: any
+  type?: string
 }
 
 const CustomTextfield: React.FC<CustomTextfieldProps> = ({
@@ -22,6 +23,7 @@ const CustomTextfield: React.FC<CustomTextfieldProps> = ({
   multiline = false,
   rows,
   styles,
+  type = 'text',
 }) => {
   return (
     <Box sx={{ width: '100%' }}>
@@ -36,6 +38,7 @@ const CustomTextfield: React.FC<CustomTextfieldProps> = ({
         {label}
       </Typography>
       <TextField
+        type={type}
         multiline={multiline}
         rows={rows}
         required

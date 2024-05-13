@@ -248,6 +248,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your email"
         />
         <CustomTextfield
+          type="password"
           label="Password"
           error={errors.password}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -257,6 +258,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your password"
         />
         <CustomTextfield
+          type="password"
           label="Confirm Password"
           error={errors.password2}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
