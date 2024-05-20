@@ -62,6 +62,8 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     if (isSection) {
       const queryParams = queryString.stringify({ name })
       navigate(`/scholarships?${queryParams}`)
+    } else {
+      getScholarships()
     }
   }
 

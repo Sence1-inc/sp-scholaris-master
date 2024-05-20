@@ -100,7 +100,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             hasPagination={true}
             handleNext={handleNext}
             handlePrevious={handlePrevious}
-            scholarships={scholarships}
+            scholarships={result.scholarships.scholarships}
           />
         ) : (
           <Typography sx={{ textAlign: 'center' }}>

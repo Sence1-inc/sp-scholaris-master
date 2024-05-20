@@ -33,7 +33,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
             }
             label={
               location.pathname === '/student'
-                ? 'Seach Scholarships'
+                ? 'Search Scholarships'
                 : 'Get Started'
             }
           />
