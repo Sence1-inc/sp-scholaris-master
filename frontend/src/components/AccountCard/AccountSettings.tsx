@@ -34,28 +34,34 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
 
     try {
       const subscriber = await axiosInstance.get(`api/v1/subscribers/${id}`)
-      const response = await axiosInstance.post(`api/v1/subscribers/restore`, {
-        id: subscriber.data.id,
-      })
-      handleSetWarningMessage('')
-      handleSetInfoMessage('')
-      if (response.status === 200) {
-        const successData = response.data
-        dispatch(initializeSubscirber(successData.subscriber))
-        handleSetSuccessMessage(successData.message)
-        handleSetErrorMessage('')
-        handleSetIsSnackbarOpen(true)
-      } else {
-        const errorData = response.data
-        dispatch(
-          initializeSubscirber({
-            email: '',
-            user_type: '',
-          })
+
+      if (subscriber.status === 201) {
+        const response = await axiosInstance.post(
+          `api/v1/subscribers/restore`,
+          {
+            id: subscriber.data.id,
+          }
         )
-        handleSetIsSnackbarOpen(true)
-        handleSetSuccessMessage('')
-        handleSetErrorMessage(errorData.message)
+        handleSetWarningMessage('')
+        handleSetInfoMessage('')
+        if (response.status === 200) {
+          const successData = response.data
+          dispatch(initializeSubscirber(successData.subscriber))
+          handleSetSuccessMessage(successData.message)
+          handleSetErrorMessage('')
+          handleSetIsSnackbarOpen(true)
+        } else {
+          const errorData = response.data
+          dispatch(
+            initializeSubscirber({
+              email: '',
+              user_type: '',
+            })
+          )
+          handleSetIsSnackbarOpen(true)
+          handleSetSuccessMessage('')
+          handleSetErrorMessage(errorData.message)
+        }
       }
     } catch (error: any) {
       handleSetWarningMessage('')

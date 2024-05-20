@@ -27,7 +27,7 @@ class Scholarship < ApplicationRecord
     results = results.includes(:courses, :schools, :scholarship_provider, :benefits)
     results = results.joins(:courses).where("courses.course_name = ?", params[:course]) if params[:course].present?
     results = results.joins(:schools).where("schools.school_name = ?", params[:school]) if params[:school].present?
-    results = results.joins(:benefits).where("benefits.benefit_name = ?", params[:benefit]) if params[:benefit].present?
+    results = results.joins(:benefits).where("LOWER(TRIM(benefits.benefit_name)) = ?", params[:benefits].strip.downcase) if params[:benefits].present?
     results = results.joins(schools: :city).joins(schools: :province).joins(schools: :region)
                   .where("cities.city_name = ? OR provinces.province_name = ? OR regions.region_name = ?",
                          params[:location], params[:location], params[:location]) if params[:location].present?

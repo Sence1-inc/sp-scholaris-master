@@ -16,7 +16,7 @@ module Api
         if provider 
           subscriber = Subscriber.find_by(email: provider.user.email_address)
           if subscriber
-            render json: subscriber, status: :ok
+            render json: subscriber, status: 201
           else
             render json: {message: "No subscriber found"}, status: 404
           end
