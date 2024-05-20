@@ -39,20 +39,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const { name: nameParam, page, limit, ...restParams } = params.params
   const data: any = scholarships
 
-  // useEffect(() => {
-  //   if (isSection) {
-  //     getScholarships(false)
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [isSection])
-
-  useEffect(() => {
-    if (page) {
-      getScholarships()
-    }
-    // eslint-disable-next-line
-  }, [page])
-
   useEffect(() => {
     if (searchRef.current && hash === '#search' && !hasScrolled) {
       searchRef.current.scrollIntoView({
@@ -76,10 +62,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     if (isSection) {
       const queryParams = queryString.stringify({ name })
       navigate(`/scholarships?${queryParams}`)
-    } else {
-      console.log('MEOW', name)
-
-      getScholarships()
     }
   }
 

@@ -68,7 +68,7 @@ class Authenticate
     return false unless access_token
 
     begin
-      decoded_token = JWT.decode(access_token, nil, false)
+      decoded_token = JWT.decode(access_token, ENV['JWT_SECRET_KEY'], false)
       payload = decoded_token.first
       current_time = Time.now.to_i
 

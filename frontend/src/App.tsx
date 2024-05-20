@@ -1,5 +1,5 @@
 import { Box } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import Disclaimer from './components/Disclaimer/Disclaimer'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
@@ -24,6 +24,7 @@ import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAnd
 import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
 import VerifyEmailPage from './containers/VerifyEmailPage/VerifyEmailPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
+import useGetScholarships from './hooks/useGetScholarships'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -50,6 +51,13 @@ const ProviderRoutes: React.FC = () => (
 )
 
 const App: React.FC = () => {
+  const { getScholarships } = useGetScholarships()
+
+  useEffect(() => {
+    getScholarships(false)
+    // eslint-disable-next-line
+  }, [])
+
   return (
     <Box
       sx={{
