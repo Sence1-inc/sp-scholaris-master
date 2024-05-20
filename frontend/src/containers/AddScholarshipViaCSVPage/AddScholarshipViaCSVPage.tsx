@@ -252,6 +252,16 @@ const AddScholarshipViaCSVPage: React.FC = () => {
               | Success: {successCount}
             </Typography>
           </Box>
+          <Box>
+            <Typography variant="subtitle1">
+              Please ensure the following steps are taken when addressing
+              errors: <br />
+              1. DO NOT remove the second row. <br />
+              2. Ensure adherence to the correct format, particularly for the
+              start date and due date. <br />
+              3. Complete all columns with relevant details.
+            </Typography>
+          </Box>
         </Box>
       </Box>
     </Container>
