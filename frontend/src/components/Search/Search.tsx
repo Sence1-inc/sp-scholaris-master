@@ -78,7 +78,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
 
   useEffect(() => {
     if (!isSection && Object.keys(params.params).length === 0) {
-      getScholarships()
       setName('')
     }
     // eslint-disable-next-line

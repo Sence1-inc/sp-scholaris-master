@@ -1,6 +1,7 @@
 import { Typography, useTheme } from '@mui/material'
+import queryString from 'query-string'
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import Search from '../../components/Search/Search'
 import Table from '../../components/Table/Table'
@@ -19,6 +20,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 }) => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { getScholarships } = useGetScholarships()
   const [searchParams] = useSearchParams()
   const course = searchParams.get('course')
@@ -39,6 +41,12 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   useEffect(() => {
     setScholarships(result.scholarships.scholarships)
   }, [result.scholarships.scholarships])
+
+  useEffect(() => {
+    if (Object.keys(params.params).length === 0) {
+      getScholarships()
+    }
+  }, [params.params])
 
   const handleNext = () => {
     if (scholarships.length === 10) {
@@ -74,18 +82,9 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   }, [course, school, benefits, location, start_date, due_date, provider, name])
 
   useEffect(() => {
-    const hasParametersInURL = searchParams.size > 0
-
-    if (
-      Object.keys(params.params).some(
-        (param) => params.params[param] !== undefined
-      ) &&
-      hasParametersInURL
-    ) {
-      getScholarships()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, params.params])
+    const queryParams = queryString.stringify(params.params)
+    navigate(`/scholarships?${queryParams}`)
+  }, [params.params])
 
   return (
     <section className="search-results">

@@ -69,6 +69,7 @@ const Filter: React.FC<FilterProps> = () => {
   const handleReset = () => {
     setSelectedDateRange(initialDateRange)
     setSelectedParams({})
+    dispatch(initializeParams({}))
   }
 
   useEffect(() => {

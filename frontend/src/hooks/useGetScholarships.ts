@@ -1,7 +1,7 @@
-import { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import queryString from 'query-string'
 import { useNavigate } from 'react-router-dom'
-import axiosInstance from '../axiosConfig'
+import { baseURL } from '../axiosConfig'
 import {
   initializeScholarships,
   Scholarships,
@@ -22,7 +22,7 @@ const useGetScholarships = () => {
   const getScholarships = async (isRedirected = true) => {
     try {
       const response: AxiosResponse<Scholarships | ErrorResponse> =
-        await axiosInstance.get('api/v1/scholarships', {
+        await axios.get(`${baseURL}/api/v1/scholarships`, {
           params: { ...params, ...{ page: 1, limit: 10 } },
           timeout: 100000,
         })
