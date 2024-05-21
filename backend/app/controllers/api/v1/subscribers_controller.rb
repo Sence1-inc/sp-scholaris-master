@@ -14,7 +14,7 @@ module Api
         provider = ScholarshipProvider.find(params[:id])
 
         if provider 
-          subscriber = Subscriber.find_by(email: provider.user.email_address)
+          subscriber = Subscriber.find_by(email: provider.user.email_address, user_type: 'provider')
           if subscriber
             render json: subscriber, status: 201
           else

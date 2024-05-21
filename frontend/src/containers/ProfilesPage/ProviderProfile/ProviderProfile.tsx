@@ -33,65 +33,74 @@ const ProviderProfile: React.FC = () => {
   const user = useAppSelector((state) => state.persistedReducer.user)
   const [subscriber, setSubscriber] = useState<Subscriber | null>(null)
 
-  useEffect(() => {
-    const getSubscriber = async () => {
-      const subscriber = await axiosInstance.get(
+  const getSubscriber = async () => {
+    try {
+      const subs = await axiosInstance.get(
         `api/v1/subscribers/${user.scholarship_provider.id}`
       )
 
-      if (subscriber.data) {
-        setSubscriber(subscriber.data)
+      if (subs.data) {
+        setSubscriber(subs.data)
       }
+    } catch (error) {
+      console.log(error)
     }
+  }
 
+  useEffect(() => {
     getSubscriber()
   }, [user])
 
   const handleUnsubscribe = async () => {
-    try {
-      const response = await axiosInstance.post(
-        `api/v1/subscribers/soft_delete`,
-        { id: subscriber?.id },
-        { withCredentials: true }
-      )
-
-      if (response.status === 200) {
-        setSuccessMessage(response.data.message)
-        setErrorMessage('')
-        setIsSnackbarOpen(true)
-      } else {
-        setIsSnackbarOpen(true)
-        setSuccessMessage('')
-        setErrorMessage(
-          `Error: ${response.data.error}. ${response.data.details.join(' ')}`
+    getSubscriber()
+    if (subscriber) {
+      try {
+        const response = await axiosInstance.post(
+          `api/v1/subscribers/soft_delete`,
+          { id: subscriber?.id },
+          { withCredentials: true }
         )
-      }
-    } catch (error: any) {
-      if (error) {
-        setIsSnackbarOpen(true)
-        setSuccessMessage('')
-        if (axios.isAxiosError(error)) {
-          if (error.response) {
-            if (error.response.status === 404) {
-              setErrorMessage('Email already unsubscribed.')
-            } else {
-              const errorDetails = error.response.data?.details
-                ? error.response.data.details.join(' ')
-                : ''
-              const errorMessage = `Error: ${error.response.data?.error || 'Unsubscribing failed'}. ${errorDetails}`
-              setErrorMessage(errorMessage)
-            }
-          } else if (error.request) {
-            setErrorMessage(
-              'No response from server. Please check your network connection.'
-            )
-          } else {
-            setErrorMessage('Error setting up unsubscribe request.')
-          }
+
+        if (response.status === 200) {
+          setSuccessMessage(response.data.message)
+          setErrorMessage('')
+          setIsSnackbarOpen(true)
         } else {
-          setErrorMessage('Error Unsubscribing. Please try again.')
+          setIsSnackbarOpen(true)
+          setSuccessMessage('')
+          setErrorMessage(
+            `Error: ${response.data.error}. ${response.data.details.join(' ')}`
+          )
+        }
+      } catch (error: any) {
+        if (error) {
+          setIsSnackbarOpen(true)
+          setSuccessMessage('')
+          if (axios.isAxiosError(error)) {
+            if (error.response) {
+              if (error.response.status === 404) {
+                setErrorMessage('Email already unsubscribed.')
+              } else {
+                const errorDetails = error.response.data?.details
+                  ? error.response.data.details.join(' ')
+                  : ''
+                const errorMessage = `Error: ${error.response.data?.error || 'Unsubscribing failed'}. ${errorDetails}`
+                setErrorMessage(errorMessage)
+              }
+            } else if (error.request) {
+              setErrorMessage(
+                'No response from server. Please check your network connection.'
+              )
+            } else {
+              setErrorMessage('Error setting up unsubscribe request.')
+            }
+          } else {
+            setErrorMessage('Error Unsubscribing. Please try again.')
+          }
         }
       }
+    } else {
+      setErrorMessage('Not yet a subscriber, please subscribe.')
     }
   }
 
