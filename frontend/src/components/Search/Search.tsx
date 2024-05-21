@@ -59,12 +59,10 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const handleSearch: (e: React.MouseEvent<HTMLButtonElement>) => void = async (
     e
   ) => {
-    if (isSection) {
-      const queryParams = queryString.stringify({ name })
-      navigate(`/scholarships?${queryParams}`)
-    } else {
-      getScholarships()
-    }
+    const queryParams = queryString.stringify({ name })
+    navigate(`/scholarships?${queryParams}`)
+
+    getScholarships()
   }
 
   const handleChange = async (value: string) => {
