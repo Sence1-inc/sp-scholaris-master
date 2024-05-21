@@ -86,6 +86,7 @@ const ScholarshipEditorPage = () => {
   const [scholarshipType, setScholarshipType] = useState<string>(
     scholarshipData?.scholarship_type?.scholarship_type_name ?? ''
   )
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const [status, setStatus] = useState<string>(scholarshipData?.status ?? '')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
@@ -185,65 +186,93 @@ const ScholarshipEditorPage = () => {
     }
   }, [scholarshipType, scholarshipTypes])
 
-  const handleSubmit = async () => {
-    const validationConditions = [
-      {
-        condition: !scholarshipName,
-        field: 'scholarship_name',
-        message: 'Please provide the scholarship name.',
-      },
-      {
-        condition: !description,
-        field: 'description',
-        message: 'Please provide the description.',
-      },
-      {
-        condition: !requirements,
-        field: 'requirements',
-        message: 'Please provide the requirements.',
-      },
-      {
-        condition: !eligibilities,
-        field: 'eligibilities',
-        message: 'Please provide the eligibilities.',
-      },
-      {
-        condition: !benefits,
-        field: 'benefits',
-        message: 'Please provide the benefits.',
-      },
-      {
-        condition: !startDate,
-        field: 'start_date',
-        message: 'Please provide the application start date.',
-      },
-      {
-        condition: !dueDate,
-        field: 'due_date',
-        message: 'Please provide the application due date.',
-      },
-      {
-        condition: !applicationLink,
-        field: 'application_link',
-        message: 'Please provide the application link.',
-      },
-      {
-        condition: !schoolYear,
-        field: 'school_year',
-        message: 'Please provide the school year.',
-      },
-      {
-        condition: !status,
-        field: 'status',
-        message: 'Please provide the status.',
-      },
-      {
-        condition: !scholarshipType,
-        field: 'scholarship_type',
-        message: 'Please provide the scholarship type.',
-      },
-    ]
+  const validationConditions = [
+    {
+      condition: !scholarshipName,
+      field: 'scholarship_name',
+      message: 'Please provide the scholarship name.',
+    },
+    {
+      condition: !description,
+      field: 'description',
+      message: 'Please provide the description.',
+    },
+    {
+      condition: !requirements,
+      field: 'requirements',
+      message: 'Please provide the requirements.',
+    },
+    {
+      condition: !eligibilities,
+      field: 'eligibilities',
+      message: 'Please provide the eligibilities.',
+    },
+    {
+      condition: !benefits,
+      field: 'benefits',
+      message: 'Please provide the benefits.',
+    },
+    {
+      condition: !startDate,
+      field: 'start_date',
+      message: 'Please provide the application start date.',
+    },
+    {
+      condition: !dueDate,
+      field: 'due_date',
+      message: 'Please provide the application due date.',
+    },
+    {
+      condition: !applicationLink,
+      field: 'application_link',
+      message: 'Please provide the application link.',
+    },
+    {
+      condition: !schoolYear,
+      field: 'school_year',
+      message: 'Please provide the school year.',
+    },
+    {
+      condition: !status,
+      field: 'status',
+      message: 'Please provide the status.',
+    },
+    {
+      condition: !scholarshipType,
+      field: 'scholarship_type',
+      message: 'Please provide the scholarship type.',
+    },
+  ]
 
+  useEffect(() => {
+    if (!isInitialLoad) {
+      const errorMessages: any = validationConditions
+        .filter(({ condition }) => condition)
+        .reduce((acc: any, item) => {
+          acc[item.field] = item.message
+          return acc
+        }, {})
+      setErrors(errorMessages)
+    }
+
+    // eslint-disable-next-line
+  }, [
+    scholarshipName,
+    description,
+    requirements,
+    benefits,
+    eligibilities,
+    startDate,
+    dueDate,
+    applicationLink,
+    schoolYear,
+    status,
+    scholarshipType,
+    isInitialLoad,
+  ])
+
+  const handleSubmit = async () => {
+    setIsInitialLoad(false)
     const errorMessages = validationConditions
       .filter(({ condition }) => condition)
       .map(({ message }) => message)
@@ -252,15 +281,14 @@ const ScholarshipEditorPage = () => {
     if (hasErrors) {
       setIsSnackbarOpen(true)
       setErrorMessage('Please fill in the required details.')
-      const newErrors = validationConditions.reduce<{ [key: string]: string }>(
-        (acc, { condition, field, message }) => {
-          if (condition) {
-            acc[field] = message
-          }
-          return acc
-        },
-        {}
-      )
+      const newErrors: any = validationConditions.reduce<{
+        [key: string]: string
+      }>((acc, { condition, field, message }) => {
+        if (condition) {
+          acc[field] = message
+        }
+        return acc
+      }, {})
 
       setErrors({ ...errors, ...newErrors })
     } else {
@@ -350,41 +378,54 @@ const ScholarshipEditorPage = () => {
           setIsSnackbarOpen(true)
           setSuccessMessage('')
           setErrorMessage(error.response.data.errors.join(', '))
-          setErrors({
+          const errorMessages: { [key: string]: string } = {
             scholarship_name: error.response.data.errors
-              .filter((str: string) => !str.includes('Scholarship name'))
+              .filter((str: string) => str.includes('Scholarship name'))
               .join(', '),
             description: error.response.data.errors
-              .filter((str: string) => !str.includes('Description'))
+              .filter((str: string) => str.includes('Description'))
               .join(', '),
             requirements: error.response.data.errors
-              .filter((str: string) => !str.includes('Requirements'))
+              .filter((str: string) => str.includes('Requirements'))
               .join(', '),
             eligibilities: error.response.data.errors
-              .filter((str: string) => !str.includes('Eligibilities'))
+              .filter((str: string) => str.includes('Eligibilities'))
               .join(', '),
             benefits: error.response.data.errors
-              .filter((str: string) => !str.includes('Benefits'))
+              .filter((str: string) => str.includes('Benefits'))
               .join(', '),
             start_date: error.response.data.errors
-              .filter((str: string) => !str.includes('Start date'))
+              .filter((str: string) => str.includes('Start date'))
               .join(', '),
             due_date: error.response.data.errors
-              .filter((str: string) => !str.includes('Due date'))
+              .filter((str: string) => str.includes('Due date'))
               .join(', '),
             application_link: error.response.data.errors
-              .filter((str: string) => !str.includes('Application link'))
+              .filter((str: string) => str.includes('Application link'))
               .join(', '),
             school_year: error.response.data.errors
-              .filter((str: string) => !str.includes('School year'))
+              .filter((str: string) => str.includes('School year'))
               .join(', '),
             status: error.response.data.errors
-              .filter((str: string) => !str.includes('Status'))
+              .filter((str: string) => str.includes('Status'))
               .join(', '),
             scholarship_type: error.response.data.errors
-              .filter((str: string) => !str.includes('Scholarship type'))
+              .filter((str: string) => str.includes('Scholarship type'))
               .join(', '),
-          })
+          }
+
+          const filteredErrors: Partial<Record<string, string>> = Object.keys(
+            errorMessages
+          )
+            .filter((key: string) => !!errorMessages[key])
+            .reduce((acc: Partial<Record<string, string>>, key: string) => {
+              acc[key] = errorMessages[key]
+              return acc
+            }, {})
+
+          setErrors(filteredErrors as Errors)
+
+          setErrors(filteredErrors as Errors)
         }
       }
     }

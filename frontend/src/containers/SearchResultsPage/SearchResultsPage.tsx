@@ -46,6 +46,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     if (Object.keys(params.params).length === 0) {
       getScholarships()
     }
+    // eslint-disable-next-line
   }, [params.params])
 
   const handleNext = () => {
@@ -84,6 +85,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   useEffect(() => {
     const queryParams = queryString.stringify(params.params)
     navigate(`/scholarships?${queryParams}`)
+    // eslint-disable-next-line
   }, [params.params])
 
   return (
