@@ -255,6 +255,22 @@ const ScholarshipEditorPage = () => {
       setErrors(errorMessages)
     }
 
+    if (successMessage) {
+      setErrors({
+        scholarship_name: '',
+        description: '',
+        requirements: '',
+        eligibilities: '',
+        benefits: '',
+        start_date: '',
+        due_date: '',
+        application_link: '',
+        school_year: '',
+        status: '',
+        scholarship_type: '',
+      })
+    }
+
     // eslint-disable-next-line
   }, [
     scholarshipName,
@@ -321,19 +337,6 @@ const ScholarshipEditorPage = () => {
             setIsSnackbarOpen(true)
             setSuccessMessage(response.data.message)
             setErrorMessage('')
-            setErrors({
-              scholarship_name: '',
-              description: '',
-              requirements: '',
-              eligibilities: '',
-              benefits: '',
-              start_date: '',
-              due_date: '',
-              application_link: '',
-              school_year: '',
-              status: '',
-              scholarship_type: '',
-            })
           }
         } else {
           const response = await axiosInstance.post(
