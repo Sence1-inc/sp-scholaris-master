@@ -25,6 +25,7 @@ import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
 import VerifyEmailPage from './containers/VerifyEmailPage/VerifyEmailPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
 import useGetScholarships from './hooks/useGetScholarships'
+import { useAppSelector } from './redux/store'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -52,9 +53,13 @@ const ProviderRoutes: React.FC = () => (
 
 const App: React.FC = () => {
   const { getScholarships } = useGetScholarships()
+  const user = useAppSelector((state) => state.persistedReducer.user)
 
   useEffect(() => {
-    getScholarships(false)
+    if (!user.email_address) {
+      getScholarships(false)
+    }
+
     // eslint-disable-next-line
   }, [])
 
