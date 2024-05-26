@@ -77,6 +77,15 @@ module Api
                 user = User.find_by(email_address: cookies[:user_email])
                 start_date = DateTime.strptime(file_param['start_date'], '%d-%m-%Y')
                 due_date = DateTime.strptime(file_param['due_date'], '%d-%m-%Y')
+
+                file_param['status'] = file_param['status'].downcase
+                unless ['active', 'inactive'].include?(file_param['status'])
+                  errors_count += 1
+                  result = { errors: ["Invalid status. Status must be 'active' or 'inactive'."] }
+                  results << result
+                  next
+                end
+
                 scholarship = Scholarship.find_by(scholarship_name: file_param['scholarship_name'], start_date: start_date, due_date: due_date)
 
                 if scholarship

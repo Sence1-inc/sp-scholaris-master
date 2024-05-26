@@ -11,7 +11,7 @@ module SoftDelete
         end
 
         def restore(obj)
-            obj.update(deleted_at:nil) if obj.deleted_at.present?
+            obj.update(deleted_at:nil)
         end
     end
 end

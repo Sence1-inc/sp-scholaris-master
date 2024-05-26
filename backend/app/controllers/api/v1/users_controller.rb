@@ -132,7 +132,7 @@ module Api
 
         if parsed_response['status'] == 200
           cookies[:user_email] = {
-            value: user_params.dig(:email_address),
+            value: params.dig(:email_address),
             httponly: true
           }
           cookies[:access_token] = {
@@ -143,9 +143,9 @@ module Api
             value: parsed_response['tokens']['refreshToken'],
             httponly: true
           }
-          user = User.find_by(email_address: user_params.dig(:email_address))
+          user = User.find_by(email_address: params.dig(:email_address))
           if !user.is_verified
-            render json: {status: "error", message: "Email must be verified"}, status: :unprocessable_entity
+            render json: { status: "error", message: "Email must be verified" }, status: :unprocessable_entity
           else
             provider = ScholarshipProvider.find_by(user_id: user.id)
             if provider
@@ -155,18 +155,32 @@ module Api
               provider = ScholarshipProvider.new(user_id: user.id)
               provider.save
             end
-            
+
             profile_hash = profile.present? ? profile.as_json : {}
-            
+
             render json: user.as_json.merge(scholarship_provider: provider).merge(profile: profile_hash), status: parsed_response['status']
-          end 
+          end
         else
-          render json: response, status: parsed_response['status']
+          error_message = parsed_response['message'] || 'Authentication failed'
+          render json: { status: "error", message: error_message }, status: parsed_response['status']
         end
       rescue RestClient::ExceptionWithResponse => e
-        render json: response, status: e.response.code, error: e.response.body
+        parsed_error_response = JSON.parse(e.response.body) rescue { 'message' => 'An error occurred' }
+        case e.http_code
+        when 400, 500
+          render json: { status: "error", message: "Incorrect password or email" }, status: :unauthorized
+        when 401
+          render json: { status: "error", message: "Incorrect password or email" }, status: :unauthorized
+        when 404
+          render json: { status: "error", message: "Email not found" }, status: :not_found
+        else
+          error_message = parsed_error_response['message'] || 'An error occurred'
+          render json: { status: "error", message: error_message, meow: e.http_code }, status: e.http_code
+        end
       end
     end
+
+
 
     def refresh
       req = {

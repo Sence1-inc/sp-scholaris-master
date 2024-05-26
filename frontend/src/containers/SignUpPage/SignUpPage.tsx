@@ -1,10 +1,10 @@
 import { Box, Container, Link as MuiLink, Typography } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import axios from 'axios'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
-import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
@@ -53,6 +53,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     birthdate: '',
   })
   const [buttonLoading, setButtonLoading] = useState<boolean>(false)
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -68,73 +69,64 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     }))
   }
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const isValidEmail = emailRegex.test(userCredentials.email_address)
+  const isPasswordValid = userCredentials.password.length > 6
+  const isPassword2 = userCredentials.password === userCredentials.password2
+
+  const validationConditions = [
+    {
+      condition: !isValidEmail || !userCredentials.email_address,
+      field: 'email_address',
+      message: 'Please provide a valid email address.',
+    },
+    {
+      condition: !isPasswordValid || !userCredentials.password,
+      field: 'password',
+      message: 'Password must be atleast 6 characters.',
+    },
+    {
+      condition: !isPassword2 || !userCredentials.password2,
+      field: 'password2',
+      message: 'Password does not match.',
+    },
+    {
+      condition: !userCredentials.first_name,
+      field: 'first_name',
+      message: 'Please provide first name.',
+    },
+    {
+      condition: !userCredentials.middle_name,
+      field: 'middle_name',
+      message: 'Please provide middle name.',
+    },
+    {
+      condition: !userCredentials.last_name,
+      field: 'last_name',
+      message: 'Please provide last name.',
+    },
+    {
+      condition: !userCredentials.birthdate,
+      field: 'birthdate',
+      message: 'Please provide birthday.',
+    },
+  ]
+
   useEffect(() => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const isValidEmail = emailRegex.test(userCredentials.email_address)
-    const isPasswordValid = userCredentials.password.length > 6
-    if (userCredentials.email_address !== '' && isValidEmail) {
-      setErrors({ ...errors, email_address: '' })
-    } else if (isPasswordValid) {
-      setErrors({ ...errors, password: '' })
-    } else if (
-      userCredentials.password2 !== '' &&
-      userCredentials.password === userCredentials.password2
-    ) {
-      setErrors({ ...errors, password2: '' })
-    } else if (userCredentials.first_name !== '') {
-      setErrors({ ...errors, first_name: '' })
-    } else if (userCredentials.middle_name !== '') {
-      setErrors({ ...errors, middle_name: '' })
-    } else if (userCredentials.last_name !== '') {
-      setErrors({ ...errors, last_name: '' })
-    } else {
-      console.log(errors)
+    if (!isInitialLoad) {
+      const errorMessages: any = validationConditions
+        .filter(({ condition }) => condition)
+        .reduce((acc: any, item) => {
+          acc[item.field] = item.message
+          return acc
+        }, {})
+      setErrors(errorMessages)
     }
-  }, [userCredentials, errors, setErrors])
+    // eslint-disable-next-line
+  }, [userCredentials, isInitialLoad])
 
   const handleSignUp = async () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const isValidEmail = emailRegex.test(userCredentials.email_address)
-    const isPasswordValid = userCredentials.password.length > 6
-    const isPassword2 = userCredentials.password === userCredentials.password2
-
-    const validationConditions = [
-      {
-        condition: !isValidEmail || !userCredentials.email_address,
-        field: 'email_address',
-        message: 'Please provide a valid email address.',
-      },
-      {
-        condition: !isPasswordValid || !userCredentials.password,
-        field: 'password',
-        message: 'Password must be atleast 6 characters.',
-      },
-      {
-        condition: !isPassword2 || !userCredentials.password2,
-        field: 'password2',
-        message: 'Password does not match.',
-      },
-      {
-        condition: !userCredentials.first_name,
-        field: 'first_name',
-        message: 'Please provide first name.',
-      },
-      {
-        condition: !userCredentials.middle_name,
-        field: 'middle_name',
-        message: 'Please provide middle name.',
-      },
-      {
-        condition: !userCredentials.last_name,
-        field: 'last_name',
-        message: 'Please provide last name.',
-      },
-      {
-        condition: !userCredentials.birthdate,
-        field: 'birthdate',
-        message: 'Please provide birthday.',
-      },
-    ]
+    setIsInitialLoad(false)
 
     const errorMessages = validationConditions
       .filter(({ condition }) => condition)
@@ -159,10 +151,11 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     } else {
       setButtonLoading(true)
       try {
-        const response = await axiosInstance.post(
-          '/api/v1/register',
-          userCredentials
-        )
+        const response = await axios.post('/api/v1/register', userCredentials, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        })
         if (response.data) {
           setButtonLoading(false)
           setIsSnackbarOpen(true)

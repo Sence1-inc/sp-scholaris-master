@@ -49,6 +49,7 @@ const ProviderProfile: React.FC = () => {
 
   useEffect(() => {
     getSubscriber()
+    // eslint-disable-next-line
   }, [user])
 
   const handleUnsubscribe = async () => {
@@ -84,7 +85,7 @@ const ProviderProfile: React.FC = () => {
                 const errorDetails = error.response.data?.details
                   ? error.response.data.details.join(' ')
                   : ''
-                const errorMessage = `Error: ${error.response.data?.error || 'Unsubscribing failed'}. ${errorDetails}`
+                const errorMessage = `${error.response.data?.message || 'Unsubscribing failed'}. ${errorDetails}`
                 setErrorMessage(errorMessage)
               }
             } else if (error.request) {

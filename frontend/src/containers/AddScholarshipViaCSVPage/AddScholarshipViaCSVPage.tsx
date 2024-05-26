@@ -259,7 +259,9 @@ const AddScholarshipViaCSVPage: React.FC = () => {
               1. DO NOT remove the second row. <br />
               2. Ensure adherence to the correct format, particularly for the
               start date and due date. <br />
-              3. Complete all columns with relevant details.
+              3. Ensure that the status' value is "active" or "inactive". <br />
+              4. Ensure that there are no duplicated scholarship. <br />
+              5. Complete all columns with relevant details.
             </Typography>
           </Box>
         </Box>

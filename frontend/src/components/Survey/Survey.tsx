@@ -99,7 +99,7 @@ const Survey: React.FC<SurveyProps> = ({
           >
             {classifications.map((classification: string) => {
               return (
-                <MenuItem value="classification">{classification}</MenuItem>
+                <MenuItem value={classification}>{classification}</MenuItem>
               )
             })}
           </Select>

@@ -73,20 +73,23 @@ module Api
       end
 
       def soft_del
-        if Subscriber.is_soft_deleted(@subscriber)
+        if !@subscriber.deleted_at.present?
           Subscriber.soft_delete(@subscriber)
           render json: {message: "Unsubscribed successfully.", status: :ok}
         else
-          render json: {message: "Already unsubscribed", status: :unprocessable_entity}, status: 422
+          render json: {message: "Already unsubscribed"}, status: 422
         end
       end
     
       def restore
-        if !Subscriber.is_soft_deleted(@subscriber)
-          Subscriber.restore(@subscriber)
-          render json: { message: "Subscriber restored", subscriber: @subscriber, status: :ok }
+        if @subscriber.deleted_at.present?
+          if Subscriber.restore(@subscriber)
+            render json: { message: "Subscriber restored", subscriber: @subscriber }, status: :ok
+          else
+            render json: { message: @subscriber.errors.full_messages }, status: 401
+          end
         else
-          render json: { message: "Already subscribed", status: :unprocessable_entity }, status: 422
+          render json: { message: "Already subscribed" }, status: 422
         end
       end
 

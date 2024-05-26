@@ -43,11 +43,11 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   }, [result.scholarships.scholarships])
 
   useEffect(() => {
-    if (Object.keys(params.params).length === 0) {
+    if ((params?.params?.page as number) > 0) {
       getScholarships()
     }
     // eslint-disable-next-line
-  }, [params.params])
+  }, [params.params?.page])
 
   const handleNext = () => {
     if (scholarships.length === 10) {
