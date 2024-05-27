@@ -1,10 +1,10 @@
 import { Box, Container, Link as MuiLink, Typography } from '@mui/material'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import axios from 'axios'
 import dayjs from 'dayjs'
 import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
@@ -151,11 +151,15 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     } else {
       setButtonLoading(true)
       try {
-        const response = await axios.post('/api/v1/register', userCredentials, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
+        const response = await axiosInstance.post(
+          '/api/v1/register',
+          userCredentials,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
         if (response.data) {
           setButtonLoading(false)
           setIsSnackbarOpen(true)
