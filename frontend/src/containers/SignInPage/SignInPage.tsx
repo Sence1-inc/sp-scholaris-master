@@ -1,7 +1,7 @@
 import { Button, Container, Typography } from '@mui/material'
-import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
@@ -97,15 +97,13 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     } else {
       setIsButtonLoading(true)
       try {
-        const response = await axios.post('/api/v1/login', userCredentials, {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-            'Access-Control-Allow-Headers': '*',
-            'Access-Control-Allow-Credentials': true,
-          },
-        })
+        const response = await axiosInstance.post(
+          `/api/v1/login`,
+          userCredentials,
+          {
+            withCredentials: true,
+          }
+        )
 
         if (response) {
           setErrors({

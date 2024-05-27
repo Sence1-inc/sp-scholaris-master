@@ -25,8 +25,10 @@ instance.interceptors.response.use(
     const currentTime = Date.now()
     const elapsedTimeSinceLastRefresh = currentTime - lastRefreshTime
 
+    const isLoginRequest = error.config.url === '/api/v1/login'
+
     if (
-      elapsedTimeSinceLastRefresh >= 4 * 60 * 1000 ||
+      (!isLoginRequest && elapsedTimeSinceLastRefresh >= 4 * 60 * 1000) ||
       (error.response && error.response.status === 401)
     ) {
       axios.post('/api/v1/refresh')
