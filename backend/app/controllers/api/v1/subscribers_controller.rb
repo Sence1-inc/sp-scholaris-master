@@ -52,6 +52,7 @@ module Api
           newsletter_service = NewsletterService.new(newsletter_params).send_newsletter
 
           render json: {
+              subscriber: @subscriber,
               email: @subscriber.email,
               user_type: @subscriber.user_type,
               message: "Subscription successful. Welcome to our newsletter! Newsletter sent successfully."

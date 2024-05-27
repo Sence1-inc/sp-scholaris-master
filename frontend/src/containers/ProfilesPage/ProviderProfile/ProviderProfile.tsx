@@ -10,7 +10,8 @@ import AccountSettings from '../../../components/AccountCard/AccountSettings'
 import AccountSideBar from '../../../components/AccountCard/AccountSideBar'
 import AccountViewProfile from '../../../components/AccountCard/AccountViewProfile'
 import CustomSnackbar from '../../../components/CustomSnackbar/CustomSnackbar'
-import { useAppSelector } from '../../../redux/store'
+import { initializeSubscirber } from '../../../redux/reducers/SubscriberReducer'
+import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import { ScholarshipProvider } from '../../../redux/types'
 import profileTheme from '../../../styles/profileTheme'
 
@@ -24,6 +25,9 @@ interface Subscriber {
 const ProviderProfile: React.FC = () => {
   const [activeContent, setActiveContent] = useState<string>('view-profile')
   const { lastRoute } = useParams()
+  const subscr: any = useAppSelector(
+    (state) => state.persistedReducer.subscriber
+  )
   const data: any = useAppSelector((state) => state.persistedReducer.profile)
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [successMessage, setSuccessMessage] = useState<string>('')
@@ -31,7 +35,7 @@ const ProviderProfile: React.FC = () => {
   const [warningMessage, setWarningMessage] = useState<string>('')
   const [infoMessage, setInfoMessage] = useState<string>('')
   const user = useAppSelector((state) => state.persistedReducer.user)
-  const [subscriber, setSubscriber] = useState<Subscriber | null>(null)
+  const dispatch = useAppDispatch()
 
   const getSubscriber = async () => {
     try {
@@ -40,7 +44,7 @@ const ProviderProfile: React.FC = () => {
       )
 
       if (subs.data) {
-        setSubscriber(subs.data)
+        dispatch(initializeSubscirber(subs.data))
       }
     } catch (error) {
       console.log(error)
@@ -48,17 +52,20 @@ const ProviderProfile: React.FC = () => {
   }
 
   useEffect(() => {
-    getSubscriber()
+    if (user) {
+      getSubscriber()
+    }
+
     // eslint-disable-next-line
   }, [user])
 
   const handleUnsubscribe = async () => {
     getSubscriber()
-    if (subscriber) {
+    if (!subscr.deleted_at) {
       try {
         const response = await axiosInstance.post(
           `api/v1/subscribers/soft_delete`,
-          { id: subscriber?.id },
+          { id: subscr?.id },
           { withCredentials: true }
         )
 
