@@ -161,7 +161,8 @@ module Api
             :application_link, 
             :school_year,
             :scholarship_type_id,
-            :scholarship_provider_id
+            :scholarship_provider_id,
+            :timezone
           ).merge(eligibilities: params[:eligibilities]).merge(requirements: params[:requirements]).merge(benefits: params[:benefits])
         end
 
