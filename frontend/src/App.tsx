@@ -54,14 +54,15 @@ const ProviderRoutes: React.FC = () => (
 const App: React.FC = () => {
   const { getScholarships } = useGetScholarships()
   const user = useAppSelector((state) => state.persistedReducer.user)
+  const params = useAppSelector((state) => state.searchParams)
 
   useEffect(() => {
-    if (!user.email_address) {
+    if (!user.email_address && Object.keys(params.params).length === 0) {
       getScholarships(false)
     }
 
     // eslint-disable-next-line
-  }, [])
+  }, [params.params])
 
   return (
     <Box

@@ -25,7 +25,7 @@ const saveUserToIndexedDB = (user: User) => {
 
   request.onsuccess = (event: any) => {
     const db = event.target.result
-    console.log('db', db)
+
     const transaction = db.transaction(['user'], 'readwrite')
     const objectStore = transaction.objectStore('user')
     const getUserRequest = objectStore.get(1)
@@ -49,7 +49,7 @@ const saveUserToIndexedDB = (user: User) => {
     }
 
     transaction.oncomplete = () => {
-      console.log('User state saved to IndexedDB')
+      // console.log('User state saved to IndexedDB')
     }
   }
 }

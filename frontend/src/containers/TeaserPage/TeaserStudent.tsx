@@ -58,6 +58,7 @@ const HomePage: React.FC = () => {
         />
       </FloatingElement>
       <FabButton
+        id="fab-button-student"
         icon={
           <EmailIcon
             sx={{

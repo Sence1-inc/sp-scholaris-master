@@ -36,7 +36,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   )
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  console.log(isAuthenticated)
+
   const handleDeleteCookie = async () => {
     const data = {
       email: user.email_address,
@@ -83,9 +83,19 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           <ListItem>
             <Typography
               variant="body1"
-              component={Link}
-              to="/student"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
+              component={Button}
+              onClick={() => {
+                const fabButton = document.getElementById('fab-button-student')
+
+                if (fabButton) {
+                  fabButton.click()
+                }
+              }}
+              sx={{
+                color: 'common.white',
+                textDecoration: 'none',
+                textTransform: 'capitalize',
+              }}
             >
               Newsletter
             </Typography>
@@ -124,9 +134,19 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           <ListItem>
             <Typography
               variant="body1"
-              component={Link}
-              to="/provider"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
+              component={Button}
+              onClick={() => {
+                const fabButton = document.getElementById('fab-button-provider')
+
+                if (fabButton) {
+                  fabButton.click()
+                }
+              }}
+              sx={{
+                color: 'common.white',
+                textDecoration: 'none',
+                textTransform: 'capitalize',
+              }}
             >
               Newsletter
             </Typography>

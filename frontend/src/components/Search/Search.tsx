@@ -39,6 +39,13 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const { name: nameParam, page, limit, ...restParams } = params.params
   const data: any = scholarships
 
+  const formatString = (str: string) => {
+    return str
+      .split('_')
+      .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+  }
+
   useEffect(() => {
     if (searchRef.current && hash === '#search' && !hasScrolled) {
       searchRef.current.scrollIntoView({
@@ -55,6 +62,12 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     }
     // eslint-disable-next-line
   }, [searchRef, hash])
+
+  useEffect(() => {
+    dispatch(initializeParams({}))
+
+    // eslint-disable-next-line
+  }, [])
 
   const handleSearch: (e: React.MouseEvent<HTMLButtonElement>) => void = async (
     e
@@ -168,7 +181,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
                   return (
                     <Chip
                       key={key}
-                      label={value as string}
+                      label={`${formatString(key)}: ${value}`}
                       variant="outlined"
                       onDelete={() => handleChipDelete(key)}
                     />

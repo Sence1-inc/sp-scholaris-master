@@ -6,12 +6,19 @@ interface FabButtonProps {
   handleClick: (event: React.MouseEvent<HTMLButtonElement>) => void
   icon: React.ReactNode
   text: string
+  id?: string
 }
 
-const FabButton: React.FC<FabButtonProps> = ({ handleClick, icon, text }) => {
+const FabButton: React.FC<FabButtonProps> = ({
+  handleClick,
+  icon,
+  text,
+  id,
+}) => {
   const theme = useTheme()
   return (
     <Fab
+      id={id}
       className="fab"
       onClick={handleClick}
       variant="extended"

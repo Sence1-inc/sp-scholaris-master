@@ -52,7 +52,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   }
 
   function handlePassword(inputValue: string) {
-    console.log(inputValue)
     setUserCredentials((prevUserCredentials) => ({
       ...prevUserCredentials,
       password: inputValue,

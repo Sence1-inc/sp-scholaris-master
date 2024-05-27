@@ -53,7 +53,7 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
     setActiveContent(target.id)
     navigate(`/provider/account/${id}/${target.id}`)
   }
-  // console.log(sideItem) CONTINUE THIS!!!!~!
+
   return (
     <Card sx={profileTheme.container.cardSideContainer}>
       <Box sx={profileTheme.box.boxSideContentstyle}>

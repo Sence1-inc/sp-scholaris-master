@@ -36,8 +36,8 @@ const Filter: React.FC<FilterProps> = () => {
   ]
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [benefits, setBenefits] = useState<Option[] | []>([])
-  const [courses, setCourses] = useState<Option[] | []>([])
-  const [schools, setSchools] = useState<Option[] | []>([])
+  // const [courses, setCourses] = useState<Option[] | []>([])
+  // const [schools, setSchools] = useState<Option[] | []>([])
   const [providers, setProviders] = useState<Option[] | []>([])
   const [selectedParams, setSelectedParams] = useState<Params>({})
   const [selectedDateRange, setSelectedDateRange] = useState<
@@ -75,16 +75,16 @@ const Filter: React.FC<FilterProps> = () => {
   useEffect(() => {
     const getData = async () => {
       const benefits = await axiosInstance.get(`api/v1/benefits`)
-      const courses = await axiosInstance.get(`api/v1/courses`)
-      const schools = await axiosInstance.get(`api/v1/schools`)
+      // const courses = await axiosInstance.get(`api/v1/courses`)
+      // const schools = await axiosInstance.get(`api/v1/schools`)
       const providers = await axiosInstance.get(
         `api/v1/scholarship_providers`,
         { withCredentials: true }
       )
 
       setBenefits(mapToOptions(benefits.data, 'benefit_name'))
-      setCourses(mapToOptions(courses.data, 'course_name'))
-      setSchools(mapToOptions(schools.data, 'school_name'))
+      // setCourses(mapToOptions(courses.data, 'course_name'))
+      // setSchools(mapToOptions(schools.data, 'school_name'))
       setProviders(mapToOptions(providers.data, 'provider_name'))
     }
 
@@ -97,7 +97,7 @@ const Filter: React.FC<FilterProps> = () => {
     )
   }
 
-  const handleSelect = (ranges: RangeKeyDict) => {
+  const handleDateSelect = (ranges: RangeKeyDict) => {
     const newDateRange: DateRangeItem[] = [ranges.selection as DateRangeItem]
     setSelectedDateRange(newDateRange)
     setSelectedParams((prevParams: Params) => ({
@@ -105,6 +105,13 @@ const Filter: React.FC<FilterProps> = () => {
       start_date: format(ranges.selection.startDate as Date, 'LLLL dd, yyyy'),
       due_date: format(ranges.selection.endDate as Date, 'LLLL dd, yyyy'),
     }))
+    dispatch(
+      initializeParams({
+        ...params.params,
+        start_date: format(ranges.selection.startDate as Date, 'LLLL dd, yyyy'),
+        due_date: format(ranges.selection.endDate as Date, 'LLLL dd, yyyy'),
+      })
+    )
   }
 
   useEffect(() => {
@@ -121,7 +128,7 @@ const Filter: React.FC<FilterProps> = () => {
       </div>
       <FilterOption
         selectedDateRange={selectedDateRange}
-        handleSelect={handleSelect}
+        handleSelect={handleDateSelect}
         type="date"
         isVisible={activeDropdown === 'date'}
         onToggleVisibility={() => handleDropdownToggle('date')}
@@ -136,15 +143,15 @@ const Filter: React.FC<FilterProps> = () => {
       >
         Benefits
       </FilterOption>
-      <FilterOption
+      {/* <FilterOption
         handleOptionClick={handleOptionClick}
         options={courses}
         isVisible={activeDropdown === 'course'}
         onToggleVisibility={() => handleDropdownToggle('course')}
       >
         Course
-      </FilterOption>
-      <FilterOption
+      </FilterOption> */}
+      {/* <FilterOption
         handleOptionClick={handleOptionClick}
         options={schools}
         type="search"
@@ -152,7 +159,7 @@ const Filter: React.FC<FilterProps> = () => {
         onToggleVisibility={() => handleDropdownToggle('school')}
       >
         School
-      </FilterOption>
+      </FilterOption> */}
       <FilterOption
         handleOptionClick={handleOptionClick}
         options={providers}

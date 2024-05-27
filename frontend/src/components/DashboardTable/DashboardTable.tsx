@@ -129,14 +129,12 @@ export default function DataTable() {
         )
 
         if (response.status === 200) {
-          console.log('DATA', response.data)
           setIsLoading(false)
           setRowCount(response.data.total_count)
           setRowData(response.data.scholarships)
           dispatch(initializeScholarships(response.data))
         }
       } catch (error: any) {
-        console.log('Error', error)
         setIsLoading(false)
         if (error) {
           dispatch(initializeScholarships({}))

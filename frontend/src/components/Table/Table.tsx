@@ -10,6 +10,7 @@ interface TableProps {
   hasPagination: boolean
   scholarships: Scholarship[]
   total_count?: number
+  total_pages?: number
   page?: number
   handlePrevious?: () => void
   handleNext?: () => void
@@ -20,6 +21,7 @@ export const Table: React.FC<TableProps> = ({
   scholarships,
   page,
   total_count,
+  total_pages,
   handlePrevious,
   handleNext,
 }) => {
@@ -91,7 +93,10 @@ export const Table: React.FC<TableProps> = ({
             Previous
           </Typography>
           <Typography variant="h6" sx={{ color: 'secondary.main' }}>
-            Page: <span>{page}</span>
+            Page:{' '}
+            <span>
+              {page}/{total_pages}
+            </span>
           </Typography>
           <Typography
             variant="h6"

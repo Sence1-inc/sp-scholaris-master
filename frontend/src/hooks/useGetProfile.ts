@@ -19,7 +19,6 @@ const useGetProfile = () => {
         })
 
       if (response.status === 200) {
-        console.log('provider data', response.data)
         dispatch(initializeProfile(response.data as Profile))
       }
     } catch (error) {

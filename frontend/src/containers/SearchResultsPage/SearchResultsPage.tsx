@@ -49,6 +49,19 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     // eslint-disable-next-line
   }, [params.params?.page])
 
+  useEffect(() => {
+    if ((params?.params?.page as number) > result?.scholarships?.total_pages) {
+      setPage(result.scholarships.total_pages)
+      dispatch(
+        initializeParams({
+          ...params.params,
+          page: result.scholarships.total_pages,
+        })
+      )
+    }
+    // eslint-disable-next-line
+  }, [params.params.page, result.scholarships.total_pages])
+
   const handleNext = () => {
     if (scholarships.length === 10) {
       setPage(page + 1)
@@ -97,6 +110,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         {window.innerWidth > theme.breakpoints.values.md ? (
           <Table
             total_count={result.scholarships.total_count}
+            total_pages={result.scholarships.total_pages}
             page={page}
             hasPagination={true}
             handleNext={handleNext}
