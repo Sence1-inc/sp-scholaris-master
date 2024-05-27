@@ -70,7 +70,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
 
         const { errors } = results[0]
 
-        if (errors && errors.length > 0) {
+        if (errors && errors.length > 0 && errorsCount > 0) {
           setSuccessMessage('')
           setErrorMessage(errors.join(', '))
         } else {
@@ -95,8 +95,9 @@ const AddScholarshipViaCSVPage: React.FC = () => {
 
   useEffect(() => {
     if (errorsCount > 0) {
+      setSuccessMessage('')
       setErrorMessage(
-        `${successMessage} but there are ${errorsCount} row/s not saved due to incomplete details`
+        `File uploaded successfully but there are ${errorsCount} row/s not saved due to incomplete details`
       )
     }
     // eslint-disable-next-line
