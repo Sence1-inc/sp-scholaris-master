@@ -83,32 +83,32 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     {
       condition: !isPasswordValid || !userCredentials.password,
       field: 'password',
-      message: 'Password must be atleast 6 characters.',
+      message: 'Password must be at least 6 characters.',
     },
     {
       condition: !isPassword2 || !userCredentials.password2,
       field: 'password2',
-      message: 'Password does not match.',
+      message: 'Passwords do not match.',
     },
     {
       condition: !userCredentials.first_name,
       field: 'first_name',
-      message: 'Please provide first name.',
+      message: 'Please provide your first name.',
     },
     {
       condition: !userCredentials.middle_name,
       field: 'middle_name',
-      message: 'Please provide middle name.',
+      message: 'Please provide your middle name.',
     },
     {
       condition: !userCredentials.last_name,
       field: 'last_name',
-      message: 'Please provide last name.',
+      message: 'Please provide your last name.',
     },
     {
       condition: !userCredentials.birthdate,
       field: 'birthdate',
-      message: 'Please provide birthday.',
+      message: 'Please provide your birthday.',
     },
   ]
 
