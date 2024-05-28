@@ -1,13 +1,15 @@
+import { Typography } from '@mui/material'
 import React, { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import WelcomeButton from '../../components/Button/WelcomeButton'
 import AngleDownIcon from '../../public/images/angles-down-solid.svg'
-import UserIcon from '../../public/images/users-solid.svg'
 import SchoolIcon from '../../public/images/school-solid.svg'
+import UserIcon from '../../public/images/users-solid.svg'
 import WelcomeImage from '../../public/images/welcome-icon.png'
 import './WelcomePage.css'
-import { Typography } from '@mui/material'
 
 const WelcomePage: React.FC = () => {
+  const location = useLocation()
   useEffect(() => {
     document.cookie = `lastVisited=${location.pathname}; path=/; SameSite=Lax`
   }, [])
