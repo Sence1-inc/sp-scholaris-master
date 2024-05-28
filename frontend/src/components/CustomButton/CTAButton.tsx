@@ -6,6 +6,7 @@ interface CTAButtonProps {
   label: string
   loading: boolean
   styles?: any
+  disabled?: boolean
 }
 
 const CTAButton: React.FC<CTAButtonProps> = ({
@@ -13,9 +14,11 @@ const CTAButton: React.FC<CTAButtonProps> = ({
   label,
   loading,
   styles,
+  disabled = false,
 }) => {
   return (
     <LoadingButton
+      disabled={disabled}
       fullWidth
       loading={loading}
       loadingPosition="center"

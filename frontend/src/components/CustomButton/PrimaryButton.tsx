@@ -6,6 +6,7 @@ interface PrimaryButtonProps {
   label: string
   loading: boolean
   styles?: any
+  disabled?: boolean
 }
 
 const PrimaryButton: React.FC<PrimaryButtonProps> = ({
@@ -13,9 +14,11 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   label,
   loading,
   styles,
+  disabled = false,
 }) => {
   return (
     <LoadingButton
+      disabled={disabled}
       fullWidth
       loading={loading}
       loadingPosition="center"

@@ -2,7 +2,8 @@ import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import { Backdrop, Button, CircularProgress } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import PrimaryButton from '../../components/Button/PrimaryButton'
+import CTAButton from '../../components/CustomButton/CTAButton'
+import PrimaryButton from '../../components/CustomButton/PrimaryButton'
 import TextLoading from '../../components/Loading/TextLoading'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
 import ProviderProfile from '../../public/images/pro-profile.png'
@@ -172,7 +173,13 @@ export const ScholarshipDetailsPage: React.FC<
                 </div>
               </div>
               <div className="details-section">
-                <PrimaryButton label="Apply" />
+                <CTAButton
+                  disabled={true}
+                  handleClick={() => console.log('apply')}
+                  label="Apply"
+                  loading={false}
+                  styles={{ fontSize: '24px' }}
+                />
               </div>
             </div>
           )}
@@ -193,7 +200,12 @@ export const ScholarshipDetailsPage: React.FC<
                     }
                   </p>
                   <div className="details-section">
-                    <PrimaryButton label="Visit Profile" />
+                    <PrimaryButton
+                      disabled={true}
+                      handleClick={() => console.log('visit profile')}
+                      loading={false}
+                      label="Visit Profile"
+                    />
                   </div>
                 </div>
               </div>
