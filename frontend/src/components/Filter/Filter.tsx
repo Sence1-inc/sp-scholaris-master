@@ -133,7 +133,7 @@ const Filter: React.FC<FilterProps> = () => {
         isVisible={activeDropdown === 'date'}
         onToggleVisibility={() => handleDropdownToggle('date')}
       >
-        Date
+        Application Date
       </FilterOption>
       <FilterOption
         handleOptionClick={handleOptionClick}
