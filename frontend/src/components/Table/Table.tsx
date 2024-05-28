@@ -72,7 +72,7 @@ export const Table: React.FC<TableProps> = ({
         ) : (
           <ul>
             <li className="search__results-content">
-              <Typography variant="h5">No scholarship found.</Typography>
+              <Typography variant="h5">No matching results</Typography>
             </li>
           </ul>
         )}

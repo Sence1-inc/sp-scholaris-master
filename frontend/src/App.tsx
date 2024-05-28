@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
-import React, { useEffect } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Route, Routes, useSearchParams } from 'react-router-dom'
 import Disclaimer from './components/Disclaimer/Disclaimer'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 import Footer from './components/Footer/Footer'
@@ -55,12 +55,22 @@ const App: React.FC = () => {
   const { getScholarships } = useGetScholarships()
   const user = useAppSelector((state) => state.persistedReducer.user)
   const params = useAppSelector((state) => state.searchParams)
+  const [searchParams] = useSearchParams()
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
 
   useEffect(() => {
-    if (!user.email_address && Object.keys(params.params).length === 0) {
+    if (!user.email_address && searchParams.size === 0) {
       getScholarships(false)
     }
+    // eslint-disable-next-line
+  }, [searchParams])
 
+  useEffect(() => {
+    if (Object.keys(params.params).length > 0 && isInitialLoad) {
+      getScholarships()
+    }
+
+    setIsInitialLoad(false)
     // eslint-disable-next-line
   }, [params.params])
 

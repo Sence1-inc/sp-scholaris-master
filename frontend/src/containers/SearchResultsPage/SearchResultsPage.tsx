@@ -1,8 +1,9 @@
-import { Typography, useTheme } from '@mui/material'
+import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
+import HomeIcon from '@mui/icons-material/Home'
+import { Button, Typography, useTheme } from '@mui/material'
 import queryString from 'query-string'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
-import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
 import Search from '../../components/Search/Search'
 import Table from '../../components/Table/Table'
 import useGetScholarships from '../../hooks/useGetScholarships'
@@ -10,6 +11,17 @@ import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 import './SearchResultsPage.css'
+
+const getCookie = (name: string) => {
+  const cookies = document.cookie.split(';')
+  for (let cookie of cookies) {
+    const [cookieName, cookieValue] = cookie.split('=')
+    if (cookieName === name) {
+      return cookieValue
+    }
+  }
+  return null
+}
 
 interface SearchResultsPageProps {
   isASection: boolean
@@ -37,6 +49,13 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const [scholarships, setScholarships] = useState<Scholarship[]>([])
   const [page, setPage] = useState<number>(1)
   const params = useAppSelector((state) => state.searchParams)
+  const [cookieValue, setCookieValue] = useState<string>('')
+
+  useEffect(() => {
+    const value = getCookie('lastVisited')
+    setCookieValue(value as string)
+    console.log(cookieValue)
+  }, [])
 
   useEffect(() => {
     setScholarships(result.scholarships.scholarships)
@@ -104,7 +123,35 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   return (
     <section className="search-results">
       <div className="container-1040">
-        <Breadcrumbs />
+        <Button
+          onClick={() => {
+            if (cookieValue) {
+              dispatch(initializeParams({}))
+              navigate(cookieValue)
+            }
+          }}
+          sx={{
+            alignSelf: 'flex-start',
+            color: 'secondary.main',
+            fontSize: '24px',
+            fontWeight: 700,
+            textDecoration: 'none',
+            '&:hover': {
+              textDecoration: 'underline',
+            },
+          }}
+        >
+          {!getCookie('lastVisited') ? (
+            <>
+              <HomeIcon />
+              Main Menu
+            </>
+          ) : (
+            <>
+              <ArrowBackIos /> Back
+            </>
+          )}
+        </Button>
         <Typography variant="h3">Search Results</Typography>
         <Search isSection={false} />
         {window.innerWidth > theme.breakpoints.values.md ? (

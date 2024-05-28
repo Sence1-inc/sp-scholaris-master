@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import WelcomeButton from '../../components/Button/WelcomeButton'
 import AngleDownIcon from '../../public/images/angles-down-solid.svg'
 import UserIcon from '../../public/images/users-solid.svg'
@@ -8,6 +8,9 @@ import './WelcomePage.css'
 import { Typography } from '@mui/material'
 
 const WelcomePage: React.FC = () => {
+  useEffect(() => {
+    document.cookie = `lastVisited=${location.pathname}; path=/; SameSite=Lax`
+  }, [])
   return (
     <>
       <div className="content__welcome-intro">

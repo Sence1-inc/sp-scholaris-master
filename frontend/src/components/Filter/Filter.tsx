@@ -119,7 +119,7 @@ const Filter: React.FC<FilterProps> = () => {
       dispatch(initializeParams({}))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedParams, dispatch])
+  }, [selectedParams])
 
   return (
     <div className="filter">

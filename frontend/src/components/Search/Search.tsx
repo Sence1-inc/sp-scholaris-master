@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -32,12 +32,15 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     (state) => state.persistedReducer.scholarships
   )
   const { getScholarships } = useGetScholarships()
-  const [name, setName] = useState<string>(params.params.name as string)
+  const { name: nameParam, page, limit, ...restParams } = params.params
+  const [name, setName] = useState<string>(nameParam as string)
   const [hasScrolled, setHasScrolled] = useState(false)
   const { hash } = useLocation()
   const searchRef = useRef<HTMLElement>(null)
-  const { name: nameParam, page, limit, ...restParams } = params.params
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const data: any = scholarships
+  const [searchParams] = useSearchParams()
+  const { benefits, provider, start_date, due_date } = params.params
 
   const formatString = (str: string) => {
     return str
@@ -45,6 +48,10 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
       .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ')
   }
+
+  useEffect(() => {
+    setIsInitialLoad(false)
+  }, [])
 
   useEffect(() => {
     if (searchRef.current && hash === '#search' && !hasScrolled) {
@@ -63,12 +70,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     // eslint-disable-next-line
   }, [searchRef, hash])
 
-  useEffect(() => {
-    dispatch(initializeParams({}))
-
-    // eslint-disable-next-line
-  }, [])
-
   const handleSearch: (e: React.MouseEvent<HTMLButtonElement>) => void = async (
     e
   ) => {
@@ -83,21 +84,47 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   }
 
   useEffect(() => {
-    dispatch(initializeParams({ ...params.params, ...(name ? { name } : {}) }))
+    if ((benefits || provider || start_date || due_date) && !isSection) {
+      getScholarships()
+    }
+
+    if (searchParams.size === 0 && !isSection) {
+      getScholarships()
+    }
+  }, [benefits, provider, start_date, due_date, isSection])
+
+  useEffect(() => {
+    if (nameParam) {
+      setName(nameParam as string)
+    } else {
+      setName('')
+    }
+  }, [nameParam])
+
+  useEffect(() => {
+    if (!isSection && !name && !isInitialLoad) {
+      getScholarships()
+    }
+  }, [nameParam, isInitialLoad])
+
+  useEffect(() => {
+    if (name) {
+      dispatch(
+        initializeParams({
+          ...params.params,
+          name: name,
+        })
+      )
+    } else {
+      dispatch(initializeParams(restParams))
+    }
+
     // eslint-disable-next-line
   }, [name])
 
-  useEffect(() => {
-    if (!isSection && Object.keys(params.params).length === 0) {
-      setName('')
-    }
-    // eslint-disable-next-line
-  }, [params.params, isSection])
-
   const handleChipDelete = (key: string) => {
-    const currentParams = { ...params.params }
-    delete currentParams[key]
-    dispatch(initializeParams(currentParams))
+    const { [key]: _, ...rest } = params.params
+    dispatch(initializeParams(rest))
   }
 
   return (
@@ -135,7 +162,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               Search
             </Button>
           </Box>
-          <Filter />
+          {!isSection && <Filter />}
           {window.innerWidth > theme.breakpoints.values.md ? (
             <Table
               total_count={data.scholarships.total_count}

@@ -1,7 +1,7 @@
 import EmailIcon from '@mui/icons-material/Email'
 import { Box } from '@mui/material'
 import { keyframes } from '@mui/system'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FabButton from '../../components/FabButton/FabButton'
 import FeatureGuides from '../../components/Feature/FeatureGuides'
 import FloatingElement from '../../components/FloatingElement/FloatingElement'
@@ -31,6 +31,10 @@ const HomePage: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  useEffect(() => {
+    document.cookie = `lastVisited=${location.pathname}; path=/; SameSite=Lax`
+  }, [])
 
   return (
     <>
