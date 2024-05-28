@@ -34,6 +34,7 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     document.cookie = `lastVisited=${location.pathname}; path=/; SameSite=Lax`
+    // eslint-disable-next-line
   }, [])
 
   return (

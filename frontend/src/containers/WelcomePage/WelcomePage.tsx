@@ -12,6 +12,7 @@ const WelcomePage: React.FC = () => {
   const location = useLocation()
   useEffect(() => {
     document.cookie = `lastVisited=${location.pathname}; path=/; SameSite=Lax`
+    // eslint-disable-next-line
   }, [])
   return (
     <>
