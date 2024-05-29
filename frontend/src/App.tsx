@@ -1,6 +1,7 @@
 import { Box } from '@mui/material'
+import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
-import { Route, Routes, useSearchParams } from 'react-router-dom'
+import { Route, Routes, useLocation, useSearchParams } from 'react-router-dom'
 import Disclaimer from './components/Disclaimer/Disclaimer'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 import Footer from './components/Footer/Footer'
@@ -57,6 +58,7 @@ const App: React.FC = () => {
   const params = useAppSelector((state) => state.searchParams)
   const [searchParams] = useSearchParams()
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
+  const location = useLocation()
 
   useEffect(() => {
     if (!user.email_address && searchParams.size === 0) {
@@ -73,6 +75,12 @@ const App: React.FC = () => {
     setIsInitialLoad(false)
     // eslint-disable-next-line
   }, [params.params])
+
+  useEffect(() => {
+    if (location.pathname !== '/scholarships') {
+      Cookies.set('lastVisited', location.pathname)
+    }
+  }, [location.pathname])
 
   return (
     <Box
