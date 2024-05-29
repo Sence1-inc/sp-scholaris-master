@@ -1,6 +1,5 @@
 import { Typography } from '@mui/material'
-import React, { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
+import React from 'react'
 import WelcomeButton from '../../components/Button/WelcomeButton'
 import AngleDownIcon from '../../public/images/angles-down-solid.svg'
 import SchoolIcon from '../../public/images/school-solid.svg'
@@ -9,11 +8,6 @@ import WelcomeImage from '../../public/images/welcome-icon.png'
 import './WelcomePage.css'
 
 const WelcomePage: React.FC = () => {
-  const location = useLocation()
-  useEffect(() => {
-    document.cookie = `lastVisited=${location.pathname}; path=/; SameSite=Lax`
-    // eslint-disable-next-line
-  }, [])
   return (
     <>
       <div className="content__welcome-intro">

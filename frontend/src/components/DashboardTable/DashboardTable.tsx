@@ -8,7 +8,6 @@ import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
-import { initializeScholarships } from '../../redux/reducers/ScholarshipsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 import CustomSnackbar from '../CustomSnackbar/CustomSnackbar'
@@ -26,9 +25,6 @@ export default function DataTable() {
   const user = useAppSelector((state) => state.persistedReducer.user)
   const dispatch = useAppDispatch()
   const { getScholarshipData } = useGetScholarshipsData()
-  const data: any = useAppSelector(
-    (state) => state.persistedReducer.scholarships
-  )
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -45,37 +41,6 @@ export default function DataTable() {
       setIsLoading(false)
     }
   }, [rowCount])
-
-  useEffect(() => {
-    if (
-      data.scholarships &&
-      Array.isArray(data?.scholarships?.scholarships) &&
-      data?.scholarships?.scholarships?.length > 0
-    ) {
-      const row = data.scholarships.scholarships.map(
-        (scholarship: Scholarship) => {
-          return {
-            id: scholarship.id,
-            scholarshipName: scholarship.scholarship_name,
-            startDate: new Date(scholarship.start_date),
-            endDate: new Date(scholarship.due_date),
-            status: scholarship.status,
-          }
-        }
-      )
-
-      setRowData(row)
-    }
-
-    if (
-      data.scholarships &&
-      Array.isArray(data?.scholarships?.scholarships) &&
-      data?.scholarships?.scholarships?.length === 0
-    ) {
-      setIsLoading(false)
-      setRowData([])
-    }
-  }, [data])
 
   useEffect(() => {
     if (!isSnackbarOpen) {
@@ -98,7 +63,7 @@ export default function DataTable() {
         setIsSnackbarOpen(true)
         setWarningMessage('')
         setSuccessMessage('Successfully deleted')
-        dispatch(initializeScholarships(response.data))
+        formatScholarships(response.data.scholarships)
       }
     } catch (error) {
       setIsLoading(false)
@@ -116,6 +81,20 @@ export default function DataTable() {
     // eslint-disable-next-line
   }, [])
 
+  const formatScholarships = (data: Scholarship[]) => {
+    const row = data.map((scholarship: Scholarship) => {
+      return {
+        id: scholarship.id,
+        scholarshipName: scholarship.scholarship_name,
+        startDate: new Date(scholarship.start_date),
+        endDate: new Date(scholarship.due_date),
+        status: scholarship.status,
+      }
+    })
+
+    setRowData(row)
+  }
+
   useEffect(() => {
     const getProviderScholarships = async () => {
       try {
@@ -131,13 +110,12 @@ export default function DataTable() {
         if (response.status === 200) {
           setIsLoading(false)
           setRowCount(response.data.total_count)
-          setRowData(response.data.scholarships)
-          dispatch(initializeScholarships(response.data))
+          formatScholarships(response.data.scholarships)
         }
       } catch (error: any) {
         setIsLoading(false)
         if (error) {
-          dispatch(initializeScholarships({}))
+          setRowData([])
           if (error.response && error.response.status === 403) {
             navigate('/')
           }

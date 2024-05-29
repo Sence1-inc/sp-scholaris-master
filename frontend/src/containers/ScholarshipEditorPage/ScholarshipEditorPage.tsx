@@ -154,6 +154,7 @@ const ScholarshipEditorPage = () => {
         scholarshipData.scholarship_type?.scholarship_type_name
       )
     }
+    // eslint-disable-next-line
   }, [scholarshipData])
 
   useEffect(() => {
@@ -184,6 +185,7 @@ const ScholarshipEditorPage = () => {
         )?.id ?? null
       )
     }
+    // eslint-disable-next-line
   }, [scholarshipType, scholarshipTypes])
 
   const validationConditions = [
@@ -360,6 +362,7 @@ const ScholarshipEditorPage = () => {
             setSchoolYear('')
             setStatus('')
             setScholarshipTypeId(null)
+            setScholarshipType('')
             setErrors({
               scholarship_name: '',
               description: '',

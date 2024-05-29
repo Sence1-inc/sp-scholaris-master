@@ -1,8 +1,7 @@
 import EmailIcon from '@mui/icons-material/Email'
 import { Box } from '@mui/material'
 import { keyframes } from '@mui/system'
-import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import React, { useState } from 'react'
 import FabButton from '../../components/FabButton/FabButton'
 import FeatureGuides from '../../components/Feature/FeatureGuides'
 import FloatingElement from '../../components/FloatingElement/FloatingElement'
@@ -21,7 +20,6 @@ const jump = keyframes({
 })
 
 const HomePage: React.FC = () => {
-  const location = useLocation()
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -31,11 +29,6 @@ const HomePage: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
-
-  useEffect(() => {
-    document.cookie = `lastVisited=${location.pathname}; path=/; SameSite=Lax`
-    // eslint-disable-next-line
-  }, [])
 
   return (
     <>
