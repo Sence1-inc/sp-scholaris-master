@@ -80,36 +80,42 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             flexDirection: { xs: 'column', md: 'row' },
           }}
         >
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Button}
-              onClick={() => {
-                const fabButton = document.getElementById('fab-button-student')
+          {location.pathname !== '/student/survey' && (
+            <>
+              <ListItem>
+                <Typography
+                  variant="body1"
+                  component={Button}
+                  onClick={() => {
+                    const fabButton =
+                      document.getElementById('fab-button-student')
 
-                if (fabButton) {
-                  fabButton.click()
-                }
-              }}
-              sx={{
-                color: 'common.white',
-                textDecoration: 'none',
-                textTransform: 'capitalize',
-              }}
-            >
-              Newsletter
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Link}
-              to="/student/survey"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
-            >
-              Survey
-            </Typography>
-          </ListItem>
+                    if (fabButton) {
+                      fabButton.click()
+                    }
+                  }}
+                  sx={{
+                    color: 'common.white',
+                    textDecoration: 'none',
+                    textTransform: 'capitalize',
+                  }}
+                >
+                  Newsletter
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography
+                  variant="body1"
+                  component={Link}
+                  to="/student/survey"
+                  sx={{ color: 'common.white', textDecoration: 'none' }}
+                >
+                  Survey
+                </Typography>
+              </ListItem>
+            </>
+          )}
+
           <ListItem disablePadding>
             <Button
               sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
@@ -131,36 +137,43 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             flexDirection: { xs: 'column', md: 'row' },
           }}
         >
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Button}
-              onClick={() => {
-                const fabButton = document.getElementById('fab-button-provider')
+          {location.pathname !== '/provider/survey' && (
+            <>
+              <ListItem>
+                <Typography
+                  variant="body1"
+                  component={Button}
+                  onClick={() => {
+                    const fabButton = document.getElementById(
+                      'fab-button-provider'
+                    )
 
-                if (fabButton) {
-                  fabButton.click()
-                }
-              }}
-              sx={{
-                color: 'common.white',
-                textDecoration: 'none',
-                textTransform: 'capitalize',
-              }}
-            >
-              Newsletter
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Link}
-              to="/provider/survey"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
-            >
-              Survey
-            </Typography>
-          </ListItem>
+                    if (fabButton) {
+                      fabButton.click()
+                    }
+                  }}
+                  sx={{
+                    color: 'common.white',
+                    textDecoration: 'none',
+                    textTransform: 'capitalize',
+                  }}
+                >
+                  Newsletter
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography
+                  variant="body1"
+                  component={Link}
+                  to="/provider/survey"
+                  sx={{ color: 'common.white', textDecoration: 'none' }}
+                >
+                  Survey
+                </Typography>
+              </ListItem>
+            </>
+          )}
+
           <ListItem disablePadding sx={{ width: 'auto' }}>
             <Button
               sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}

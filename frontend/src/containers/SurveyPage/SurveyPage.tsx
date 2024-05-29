@@ -1,3 +1,4 @@
+import { ArrowBackIos, Home } from '@mui/icons-material'
 import {
   Box,
   Button,
@@ -8,6 +9,7 @@ import {
   Typography,
 } from '@mui/material'
 import { AxiosResponse } from 'axios'
+import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
@@ -240,6 +242,33 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         marginBlock: '40px',
       }}
     >
+      <Button
+        onClick={() => {
+          console.log(Cookies.get('lastVisited'))
+          navigate((Cookies.get('lastVisited') as string) ?? '/')
+        }}
+        sx={{
+          alignSelf: 'flex-start',
+          color: 'secondary.main',
+          fontSize: '24px',
+          fontWeight: 700,
+          textDecoration: 'none',
+          '&:hover': {
+            textDecoration: 'underline',
+          },
+        }}
+      >
+        {!Cookies.get('lastVisited') ? (
+          <>
+            <Home />
+            Main Menu
+          </>
+        ) : (
+          <>
+            <ArrowBackIos /> Back
+          </>
+        )}
+      </Button>
       <CustomSnackbar
         errorMessage={errorMessage}
         isSnackbarOpen={isSnackbarOpen}

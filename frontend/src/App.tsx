@@ -77,7 +77,15 @@ const App: React.FC = () => {
   }, [params.params])
 
   useEffect(() => {
-    if (location.pathname !== '/scholarships') {
+    const excludedPaths = [
+      '/scholarships',
+      '/student/survey',
+      '/provider/survey',
+    ]
+
+    if (excludedPaths.includes(location.pathname)) {
+      console.log('included')
+    } else {
       Cookies.set('lastVisited', location.pathname)
     }
   }, [location.pathname])
