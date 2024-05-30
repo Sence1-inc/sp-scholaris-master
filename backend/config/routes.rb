@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       resources :survey_responses
       resources :newsletters
       resources :benefits
+      resources :benefit_categories
       resources :schools
       resources :scholarship_providers do
         get 'scholarships', on: :member, to: 'scholarship_providers#scholarships', as: 'scholarship_providers_scholarships'

@@ -1,7 +1,9 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
   Box,
+  Checkbox,
   Container,
+  FormControlLabel,
   FormGroup,
   Link,
   MenuItem,
@@ -22,7 +24,7 @@ import HelperText from '../../components/HelperText/HelperText'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { ScholarshipData } from '../../redux/types'
+import { BenefitCategory, ScholarshipData } from '../../redux/types'
 
 export interface ScholarshipType {
   id: number
@@ -33,6 +35,7 @@ type Errors = {
   scholarship_name: string
   description: string
   benefits: string
+  benefit_categories: string
   requirements: string
   eligibilities: string
   start_date: string
@@ -80,6 +83,12 @@ const ScholarshipEditorPage = () => {
   const [benefits, setBenefits] = useState<string>(
     scholarshipData?.benefits?.[0]?.benefit_name ?? ''
   )
+  const [checkedCategories, setCheckedCategories] = useState<
+    BenefitCategory[] | []
+  >(scholarshipData.benefit_categories ?? [])
+  const [benefitCategories, setBenefitCategories] = useState<BenefitCategory[]>(
+    []
+  )
   const [scholarshipTypeId, setScholarshipTypeId] = useState<number | null>(
     scholarshipData?.scholarship_type?.id ?? null
   )
@@ -100,6 +109,7 @@ const ScholarshipEditorPage = () => {
     requirements: '',
     eligibilities: '',
     benefits: '',
+    benefit_categories: '',
     start_date: '',
     due_date: '',
     application_link: '',
@@ -138,6 +148,21 @@ const ScholarshipEditorPage = () => {
   }, [])
 
   useEffect(() => {
+    const getBenefitCategories = async () => {
+      try {
+        const response = await axiosInstance.get('/api/v1/benefit_categories')
+        if (response.data) {
+          setBenefitCategories(response.data)
+        }
+      } catch (error) {
+        console.log('Error getting benefit categories: ', error)
+      }
+    }
+
+    getBenefitCategories()
+  }, [])
+
+  useEffect(() => {
     if (scholarshipData) {
       setScholarshipName(scholarshipData.scholarship_name)
       setDescription(scholarshipData.description)
@@ -145,6 +170,7 @@ const ScholarshipEditorPage = () => {
       setDueDate(dayjs(scholarshipData.due_date))
       setApplicationLink(scholarshipData.application_link)
       setBenefits(scholarshipData.benefits?.[0]?.benefit_name)
+      setCheckedCategories(scholarshipData.benefit_categories)
       setEligibilities(scholarshipData.eligibilities?.[0]?.eligibility_text)
       setRequirements(scholarshipData.requirements?.[0]?.requirements_text)
       setSchoolYear(scholarshipData.school_year)
@@ -215,6 +241,11 @@ const ScholarshipEditorPage = () => {
       message: 'Please provide the benefits.',
     },
     {
+      condition: !checkedCategories || checkedCategories.length === 0,
+      field: 'benefit_categories',
+      message: 'Please provide the categories that describe your benefits.',
+    },
+    {
       condition: !startDate,
       field: 'start_date',
       message: 'Please provide the application start date.',
@@ -264,6 +295,7 @@ const ScholarshipEditorPage = () => {
         requirements: '',
         eligibilities: '',
         benefits: '',
+        benefit_categories: '',
         start_date: '',
         due_date: '',
         application_link: '',
@@ -279,6 +311,7 @@ const ScholarshipEditorPage = () => {
     description,
     requirements,
     benefits,
+    checkedCategories,
     eligibilities,
     startDate,
     dueDate,
@@ -288,6 +321,31 @@ const ScholarshipEditorPage = () => {
     scholarshipType,
     isInitialLoad,
   ])
+
+  const handleBenefitCategoryToggle = (categoryId: number) => () => {
+    let newCheckedCategories = []
+    if (!!checkedCategories && checkedCategories.length > 0) {
+      const isChecked = checkedCategories.find(
+        (checkedCategory) => checkedCategory.id === categoryId
+      )
+
+      newCheckedCategories = isChecked
+        ? checkedCategories.filter((c) => c.id !== categoryId)
+        : [
+            ...checkedCategories,
+            benefitCategories.find((c) => c.id === categoryId)!,
+          ]
+
+      setCheckedCategories(newCheckedCategories)
+    } else {
+      newCheckedCategories.push(
+        benefitCategories.find((c) => c.id === categoryId)
+      )
+      setCheckedCategories(newCheckedCategories as BenefitCategory[])
+    }
+
+    // setCheckedCategories(newCheckedCategories)
+  }
 
   const handleSubmit = async () => {
     setIsInitialLoad(false)
@@ -318,6 +376,7 @@ const ScholarshipEditorPage = () => {
         eligibilities: eligibilities,
         scholarship_type_id: Number(scholarshipTypeId),
         benefits: benefits,
+        benefit_categories: checkedCategories,
         application_link: applicationLink,
         start_date: startDate?.toISOString(),
         due_date: dueDate?.toISOString(),
@@ -363,11 +422,13 @@ const ScholarshipEditorPage = () => {
             setStatus('')
             setScholarshipTypeId(null)
             setScholarshipType('')
+            setCheckedCategories([])
             setErrors({
               scholarship_name: '',
               description: '',
               requirements: '',
               eligibilities: '',
+              benefit_categories: '',
               benefits: '',
               start_date: '',
               due_date: '',
@@ -519,16 +580,49 @@ const ScholarshipEditorPage = () => {
             }
             placeholder="e.g. Applicants must have a minimum GPA of 3.5 on a 4.0 scale, provide two letters of recommendation from science teachers or professors, and submit a personal statement outlining their academic and career goals in the field of science."
           />
-          <CustomTextfield
-            label="Benefits"
-            multiline={true}
-            error={errors.benefits}
-            value={benefits}
-            handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleBenefitChange(e)
-            }
-            placeholder="e.g. The scholarship provides a one-time award of P25000 to be used towards tuition, books, or other educational expenses."
-          />
+          <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%' }}>
+            <CustomTextfield
+              label="Benefits"
+              multiline={true}
+              error={errors.benefits}
+              value={benefits}
+              handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleBenefitChange(e)
+              }
+              placeholder="e.g. The scholarship provides a one-time award of P25000 to be used towards tuition, books, or other educational expenses."
+            />
+            <FormGroup
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                flexWrap: 'wrap',
+              }}
+            >
+              {benefitCategories?.map((category) => (
+                <div key={category.id} style={{ width: '50%' }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={
+                          !!checkedCategories && checkedCategories.length > 0
+                            ? checkedCategories.some(
+                                (c) => c.id === category.id
+                              )
+                            : false
+                        }
+                        onChange={handleBenefitCategoryToggle(category.id)}
+                      />
+                    }
+                    label={category.category_name}
+                  />
+                </div>
+              ))}
+            </FormGroup>
+            <HelperText
+              error={errors.benefit_categories ? errors.benefit_categories : ''}
+            />
+          </Box>
+
           <CustomTextfield
             label="Eligibility"
             multiline={true}

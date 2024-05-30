@@ -10,6 +10,11 @@ export type Scholarship = {
   status: string
 }
 
+export type BenefitCategory = {
+  id: number
+  category_name: string
+}
+
 export type ScholarshipData = {
   id: string
   scholarship_name: string
@@ -31,6 +36,7 @@ export type ScholarshipData = {
       description: string
     }
   }
+  benefit_categories: BenefitCategory[]
   requirements: [
     {
       id: number

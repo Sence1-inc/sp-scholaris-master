@@ -74,7 +74,7 @@ const Filter: React.FC<FilterProps> = () => {
 
   useEffect(() => {
     const getData = async () => {
-      const benefits = await axiosInstance.get(`api/v1/benefits`)
+      const benefits = await axiosInstance.get(`api/v1/benefit_categories`)
       // const courses = await axiosInstance.get(`api/v1/courses`)
       // const schools = await axiosInstance.get(`api/v1/schools`)
       const providers = await axiosInstance.get(
@@ -82,7 +82,7 @@ const Filter: React.FC<FilterProps> = () => {
         { withCredentials: true }
       )
 
-      setBenefits(mapToOptions(benefits.data, 'benefit_name'))
+      setBenefits(mapToOptions(benefits.data, 'category_name'))
       // setCourses(mapToOptions(courses.data, 'course_name'))
       // setSchools(mapToOptions(schools.data, 'school_name'))
       setProviders(mapToOptions(providers.data, 'provider_name'))

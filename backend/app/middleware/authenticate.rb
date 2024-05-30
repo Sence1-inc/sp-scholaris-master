@@ -29,6 +29,8 @@ class Authenticate
     '/api/v1/courses/index',
     '/api/v1/benefits',
     '/api/v1/benefits/index',
+    '/api/v1/benefit_categories',
+    '/api/v1/benefit_categories/index',
     '/api/v1/schools',
     '/api/v1/schools/index',
     '/api/v1/survey_responses',

@@ -8,7 +8,7 @@ class Scholarship < ApplicationRecord
   has_and_belongs_to_many :benefits, join_table: "scholarship_benefits"
   has_and_belongs_to_many :requirements, join_table: "scholarship_requirements"
   has_and_belongs_to_many :eligibilities, join_table: "scholarship_eligibilities"
-  has_many :benefit_categories, join_table: 'scholarship_benefit_categories'
+  has_and_belongs_to_many :benefit_categories, join_table: "scholarship_benefit_categories"
 
   validates :scholarship_name, presence: true
   validates :description, presence: true
@@ -24,11 +24,11 @@ class Scholarship < ApplicationRecord
   default_scope -> { where(deleted_at: nil) }
 
   scope :filtered, ->(params) {
-    results = all.where(deleted_at: nil)
-    results = results.includes(:courses, :schools, :scholarship_provider, :benefits)
+    results = all.where(deleted_at: nil, status: 'active')
+    results = results.includes(:courses, :schools, :scholarship_provider, :benefits, :benefit_categories)
     results = results.joins(:courses).where("courses.course_name = ?", params[:course]) if params[:course].present?
     results = results.joins(:schools).where("schools.school_name = ?", params[:school]) if params[:school].present?
-    results = results.joins(:benefits).where("LOWER(TRIM(benefits.benefit_name)) = ?", params[:benefits].strip.downcase) if params[:benefits].present?
+    results = results.joins(:benefit_categories).where("LOWER(TRIM(benefit_categories.category_name)) = ?", params[:benefits].strip.downcase) if params[:benefits].present?
     results = results.joins(schools: :city).joins(schools: :province).joins(schools: :region)
                   .where("cities.city_name = ? OR provinces.province_name = ? OR regions.region_name = ?",
                          params[:location], params[:location], params[:location]) if params[:location].present?
@@ -41,7 +41,7 @@ class Scholarship < ApplicationRecord
   }
 
   def as_json(options = {})
-    super(options.merge(include: [:benefits, :eligibilities, :requirements, :scholarship_provider, :scholarship_type, :courses, :schools], except: [:created_at, :updated_at, :deleted_at, :eligibility_id, :requirement_id, :scholarship_provider_id, :scholarship_type_id]))
+    super(options.merge(include: [:benefits, :eligibilities, :requirements, :scholarship_provider, :scholarship_type, :courses, :schools, :benefit_categories], except: [:created_at, :updated_at, :deleted_at, :eligibility_id, :requirement_id, :scholarship_provider_id, :scholarship_type_id]))
   end
 
   def add_association_record(association_name, record)

@@ -163,7 +163,7 @@ module Api
             :scholarship_type_id,
             :scholarship_provider_id,
             :timezone
-          ).merge(eligibilities: params[:eligibilities]).merge(requirements: params[:requirements]).merge(benefits: params[:benefits])
+          ).merge(eligibilities: params[:eligibilities]).merge(requirements: params[:requirements]).merge(benefits: params[:benefits]).merge(benefit_categories: params[:benefit_categories])
         end
 
         def authorize
