@@ -21,9 +21,13 @@ import './Search.css'
 
 interface SearchProps {
   isSection: boolean
+  isResultsShown?: boolean
 }
 
-const Search: React.FC<SearchProps> = ({ isSection }) => {
+const Search: React.FC<SearchProps> = ({
+  isSection,
+  isResultsShown = true,
+}) => {
   const theme = useTheme()
   const dispatch = useAppDispatch()
   const params = useAppSelector((state) => state.searchParams)
@@ -51,6 +55,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
 
   useEffect(() => {
     setIsInitialLoad(false)
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -91,6 +96,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     if (searchParams.size === 0 && !isSection) {
       getScholarships()
     }
+    // eslint-disable-next-line
   }, [benefits, provider, start_date, due_date, isSection])
 
   useEffect(() => {
@@ -99,12 +105,14 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     } else {
       setName('')
     }
+    // eslint-disable-next-line
   }, [nameParam])
 
   useEffect(() => {
     if (!isSection && !name && !isInitialLoad) {
       getScholarships()
     }
+    // eslint-disable-next-line
   }, [nameParam, isInitialLoad])
 
   useEffect(() => {
@@ -130,21 +138,29 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   return (
     <section ref={searchRef} id="search" className="search">
       {isSection ? (
-        <div className="container-1040">
-          <div className="section-header">
-            <Typography variant="h3" sx={{ color: 'secondary.main' }}>
-              Scholaris
-            </Typography>
-            <Typography variant="h2">
-              Step into a world of opportunities
-            </Typography>
-          </div>
+        <div
+          className="container-1040"
+          style={
+            !isResultsShown ? { margin: '0', padding: '20px 0 80px 0' } : {}
+          }
+        >
+          {isResultsShown && (
+            <div className="section-header">
+              <Typography variant="h3" sx={{ color: 'secondary.main' }}>
+                Scholaris
+              </Typography>
+              <Typography variant="h2">
+                Step into a world of opportunities
+              </Typography>
+            </div>
+          )}
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '40px',
+              width: '80vw',
             }}
           >
             <TextField
@@ -163,18 +179,19 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
             </Button>
           </Box>
           {!isSection && <Filter />}
-          {window.innerWidth > theme.breakpoints.values.md ? (
-            <Table
-              total_count={data.scholarships.total_count}
-              hasPagination={false}
-              scholarships={data.scholarships.scholarships as Scholarship[]}
-            />
-          ) : (
-            <Typography sx={{ textAlign: 'center' }}>
-              You can see the results on a larger display or switch to landscape
-              mode for better viewing.
-            </Typography>
-          )}
+          {isResultsShown &&
+            (window.innerWidth > theme.breakpoints.values.md ? (
+              <Table
+                total_count={data.scholarships.total_count}
+                hasPagination={false}
+                scholarships={data.scholarships.scholarships as Scholarship[]}
+              />
+            ) : (
+              <Typography sx={{ textAlign: 'center' }}>
+                You can see the results on a larger display or switch to
+                landscape mode for better viewing.
+              </Typography>
+            ))}
         </div>
       ) : (
         <div className="search__input-container">
@@ -204,16 +221,14 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
           {Object.keys(restParams).length > 0 && (
             <Box>
               <Stack direction="row" spacing={1}>
-                {Object.entries(restParams)?.map(([key, value]) => {
-                  return (
-                    <Chip
-                      key={key}
-                      label={`${formatString(key)}: ${value}`}
-                      variant="outlined"
-                      onDelete={() => handleChipDelete(key)}
-                    />
-                  )
-                })}
+                {Object.entries(restParams)?.map(([key, value]) => (
+                  <Chip
+                    key={key}
+                    label={`${formatString(key)}: ${value}`}
+                    variant="outlined"
+                    onDelete={() => handleChipDelete(key)}
+                  />
+                ))}
               </Stack>
             </Box>
           )}
