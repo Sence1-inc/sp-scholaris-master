@@ -10,7 +10,14 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_21_062605) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_29_071541) do
+  create_table "benefit_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "category_name"
+    t.timestamp "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "benefits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.text "benefit_name"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
@@ -111,6 +118,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_21_062605) do
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
+  end
+
+  create_table "scholarship_benefit_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "scholarship_id", null: false
+    t.bigint "benefit_category_id", null: false
+    t.timestamp "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["benefit_category_id"], name: "fk_scholarship_benefit_categories_benefit_categories"
+    t.index ["scholarship_id"], name: "fk_scholarship_benefit_categories_scholarships"
   end
 
   create_table "scholarship_benefits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -295,6 +312,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_21_062605) do
   add_foreign_key "course_scholarship_schools", "scholarships", name: "fk_course_scholarship_schools_scholarships"
   add_foreign_key "course_scholarship_schools", "schools", name: "fk_course_scholarship_schools_schools"
   add_foreign_key "newsletter_logs", "newsletters"
+  add_foreign_key "scholarship_benefit_categories", "benefit_categories", name: "fk_scholarship_benefit_categories_benefit_categories"
+  add_foreign_key "scholarship_benefit_categories", "scholarships", name: "fk_scholarship_benefit_categories_scholarships"
   add_foreign_key "scholarship_benefits", "benefits", name: "fk_scholarship_benefits_benefits"
   add_foreign_key "scholarship_benefits", "benefits", name: "fk_scholarships_benefits"
   add_foreign_key "scholarship_benefits", "scholarships", name: "fk_scholarship_benefits_scholarships"

@@ -8,6 +8,7 @@ class Scholarship < ApplicationRecord
   has_and_belongs_to_many :benefits, join_table: "scholarship_benefits"
   has_and_belongs_to_many :requirements, join_table: "scholarship_requirements"
   has_and_belongs_to_many :eligibilities, join_table: "scholarship_eligibilities"
+  has_many :benefit_categories, join_table: 'scholarship_benefit_categories'
 
   validates :scholarship_name, presence: true
   validates :description, presence: true
