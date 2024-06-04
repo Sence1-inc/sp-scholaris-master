@@ -93,6 +93,16 @@ module Api
                   result = { errors: [ "Scholarship already exists." ] }
                 else
                   file_param[:scholarship_provider_id] = user.scholarship_provider.id
+
+                  ben_cats = []
+                  ben_par = file_param['benefit_categories']
+                  benefit_categories_array = ben_par.split(',').map { |num| num.to_i }
+                  benefit_categories_array.each do |ben_cat|
+                    category = BenefitCategory.find(ben_cat)
+                    ben_cats << category if category
+                  end
+                  file_param['benefit_categories'] = ben_cats
+
                   scholarship_service = ScholarshipService.new(file_param)
                   result = scholarship_service.create_scholarship
                   if result.key?(:errors)

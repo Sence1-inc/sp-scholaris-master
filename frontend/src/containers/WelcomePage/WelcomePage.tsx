@@ -17,7 +17,6 @@ const WelcomePage: React.FC = () => {
           <Typography variant="h2">
             Discover <span className="color-secondary">Scholaris</span>!
           </Typography>
-          <Search isSection={true} isResultsShown={false} />
           <Typography variant="body1" textAlign="center">
             Scholaris functions as a centralized hub where students can explore
             an extensive array of scholarships aligned with their academic
