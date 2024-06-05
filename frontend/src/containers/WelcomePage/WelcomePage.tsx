@@ -1,8 +1,7 @@
-import { Typography } from '@mui/material'
+import { Box, Typography } from '@mui/material'
 import React from 'react'
 import WelcomeButton from '../../components/Button/WelcomeButton'
-import Search from '../../components/Search/Search'
-import AngleDownIcon from '../../public/images/angles-down-solid.svg'
+import WelcomePageSearch from '../../components/Search/WelcomePageSsearch'
 import SchoolIcon from '../../public/images/school-solid.svg'
 import UserIcon from '../../public/images/users-solid.svg'
 import WelcomeImage from '../../public/images/welcome-icon.png'
@@ -11,30 +10,37 @@ import './WelcomePage.css'
 const WelcomePage: React.FC = () => {
   return (
     <>
-      <div className="content__welcome-intro">
-        <div className="container">
+      <Box sx={{ display: 'flex', width: '100vw' }}>
+        <Box
+          sx={{
+            width: '50%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '60px 20px 60px 60px',
+          }}
+        >
           <img src={WelcomeImage} alt="" />
-          <Typography variant="h2">
+          <Typography variant="h3">
             Discover <span className="color-secondary">Scholaris</span>!
           </Typography>
           <Typography variant="body1" textAlign="center">
-            Scholaris functions as a centralized hub where students can explore
-            an extensive array of scholarships aligned with their academic
-            accomplishments, talents, and individual circumstances.
-            Scholarship-granting organizations can also showcase their
-            offerings, contributing to a diverse pool of scholarships that are
-            easily searchable.{' '}
+            Scholaris is an application designed to publicize and promote
+            existing scholarship opportunities, making scholarships easily
+            accessible to many scholarship searchers.
+            <br />
+            <br />
+            It is a centralized hub where students can easily browse and stay
+            updated with the latest offerings from different
+            Scholarship-Granting Organizations or SGOs.
           </Typography>
-          <Typography variant="body1" textAlign="center">
-            This approach of consolidating scholarships from various
-            organizations enhances accessibility and guarantees that every
-            deserving student is given an opportunity.{' '}
-          </Typography>
-          <a href="#welcome">
-            <img src={AngleDownIcon} alt="" />
-          </a>
-        </div>
-      </div>
+        </Box>
+        <Box sx={{ width: '50%', padding: '60px 60px 60px 0px' }}>
+          <WelcomePageSearch />
+        </Box>
+      </Box>
       <div id="welcome" className="content__welcome-selection">
         <div className="container">
           <div>
