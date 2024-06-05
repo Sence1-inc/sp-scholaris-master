@@ -172,7 +172,7 @@ const WelcomePageSearch: React.FC = () => {
               variant="outlined"
               onChange={(e) => handleChange(e.target.value)}
               value={name}
-              placeholder="Search Scholarship Name"
+              placeholder="e.g. CHED Merit Scholarship"
               sx={{ width: 'calc(66.666% - 20px)' }}
             />
             <Button
