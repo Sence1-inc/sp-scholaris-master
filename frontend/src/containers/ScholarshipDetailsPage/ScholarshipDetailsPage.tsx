@@ -82,7 +82,7 @@ export const ScholarshipDetailsPage: React.FC<
         <CircularProgress color="inherit" />
       </Backdrop>
       <section id="details">
-        <div className="container">
+        <div className="container" style={{ padding: '80px 20px' }}>
           <aside id="aside">
             <Button
               onClick={() => {
@@ -91,7 +91,6 @@ export const ScholarshipDetailsPage: React.FC<
               }}
               sx={{
                 color: 'secondary.main',
-                marginLeft: '30px',
                 fontSize: '24px',
                 fontWeight: 700,
                 textDecoration: 'none',
@@ -172,15 +171,6 @@ export const ScholarshipDetailsPage: React.FC<
                   </p>
                 </div>
               </div>
-              <div className="details-section">
-                <CTAButton
-                  disabled={true}
-                  handleClick={() => console.log('apply')}
-                  label="Apply"
-                  loading={false}
-                  styles={{ fontSize: '24px' }}
-                />
-              </div>
             </div>
           )}
           {scholarshipData && scholarshipData.scholarship_provider && (
@@ -199,14 +189,6 @@ export const ScholarshipDetailsPage: React.FC<
                         .scholarship_provider_profile?.description
                     }
                   </p>
-                  <div className="details-section">
-                    <PrimaryButton
-                      disabled={true}
-                      handleClick={() => console.log('visit profile')}
-                      loading={false}
-                      label="Visit Profile"
-                    />
-                  </div>
                 </div>
               </div>
             </div>

@@ -122,7 +122,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               component={Link}
               to="/scholarships"
             >
-              Scholarship Search
+              Search Scholarship
             </Button>
           </ListItem>
         </List>
@@ -180,7 +180,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               component={Link}
               to="/scholarships"
             >
-              Scholarship Search
+              Search Scholarship
             </Button>
           </ListItem>
         </List>
@@ -241,7 +241,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               component={Link}
               to="/scholarships"
             >
-              Scholarship Search
+              Search Scholarship
             </Button>
           </ListItemButton>
         </ListItem>
