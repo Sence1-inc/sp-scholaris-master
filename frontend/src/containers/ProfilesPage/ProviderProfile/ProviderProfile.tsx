@@ -38,16 +38,18 @@ const ProviderProfile: React.FC = () => {
   const dispatch = useAppDispatch()
 
   const getSubscriber = async () => {
-    try {
-      const subs = await axiosInstance.get(
-        `api/v1/subscribers/${user.scholarship_provider.id}`
-      )
+    if (user.scholarship_provider.id) {
+      try {
+        const subs = await axiosInstance.get(
+          `api/v1/subscribers/${user.scholarship_provider.id}`
+        )
 
-      if (subs.data) {
-        dispatch(initializeSubscirber(subs.data))
+        if (subs.data) {
+          dispatch(initializeSubscirber(subs.data))
+        }
+      } catch (error) {
+        console.log(error)
       }
-    } catch (error) {
-      console.log(error)
     }
   }
 

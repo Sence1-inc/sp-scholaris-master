@@ -14,10 +14,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import axiosInstance from '../../axiosConfig'
 import Logo from '../../public/images/logo.png'
-import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
-import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
@@ -36,40 +33,6 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   )
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-
-  const handleDeleteCookie = async () => {
-    const data = {
-      email: user.email_address,
-    }
-
-    const response = await axiosInstance.post('/api/v1/logout', data, {
-      withCredentials: true,
-    })
-
-    if (response.data.deleted) {
-      dispatch(
-        initializeUser({
-          birthdate: '',
-          email_address: '',
-          first_name: '',
-          id: 0,
-          is_active: 0,
-          last_name: '',
-          role_id: 0,
-          session_token: '',
-          role: { id: null, role_name: '' },
-          scholarship_provider: {
-            id: 0,
-            provider_name: '',
-            user_id: 0,
-            provider_link: '',
-          },
-        })
-      )
-      dispatch(initializeIsAuthenticated(false))
-      navigate('/sign-in')
-    }
-  }
 
   const renderItems = () => {
     if (pathname.includes('/student')) {
@@ -201,15 +164,6 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               Dashboard
             </Typography>
           </ListItem>
-          <ListItem>
-            <Button
-              variant="text"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
-              onClick={handleDeleteCookie}
-            >
-              Logout
-            </Button>
-          </ListItem>
           <ListItem disablePadding sx={{ width: 'auto' }}>
             <Button
               sx={{
@@ -262,15 +216,6 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           >
             Dashboard
           </Typography>
-        </ListItem>
-        <ListItem>
-          <Button
-            variant="text"
-            sx={{ color: 'common.white', textDecoration: 'none' }}
-            onClick={handleDeleteCookie}
-          >
-            Logout
-          </Button>
         </ListItem>
         <ListItem disablePadding sx={{ width: 'auto' }}>
           <Button

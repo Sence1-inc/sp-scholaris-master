@@ -7,6 +7,11 @@ import React, { Dispatch, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ProfileImage from '../../public/images/profile.png'
 import profileTheme from '../../styles/profileTheme'
+import PrimaryButton from '../CustomButton/PrimaryButton'
+import axiosInstance from '../../axiosConfig'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { initializeUser } from '../../redux/reducers/UserReducer'
+import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
 
 interface AccountSideBarProps {
   activeContent: string | undefined
@@ -41,6 +46,42 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
 }) => {
   const [activeButton, setActiveButton] = useState<string | undefined>('')
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.persistedReducer.user)
+
+  const handleDeleteCookie = async () => {
+    const data = {
+      email: user.email_address,
+    }
+
+    const response = await axiosInstance.post('/api/v1/logout', data, {
+      withCredentials: true,
+    })
+
+    if (response.data.deleted) {
+      dispatch(
+        initializeUser({
+          birthdate: '',
+          email_address: '',
+          first_name: '',
+          id: 0,
+          is_active: 0,
+          last_name: '',
+          role_id: 0,
+          session_token: '',
+          role: { id: null, role_name: '' },
+          scholarship_provider: {
+            id: 0,
+            provider_name: '',
+            user_id: 0,
+            provider_link: '',
+          },
+        })
+      )
+      dispatch(initializeIsAuthenticated(false))
+      navigate('/sign-in')
+    }
+  }
 
   useEffect(() => {
     setActiveButton(activeContent)
@@ -86,6 +127,12 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
             )
           )}
         </List>
+        <PrimaryButton
+          label="Logout"
+          loading={false}
+          handleClick={handleDeleteCookie}
+          styles={{ width: '80%', margin: '20px 34px' }}
+        />
       </Box>
     </Card>
   )
