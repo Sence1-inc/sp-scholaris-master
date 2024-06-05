@@ -124,8 +124,15 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   }, [params.params.page])
 
   useEffect(() => {
-    formatScholarships(result.scholarships.scholarships)
-    setTotalCount(result.scholarships.total_count)
+    if (
+      Array.isArray(result.scholarships.scholarships) &&
+      result.scholarships.scholarships.length > 0
+    ) {
+      formatScholarships(result.scholarships.scholarships)
+      setTotalCount(result.scholarships.total_count)
+    } else {
+      setRowData([])
+    }
   }, [result.scholarships.scholarships])
 
   useEffect(() => {
@@ -201,6 +208,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         </Button>
         <Typography variant="h3">Search Results</Typography>
         <Search isSection={false} />
+
         <DataGrid
           localeText={{ noRowsLabel: 'No saved data' }}
           rows={rowData}
@@ -217,11 +225,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           paginationMode="server"
           loading={isLoading}
           sx={{
-            height:
-              Array.isArray(result.scholarships.scholarships) &&
-              result.scholarships.scholarships?.length > 0
-                ? 'auto'
-                : 200,
+            height: 'auto',
             '.MuiDataGrid-root': {
               border: 'none',
             },
@@ -241,6 +245,12 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             },
             '& .MuiDataGrid-overlay': {
               zIndex: '20',
+            },
+            '.MuiDataGrid-overlayWrapper': {
+              height: 'auto !important',
+            },
+            '.MuiDataGrid-overlayWrapperInner': {
+              height: 'auto !important',
             },
             // borderRadius: '16px',
             fontFamily: 'Outfit',

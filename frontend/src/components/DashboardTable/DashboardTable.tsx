@@ -216,7 +216,6 @@ export default function DataTable() {
         loading={isLoading}
         sx={{
           height: Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,
-          // height: 'auto',
           '.MuiDataGrid-root': {
             border: 'none',
           },
