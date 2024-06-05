@@ -123,8 +123,8 @@ const WelcomePageSearch: React.FC = () => {
         provider: scholarship.scholarship_provider.provider_name,
       }
     })
-    setIsLoading(false)
     setRowData(row)
+    setIsLoading(false)
   }
 
   const columns = [
@@ -141,7 +141,12 @@ const WelcomePageSearch: React.FC = () => {
   }
 
   return (
-    <section ref={searchRef} id="search" className="search">
+    <section
+      ref={searchRef}
+      id="search"
+      className="search"
+      style={{ height: 'auto' }}
+    >
       <div
         className="search__input-container"
         style={{
@@ -152,12 +157,21 @@ const WelcomePageSearch: React.FC = () => {
           justifyContent: 'center',
         }}
       >
-        <Typography
-          variant="h3"
-          sx={{ color: 'secondary.main', textAlign: 'center' }}
-        >
-          Looking for Scholarships?
-        </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <Typography
+            variant="h4"
+            sx={{ color: 'secondary.main', textAlign: 'center' }}
+          >
+            Struggling to Find Scholarships?
+          </Typography>
+          <Typography
+            variant="h4"
+            sx={{ color: 'primary.main', textAlign: 'center' }}
+          >
+            Discover Thousands with Our App!
+          </Typography>
+        </Box>
+
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <Box
             sx={{
@@ -199,61 +213,56 @@ const WelcomePageSearch: React.FC = () => {
               </Stack>
             </Box>
           )}
-          <div style={{ height: 100 }}>
-            <DataGrid
-              onRowClick={handleRowClick}
-              localeText={{ noRowsLabel: 'No saved data' }}
-              rows={rowData}
-              rowCount={5}
-              columns={columns}
-              autoPageSize
-              initialState={{
-                pagination: {
-                  paginationModel: { page: 1, pageSize: 5 },
+          <DataGrid
+            onRowClick={handleRowClick}
+            localeText={{ noRowsLabel: 'No saved data' }}
+            rows={rowData}
+            rowCount={5}
+            columns={columns}
+            autoPageSize
+            initialState={{
+              pagination: {
+                paginationModel: { page: 1, pageSize: 5 },
+              },
+            }}
+            hideFooter={true}
+            paginationMode="server"
+            loading={isLoading}
+            sx={{
+              height:
+                Array.isArray(scholarships) && scholarships?.length > 0
+                  ? 'auto'
+                  : 200,
+              '.MuiDataGrid-root': {
+                border: 'none',
+              },
+              '& .MuiDataGrid-columnHeaders': {
+                backgroundColor: '#AFC3D9',
+              },
+              '& .MuiDataGrid-footerContainer': {
+                backgroundColor: '#AFC3D9', // Change table header color
+              },
+              '& .MuiDataGrid-row': {
+                '&:nth-of-type(odd)': {
+                  backgroundColor: '#E0EFFF', // Change background color of odd rows
                 },
-              }}
-              hideFooter={true}
-              paginationMode="server"
-              loading={isLoading}
-              sx={{
-                height:
-                  Array.isArray(scholarships) && scholarships?.length > 0
-                    ? 'auto'
-                    : 200,
-                '.MuiDataGrid-root': {
-                  border: 'none',
+                '&:nth-of-type(even)': {
+                  backgroundColor: '#E0EFFF', // Change background color of odd rows
                 },
-                '& .MuiDataGrid-columnHeaders': {
-                  backgroundColor: '#AFC3D9',
-                },
-                '& .MuiDataGrid-footerContainer': {
-                  backgroundColor: '#AFC3D9', // Change table header color
-                },
-                '& .MuiDataGrid-row': {
-                  '&:nth-of-type(odd)': {
-                    backgroundColor: '#E0EFFF', // Change background color of odd rows
-                  },
-                  '&:nth-of-type(even)': {
-                    backgroundColor: '#E0EFFF', // Change background color of odd rows
-                  },
-                },
-                '& .MuiDataGrid-overlay': {
-                  zIndex: '20',
-                },
-                '.MuiDataGrid-overlayWrapper': {
-                  height: 'auto !important',
-                },
-                '.MuiDataGrid-overlayWrapperInner': {
-                  height: 'auto !important',
-                },
-                fontFamily: 'Outfit',
-                fontSize: {
-                  xs: '12px',
-                  md: '1rem',
-                },
-              }}
-            />
-          </div>
+              },
+              '.MuiDataGrid-overlayWrapper': {
+                height: 'auto !important',
+              },
+              '.MuiDataGrid-overlayWrapperInner': {
+                height: 'auto !important',
+              },
+              fontFamily: 'Outfit',
+              fontSize: {
+                xs: '12px',
+                md: '1rem',
+              },
+            }}
+          />
         </Box>
       </div>
     </section>
