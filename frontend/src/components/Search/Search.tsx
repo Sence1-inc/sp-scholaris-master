@@ -1,5 +1,14 @@
-import { OpenInNew } from '@mui/icons-material'
-import { Box, Button, Chip, Stack, TextField, Typography } from '@mui/material'
+import { OpenInNew, Visibility } from '@mui/icons-material'
+import {
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
@@ -9,6 +18,7 @@ import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 import { ctaButtonStyle } from '../../styles/globalStyles'
+import theme from '../../styles/theme'
 import Filter from '../Filter/Filter'
 import './Search.css'
 
@@ -42,6 +52,11 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
+
+  const xs = useMediaQuery(theme.breakpoints.up('xs'))
+  const sm = useMediaQuery(theme.breakpoints.up('sm'))
+  const md = useMediaQuery(theme.breakpoints.up('md'))
+  const lg = useMediaQuery(theme.breakpoints.up('lg'))
 
   const formatString = (str: string) => {
     return str
@@ -163,16 +178,31 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     {
       field: 'scholarshipName',
       headerName: 'Scholarship Name',
-      flex: 1.5,
+      ...(sm ? { flex: 1.5 } : { width: 200 }),
     },
-    { field: 'startDate', headerName: 'Start Date', type: 'date', flex: 1 },
-    { field: 'endDate', headerName: 'End Date', type: 'date', flex: 1 },
-    { field: 'provider', headerName: 'Organization', type: 'string', flex: 1 },
+    {
+      field: 'startDate',
+      headerName: 'Start Date',
+      type: 'date',
+      ...(sm ? { flex: 1 } : { width: 150 }),
+    },
+    {
+      field: 'endDate',
+      headerName: 'End Date',
+      type: 'date',
+      ...(sm ? { flex: 1 } : { width: 150 }),
+    },
+    {
+      field: 'provider',
+      headerName: 'Organization',
+      type: 'string',
+      ...(sm ? { flex: 1 } : { width: 200 }),
+    },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
-      flex: 1,
+      ...(sm ? { flex: 1 } : {}),
       renderCell: (params: any) => renderActions(params),
     },
   ]
@@ -180,21 +210,30 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const renderActions = (params: any) => {
     return (
       <Box>
-        <Typography
-          color="secondary"
-          component={Link}
-          to={`/scholarships/${params.row.id}`}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            width: '150px',
-          }}
-        >
-          View
-          <OpenInNew fontSize="small" />
-        </Typography>
+        {xs ? (
+          <IconButton
+            onClick={() => navigate(`/scholarships/${params.row.id}`)}
+            sx={{ color: 'secondary.main' }}
+          >
+            <Visibility />
+          </IconButton>
+        ) : (
+          <Typography
+            color="secondary"
+            component={Link}
+            to={`/scholarships/${params.row.id}`}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              width: '150px',
+            }}
+          >
+            View
+            <OpenInNew fontSize="small" />
+          </Typography>
+        )}
       </Box>
     )
   }
@@ -221,7 +260,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '40px',
+              gap: { xs: '20px', md: '40px' },
             }}
           >
             <TextField

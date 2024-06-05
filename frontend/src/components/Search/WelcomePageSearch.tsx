@@ -155,6 +155,7 @@ const WelcomePageSearch: React.FC = () => {
           gap: '60px',
           alignItems: 'center',
           justifyContent: 'center',
+          width: '100%',
         }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -178,7 +179,7 @@ const WelcomePageSearch: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '40px',
+              gap: { xs: '10px', sm: '40px' },
             }}
           >
             <TextField

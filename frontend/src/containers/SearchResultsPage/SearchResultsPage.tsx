@@ -1,7 +1,7 @@
 import { OpenInNew } from '@mui/icons-material'
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import HomeIcon from '@mui/icons-material/Home'
-import { Box, Button, Typography } from '@mui/material'
+import { Box, Button, Typography, useMediaQuery } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import Cookies from 'js-cookie'
 import queryString from 'query-string'
@@ -12,6 +12,7 @@ import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
+import theme from '../../styles/theme'
 import './SearchResultsPage.css'
 
 interface GridRowDef {
@@ -49,20 +50,40 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
 
+  const xs = useMediaQuery(theme.breakpoints.up('xs'))
+  const sm = useMediaQuery(theme.breakpoints.up('sm'))
+  const md = useMediaQuery(theme.breakpoints.up('md'))
+  const lg = useMediaQuery(theme.breakpoints.up('lg'))
+
   const columns = [
     {
       field: 'scholarshipName',
       headerName: 'Scholarship Name',
-      flex: 1.5,
+      ...(sm ? { flex: 1.5 } : { width: 200 }),
     },
-    { field: 'startDate', headerName: 'Start Date', type: 'date', flex: 1 },
-    { field: 'endDate', headerName: 'End Date', type: 'date', flex: 1 },
-    { field: 'provider', headerName: 'Organization', type: 'string', flex: 1 },
+    {
+      field: 'startDate',
+      headerName: 'Start Date',
+      type: 'date',
+      ...(sm ? { flex: 1 } : { width: 150 }),
+    },
+    {
+      field: 'endDate',
+      headerName: 'End Date',
+      type: 'date',
+      ...(sm ? { flex: 1 } : { width: 150 }),
+    },
+    {
+      field: 'provider',
+      headerName: 'Organization',
+      type: 'string',
+      ...(sm ? { flex: 1 } : { width: 200 }),
+    },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
-      flex: 1,
+      ...(sm ? { flex: 1 } : {}),
       renderCell: (params: any) => renderActions(params),
     },
   ]
@@ -174,7 +195,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
   return (
     <section className="search-results">
-      <div className="container-1040">
+      <div className="container-1040" style={{ width: '100%' }}>
         <Button
           onClick={() => {
             navigate((Cookies.get('lastVisited') as string) ?? '/')
@@ -203,7 +224,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         </Button>
         <Typography variant="h3">Search Results</Typography>
         <Search isSection={false} />
-
         <DataGrid
           localeText={{ noRowsLabel: 'No saved data' }}
           rows={rowData}
@@ -251,7 +271,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
               height:
                 rowData.length > 0 ? 'auto !important' : '200px !important',
             },
-            // borderRadius: '16px',
             fontFamily: 'Outfit',
             fontSize: {
               xs: '12px',

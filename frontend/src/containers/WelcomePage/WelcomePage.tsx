@@ -10,19 +10,31 @@ import './WelcomePage.css'
 const WelcomePage: React.FC = () => {
   return (
     <>
-      <Box sx={{ display: 'flex', width: '100vw', padding: '60px' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          width: '100vw',
+          padding: { xs: '40px 20px', md: '60px' },
+          gap: { xs: '40px', md: '0' },
+        }}
+      >
         <Box
           sx={{
-            width: '50%',
+            width: { md: '50%', xs: '100%' },
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
             alignItems: 'center',
             justifyContent: 'center',
-            paddingRight: '10px',
+            paddingRight: { md: '10px' },
           }}
         >
-          <img src={WelcomeImage} alt="" />
+          <img
+            src={WelcomeImage}
+            alt=""
+            style={{ maxWidth: '100%', height: 'auto', padding: 0, margin: 0 }}
+          />
           <Typography variant="h3">
             Discover <span className="color-secondary">Scholaris</span>!
           </Typography>
@@ -37,7 +49,12 @@ const WelcomePage: React.FC = () => {
             Scholarship-Granting Organizations or SGOs.
           </Typography>
         </Box>
-        <Box sx={{ width: '50%', paddingLeft: '10px' }}>
+        <Box
+          sx={{
+            width: { md: '50%', xs: '100%' },
+            paddingLeft: { md: '10px' },
+          }}
+        >
           <WelcomePageSearch />
         </Box>
       </Box>
