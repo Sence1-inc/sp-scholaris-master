@@ -10,7 +10,7 @@ import './WelcomePage.css'
 const WelcomePage: React.FC = () => {
   return (
     <>
-      <Box sx={{ display: 'flex', width: '100vw' }}>
+      <Box sx={{ display: 'flex', width: '100vw', padding: '60px' }}>
         <Box
           sx={{
             width: '50%',
@@ -19,7 +19,7 @@ const WelcomePage: React.FC = () => {
             gap: '20px',
             alignItems: 'center',
             justifyContent: 'center',
-            padding: '60px 20px 60px 60px',
+            paddingRight: '10px',
           }}
         >
           <img src={WelcomeImage} alt="" />
@@ -37,7 +37,7 @@ const WelcomePage: React.FC = () => {
             Scholarship-Granting Organizations or SGOs.
           </Typography>
         </Box>
-        <Box sx={{ width: '50%', padding: '60px 60px 60px 0px' }}>
+        <Box sx={{ width: '50%', paddingLeft: '10px' }}>
           <WelcomePageSearch />
         </Box>
       </Box>
