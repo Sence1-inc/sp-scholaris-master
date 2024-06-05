@@ -1,7 +1,7 @@
 import { OpenInNew } from '@mui/icons-material'
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import HomeIcon from '@mui/icons-material/Home'
-import { Box, Button, Typography, useTheme } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import Cookies from 'js-cookie'
 import queryString from 'query-string'
@@ -28,7 +28,6 @@ interface SearchResultsPageProps {
 export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   isASection,
 }) => {
-  const theme = useTheme()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { getScholarships } = useGetScholarships()
@@ -47,7 +46,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const [page, setPage] = useState<number>(0)
   const params = useAppSelector((state) => state.searchParams)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [pageSize, setPageSize] = useState<number>(10)
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
 
@@ -108,19 +106,21 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const handlePageChange = (par: { page: number; pageSize: number }) => {
     setIsLoading(true)
     setPage(par.page + 1)
-    setPageSize(par.pageSize)
+    dispatch(initializeParams({ ...params.params, limit: par.pageSize }))
   }
 
   useEffect(() => {
     if (page > 0) {
       dispatch(initializeParams({ ...params.params, page: page }))
     }
+    // eslint-disable-next-line
   }, [page])
 
   useEffect(() => {
     if (params.params.page) {
       getScholarships()
     }
+    // eslint-disable-next-line
   }, [params.params.page])
 
   useEffect(() => {
@@ -133,6 +133,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     } else {
       setRowData([])
     }
+    // eslint-disable-next-line
   }, [result.scholarships.scholarships])
 
   useEffect(() => {
@@ -150,26 +151,20 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
   useEffect(() => {
     const initialData = {
-      params: {
-        ...params.params,
-        ...(course && { course: course }),
-        ...(school && { school: school }),
-        ...(benefits && { benefits: benefits }),
-        ...(location && { location: location }),
-        ...(start_date && { start_date: start_date }),
-        ...(due_date && { due_date: due_date }),
-        ...(provider && { provider: provider }),
-        ...(name && { name: name }),
-      },
+      ...params.params,
+      ...(course && { course: course }),
+      ...(school && { school: school }),
+      ...(benefits && { benefits: benefits }),
+      ...(location && { location: location }),
+      ...(start_date && { start_date: start_date }),
+      ...(due_date && { due_date: due_date }),
+      ...(provider && { provider: provider }),
+      ...(name && { name: name }),
     }
 
-    dispatch(initializeParams(initialData.params))
+    dispatch(initializeParams(initialData))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [course, school, benefits, location, start_date, due_date, provider, name])
-
-  useEffect(() => {
-    dispatch(initializeParams({ ...params.params, limit: pageSize }))
-  }, [pageSize])
 
   useEffect(() => {
     const queryParams = queryString.stringify(params.params)
@@ -220,7 +215,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
               paginationModel: { page: page, pageSize: 10 },
             },
           }}
-          pageSizeOptions={[5, 10]}
+          pageSizeOptions={[10]}
           pagination
           paginationMode="server"
           loading={isLoading}
@@ -247,10 +242,14 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
               zIndex: '20',
             },
             '.MuiDataGrid-overlayWrapper': {
-              height: 'auto !important',
+              minHeight: '200px',
+              height:
+                rowData.length > 0 ? 'auto !important' : '200px !important',
             },
             '.MuiDataGrid-overlayWrapperInner': {
-              height: 'auto !important',
+              minHeight: '200px',
+              height:
+                rowData.length > 0 ? 'auto !important' : '200px !important',
             },
             // borderRadius: '16px',
             fontFamily: 'Outfit',

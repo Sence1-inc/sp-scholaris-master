@@ -1,22 +1,9 @@
 import { OpenInNew } from '@mui/icons-material'
-import {
-  Box,
-  Button,
-  Chip,
-  Stack,
-  TextField,
-  Typography,
-  useTheme,
-} from '@mui/material'
+import { Box, Button, Chip, Stack, TextField, Typography } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
-import {
-  Link,
-  useLocation,
-  useNavigate,
-  useSearchParams,
-} from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -37,7 +24,6 @@ interface SearchProps {
 }
 
 const Search: React.FC<SearchProps> = ({ isSection }) => {
-  const theme = useTheme()
   const dispatch = useAppDispatch()
   const params = useAppSelector((state) => state.searchParams)
   const navigate = useNavigate()
@@ -51,8 +37,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const { hash } = useLocation()
   const searchRef = useRef<HTMLElement>(null)
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
-  const { scholarships, total_pages, total_count } = data.scholarships
-  const [searchParams] = useSearchParams()
+  const { scholarships, total_count } = data.scholarships
   const { benefits, provider, start_date, due_date } = params.params
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [totalCount, setTotalCount] = useState<number>(10)
@@ -77,6 +62,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
       setRowData([])
     }
     setTotalCount(total_count)
+    // eslint-disable-next-line
   }, [scholarships])
 
   useEffect(() => {
@@ -96,6 +82,13 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     // eslint-disable-next-line
   }, [searchRef, hash])
 
+  useEffect(() => {
+    if (Object.keys(params.params).length === 0 && isSection) {
+      getScholarships(false)
+    }
+    // eslint-disable-next-line
+  }, [params.params])
+
   const handleSearch: (e: React.MouseEvent<HTMLButtonElement>) => void = async (
     e
   ) => {
@@ -111,10 +104,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
 
   useEffect(() => {
     if ((benefits || provider || start_date || due_date) && !isSection) {
-      getScholarships()
-    }
-
-    if (searchParams.size === 0 && !isSection) {
       getScholarships()
     }
     // eslint-disable-next-line
@@ -217,7 +206,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   return (
     <section ref={searchRef} id="search" className="search">
       {isSection ? (
-        <div className="container-1040">
+        <div className="container-1040" style={{ gap: '20px' }}>
           <div className="section-header">
             <Typography variant="h3" sx={{ color: 'secondary.main' }}>
               Scholaris
@@ -233,7 +222,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               alignItems: 'center',
               justifyContent: 'center',
               gap: '40px',
-              width: '80vw',
             }}
           >
             <TextField
@@ -252,6 +240,20 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
             </Button>
           </Box>
           <Filter />
+          {Object.keys(restParams).length > 0 && (
+            <Box>
+              <Stack direction="row" spacing={1}>
+                {Object.entries(restParams)?.map(([key, value]) => (
+                  <Chip
+                    key={key}
+                    label={`${formatString(key)}: ${value}`}
+                    variant="outlined"
+                    onDelete={() => handleChipDelete(key)}
+                  />
+                ))}
+              </Stack>
+            </Box>
+          )}
           <DataGrid
             localeText={{ noRowsLabel: 'No saved data' }}
             rows={rowData}
@@ -330,6 +332,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               Search
             </Button>
           </Box>
+          <Filter />
           {Object.keys(restParams).length > 0 && (
             <Box>
               <Stack direction="row" spacing={1}>
@@ -344,7 +347,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               </Stack>
             </Box>
           )}
-          <Filter />
         </div>
       )}
     </section>

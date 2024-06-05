@@ -66,12 +66,6 @@ const Filter: React.FC<FilterProps> = () => {
     }))
   }
 
-  const handleReset = () => {
-    setSelectedDateRange(initialDateRange)
-    setSelectedParams({})
-    dispatch(initializeParams({}))
-  }
-
   useEffect(() => {
     const getData = async () => {
       const benefits = await axiosInstance.get(`api/v1/benefit_categories`)
@@ -124,7 +118,7 @@ const Filter: React.FC<FilterProps> = () => {
   return (
     <div className="filter">
       <div className="filter-header">
-        <Typography variant="h4">Filters</Typography>
+        <Typography variant="h6">Filters</Typography>
       </div>
       <FilterOption
         selectedDateRange={selectedDateRange}
@@ -167,9 +161,6 @@ const Filter: React.FC<FilterProps> = () => {
         onToggleVisibility={() => handleDropdownToggle('provider')}
       >
         Provider
-      </FilterOption>
-      <FilterOption type="reset" handleReset={handleReset}>
-        Reset
       </FilterOption>
     </div>
   )

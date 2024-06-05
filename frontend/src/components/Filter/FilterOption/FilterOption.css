@@ -9,7 +9,7 @@
   cursor: pointer;
   display: flex;
   column-gap: 15px;
-  padding: 20px 25px;
+  padding: 10px 15px;
   border: 2px solid #002147;
   border-radius: 16px;
 }
