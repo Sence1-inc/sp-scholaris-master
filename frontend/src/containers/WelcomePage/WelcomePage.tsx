@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material'
 import React from 'react'
 import WelcomeButton from '../../components/Button/WelcomeButton'
-import WelcomePageSearch from '../../components/Search/WelcomePageSsearch'
+import WelcomePageSearch from '../../components/Search/WelcomePageSearch'
 import SchoolIcon from '../../public/images/school-solid.svg'
 import UserIcon from '../../public/images/users-solid.svg'
 import WelcomeImage from '../../public/images/welcome-icon.png'
