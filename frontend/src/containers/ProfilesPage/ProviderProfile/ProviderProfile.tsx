@@ -15,13 +15,6 @@ import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import { ScholarshipProvider } from '../../../redux/types'
 import profileTheme from '../../../styles/profileTheme'
 
-interface Subscriber {
-  id: number
-  email: string
-  user_type: string
-  subscribed_at: string
-}
-
 const ProviderProfile: React.FC = () => {
   const [activeContent, setActiveContent] = useState<string>('view-profile')
   const { lastRoute } = useParams()

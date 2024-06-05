@@ -55,8 +55,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
 
   const xs = useMediaQuery(theme.breakpoints.up('xs'))
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
-  const md = useMediaQuery(theme.breakpoints.up('md'))
-  const lg = useMediaQuery(theme.breakpoints.up('lg'))
 
   const formatString = (str: string) => {
     return str

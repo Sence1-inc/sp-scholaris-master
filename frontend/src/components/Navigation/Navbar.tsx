@@ -13,9 +13,9 @@ import {
   Typography,
 } from '@mui/material'
 import React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Logo from '../../public/images/logo.png'
-import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
 interface NavbarProps {
@@ -31,8 +31,6 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const isAuthenticated = useAppSelector(
     (state) => state.persistedReducer.isAuthenticated
   )
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
 
   const renderItems = () => {
     if (pathname.includes('/student')) {

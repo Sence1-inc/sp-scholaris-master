@@ -50,10 +50,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
 
-  const xs = useMediaQuery(theme.breakpoints.up('xs'))
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
-  const md = useMediaQuery(theme.breakpoints.up('md'))
-  const lg = useMediaQuery(theme.breakpoints.up('lg'))
 
   const columns = [
     {
