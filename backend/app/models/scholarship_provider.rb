@@ -4,6 +4,6 @@ class ScholarshipProvider < ApplicationRecord
   belongs_to :user
 
   def as_json(options = {})
-    super(options.merge(include: [:user],except: [:created_at, :updated_at, :deleted_at]))
+    super(options.merge(include: [:user, :scholarship_provider_profile],except: [:created_at, :updated_at, :deleted_at]))
   end
 end

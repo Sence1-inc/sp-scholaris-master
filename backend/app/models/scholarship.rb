@@ -41,7 +41,23 @@ class Scholarship < ApplicationRecord
   }
 
   def as_json(options = {})
-    super(options.merge(include: [:benefits, :eligibilities, :requirements, :scholarship_provider, :scholarship_type, :courses, :schools, :benefit_categories], except: [:created_at, :updated_at, :deleted_at, :eligibility_id, :requirement_id, :scholarship_provider_id, :scholarship_type_id]))
+    super(options.merge(
+      include: {
+        benefits: {},
+        eligibilities: {},
+        requirements: {},
+        scholarship_provider: {
+          include: {
+            scholarship_provider_profile: { only: [:id, :description] }
+          },
+        },
+        scholarship_type: {},
+        courses: {},
+        schools: {},
+        benefit_categories: {}
+      },
+      except: [:created_at, :updated_at, :deleted_at, :eligibility_id, :requirement_id, :scholarship_provider_id, :scholarship_type_id]
+    ))
   end
 
   def add_association_record(association_name, record)

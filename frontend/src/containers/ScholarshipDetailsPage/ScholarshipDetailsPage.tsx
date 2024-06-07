@@ -181,12 +181,18 @@ export const ScholarshipDetailsPage: React.FC<
                   <h3 className="title3">
                     {scholarshipData.scholarship_provider.provider_name}
                   </h3>
-                  <p>
+                  <p style={{ marginBottom: '20px' }}>
                     {
                       scholarshipData.scholarship_provider
                         .scholarship_provider_profile?.description
                     }
                   </p>
+                  <a
+                    style={{ color: '#002147', marginTop: '20px' }}
+                    href={scholarshipData.scholarship_provider.provider_link}
+                  >
+                    Link to Provider Page
+                  </a>
                 </div>
               </div>
             </div>
