@@ -1,4 +1,12 @@
-import { Box, Button, Chip, Stack, TextField, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Chip,
+  Stack,
+  TextField,
+  Typography,
+  useMediaQuery,
+} from '@mui/material'
 import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
@@ -8,6 +16,7 @@ import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 import { ctaButtonStyle } from '../../styles/globalStyles'
+import theme from '../../styles/theme'
 import Filter from '../Filter/Filter'
 import './Search.css'
 
@@ -18,7 +27,7 @@ interface GridRowDef {
 
 const WelcomePageSearch: React.FC = () => {
   const dispatch = useAppDispatch()
-  const params = useAppSelector((state) => state.searchParams)
+  const params: any = useAppSelector((state) => state.searchParams)
   const navigate = useNavigate()
   const data: any = useAppSelector(
     (state) => state.persistedReducer.scholarships
@@ -32,6 +41,9 @@ const WelcomePageSearch: React.FC = () => {
   const { scholarships } = data.scholarships
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
+
+  const sm = useMediaQuery(theme.breakpoints.up('sm'))
+  const xs = useMediaQuery(theme.breakpoints.up('xs'))
 
   const formatString = (str: string) => {
     return str
@@ -120,6 +132,8 @@ const WelcomePageSearch: React.FC = () => {
       return {
         id: scholarship.id,
         scholarshipName: scholarship.scholarship_name,
+        startDate: new Date(scholarship.start_date).toDateString(),
+        dueDate: new Date(scholarship.due_date).toDateString(),
         provider: scholarship.scholarship_provider.provider_name,
       }
     })
@@ -131,9 +145,24 @@ const WelcomePageSearch: React.FC = () => {
     {
       field: 'scholarshipName',
       headerName: 'Scholarship Name',
-      flex: 1.5,
+      ...(sm ? { flex: 1.5 } : { width: 200 }),
     },
-    { field: 'provider', headerName: 'Organization', type: 'string', flex: 1 },
+    {
+      field: 'startDate',
+      headerName: 'Start Date',
+      ...(sm ? { flex: 1.5 } : { width: 150 }),
+    },
+    {
+      field: 'dueDate',
+      headerName: 'Due Date',
+      ...(sm ? { flex: 1.5 } : { width: 150 }),
+    },
+    {
+      field: 'provider',
+      headerName: 'Organization',
+      type: 'string',
+      ...(sm ? { flex: 1.5 } : { width: 200 }),
+    },
   ]
 
   const handleRowClick = (params: GridRowParams) => {
@@ -145,41 +174,59 @@ const WelcomePageSearch: React.FC = () => {
       ref={searchRef}
       id="search"
       className="search"
-      style={{ height: 'auto' }}
+      style={{
+        height: 'auto',
+        width: '100%',
+      }}
     >
-      <div
+      <Box
         className="search__input-container"
-        style={{
+        sx={{
           display: 'flex',
           flexDirection: 'column',
           gap: '60px',
           alignItems: 'center',
           justifyContent: 'center',
-          width: '100%',
+          width: { xs: '100%', md: '80%' },
+          margin: 'auto',
         }}
       >
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '10px',
+            width: '100%',
+          }}
+        >
           <Typography
-            variant="h4"
+            variant="h3"
             sx={{ color: 'secondary.main', textAlign: 'center' }}
           >
             Struggling to Find Scholarships?
           </Typography>
           <Typography
-            variant="h4"
+            variant="h3"
             sx={{ color: 'primary.main', textAlign: 'center' }}
           >
             Discover Thousands with Our App!
           </Typography>
         </Box>
 
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+            width: '100%',
+          }}
+        >
           <Box
             sx={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: { xs: '10px', sm: '40px' },
+              gap: { xs: '10px' },
             }}
           >
             <TextField
@@ -217,6 +264,10 @@ const WelcomePageSearch: React.FC = () => {
           <DataGrid
             onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}
+            columnVisibilityModel={{
+              startDate: xs,
+              dueDate: xs,
+            }}
             rows={rowData}
             rowCount={5}
             columns={columns}
@@ -265,7 +316,7 @@ const WelcomePageSearch: React.FC = () => {
             }}
           />
         </Box>
-      </div>
+      </Box>
     </section>
   )
 }

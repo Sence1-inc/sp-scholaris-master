@@ -4,7 +4,6 @@ import WelcomeButton from '../../components/Button/WelcomeButton'
 import WelcomePageSearch from '../../components/Search/WelcomePageSearch'
 import SchoolIcon from '../../public/images/school-solid.svg'
 import UserIcon from '../../public/images/users-solid.svg'
-import WelcomeImage from '../../public/images/welcome-icon.png'
 import './WelcomePage.css'
 
 const WelcomePage: React.FC = () => {
@@ -13,15 +12,23 @@ const WelcomePage: React.FC = () => {
       <Box
         sx={{
           display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
+          flexDirection: { xs: 'column' },
           width: '100vw',
           padding: { xs: '40px 20px', md: '60px' },
-          gap: { xs: '40px', md: '0' },
+          gap: { xs: '80px' },
         }}
       >
         <Box
           sx={{
-            width: { md: '50%', xs: '100%' },
+            width: { xs: '100%' },
+            paddingLeft: { md: '10px' },
+          }}
+        >
+          <WelcomePageSearch />
+        </Box>
+        <Box
+          sx={{
+            width: { xs: '100%' },
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
@@ -30,15 +37,19 @@ const WelcomePage: React.FC = () => {
             paddingRight: { md: '10px' },
           }}
         >
-          <img
+          {/* <img
             src={WelcomeImage}
             alt=""
             style={{ maxWidth: '100%', height: 'auto', padding: 0, margin: 0 }}
-          />
-          <Typography variant="h3">
+          /> */}
+          <Typography variant="h3" textAlign="center">
             Discover <span className="color-secondary">Scholaris</span>!
           </Typography>
           <Typography variant="body1" textAlign="center">
+            Everyone deserves an education. Scholaris will help you to overcome
+            the challenges and difficulties in searching for scholarships.
+            <br />
+            <br />
             Scholaris is an application designed to publicize and promote
             existing scholarship opportunities, making scholarships easily
             accessible to many scholarship searchers.
@@ -48,14 +59,6 @@ const WelcomePage: React.FC = () => {
             updated with the latest offerings from different
             Scholarship-Granting Organizations or SGOs.
           </Typography>
-        </Box>
-        <Box
-          sx={{
-            width: { md: '50%', xs: '100%' },
-            paddingLeft: { md: '10px' },
-          }}
-        >
-          <WelcomePageSearch />
         </Box>
       </Box>
       <div id="welcome" className="content__welcome-selection">
