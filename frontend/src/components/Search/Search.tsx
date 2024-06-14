@@ -280,17 +280,20 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
           {Object.keys(restParams).length > 0 && (
             <Box>
               <Stack direction="row" spacing={1}>
-                {Object.entries(restParams)?.map(([key, value]) => (
-                  <Chip
-                    key={key}
-                    label={`${formatString(key)}: ${value}`}
-                    variant="outlined"
-                    onDelete={() => handleChipDelete(key)}
-                  />
-                ))}
+                {Object.entries(restParams).map(([key, value]) => {
+                  return key === 'limit' || key === 'page' ? null : (
+                    <Chip
+                      key={key}
+                      label={`${formatString(key)}: ${value}`}
+                      variant="outlined"
+                      onDelete={() => handleChipDelete(key)}
+                    />
+                  )
+                })}
               </Stack>
             </Box>
           )}
+
           <DataGrid
             localeText={{ noRowsLabel: 'No saved data' }}
             rows={rowData}

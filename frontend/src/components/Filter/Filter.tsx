@@ -1,7 +1,6 @@
 import { Typography } from '@mui/material'
-import { format } from 'date-fns'
+import { Dayjs } from 'dayjs'
 import React, { useEffect, useState } from 'react'
-import { RangeKeyDict } from 'react-date-range'
 import axiosInstance from '../../axiosConfig'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -27,22 +26,14 @@ export interface DateRangeItem {
 const Filter: React.FC<FilterProps> = () => {
   const dispatch = useAppDispatch()
   const params = useAppSelector((state) => state.searchParams)
-  const initialDateRange: DateRangeItem[] = [
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: 'selection',
-    },
-  ]
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [benefits, setBenefits] = useState<Option[] | []>([])
   // const [courses, setCourses] = useState<Option[] | []>([])
   // const [schools, setSchools] = useState<Option[] | []>([])
   const [providers, setProviders] = useState<Option[] | []>([])
   const [selectedParams, setSelectedParams] = useState<Params>({})
-  const [selectedDateRange, setSelectedDateRange] = useState<
-    DateRangeItem[] | []
-  >(initialDateRange)
+  const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null)
+  const [selectedDueDate, setSelectedDueDate] = useState<Dayjs | null>(null)
 
   const handleOptionClick = (option: Option) => {
     const key: string | null = activeDropdown
@@ -91,23 +82,6 @@ const Filter: React.FC<FilterProps> = () => {
     )
   }
 
-  const handleDateSelect = (ranges: RangeKeyDict) => {
-    const newDateRange: DateRangeItem[] = [ranges.selection as DateRangeItem]
-    setSelectedDateRange(newDateRange)
-    setSelectedParams((prevParams: Params) => ({
-      ...prevParams,
-      start_date: format(ranges.selection.startDate as Date, 'LLLL dd, yyyy'),
-      due_date: format(ranges.selection.endDate as Date, 'LLLL dd, yyyy'),
-    }))
-    dispatch(
-      initializeParams({
-        ...params.params,
-        start_date: format(ranges.selection.startDate as Date, 'LLLL dd, yyyy'),
-        due_date: format(ranges.selection.endDate as Date, 'LLLL dd, yyyy'),
-      })
-    )
-  }
-
   useEffect(() => {
     if (!activeDropdown) {
       dispatch(initializeParams({}))
@@ -121,13 +95,22 @@ const Filter: React.FC<FilterProps> = () => {
         <Typography variant="h6">Filters</Typography>
       </div>
       <FilterOption
-        selectedDateRange={selectedDateRange}
-        handleSelect={handleDateSelect}
-        type="date"
-        isVisible={activeDropdown === 'date'}
-        onToggleVisibility={() => handleDropdownToggle('date')}
+        selectedStartDate={selectedStartDate}
+        setSelectedStartDate={setSelectedStartDate}
+        type="startDate"
+        isVisible={activeDropdown === 'startDate'}
+        onToggleVisibility={() => handleDropdownToggle('startDate')}
       >
-        Application Date
+        Application Start Date
+      </FilterOption>
+      <FilterOption
+        selectedDueDate={selectedDueDate}
+        setSelectedDueDate={setSelectedDueDate}
+        type="dueDate"
+        isVisible={activeDropdown === 'dueDate'}
+        onToggleVisibility={() => handleDropdownToggle('dueDate')}
+      >
+        Application Due Date
       </FilterOption>
       <FilterOption
         handleOptionClick={handleOptionClick}

@@ -31,7 +31,15 @@ instance.interceptors.response.use(
       (!isLoginRequest && elapsedTimeSinceLastRefresh >= 4 * 60 * 1000) ||
       (error.response && error.response.status === 401)
     ) {
-      axios.post('/api/v1/refresh')
+      const data = {}
+      axios.post(`${baseURL}/api/v1/refresh`, data, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+        },
+      })
+
       console.log('Unauthorized, triggering /refresh endpoint')
       lastRefreshTime = currentTime
     }

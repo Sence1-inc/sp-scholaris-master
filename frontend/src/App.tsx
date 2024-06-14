@@ -68,13 +68,6 @@ const App: React.FC = () => {
   }, [searchParams])
 
   useEffect(() => {
-    if (benefits || provider || start_date || due_date) {
-      getScholarships(false)
-    }
-    // eslint-disable-next-line
-  }, [benefits, provider, start_date, due_date])
-
-  useEffect(() => {
     if (Object.keys(params.params).length > 0 && isInitialLoad) {
       getScholarships()
     }
@@ -82,6 +75,10 @@ const App: React.FC = () => {
     setIsInitialLoad(false)
     // eslint-disable-next-line
   }, [params.params])
+
+  useEffect(() => {
+    getScholarships(false)
+  }, [benefits, provider, start_date, due_date])
 
   useEffect(() => {
     const excludedPaths = [

@@ -1,9 +1,12 @@
+import { LocalizationProvider, StaticDatePicker } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import React, { useState } from 'react'
-import { DateRange, RangeKeyDict } from 'react-date-range'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
 import DropdownArrow from '../../../public/images/dropdownArr.svg'
-import { DateRangeItem } from '../Filter'
+import { initializeParams } from '../../../redux/reducers/SearchParamsReducer'
+import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import './FilterOption.css'
 
 interface Option {
@@ -18,8 +21,10 @@ interface FilterOptionProps {
   onToggleVisibility?: () => void
   selectedOption?: Option | null | string
   handleOptionClick?: (option: Option) => void
-  selectedDateRange?: DateRangeItem[]
-  handleSelect?: (ranges: RangeKeyDict) => void
+  selectedStartDate?: Dayjs | null
+  setSelectedStartDate?: (value: Dayjs) => void
+  selectedDueDate?: Dayjs | null
+  setSelectedDueDate?: (value: Dayjs) => void
   handleReset?: () => void
 }
 
@@ -31,10 +36,14 @@ const FilterOption: React.FC<FilterOptionProps> = ({
   onToggleVisibility,
   handleOptionClick,
   selectedOption,
-  selectedDateRange,
-  handleSelect,
+  selectedStartDate,
+  setSelectedStartDate,
+  selectedDueDate,
+  setSelectedDueDate,
   handleReset,
 }) => {
+  const params = useAppSelector((state) => state.searchParams)
+  const dispatch = useAppDispatch()
   const [searchTerm, setSearchTerm] = useState<string>('')
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -77,16 +86,55 @@ const FilterOption: React.FC<FilterOptionProps> = ({
           />
         )}
       </div>
-      {isVisible && type === 'date' && handleSelect && (
-        <div>
-          <DateRange
-            ranges={selectedDateRange}
-            onChange={(ranges) => handleSelect(ranges)}
-          />
+      {isVisible && type === 'startDate' && setSelectedStartDate && (
+        <div className="dropdown-options" style={{ maxHeight: '600px' }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <StaticDatePicker
+              defaultValue={dayjs(selectedStartDate)}
+              onChange={(newValue) => {
+                setSelectedStartDate(newValue as Dayjs)
+                dispatch(
+                  initializeParams({
+                    ...params.params,
+                    start_date: dayjs(newValue).format('MMMM DD, YYYY'),
+                  })
+                )
+              }}
+              slotProps={{
+                actionBar: {
+                  actions: ['accept'],
+                },
+              }}
+            />
+          </LocalizationProvider>
         </div>
       )}
 
-      {isVisible && type !== 'date' && (
+      {isVisible && type === 'dueDate' && setSelectedDueDate && (
+        <div className="dropdown-options" style={{ maxHeight: '600px' }}>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <StaticDatePicker
+              defaultValue={dayjs(selectedDueDate)}
+              onChange={(newValue) => {
+                setSelectedDueDate(newValue as Dayjs)
+                dispatch(
+                  initializeParams({
+                    ...params.params,
+                    due_date: dayjs(newValue).format('MMMM DD, YYYY'),
+                  })
+                )
+              }}
+              slotProps={{
+                actionBar: {
+                  actions: ['accept'],
+                },
+              }}
+            />
+          </LocalizationProvider>
+        </div>
+      )}
+
+      {isVisible && type !== 'startDate' && type !== 'dueDate' && (
         <div className="dropdown-options">
           {type === 'search' && (
             <>

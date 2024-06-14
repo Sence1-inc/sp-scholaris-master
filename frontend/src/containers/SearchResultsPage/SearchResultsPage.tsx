@@ -125,6 +125,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     setIsLoading(true)
     setPage(par.page + 1)
     dispatch(initializeParams({ ...params.params, limit: par.pageSize }))
+    setIsLoading(false)
   }
 
   useEffect(() => {
