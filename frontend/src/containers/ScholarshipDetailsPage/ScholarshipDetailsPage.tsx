@@ -110,35 +110,36 @@ export const ScholarshipDetailsPage: React.FC<
                 scholarshipData.benefits.length > 0 && (
                   <div className="details-section">
                     <h4 className="title4">Benefits</h4>
-                    <ol>
-                      {scholarshipData.benefits.map((benefit: any) => (
-                        <li key={benefit.id}>{benefit.benefit_name}</li>
-                      ))}
-                    </ol>
+                    {scholarshipData.benefits.map((benefit: any) => (
+                      <p style={{ whiteSpace: 'pre-wrap' }} key={benefit.id}>
+                        {benefit.benefit_name}
+                      </p>
+                    ))}
                   </div>
                 )}
               {scholarshipData.requirements &&
                 scholarshipData.requirements.length > 0 && (
                   <div className="details-section">
                     <h4 className="title4">Requirements</h4>
-                    <ol>
-                      {scholarshipData.requirements.map((requirement: any) => (
-                        <li key={requirement.id}>
-                          {requirement.requirements_text}
-                        </li>
-                      ))}
-                    </ol>
+                    {scholarshipData.requirements.map((requirement: any) => (
+                      <p
+                        style={{ whiteSpace: 'pre-wrap' }}
+                        key={requirement.id}
+                      >
+                        {requirement.requirements_text}
+                      </p>
+                    ))}
                   </div>
                 )}
               {scholarshipData.eligibilities &&
                 scholarshipData.eligibilities.length > 0 && (
                   <div className="details-section">
                     <h4 className="title4">Eligibilities</h4>
-                    <ol>
-                      {scholarshipData.eligibilities.map((elibility: any) => (
-                        <li key={elibility.id}>{elibility.eligibility_text}</li>
-                      ))}
-                    </ol>
+                    {scholarshipData.eligibilities.map((elibility: any) => (
+                      <p style={{ whiteSpace: 'pre-wrap' }} key={elibility.id}>
+                        {elibility.eligibility_text}
+                      </p>
+                    ))}
                   </div>
                 )}
               {scholarshipData.application_link && (
@@ -165,7 +166,7 @@ export const ScholarshipDetailsPage: React.FC<
                 <div className="details-column">
                   <h5 className="title4">School Year</h5>
                   <p className="bordered">
-                    S . Y : {scholarshipData.school_year}
+                    S. Y. : {scholarshipData.school_year}
                   </p>
                 </div>
               </div>
