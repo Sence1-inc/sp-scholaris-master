@@ -5,6 +5,7 @@ import {
   FormGroup,
   InputLabel,
   TextField,
+  Typography,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
@@ -82,27 +83,33 @@ const AccountProfile: React.FC<AccountProfileProps> = ({
         <InputLabel htmlFor="account-details" sx={profileTheme.form.formLabel}>
           Account Details
         </InputLabel>
-        <TextField
-          disabled={!isEditting}
-          id="account-details"
-          value={details}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setDetails(e.target.value)
-          }
-          sx={profileTheme.form.formInput}
-        />
+        {isEditting ? (
+          <TextField
+            id="account-details"
+            value={details}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setDetails(e.target.value)
+            }
+            sx={profileTheme.form.formInput}
+          />
+        ) : (
+          <Typography sx={profileTheme.text.textRegular}>{details}</Typography>
+        )}
       </FormGroup>
       <FormGroup>
         <InputLabel htmlFor="account-link">Organization Link</InputLabel>
-        <TextField
-          disabled={!isEditting}
-          id="account-link"
-          value={link}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setLink(e.target.value)
-          }
-          sx={profileTheme.form.formInput}
-        />
+        {isEditting ? (
+          <TextField
+            id="account-link"
+            value={link}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setLink(e.target.value)
+            }
+            sx={profileTheme.form.formInput}
+          />
+        ) : (
+          <Typography sx={profileTheme.text.textRegular}>{link}</Typography>
+        )}
       </FormGroup>
       <Box
         sx={{
