@@ -250,6 +250,9 @@ export default function DataTable() {
             xs: '12px',
             md: '1rem',
           },
+          '& .MuiDataGrid-row:hover': {
+            backgroundColor: 'secondary.main',
+          },
         }}
       />
     </div>

@@ -2,7 +2,7 @@ import { OpenInNew } from '@mui/icons-material'
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import HomeIcon from '@mui/icons-material/Home'
 import { Box, Button, Typography, useMediaQuery } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import Cookies from 'js-cookie'
 import queryString from 'query-string'
 import { useEffect, useState } from 'react'
@@ -89,7 +89,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     return (
       <Box>
         <Typography
-          color="secondary"
+          color="primary"
           component={Link}
           to={`/scholarships/${params.row.id}`}
           sx={{
@@ -191,6 +191,10 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     // eslint-disable-next-line
   }, [params.params])
 
+  const handleRowClick = (params: GridRowParams) => {
+    navigate(`/scholarships/${params.row.id}`)
+  }
+
   return (
     <section className="search-results">
       <div className="container-1040" style={{ width: '100%' }}>
@@ -223,6 +227,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         <Typography variant="h3">Search Results</Typography>
         <Search isSection={false} />
         <DataGrid
+          onRowClick={handleRowClick}
           localeText={{ noRowsLabel: 'No saved data' }}
           rows={rowData}
           rowCount={totalCount}
@@ -273,6 +278,10 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             fontSize: {
               xs: '12px',
               md: '1rem',
+            },
+            '& .MuiDataGrid-row:hover': {
+              backgroundColor: 'secondary.main',
+              cursor: 'pointer',
             },
           }}
         />

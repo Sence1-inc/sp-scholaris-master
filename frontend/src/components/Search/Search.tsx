@@ -9,7 +9,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -211,7 +211,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
         {xs ? (
           <IconButton
             onClick={() => navigate(`/scholarships/${params.row.id}`)}
-            sx={{ color: 'secondary.main' }}
+            sx={{ color: 'primary.main' }}
           >
             <Visibility />
           </IconButton>
@@ -238,6 +238,10 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
 
   const handlePageChange = (par: { page: number; pageSize: number }) => {
     setIsLoading(true)
+  }
+
+  const handleRowClick = (params: GridRowParams) => {
+    navigate(`/scholarships/${params.row.id}`)
   }
 
   return (
@@ -295,6 +299,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
           )}
 
           <DataGrid
+            onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}
             rows={rowData}
             rowCount={totalCount}
@@ -343,6 +348,10 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               fontSize: {
                 xs: '12px',
                 md: '1rem',
+              },
+              '& .MuiDataGrid-row:hover': {
+                backgroundColor: 'secondary.main',
+                cursor: 'pointer',
               },
             }}
           />
