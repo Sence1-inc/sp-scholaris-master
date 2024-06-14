@@ -7,10 +7,12 @@
   flex-direction: row;
   column-gap: 10px;
   margin: 0;
+  gap: 10px;
 }
 
 .filter .filter-header {
-  padding: 20px 20px 20px 0;
+  padding: 0;
+  width: 100%;
   font-size: 24px;
   color: #002147;
 }
