@@ -156,6 +156,16 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             <Typography
               variant="body1"
               component={Link}
+              to="/provider/survey"
+              sx={{ color: 'common.white', textDecoration: 'none' }}
+            >
+              Survey
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <Typography
+              variant="body1"
+              component={Link}
               to="/provider/dashboard"
               sx={{ color: 'common.white', textDecoration: 'none' }}
             >

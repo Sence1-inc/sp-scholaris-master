@@ -33,6 +33,7 @@ const Survey: React.FC<SurveyProps> = ({
   const subscriber = useAppSelector(
     (state) => state.persistedReducer.subscriber
   )
+  const user = useAppSelector((state) => state.persistedReducer.user)
 
   const classifications = ['parent', 'guardian', 'teacher', 'student']
 
@@ -74,7 +75,11 @@ const Survey: React.FC<SurveyProps> = ({
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChange(e, 'email')
           }
-          value={surveyResponses.email}
+          value={
+            user && user.email_address
+              ? user.email_address
+              : surveyResponses.email
+          }
         />
       </Container>
       <Container sx={{ padding: '0!important' }}>
