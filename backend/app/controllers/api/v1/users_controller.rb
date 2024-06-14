@@ -60,7 +60,7 @@ module Api
         existing_user = User.find_by(email_address: user_params.dig(:email_address))
         
         if !@role || existing_user
-          error_message = !@role ? 'Role not found' : 'User already exists'
+          error_message = !@role ? 'Role not found' : 'Invalid details'
           render json: { error: error_message }, status: :unprocessable_entity
           return
         end
@@ -77,6 +77,8 @@ module Api
         else
           render json: { error: 'Failed to save user details' }, status: :unprocessable_entity
         end
+      elsif registration_response[:status] == 409
+        render json: { error: "Invalid details" }, status: registration_response[:status]
       else
         render json: { error: registration_response[:error] }, status: registration_response[:status]
       end
