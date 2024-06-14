@@ -1,3 +1,4 @@
+import { Close } from '@mui/icons-material'
 import { LocalizationProvider, StaticDatePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs, { Dayjs } from 'dayjs'
@@ -25,6 +26,7 @@ interface FilterOptionProps {
   setSelectedStartDate?: (value: Dayjs) => void
   selectedDueDate?: Dayjs | null
   setSelectedDueDate?: (value: Dayjs) => void
+  setSelectedParams?: any
   handleReset?: () => void
 }
 
@@ -40,6 +42,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
   setSelectedStartDate,
   selectedDueDate,
   setSelectedDueDate,
+  setSelectedParams,
   handleReset,
 }) => {
   const params = useAppSelector((state) => state.searchParams)
@@ -72,18 +75,21 @@ const FilterOption: React.FC<FilterOptionProps> = ({
       <div
         className={`dropdown-header ${type === 'reset' && 'dropdown-reset'}`}
         onClick={toggleDropdown}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
         {typeof selectedOption === 'string'
           ? selectedOption
           : selectedOption
             ? selectedOption.label
             : children}{' '}
-        {type !== 'reset' && (
-          <img
-            className={isVisible ? 'rotateArrow' : ''}
-            src={DropdownArrow}
-            alt="Dropdown arrow"
-          />
+        {type !== 'reset' && !isVisible ? (
+          <img src={DropdownArrow} alt="Dropdown arrow" />
+        ) : (
+          <Close color="primary" />
         )}
       </div>
       {isVisible && type === 'startDate' && setSelectedStartDate && (
@@ -117,6 +123,10 @@ const FilterOption: React.FC<FilterOptionProps> = ({
               defaultValue={dayjs(selectedDueDate)}
               onChange={(newValue) => {
                 setSelectedDueDate(newValue as Dayjs)
+                setSelectedParams((prevParams: any) => ({
+                  ...prevParams,
+                  due_date: dayjs(newValue).format('MMMM DD, YYYY'),
+                }))
                 dispatch(
                   initializeParams({
                     ...params.params,

@@ -106,6 +106,7 @@ const Filter: React.FC<FilterProps> = () => {
       <FilterOption
         selectedDueDate={selectedDueDate}
         setSelectedDueDate={setSelectedDueDate}
+        setSelectedParams={setSelectedParams}
         type="dueDate"
         isVisible={activeDropdown === 'dueDate'}
         onToggleVisibility={() => handleDropdownToggle('dueDate')}
