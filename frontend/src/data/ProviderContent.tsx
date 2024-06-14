@@ -1,7 +1,7 @@
 export const FEATURES: FeatureProps[] = [
   {
     title: 'Seamless Scholarship Management',
-    desc: 'Effortlessly upload and manage scholarship details with our user-friendly interface. Whether you prefer hands-on manual editing or the efficiency of bulk uploads through CSV files, Scholaris ensures a seamless experience, saving you time and effort.',
+    desc: 'Effortlessly upload and manage scholarship details with our user-friendly interface. Whether you prefer hands-on manual editing or the efficiency of bulk uploads through TSV files, Scholaris ensures a seamless experience, saving you time and effort.',
     image: '/images/provider-f-1.png',
   },
   {

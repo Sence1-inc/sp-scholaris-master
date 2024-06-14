@@ -1,25 +1,0 @@
-scholarship_name,description,requirements,eligibilities,benefits,benefit_categories,scholarship_type_id,application_link,start_date,due_date,school_year,status
-,,,,,"Which category/categories best describe the benefits you are offering
-1 = Book Allowance
-2 = Accommodation
-3 = Travel Allowance
-4 = Living Stipend
-5 = Research Grant
-6 = Study Abroad Support
-7 = Internship Support
-8 = Health Insurance
-9= Professional Development Allowance
-10 = Technology Grant
-11 = Childcare Support
-12 = Mentorship and Counseling Services
-13 = Special Needs Accommodation
-14 = Graduation Support
-15 = Partial Scholarship
-16 = Full Scholarship
-17 = Stipend
-
-For multiple categories, follow this format:
-[1, 2, …, 5]
-
-For single category, follow this format:
-[1]","Choose the number that correspond to the scholarship 1 = Merit-based 2 = Financial-based 3 = Demographic-based 4 = Industry-based 5 = Field of study 6 = Athletic 7 = Artistic",,Required format is DD-MM-YYYY,Required format is DD-MM-YYYY,,Values accepted are active and inactive

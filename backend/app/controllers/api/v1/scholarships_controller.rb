@@ -55,12 +55,12 @@ module Api
         uploaded_file = params[:file]
         if uploaded_file.respond_to?(:read)
           begin
-            temp_file = Tempfile.new(["uploaded_file", ".csv"])
+            temp_file = Tempfile.new(["uploaded_file", ".tsv"])
             temp_file.binmode
             temp_file.write(uploaded_file.read)
             temp_file.rewind
 
-            excel = Roo::Spreadsheet.open(temp_file.path, extension: :csv)
+            excel = Roo::CSV.new(temp_file.path, csv_options: {col_sep: "\t"})
             header = excel.row(1)
             data = []
             (3..excel.last_row).each do |i|

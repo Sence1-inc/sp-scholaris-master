@@ -87,7 +87,7 @@ const ProviderDashboardPage: React.FC = () => {
               sx={ctaButtonStyle}
               onClick={() => navigate('/scholarships/create/upload')}
             >
-              Add Scholarship via CSV
+              Add Scholarship via TSV
             </Button>
           </Box>
         </Box>

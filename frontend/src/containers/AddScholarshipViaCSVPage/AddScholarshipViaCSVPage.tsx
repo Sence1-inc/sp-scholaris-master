@@ -19,10 +19,10 @@ const AddScholarshipViaCSVPage: React.FC = () => {
   const [isUploading, setIsUploading] = useState<boolean>(false)
 
   const handleDownload = () => {
-    const fileUrl = `${process.env.PUBLIC_URL}/files/scholarship_data.csv`
+    const fileUrl = `${process.env.PUBLIC_URL}/files/scholarship_data.tsv`
     const link = document.createElement('a')
     link.href = fileUrl
-    link.setAttribute('download', 'scholarship_data.csv')
+    link.setAttribute('download', 'scholarship_data.tsv')
     document.body.appendChild(link)
     link.click()
 
@@ -140,7 +140,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
             color: '#002147',
           }}
         >
-          Add New Scholarship via CSV
+          Add New Scholarship via TSV
         </Typography>
 
         <Box
@@ -164,7 +164,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
                 fontWeight: '600',
               }}
             >
-              Upload CSV File
+              Upload TSV File
             </Typography>
             <Button variant="text" onClick={handleDownload}>
               <Typography
