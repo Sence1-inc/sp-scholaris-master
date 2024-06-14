@@ -4,14 +4,14 @@ import SecurityIcon from '@mui/icons-material/Security'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { Box, Button, Card, List, ListItem, Typography } from '@mui/material'
 import React, { Dispatch, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
 import ProfileImage from '../../public/images/profile.png'
+import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
+import { initializeUser } from '../../redux/reducers/UserReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import profileTheme from '../../styles/profileTheme'
 import PrimaryButton from '../CustomButton/PrimaryButton'
-import axiosInstance from '../../axiosConfig'
-import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { initializeUser } from '../../redux/reducers/UserReducer'
-import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
 
 interface AccountSideBarProps {
   activeContent: string | undefined
@@ -48,6 +48,7 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.persistedReducer.user)
+  const { lastRoute } = useParams()
 
   const handleDeleteCookie = async () => {
     const data = {
@@ -86,6 +87,10 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
   useEffect(() => {
     setActiveButton(activeContent)
   }, [activeContent])
+
+  useEffect(() => {
+    setActiveButton(lastRoute)
+  }, [lastRoute])
 
   const onButtonClicked = (e: React.MouseEvent<HTMLElement>) => {
     const target = e.target as HTMLElement
