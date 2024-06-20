@@ -100,7 +100,6 @@ export const ScholarshipDetailsPage: React.FC<
               <ArrowBackIosIcon /> Back to Search Results
             </Button>
           </aside>
-          <h2 className="title2">Scholarship Details</h2>
           {scholarshipData && (
             <div className="details-card">
               <h3 className="title3">
@@ -111,7 +110,10 @@ export const ScholarshipDetailsPage: React.FC<
                   <div className="details-section">
                     <h4 className="title4">Benefits</h4>
                     {scholarshipData.benefits.map((benefit: any) => (
-                      <p style={{ whiteSpace: 'pre-wrap' }} key={benefit.id}>
+                      <p
+                        style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}
+                        key={benefit.id}
+                      >
                         {benefit.benefit_name}
                       </p>
                     ))}
@@ -123,7 +125,7 @@ export const ScholarshipDetailsPage: React.FC<
                     <h4 className="title4">Requirements</h4>
                     {scholarshipData.requirements.map((requirement: any) => (
                       <p
-                        style={{ whiteSpace: 'pre-wrap' }}
+                        style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}
                         key={requirement.id}
                       >
                         {requirement.requirements_text}
@@ -136,7 +138,10 @@ export const ScholarshipDetailsPage: React.FC<
                   <div className="details-section">
                     <h4 className="title4">Eligibilities</h4>
                     {scholarshipData.eligibilities.map((elibility: any) => (
-                      <p style={{ whiteSpace: 'pre-wrap' }} key={elibility.id}>
+                      <p
+                        style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}
+                        key={elibility.id}
+                      >
                         {elibility.eligibility_text}
                       </p>
                     ))}
