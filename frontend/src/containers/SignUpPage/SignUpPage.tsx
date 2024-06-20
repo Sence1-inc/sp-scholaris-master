@@ -236,6 +236,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
           label="Email address"
           error={errors.email_address}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -245,6 +246,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your email"
         />
         <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
           type="password"
           label="Password"
           error={errors.password}
@@ -255,6 +257,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your password"
         />
         <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
           type="password"
           label="Confirm Password"
           error={errors.password2}
@@ -265,6 +268,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Confirm your password"
         />
         <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
           label="First name"
           error={errors.first_name}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -274,6 +278,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your first name"
         />
         <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
           label="Middle name"
           error={errors.middle_name}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -283,6 +288,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your middle name"
         />
         <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
           label="Last name"
           error={errors.last_name}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>

@@ -159,6 +159,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         Sign-in
       </Typography>
       <CustomTextfield
+        handleOnKeyDonw={handleSignIn}
         label="Email address"
         value={userCredentials.email_address.toLowerCase()}
         handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -168,6 +169,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         error={errors.email_address ?? ''}
       />
       <CustomTextfield
+        handleOnKeyDonw={handleSignIn}
         type="password"
         label="Password"
         value={userCredentials.password}

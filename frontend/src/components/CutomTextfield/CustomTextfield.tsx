@@ -12,6 +12,7 @@ interface CustomTextfieldProps {
   rows?: number
   styles?: any
   type?: string
+  handleOnKeyDonw?: () => void
 }
 
 const CustomTextfield: React.FC<CustomTextfieldProps> = ({
@@ -24,6 +25,7 @@ const CustomTextfield: React.FC<CustomTextfieldProps> = ({
   rows,
   styles,
   type = 'text',
+  handleOnKeyDonw,
 }) => {
   return (
     <Box sx={{ width: '100%' }}>
@@ -38,6 +40,13 @@ const CustomTextfield: React.FC<CustomTextfieldProps> = ({
         {label}
       </Typography>
       <TextField
+        onKeyDown={(e: any) => {
+          if (e.keyCode === 13 && handleOnKeyDonw) {
+            handleOnKeyDonw()
+          } else {
+            return null
+          }
+        }}
         type={type}
         multiline={multiline}
         rows={rows}
