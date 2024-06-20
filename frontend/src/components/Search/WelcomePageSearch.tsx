@@ -247,7 +247,10 @@ const WelcomePageSearch: React.FC = () => {
           <Filter />
           {Object.keys(restParams).length > 0 && (
             <Box>
-              <Stack direction="row" spacing={1}>
+              <Stack
+                direction="row"
+                sx={{ flexWrap: 'wrap', width: '100%', gap: '8px' }}
+              >
                 {Object.entries(restParams)?.map(([key, value]) => {
                   return (
                     <Chip

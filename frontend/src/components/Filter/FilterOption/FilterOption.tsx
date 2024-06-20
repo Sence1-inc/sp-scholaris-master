@@ -92,7 +92,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
           <Close
             color="primary"
             fontSize="inherit"
-            sx={{ padding: 0, margin: 0 }}
+            sx={{ padding: 0, margin: 0, width: '20px' }}
           />
         )}
       </div>
