@@ -89,11 +89,18 @@ const FilterOption: React.FC<FilterOptionProps> = ({
         {type !== 'reset' && !isVisible ? (
           <img src={DropdownArrow} alt="Dropdown arrow" />
         ) : (
-          <Close color="primary" />
+          <Close
+            color="primary"
+            fontSize="inherit"
+            sx={{ padding: 0, margin: 0 }}
+          />
         )}
       </div>
       {isVisible && type === 'startDate' && setSelectedStartDate && (
-        <div className="dropdown-options" style={{ maxHeight: '600px' }}>
+        <div
+          className="dropdown-options"
+          style={{ maxHeight: '600px', padding: 0 }}
+        >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <StaticDatePicker
               defaultValue={dayjs(selectedStartDate)}
@@ -106,10 +113,9 @@ const FilterOption: React.FC<FilterOptionProps> = ({
                   })
                 )
               }}
-              slotProps={{
-                actionBar: {
-                  actions: ['accept'],
-                },
+              slots={{
+                toolbar: () => null,
+                actionBar: () => null,
               }}
             />
           </LocalizationProvider>
@@ -117,7 +123,10 @@ const FilterOption: React.FC<FilterOptionProps> = ({
       )}
 
       {isVisible && type === 'dueDate' && setSelectedDueDate && (
-        <div className="dropdown-options" style={{ maxHeight: '600px' }}>
+        <div
+          className="dropdown-options"
+          style={{ maxHeight: '600px', padding: 0 }}
+        >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <StaticDatePicker
               defaultValue={dayjs(selectedDueDate)}
@@ -134,10 +143,9 @@ const FilterOption: React.FC<FilterOptionProps> = ({
                   })
                 )
               }}
-              slotProps={{
-                actionBar: {
-                  actions: ['accept'],
-                },
+              slots={{
+                toolbar: () => null,
+                actionBar: () => null,
               }}
             />
           </LocalizationProvider>

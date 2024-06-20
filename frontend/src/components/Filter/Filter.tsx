@@ -1,6 +1,6 @@
 import { Typography } from '@mui/material'
 import { Dayjs } from 'dayjs'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -34,6 +34,8 @@ const Filter: React.FC<FilterProps> = () => {
   const [selectedParams, setSelectedParams] = useState<Params>({})
   const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null)
   const [selectedDueDate, setSelectedDueDate] = useState<Dayjs | null>(null)
+
+  const dropdownRef = useRef<HTMLDivElement | null>(null)
 
   const handleOptionClick = (option: Option) => {
     const key: string | null = activeDropdown
@@ -82,6 +84,26 @@ const Filter: React.FC<FilterProps> = () => {
     )
   }
 
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setActiveDropdown(null)
+    }
+  }
+
+  useEffect(() => {
+    if (activeDropdown) {
+      document.addEventListener('mousedown', handleClickOutside)
+    } else {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [activeDropdown])
+
   useEffect(() => {
     if (!activeDropdown) {
       dispatch(initializeParams({}))
@@ -90,7 +112,7 @@ const Filter: React.FC<FilterProps> = () => {
   }, [selectedParams])
 
   return (
-    <div className="filter">
+    <div className="filter" ref={dropdownRef}>
       <div className="filter-header">
         <Typography variant="h6">Filters</Typography>
       </div>
