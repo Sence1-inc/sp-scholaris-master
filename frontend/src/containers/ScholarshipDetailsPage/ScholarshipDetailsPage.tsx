@@ -189,8 +189,9 @@ export const ScholarshipDetailsPage: React.FC<
                     }
                   </p>
                   <a
+                    target="_blank"
                     style={{ color: '#002147', marginTop: '20px' }}
-                    href={scholarshipData.scholarship_provider.provider_link}
+                    href={`https://${scholarshipData.scholarship_provider.provider_link}`}
                   >
                     Link to Provider Page
                   </a>
