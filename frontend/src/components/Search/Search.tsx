@@ -211,9 +211,9 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
         {xs ? (
           <IconButton
             onClick={() => navigate(`/scholarships/${params.row.id}`)}
-            sx={{ color: 'primary.main' }}
+            sx={{ color: 'primary.main', display: 'flex', gap: '4px' }}
           >
-            <Visibility />
+            <Typography variant="body1">View</Typography> <Visibility />
           </IconButton>
         ) : (
           <Typography
@@ -262,7 +262,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: { xs: '20px', md: '40px' },
+              gap: { xs: '7px', sm: '20px', md: '40px' },
             }}
           >
             <TextField
@@ -271,10 +271,18 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               onChange={(e) => handleChange(e.target.value)}
               value={name}
               placeholder="e.g. CHED Merit Scholarship"
-              sx={{ width: 'calc(66.666% - 20px)' }}
+              sx={{
+                width: { xs: 'calc(95% - 20px)', sm: 'calc(66.666% - 20px)' },
+                padding: { xs: '16px' },
+              }}
             />
             <Button
-              sx={{ ...ctaButtonStyle, flexGrow: 1 }}
+              sx={{
+                ...ctaButtonStyle,
+                flexGrow: 1,
+                padding: { xs: '16px' },
+                fontSize: { xs: '14px' },
+              }}
               onClick={handleSearch}
             >
               Search
@@ -349,7 +357,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               },
               fontFamily: 'Outfit',
               fontSize: {
-                xs: '12px',
+                xs: '15px',
                 md: '1rem',
               },
               '& .MuiDataGrid-row:hover': {
@@ -366,7 +374,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: '40px',
+              gap: { xs: '7px', sm: '20px', md: '40px' },
             }}
           >
             <TextField
@@ -375,10 +383,18 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               onChange={(e) => handleChange(e.target.value)}
               value={name}
               placeholder="e.g. CHED Merit Scholarship"
-              sx={{ width: 'calc(66.666% - 20px)' }}
+              sx={{
+                width: { xs: 'calc(95% - 20px)', sm: 'calc(66.666% - 20px)' },
+                padding: { xs: '16px' },
+              }}
             />
             <Button
-              sx={{ ...ctaButtonStyle, flexGrow: 1 }}
+              sx={{
+                ...ctaButtonStyle,
+                flexGrow: 1,
+                padding: { xs: '16px' },
+                fontSize: { xs: '14px' },
+              }}
               onClick={handleSearch}
             >
               Search

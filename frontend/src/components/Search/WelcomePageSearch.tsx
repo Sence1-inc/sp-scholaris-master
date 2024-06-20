@@ -226,7 +226,7 @@ const WelcomePageSearch: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: { xs: '10px' },
+              gap: { xs: '7px', sm: '20px', md: '40px' },
             }}
           >
             <TextField
@@ -235,10 +235,18 @@ const WelcomePageSearch: React.FC = () => {
               onChange={(e) => handleChange(e.target.value)}
               value={name}
               placeholder="e.g. CHED Merit Scholarship"
-              sx={{ width: 'calc(66.666% - 20px)' }}
+              sx={{
+                width: { xs: 'calc(95% - 20px)', sm: 'calc(66.666% - 20px)' },
+                padding: { xs: '16px' },
+              }}
             />
             <Button
-              sx={{ ...ctaButtonStyle, flexGrow: 1 }}
+              sx={{
+                ...ctaButtonStyle,
+                flexGrow: 1,
+                padding: { xs: '16px' },
+                fontSize: { xs: '14px' },
+              }}
               onClick={handleSearch}
             >
               Search
@@ -313,7 +321,7 @@ const WelcomePageSearch: React.FC = () => {
               },
               fontFamily: 'Outfit',
               fontSize: {
-                xs: '12px',
+                xs: '15px',
                 md: '1rem',
               },
               '& .MuiDataGrid-row:hover': {

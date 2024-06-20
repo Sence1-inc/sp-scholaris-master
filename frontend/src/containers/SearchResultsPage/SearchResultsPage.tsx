@@ -276,7 +276,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             },
             fontFamily: 'Outfit',
             fontSize: {
-              xs: '12px',
+              xs: '15px',
               md: '1rem',
             },
             '& .MuiDataGrid-row:hover': {
