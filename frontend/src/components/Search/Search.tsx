@@ -262,7 +262,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: { xs: '7px', sm: '20px', md: '40px' },
+              gap: { xs: '7px', sm: '10px' },
             }}
           >
             <TextField
@@ -272,7 +272,11 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               value={name}
               placeholder="e.g. CHED Merit Scholarship"
               sx={{
-                width: { xs: 'calc(95% - 20px)', sm: 'calc(66.666% - 20px)' },
+                width: {
+                  xs: 'calc(95% - 20px)',
+                  sm: 'calc(66.666% - 20px)',
+                  md: 'calc(80% - 20px)',
+                },
                 padding: { xs: '16px' },
               }}
             />
