@@ -277,7 +277,9 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
                   sm: 'calc(66.666% - 20px)',
                   md: 'calc(80% - 20px)',
                 },
-                padding: { xs: '16px' },
+                padding: { sm: '16px' },
+                fontSize: { sm: '17px' },
+                maxHeight: { sm: '58px', md: '63px' },
               }}
             />
             <Button
