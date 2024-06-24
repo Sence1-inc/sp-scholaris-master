@@ -101,3 +101,9 @@
     left: -75%;
   }
 }
+
+@media (min-width: 1200px) {
+  .dropdown-header {
+    font-size: 17px;
+  }
+}
