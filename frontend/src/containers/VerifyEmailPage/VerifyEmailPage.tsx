@@ -104,7 +104,7 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
             paddingBottom: '50px',
           }}
         >
-          Thank you for signing up
+          Thank you for signing up!
         </Typography>
         <Typography
           sx={{
@@ -114,20 +114,8 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
             color: '#767676',
           }}
         >
-          Before you can start enjoying all the features of your account, we
-          need to make sure your email address is valid. Click on the Verify
-          Email button below.
-        </Typography>
-        <Typography
-          sx={{
-            fontSize: '16px',
-            fontWeight: '300px',
-            textAlign: 'center',
-            color: '#767676',
-          }}
-        >
-          If you need any help or have any questions, please contact our support
-          team at scholaris@sence1.com.
+          To make sure your email address is valid, click on the Verify Email
+          button below.
         </Typography>
         <Typography
           sx={{
@@ -198,6 +186,17 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
             Verify Email
           </Button>
         )}
+        <Typography
+          sx={{
+            fontSize: '16px',
+            fontWeight: '300px',
+            textAlign: 'center',
+            color: '#767676',
+          }}
+        >
+          If you need any help or have any questions, please contact our support
+          team at scholaris@sence1.com.
+        </Typography>
       </>
     </Container>
   )
