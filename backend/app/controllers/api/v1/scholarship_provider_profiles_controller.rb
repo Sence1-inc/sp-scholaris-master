@@ -77,7 +77,7 @@ module Api
 
         # Only allow a list of trusted parameters through.
         def scholarship_provider_profile_params
-          params.require(:scholarship_provider_profile).permit(:user_id, :provider_name, :description, :provider_type, :region_id, :province_id, :city_id, :profile_picture, :provider_link)
+          params.require(:scholarship_provider_profile).permit(:user_id, :provider_name, :description, :provider_type, :ph_address_id, :profile_picture, :provider_link)
         end
     end
   end
