@@ -23,6 +23,7 @@ Rails.application.routes.draw do
       resources :survey_responses
       resources :newsletters
       resources :benefits
+      resources :ph_addresses
       resources :benefit_categories
       resources :schools
       resources :scholarship_providers do

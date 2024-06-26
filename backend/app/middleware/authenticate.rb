@@ -38,6 +38,8 @@ class Authenticate
     '/api/v1/newsletters/create',
     '/api/v1/cities',
     '/api/v1/cities/index',
+    '/api/v1/ph_addresses',
+    '/api/v1/ph_addresses/index',
     '/api/v1/provinces',
     '/api/v1/provinces/index',
     '/api/v1/regions',
