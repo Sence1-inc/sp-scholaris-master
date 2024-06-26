@@ -82,6 +82,12 @@ export type Profile = {
   provider_type: string
   description: string
   scholarship_provider: ScholarshipProvider
+  ph_address: {
+    id: number
+    city: string
+    province: string
+    region: string
+  }
   region: {
     id: number
     region_name: string

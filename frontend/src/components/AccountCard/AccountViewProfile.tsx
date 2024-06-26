@@ -1,11 +1,9 @@
 import {
+  Autocomplete,
   Box,
   Button,
   ButtonGroup,
   FormControl,
-  MenuItem,
-  Select,
-  SelectChangeEvent,
   TextField,
   Typography,
 } from '@mui/material'
@@ -14,12 +12,19 @@ import { useDispatch } from 'react-redux'
 import axiosInstance from '../../axiosConfig'
 import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { useAppSelector } from '../../redux/store'
-import { City, Profile, Province, Region } from '../../redux/types'
+import { Profile } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
 
 export interface ProfileData {
   profile: Profile
+}
+
+type PhAddress = {
+  id: number
+  city: string
+  province: string
+  region: string
 }
 
 interface AccountViewProfileProps {
@@ -38,26 +43,16 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
   const data = useAppSelector((state) => state.persistedReducer.profile)
   const { profile } = data as ProfileData
   const [providerName, setProviderName] = useState<string>('')
-  const [cityName, setCityName] = useState<string>('')
-  const [provinceName, setProvinceName] = useState<string>('')
-  const [regionName, setRegionName] = useState<string>('')
-  const [cityId, setCityId] = useState<number | null>(null)
-  const [provinceId, setProvinceId] = useState<number | null>(null)
-  const [regionId, setRegionId] = useState<number | null>(null)
+  const [phAddresses, setPhAddresses] = useState<PhAddress[] | []>([])
+  const [selectedPhAddress, setSelectedPhAddress] = useState<PhAddress | null>(
+    null
+  )
   const [isEditting, setIsEditting] = useState<boolean>(false)
-  const [cities, setCities] = useState<City[] | []>([])
-  const [provinces, setProvinces] = useState<Province[] | []>([])
-  const [regions, setRegions] = useState<Region[] | []>([])
 
   useEffect(() => {
     if (profile) {
       setProviderName(profile.scholarship_provider?.provider_name ?? '')
-      setCityName(profile.city?.city_name ?? '')
-      setProvinceName(profile.province?.province_name ?? '')
-      setRegionName(profile.region?.region_name ?? '')
-      setCityId(profile.city?.id ?? null)
-      setProvinceId(profile.province?.id ?? null)
-      setRegionId(profile.region?.id ?? null)
+      setSelectedPhAddress(profile.ph_address)
     }
   }, [profile])
 
@@ -65,10 +60,8 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
     const data = {
       provider_link: profile?.scholarship_provider?.provider_link ?? '',
       provider_name: providerName,
-      region_id: regionId,
-      province_id: provinceId,
-      city_id: cityId,
       user_id: user.id,
+      ph_address_id: selectedPhAddress?.id,
     }
 
     try {
@@ -98,37 +91,13 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
   }
 
   useEffect(() => {
-    const getCities = async () => {
+    const getPhAddresses = async () => {
       try {
-        const response = await axiosInstance.get('/api/v1/cities')
+        const response = await axiosInstance.get('/api/v1/ph_addresses', {
+          withCredentials: true,
+        })
         if (response) {
-          setCities(response.data)
-        }
-      } catch (error) {
-        if (error) {
-          console.log('Error in fetching cities : ', error)
-        }
-      }
-    }
-
-    const getProvinces = async () => {
-      try {
-        const response = await axiosInstance.get('/api/v1/provinces')
-        if (response) {
-          setProvinces(response.data)
-        }
-      } catch (error) {
-        if (error) {
-          console.log('Error in fetching provinces : ', error)
-        }
-      }
-    }
-
-    const getRegions = async () => {
-      try {
-        const response = await axiosInstance.get('/api/v1/regions')
-        if (response) {
-          setRegions(response.data)
+          setPhAddresses(response.data)
         }
       } catch (error) {
         if (error) {
@@ -137,10 +106,12 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
       }
     }
 
-    getCities()
-    getProvinces()
-    getRegions()
+    getPhAddresses()
   }, [])
+
+  const handleAddressChange = (e: any, value: any) => {
+    setSelectedPhAddress(value)
+  }
 
   return (
     <AccountCard
@@ -172,76 +143,29 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
         {!isEditting ? (
           <Typography
             sx={profileTheme.text.textRegular}
-          >{`${cityName} ${provinceName} ${regionName}`}</Typography>
+          >{`${selectedPhAddress?.city}, ${selectedPhAddress?.province}, ${selectedPhAddress?.region}`}</Typography>
         ) : (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <FormControl fullWidth>
-              <Typography variant="h6">City</Typography>
-              <Select
-                displayEmpty
-                fullWidth
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={cityId?.toString()}
-                sx={{ textAlign: 'left' }}
-                label="City"
-                onChange={(e: SelectChangeEvent) =>
-                  setCityId(Number(e.target.value))
+              <Autocomplete
+                disablePortal
+                id="combo-box-demo"
+                options={phAddresses}
+                getOptionLabel={(option: PhAddress) =>
+                  `${option.city}, ${option.province}, ${option.region}`
                 }
-              >
-                {cities.map((item: City) => {
-                  return (
-                    <MenuItem key={item.id} value={item.id.toString()}>
-                      {item.city_name}
-                    </MenuItem>
-                  )
-                })}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth>
-              <Typography variant="h6">Province</Typography>
-              <Select
-                displayEmpty
+                value={selectedPhAddress}
+                onChange={handleAddressChange}
+                renderOption={(props, option) => (
+                  <li {...props} key={option.id}>
+                    {option.city}, {option.province}, {option.region}
+                  </li>
+                )}
+                renderInput={(params) => (
+                  <TextField sx={{ padding: '0' }} {...params} fullWidth />
+                )}
                 fullWidth
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={provinceId?.toString()}
-                sx={{ textAlign: 'left' }}
-                label="Province"
-                onChange={(e: SelectChangeEvent) =>
-                  setProvinceId(Number(e.target.value))
-                }
-              >
-                {provinces.map((item: Province) => {
-                  return (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.province_name}
-                    </MenuItem>
-                  )
-                })}
-              </Select>
-            </FormControl>
-            <FormControl fullWidth>
-              <Typography variant="h6">Region</Typography>
-              <Select
-                displayEmpty
-                fullWidth
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={regionId?.toString()}
-                sx={{ textAlign: 'left' }}
-                onChange={(e: SelectChangeEvent) =>
-                  setRegionId(Number(e.target.value))
-                }
-              >
-                {regions.map((item: Region) => {
-                  return (
-                    <MenuItem key={item.id} value={item.id}>
-                      {item.region_name}
-                    </MenuItem>
-                  )
-                })}
-              </Select>
+              />
             </FormControl>
           </Box>
         )}
