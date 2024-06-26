@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_30_013410) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_26_003030) do
   create_table "benefit_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "category_name"
     t.timestamp "deleted_at"
@@ -92,6 +92,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_013410) do
     t.index ["deleted_at"], name: "index_newsletters_on_deleted_at"
   end
 
+  create_table "ph_addresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "barangay"
+    t.string "city"
+    t.string "province"
+    t.string "region"
+    t.timestamp "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "provinces", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "province_name"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
@@ -154,15 +164,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_013410) do
     t.bigint "scholarship_provider_id", null: false
     t.string "provider_type"
     t.text "description"
-    t.integer "region_id"
-    t.integer "province_id"
-    t.integer "city_id"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
-    t.index ["city_id"], name: "index_scholarship_provider_profiles_on_city_id"
-    t.index ["province_id"], name: "index_scholarship_provider_profiles_on_province_id"
-    t.index ["region_id"], name: "index_scholarship_provider_profiles_on_region_id"
+    t.bigint "ph_address_id"
+    t.index ["ph_address_id"], name: "index_scholarship_provider_profiles_on_ph_address_id"
     t.index ["scholarship_provider_id"], name: "index_scholarship_provider_profiles_on_scholarship_provider_id"
   end
 
@@ -317,6 +323,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_013410) do
   add_foreign_key "scholarship_benefits", "benefits", name: "fk_scholarship_benefits_benefits"
   add_foreign_key "scholarship_benefits", "benefits", name: "fk_scholarships_benefits"
   add_foreign_key "scholarship_benefits", "scholarships", name: "fk_scholarship_benefits_scholarships"
+  add_foreign_key "scholarship_provider_profiles", "ph_addresses"
   add_foreign_key "scholarship_provider_profiles", "scholarship_providers", name: "fk_scholarship_provider_profiles_scholarship_providers"
   add_foreign_key "scholarship_providers", "users", name: "fk_scholarship_providers_users"
   add_foreign_key "scholarships", "eligibilities", name: "fk_scholarships_eligibilities"
