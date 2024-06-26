@@ -50,3 +50,17 @@ begin
 rescue => e
   puts "Error loading seed data: #{e.message}"
 end
+
+begin
+  json_file_path = Rails.root.join('db', 'seeds', 'ph_addresses.json')
+  file = File.read(json_file_path)
+  data = JSON.parse(file)
+
+  data.each do |item|
+    PhAddress.create!(item)
+  end
+
+  puts 'JSON ph_addresses seeded successfully.'
+rescue => e
+  puts "Error loading JSON file: #{e.message}"
+end
