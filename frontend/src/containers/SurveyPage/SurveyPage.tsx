@@ -28,6 +28,9 @@ import { ctaButtonStyle } from '../../styles/globalStyles'
 export interface SurveyQuestion {
   id: number
   question_text: string
+  input_type: string
+  choices: string
+  is_required: boolean
 }
 
 interface SurveyPageProps {
@@ -37,12 +40,13 @@ interface SurveyPageProps {
 interface Response {
   survey_question_id: number
   answer: string
+  rating: number | null
 }
 
 export interface SurveyResponse {
   email: string
   classification: string
-  user_id?: number
+  user_id?: number | null
   responses: Response[]
 }
 
@@ -53,6 +57,7 @@ const initialSurveyResponses = {
     {
       survey_question_id: 1,
       answer: '',
+      rating: null,
     },
   ],
 }
@@ -83,6 +88,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         return {
           survey_question_id: question.id,
           answer: '',
+          rating: null,
         }
       })
 
@@ -93,7 +99,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   }, [surveyQuestions])
 
   useEffect(() => {
-    const fetchData = async () => {
+    const getSurveyQuestions = async () => {
       try {
         const response = await axiosInstance.get(
           `/api/v1/survey_questions?user_type=${user_type}`
@@ -106,7 +112,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
       }
     }
 
-    fetchData()
+    getSurveyQuestions()
     // eslint-disable-next-line
   }, [])
 
@@ -156,19 +162,19 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   }
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
+    value: number | string,
     field: string,
     survey_question_id?: number
   ) => {
     if (field === 'email') {
       setSurveyResponses((prevState) => {
-        return { ...prevState, email: e.target.value }
+        return { ...prevState, email: value as string }
       })
     }
 
     if (field === 'classification') {
       setSurveyResponses((prevState) => {
-        return { ...prevState, classification: e.target.value }
+        return { ...prevState, classification: value as string }
       })
     }
 
@@ -177,7 +183,18 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         ...prevResponses,
         responses: prevResponses.responses.map((response) =>
           response.survey_question_id === survey_question_id
-            ? { ...response, answer: e.target.value }
+            ? { ...response, answer: value as string }
+            : response
+        ),
+      }))
+    }
+
+    if (field === 'rating') {
+      setSurveyResponses((prevResponses) => ({
+        ...prevResponses,
+        responses: prevResponses.responses.map((response) =>
+          response.survey_question_id === survey_question_id
+            ? { ...response, rating: Number(value) }
             : response
         ),
       }))

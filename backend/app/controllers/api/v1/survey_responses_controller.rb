@@ -44,13 +44,6 @@ module Api
           return
         end
 
-        params[:responses].each do |response|
-          if response[:survey_question_id].blank? || response[:answer].blank?
-            render json: { error: 'Each question must have an answer' }, status: :unprocessable_entity
-            return
-          end
-        end
-
         if SurveyResponse.exists?(email: params[:email])
           render json: { error: 'Email already exists' }, status: :unprocessable_entity
           return
