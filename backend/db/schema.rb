@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_26_003030) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_27_031625) do
   create_table "benefit_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "category_name"
     t.timestamp "deleted_at"
@@ -268,6 +268,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_26_003030) do
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "deleted_at"
+    t.string "input_type"
+    t.string "choices"
+    t.boolean "is_required"
     t.index ["deleted_at"], name: "index_survey_questions_on_deleted_at"
   end
 

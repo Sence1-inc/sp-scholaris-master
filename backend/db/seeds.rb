@@ -12,40 +12,8 @@ rescue => e
 end
 
 begin
-  Dir[Rails.root.join('db', 'seeds', '**', '*.rb')].sort.each do |file|
-    begin
-      data = File.read(file)
-      seed_data = eval(data)
-      
-      seed_data.each do |item|
-        model_name = item[:model]
-        attributes = item[:attributes]
-        
-        if model_name.present?
-          model = model_name.constantize
-          id = attributes[:id]
-          
-          if id.present?
-            record = model.find_by(id: id)
-            if record
-              puts "Skipping item in #{file} because a record with id #{id} already exists."
-            else
-              model.create!(attributes)
-            end
-          else
-            puts "Skipping item in #{file} because it doesn't have an :id attribute."
-          end
-        else
-          puts "Skipping item in #{file} because it doesn't have a :model key."
-        end
-      end
-      
-      puts "Loaded #{file}"
-    rescue => e
-      puts "Error loading seed file #{file}: #{e.message}"
-    end
-  end
-  
+  load Rails.root.join('db', 'seeds', 'survey_questions.rb')
+  load Rails.root.join('db', 'seeds', 'benefit_categories.rb')
   puts 'Seed data loaded successfully.'
 rescue => e
   puts "Error loading seed data: #{e.message}"
@@ -55,6 +23,10 @@ begin
   json_file_path = Rails.root.join('db', 'seeds', 'ph_addresses.json')
   file = File.read(json_file_path)
   data = JSON.parse(file)
+
+  PhAddress.delete_all
+
+  ActiveRecord::Base.connection.execute("ALTER TABLE ph_addresses AUTO_INCREMENT = 1")
 
   data.each do |item|
     PhAddress.create!(item)
