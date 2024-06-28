@@ -69,12 +69,13 @@ const Survey: React.FC<SurveyProps> = ({
             [question.id]: [...data, e.target.name.trim()],
           },
         })
-
-        handleChange(
-          [data, e.target.name.trim()].toString(),
-          'responses',
-          question.id
-        )
+        if (choice.trim() != 'others') {
+          handleChange(
+            [data, e.target.name.trim()].toString(),
+            'responses',
+            question.id
+          )
+        }
       } else {
         setCheckedChoices({
           ...checkedChoices,
@@ -249,7 +250,12 @@ const Survey: React.FC<SurveyProps> = ({
             />
           )}
           {question['input_type'].includes('checkbox') && (
-            <FormControl component="fieldset" variant="standard" fullWidth>
+            <FormControl
+              key={question.id}
+              component="fieldset"
+              variant="standard"
+              fullWidth
+            >
               <FormGroup
                 sx={{
                   display: 'flex',
@@ -261,28 +267,60 @@ const Survey: React.FC<SurveyProps> = ({
                   .split(',')
                   .map((choice: string, index: number) => {
                     return (
-                      <FormControlLabel
-                        key={index}
-                        control={
-                          <Checkbox
-                            onChange={(
-                              e: React.ChangeEvent<HTMLInputElement>
-                            ) => handleCheckboxChange(e, question, choice)}
-                            name={choice}
-                            sx={{
-                              color: 'var(--primary-color)',
-                              '&.Mui-checked': {
+                      <Box
+                        key={`${question.id}-${index}`}
+                        sx={{ display: 'flex' }}
+                      >
+                        <FormControlLabel
+                          key={index}
+                          control={
+                            <Checkbox
+                              onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                              ) => handleCheckboxChange(e, question, choice)}
+                              name={choice}
+                              sx={{
                                 color: 'var(--primary-color)',
-                              },
-                            }}
-                          />
-                        }
-                        label={
-                          <Typography variant="body1" color="primary">
-                            {choice.toUpperCase()}
-                          </Typography>
-                        }
-                      />
+                                '&.Mui-checked': {
+                                  color: 'var(--primary-color)',
+                                },
+                              }}
+                            />
+                          }
+                          label={
+                            <Typography variant="body1" color="primary">
+                              {choice.toUpperCase()}
+                            </Typography>
+                          }
+                        />
+                        {choice.trim() === 'others' &&
+                          checkedChoices &&
+                          Object.keys(checkedChoices).includes(
+                            String(question.id)
+                          ) &&
+                          checkedChoices[question.id].includes('others') && (
+                            <TextField
+                              id="standard-basic"
+                              variant="standard"
+                              onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                              ) => {
+                                const data = checkedChoices[question.id]
+
+                                handleChange(
+                                  [data, e.target.value.trim()].toString(),
+                                  'responses',
+                                  question.id
+                                )
+                              }}
+                              sx={{
+                                border: 'none',
+                                boxShadow: 'none',
+                                padding: 0,
+                              }}
+                            />
+                          )}
+                      </Box>
                     )
                   })}
               </FormGroup>
