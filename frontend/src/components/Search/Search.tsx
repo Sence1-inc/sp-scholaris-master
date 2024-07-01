@@ -278,7 +278,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
                   md: 'calc(80% - 20px)',
                 },
                 padding: { sm: '16px' },
-                fontSize: { sm: '17px' },
+                fontSize: { xs: '14px', sm: '17px' },
                 maxHeight: { sm: '58px', md: '63px' },
               }}
             />
@@ -287,7 +287,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
                 ...ctaButtonStyle,
                 flexGrow: 1,
                 padding: { xs: '16px' },
-                fontSize: { xs: '14px' },
+                fontSize: { xs: '14px', sm: '17px' },
               }}
               onClick={handleSearch}
             >

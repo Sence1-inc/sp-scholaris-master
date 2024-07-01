@@ -18,6 +18,12 @@
   }
 }
 
+@media (max-width: 900px) {
+  .filter {
+    width: 90%;
+  }
+}
+
 .filter .filter-header {
   padding: 0;
   width: 100%;

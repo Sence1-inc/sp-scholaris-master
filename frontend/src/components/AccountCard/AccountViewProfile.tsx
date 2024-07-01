@@ -141,9 +141,11 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
           Address:
         </Typography>
         {!isEditting ? (
-          <Typography
-            sx={profileTheme.text.textRegular}
-          >{`${selectedPhAddress?.city}, ${selectedPhAddress?.province}, ${selectedPhAddress?.region}`}</Typography>
+          <Typography sx={profileTheme.text.textRegular}>
+            {selectedPhAddress
+              ? `${selectedPhAddress?.city}, ${selectedPhAddress?.province}, ${selectedPhAddress?.region}`
+              : ''}
+          </Typography>
         ) : (
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <FormControl fullWidth>
