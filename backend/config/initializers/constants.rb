@@ -41,7 +41,7 @@ PROVIDER_NEWSLETTER_CONTENT = "
   </p>
 
   <p>
-    For Scholarship Granting Organizations, we have the following features in store for the future:
+    For Scholarship Granting Organizations, we have the following features in store for you in the future:
   </p>
 
   <ul>
