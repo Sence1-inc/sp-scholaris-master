@@ -13,13 +13,12 @@ import {
   Typography,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { STUDENT_TYPE } from '../../constants/constants'
 import {
   SurveyQuestion,
   SurveyResponse,
 } from '../../containers/SurveyPage/SurveyPage'
 import { useAppSelector } from '../../redux/store'
-import { SubscriberData } from '../Newsletter/Newsletter'
+import CustomTextfield from '../CutomTextfield/CustomTextfield'
 
 interface SurveyProps {
   surveyQuestions: SurveyQuestion[] | null
@@ -37,19 +36,29 @@ const Survey: React.FC<SurveyProps> = ({
   surveyQuestions,
   surveyResponses,
   handleChange,
+  pathname,
 }) => {
-  const subscriber: SubscriberData = useAppSelector(
-    (state) => state.persistedReducer.subscriber
-  )
   const user = useAppSelector((state) => state.persistedReducer.user)
   const [checkedChoices, setCheckedChoices] = useState<any>({})
 
-  const classifications = ['parent', 'guardian', 'teacher', 'student']
+  const classifications =
+    pathname === '/student/survey'
+      ? ['parent', 'guardian', 'teacher', 'student', 'school personnel']
+      : [
+          'school',
+          'company',
+          'private organization or agency',
+          'government organization, group or agency',
+          'non-profit organization',
+          'individual',
+          'foundation',
+        ]
 
   useEffect(() => {
     if (user.email_address) {
       handleChange(user.email_address, 'email')
     }
+    // eslint-disable-next-line
   }, [])
 
   const handleCheckboxChange = (
@@ -69,7 +78,7 @@ const Survey: React.FC<SurveyProps> = ({
             [question.id]: [...data, e.target.name.trim()],
           },
         })
-        if (choice.trim() != 'others') {
+        if (choice.trim() !== 'others') {
           handleChange(
             [data, e.target.name.trim()].toString(),
             'responses',
@@ -130,7 +139,7 @@ const Survey: React.FC<SurveyProps> = ({
           required
           size="medium"
           inputProps={{
-            sx: { fontSize: '20px', color: 'var(--primary-color)' },
+            sx: { fontSize: '16px', color: 'var(--primary-color)' },
           }}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             handleChange(e.target.value, 'email')
@@ -152,37 +161,19 @@ const Survey: React.FC<SurveyProps> = ({
         >
           What is your classification?
         </Typography>
-        {subscriber.user_type === STUDENT_TYPE ? (
-          <Select
-            fullWidth
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={surveyResponses.classification}
-            sx={{ textAlign: 'left' }}
-            label="Classification"
-            onChange={(e: any) =>
-              handleChange(e.target.value, 'classification')
-            }
-          >
-            {classifications.map((classification: string) => {
-              return (
-                <MenuItem value={classification}>{classification}</MenuItem>
-              )
-            })}
-          </Select>
-        ) : (
-          <TextField
-            required
-            size="medium"
-            inputProps={{
-              sx: { fontSize: '20px', color: 'var(--primary-color)' },
-            }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleChange(e.target.value, 'classification')
-            }
-            value={surveyResponses.classification}
-          />
-        )}
+        <Select
+          fullWidth
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={surveyResponses.classification}
+          sx={{ textAlign: 'left' }}
+          label="Classification"
+          onChange={(e: any) => handleChange(e.target.value, 'classification')}
+        >
+          {classifications.map((classification: string) => {
+            return <MenuItem value={classification}>{classification}</MenuItem>
+          })}
+        </Select>
       </Container>
       {surveyQuestions?.map((question: SurveyQuestion, index: number) => (
         <Container key={index} sx={{ padding: '0!important' }}>
@@ -200,44 +191,66 @@ const Survey: React.FC<SurveyProps> = ({
             <Box
               sx={{
                 display: 'flex',
-                gap: '40px',
-                alignItems: 'center',
-                justifyContent: 'flex-start',
-                margin: '10px 0',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'start',
               }}
             >
-              <Typography variant="body1" color="primary">
-                Rating:{' '}
+              <Typography variant="subtitle1" color="primary">
+                1 = Very Easy, 2 = Easy, 3 = Medium, 4 = Difficult, 5 = Very
+                Difficult
               </Typography>
-              <Rating
+              <Box
                 sx={{
-                  '& .MuiRating-iconFilled': {
-                    color: 'secondary.main',
-                  },
-                  '& .MuiRating-iconHover': {
-                    color: 'secondary.main',
-                  },
+                  display: 'flex',
+                  gap: '40px',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  margin: '10px 0',
                 }}
-                name="text-feedback"
-                onChange={(e: any) => {
-                  handleChange(e.target.value, 'rating', question.id)
-                }}
-                precision={1}
-                icon={<ThumbUp fontSize="small" sx={{ margin: '0 4px' }} />}
-                emptyIcon={
-                  <ThumbUp fontSize="small" sx={{ margin: '0 4px' }} />
-                }
-              />
+              >
+                <Typography variant="body1" color="primary">
+                  Rating:{' '}
+                </Typography>
+                <Rating
+                  sx={{
+                    '& .MuiRating-iconFilled': {
+                      color: 'secondary.main',
+                    },
+                    '& .MuiRating-iconHover': {
+                      color: 'secondary.main',
+                    },
+                  }}
+                  name="text-feedback"
+                  onChange={(e: any) => {
+                    handleChange(e.target.value, 'rating', question.id)
+                  }}
+                  precision={1}
+                  icon={<ThumbUp fontSize="small" sx={{ margin: '0 4px' }} />}
+                  emptyIcon={
+                    <ThumbUp fontSize="small" sx={{ margin: '0 4px' }} />
+                  }
+                />
+              </Box>
             </Box>
           )}
           {question['input_type'].includes('textfield') && (
             <TextField
+              placeholder={
+                question['input_type'].includes('rating')
+                  ? 'Feel free to share the details or comments behind your rating.'
+                  : ''
+              }
               required={question['is_required']}
               multiline
               minRows={2}
               size="medium"
+              sx={{ padding: '0' }}
               inputProps={{
-                sx: { fontSize: '20px', color: 'var(--primary-color)' },
+                sx: {
+                  fontSize: '16px',
+                  color: 'var(--primary-color)',
+                },
               }}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 handleChange(e.target.value, `responses`, question.id)
@@ -293,33 +306,22 @@ const Survey: React.FC<SurveyProps> = ({
                             </Typography>
                           }
                         />
-                        {choice.trim() === 'others' &&
-                          checkedChoices &&
-                          Object.keys(checkedChoices).includes(
-                            String(question.id)
-                          ) &&
-                          checkedChoices[question.id].includes('others') && (
-                            <TextField
-                              id="standard-basic"
-                              variant="standard"
-                              onChange={(
-                                e: React.ChangeEvent<HTMLInputElement>
-                              ) => {
-                                const data = checkedChoices[question.id]
+                        {choice.trim() === 'others' && (
+                          <CustomTextfield
+                            styles={{ padding: '6px', borderRadius: '10px' }}
+                            handleChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                              const data = checkedChoices[question.id]
 
-                                handleChange(
-                                  [data, e.target.value.trim()].toString(),
-                                  'responses',
-                                  question.id
-                                )
-                              }}
-                              sx={{
-                                border: 'none',
-                                boxShadow: 'none',
-                                padding: 0,
-                              }}
-                            />
-                          )}
+                              handleChange(
+                                [data, e.target.value.trim()].toString(),
+                                'responses',
+                                question.id
+                              )
+                            }}
+                          />
+                        )}
                       </Box>
                     )
                   })}

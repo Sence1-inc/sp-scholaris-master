@@ -3,11 +3,11 @@ import React from 'react'
 import HelperText from '../HelperText/HelperText'
 
 interface CustomTextfieldProps {
-  label: string
-  error: string
+  label?: string
+  error?: string
   handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-  value: string
-  placeholder: string
+  value?: string
+  placeholder?: string
   multiline?: boolean
   rows?: number
   styles?: any
@@ -28,7 +28,7 @@ const CustomTextfield: React.FC<CustomTextfieldProps> = ({
   handleOnKeyDonw,
 }) => {
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '100%', alignSelf: 'end' }}>
       <Typography
         sx={{
           fontFamily: 'Roboto',
