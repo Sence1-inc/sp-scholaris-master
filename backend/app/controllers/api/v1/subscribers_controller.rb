@@ -1,7 +1,7 @@
 module Api
   module V1
     class SubscribersController < ApplicationController
-      before_action :set_subscriber, only: %i[ show edit update destroy soft_del restore]
+      before_action :set_subscriber, only: %i[ edit update destroy soft_del restore]
       skip_before_action :verify_authenticity_token
     
       # GET /subscribers
@@ -11,6 +11,18 @@ module Api
     
       # GET /subscribers/{id}
       def show
+        provider = ScholarshipProvider.find(params[:id])
+
+        if provider 
+          subscriber = Subscriber.find_by(email: provider.user.email_address, user_type: 'provider')
+          if subscriber
+            render json: subscriber, status: 201
+          else
+            render json: {message: "No subscriber found"}, status: 404
+          end
+        else
+          render json: {message: "No user found"}, status: 404
+        end
       end
     
       # GET /subscribers/new
@@ -40,6 +52,7 @@ module Api
           newsletter_service = NewsletterService.new(newsletter_params).send_newsletter
 
           render json: {
+              subscriber: @subscriber,
               email: @subscriber.email,
               user_type: @subscriber.user_type,
               message: "Subscription successful. Welcome to our newsletter! Newsletter sent successfully."
@@ -61,25 +74,26 @@ module Api
       end
 
       def soft_del
-        if Subscriber.is_soft_deleted(@subscriber)
+        if !@subscriber.deleted_at.present?
           Subscriber.soft_delete(@subscriber)
           render json: {message: "Unsubscribed successfully.", status: :ok}
         else
-          render json: {message: "Already unsubscribed", status: :unprocessable_entity}, status: 422
+          render json: {message: "Already unsubscribed"}, status: 422
         end
-        
       end
     
       def restore
-        if !Subscriber.is_soft_deleted(@subscriber)
-          Subscriber.restore(@subscriber)
-          render json: {message: "Subscriber restored", status: :ok}
+        if @subscriber.deleted_at.present?
+          if Subscriber.restore(@subscriber)
+            render json: { message: "Subscriber restored", subscriber: @subscriber }, status: :ok
+          else
+            render json: { message: @subscriber.errors.full_messages }, status: 401
+          end
         else
-          render json: {message: "Already subscribed", status: :unprocessable_entity}, status: 422
+          render json: { message: "Already subscribed" }, status: 422
         end
-
       end
-    
+
       private
     
       def set_subscriber

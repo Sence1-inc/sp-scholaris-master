@@ -3,7 +3,7 @@ STUDENT_TYPE = 'student'.freeze
 
 STUDENT_NEWSLETTER_SUBJECT = "Thank you for subscribing!".freeze
 STUDENT_NEWSLETTER_CONTENT = "
-  <h1>Thank You for Subscribing to the <span class='color-secondary'>Scholaris</span> Newsletter!</h1>
+  <h1>Thank You for Subscribing to the <span class='color-secondary'>Scholaris</span> newsletter!</h1>
   <p>
     Stay ahead of the competition with exclusive access to the latest scholarships, application tips, and other exciting news delivered straight to your inbox.
   </p>
@@ -34,14 +34,14 @@ STUDENT_NEWSLETTER_CONTENT = "
 
 PROVIDER_NEWSLETTER_SUBJECT = "Thank you for subscribing!".freeze
 PROVIDER_NEWSLETTER_CONTENT = "
-  <h1>Thank You for Signing Up for <span class='color-secondary'>Scholaris</span>!</h1>
+  <h1>Thank You for signing up to <span class='color-secondary'>Scholaris</span>!</h1>
 
   <p>
     <span class='color-secondary'>Scholaris</span> is a service that will revolutionize the way scholarship programs are implemented. This service will aid you in finding the best candidate for your scholarships, matching their inclinations, aptitudes, and competencies that suit your organization’s vision.
   </p>
 
   <p>
-    As a Scholarship Granting Organization, we have the following features in store for the future:
+    For Scholarship Granting Organizations, we have the following features in store for you in the future:
   </p>
 
   <ul>

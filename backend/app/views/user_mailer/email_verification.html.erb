@@ -1,0 +1,22 @@
+<html>
+<head>
+  <title>Email Verification</title>
+</head>
+<body>
+  <h1>Hello <%= @user.first_name %>,</h1>
+  <p>Thank you for signing up to Scholaris!</p>
+  <p>We appreciate your interest in bridging the gap between education and hopeful students.</p>
+  <p>You are one step closer to unlocking Scholaris’ range of features to amplify visibility and seamlessly manage scholarship offerings.</p> 
+
+  <p>Please click <a href="https://scholaristest.sence1.com/verify-email/<%= @user.verification_token %>">here</a> to continue the verification process.</p>
+  <p>In case of verification concerns, kindly send us an email through scholaris-support@sence1.com or contact us at +63 961 574 2195.</p>
+  
+  <p>Thank you!</p>
+
+  <p>Best regards,</p>
+  <p>Scholaris team</p>
+
+  <p><i>We would like to hear from you! <a href="https://scholaristest.sence1.com/provider/survey">Take our Survey</a></i></p>
+  <p><i>To stay updated with the latest features, subscribe to our newsletter! <a href="https://scholaristest.sence1.com/provider">Subscribe</a></i></p>
+</body>
+</html>

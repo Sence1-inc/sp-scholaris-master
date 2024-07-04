@@ -1,10 +1,14 @@
+import { Close } from '@mui/icons-material'
+import { LocalizationProvider, StaticDatePicker } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs, { Dayjs } from 'dayjs'
 import React, { useState } from 'react'
-import DropdownArrow from '../../../public/images/dropdownArr.svg'
-import './FilterOption.css'
 import 'react-date-range/dist/styles.css'
 import 'react-date-range/dist/theme/default.css'
-import { DateRange, RangeKeyDict } from 'react-date-range'
-import { DateRangeItem } from '../Filter'
+import DropdownArrow from '../../../public/images/dropdownArr.svg'
+import { initializeParams } from '../../../redux/reducers/SearchParamsReducer'
+import { useAppDispatch, useAppSelector } from '../../../redux/store'
+import './FilterOption.css'
 
 interface Option {
   label: string
@@ -18,8 +22,11 @@ interface FilterOptionProps {
   onToggleVisibility?: () => void
   selectedOption?: Option | null | string
   handleOptionClick?: (option: Option) => void
-  selectedDateRange?: DateRangeItem[]
-  handleSelect?: (ranges: RangeKeyDict) => void
+  selectedStartDate?: Dayjs | null
+  setSelectedStartDate?: (value: Dayjs) => void
+  selectedDueDate?: Dayjs | null
+  setSelectedDueDate?: (value: Dayjs) => void
+  setSelectedParams?: any
   handleReset?: () => void
 }
 
@@ -31,10 +38,15 @@ const FilterOption: React.FC<FilterOptionProps> = ({
   onToggleVisibility,
   handleOptionClick,
   selectedOption,
-  selectedDateRange,
-  handleSelect,
+  selectedStartDate,
+  setSelectedStartDate,
+  selectedDueDate,
+  setSelectedDueDate,
+  setSelectedParams,
   handleReset,
 }) => {
+  const params = useAppSelector((state) => state.searchParams)
+  const dispatch = useAppDispatch()
   const [searchTerm, setSearchTerm] = useState<string>('')
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,39 +63,96 @@ const FilterOption: React.FC<FilterOptionProps> = ({
     }
   }
 
-  const filteredOptions = options.filter((option) =>
-    option.label.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredOptions =
+    options.length > 0
+      ? options.filter((option) =>
+          option.label?.toLowerCase().includes(searchTerm?.toLowerCase())
+        )
+      : []
 
   return (
     <div className="dropdown">
       <div
         className={`dropdown-header ${type === 'reset' && 'dropdown-reset'}`}
         onClick={toggleDropdown}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
       >
         {typeof selectedOption === 'string'
           ? selectedOption
           : selectedOption
             ? selectedOption.label
             : children}{' '}
-        {type !== 'reset' && (
-          <img
-            className={isVisible ? 'rotateArrow' : ''}
-            src={DropdownArrow}
-            alt="Dropdown arrow"
+        {type !== 'reset' && !isVisible ? (
+          <img src={DropdownArrow} alt="Dropdown arrow" />
+        ) : (
+          <Close
+            color="primary"
+            fontSize="inherit"
+            sx={{ padding: 0, margin: 0, width: '20px' }}
           />
         )}
       </div>
-      {isVisible && type === 'date' && handleSelect && (
-        <div>
-          <DateRange
-            ranges={selectedDateRange}
-            onChange={(ranges) => handleSelect(ranges)}
-          />
+      {isVisible && type === 'startDate' && setSelectedStartDate && (
+        <div
+          className="dropdown-options"
+          style={{ maxHeight: '600px', padding: 0 }}
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <StaticDatePicker
+              defaultValue={dayjs(selectedStartDate)}
+              onChange={(newValue) => {
+                setSelectedStartDate(newValue as Dayjs)
+                dispatch(
+                  initializeParams({
+                    ...params.params,
+                    start_date: dayjs(newValue).format('MMMM DD, YYYY'),
+                  })
+                )
+              }}
+              slots={{
+                toolbar: () => null,
+                actionBar: () => null,
+              }}
+            />
+          </LocalizationProvider>
         </div>
       )}
 
-      {isVisible && type !== 'date' && (
+      {isVisible && type === 'dueDate' && setSelectedDueDate && (
+        <div
+          className="dropdown-options"
+          style={{ maxHeight: '600px', padding: 0 }}
+        >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <StaticDatePicker
+              defaultValue={dayjs(selectedDueDate)}
+              onChange={(newValue) => {
+                setSelectedDueDate(newValue as Dayjs)
+                setSelectedParams((prevParams: any) => ({
+                  ...prevParams,
+                  due_date: dayjs(newValue).format('MMMM DD, YYYY'),
+                }))
+                dispatch(
+                  initializeParams({
+                    ...params.params,
+                    due_date: dayjs(newValue).format('MMMM DD, YYYY'),
+                  })
+                )
+              }}
+              slots={{
+                toolbar: () => null,
+                actionBar: () => null,
+              }}
+            />
+          </LocalizationProvider>
+        </div>
+      )}
+
+      {isVisible && type !== 'startDate' && type !== 'dueDate' && (
         <div className="dropdown-options">
           {type === 'search' && (
             <>
@@ -92,18 +161,22 @@ const FilterOption: React.FC<FilterOptionProps> = ({
                 onChange={handleInputChange}
                 value={searchTerm}
               />
-              {filteredOptions.map((option, index) => (
-                <div
-                  className="dropdown-option"
-                  key={option.label + index}
-                  onClick={() => handleOptionClick && handleOptionClick(option)}
-                >
-                  {option.label}
-                </div>
-              ))}
+              {filteredOptions.length > 0 &&
+                filteredOptions.map((option, index) => (
+                  <div
+                    className="dropdown-option"
+                    key={option.label + index}
+                    onClick={() =>
+                      handleOptionClick && handleOptionClick(option)
+                    }
+                  >
+                    {option.label}
+                  </div>
+                ))}
             </>
           )}
           {type !== 'search' &&
+            options.length > 0 &&
             options.map((option, index) => (
               <div
                 className="dropdown-option"

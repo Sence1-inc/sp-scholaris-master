@@ -29,6 +29,7 @@ const HomePage: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
   return (
     <>
       <WelcomeSection subheader={PROVIDER_WELCOME_SUBHEADER} />
@@ -51,6 +52,7 @@ const HomePage: React.FC = () => {
         />
       </FloatingElement>
       <FabButton
+        id="fab-button-provider"
         icon={
           <EmailIcon
             sx={{ mr: 1, animation: `${jump} 0.5s ease-in-out infinite` }}

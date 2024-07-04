@@ -1,7 +1,7 @@
 module Api
   module V1
     class ScholarshipProvidersController < ApplicationController
-      before_action :set_scholarship_provider, only: %i[ show edit update destroy ]
+      before_action :set_scholarship_provider, only: %i[ show edit update destroy scholarships ]
     
       # GET /scholarship_providers or /scholarship_providers.json
       def index
@@ -12,6 +12,7 @@ module Api
     
       # GET /scholarship_providers/1 or /scholarship_providers/1.json
       def show
+        render json: @scholarship_provider.as_json
       end
     
       # GET /scholarship_providers/new
@@ -58,6 +59,28 @@ module Api
         respond_to do |format|
           format.html { redirect_to scholarship_providers_url, notice: "Scholarship provider was successfully destroyed." }
           format.json { head :no_content }
+        end
+      end
+
+      def scholarships
+        if @scholarship_provider.user.email_address != cookies[:user_email]
+          render_unauthorized_response
+          return
+        end
+
+        @scholarships = Scholarship.where(scholarship_provider_id: @scholarship_provider.id)
+        if @scholarships.exists?
+          @scholarships = @scholarships.page(params[:page] || 1).per(params[:limit] || 10)
+
+          render json: {
+            scholarships: @scholarships.as_json,
+            total_count: @scholarships.total_count,
+            total_pages: @scholarships.total_pages,
+            current_page: @scholarships.current_page,
+            limit: params[:limit] || 10
+          }, status: :ok
+        else
+          render json: {message: "No scholarships found.", scholarships: [], total_count: 0}, status: :ok
         end
       end
     

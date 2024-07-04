@@ -1,23 +1,33 @@
+require 'date'
+
 module Api
   module V1
     class ScholarshipsController < ApplicationController
       skip_before_action :verify_authenticity_token
-      before_action :set_scholarship, only: %i[ show edit update destroy ]
-    
+      before_action :set_scholarship, only: %i[show edit update destroy]
+      before_action :authorize, only: %i[edit update destroy]
+
       # GET /api/v1/scholarships or /api/v1/scholarships.json
       def index
         @scholarships = Scholarship.filtered(params)
     
         if @scholarships.present?
-          @scholarships = @scholarships.page(params[:page]).per(params[:limit] || 10)
-          render json: @scholarships.as_json(
-            :only => [:id, :scholarship_name, :start_date, :due_date],
-            :include => {
-              :scholarship_provider => { :only => [:id, :provider_name] }
-            }
-          )
+          @scholarships = @scholarships.page(params[:page]).per(params[:limit])
+
+          render json: {
+            scholarships: @scholarships.as_json(
+              :only => [:id, :scholarship_name, :start_date, :due_date],
+              :include => {
+                :scholarship_provider => { :only => [:id, :provider_name] }
+              }
+            ),
+            total_count: @scholarships.total_count,
+            total_pages: @scholarships.total_pages,
+            current_page: @scholarships.current_page,
+            limit: params[:limit] || 10
+          }, status: :ok
         else
-          render json: { message: 'No scholarships found' }, status: :not_found
+          render json: { message: 'No scholarships found', scholarships: [], total_count: 0 }, status: :not_found
         end
       end
     
@@ -34,139 +44,100 @@ module Api
       # GET /api/v1/scholarships/1/edit
       def edit
       end
-    
-      # POST /api/v1/scholarships or /api/v1/scholarships.json
+
       def create
-        @scholarship = Scholarship.new(scholarship_params)
-        benefit_params = params[:benefits] || []
-        requirement_params = params[:requirements] || []
-        eligibility_params = params[:eligibilities] || []
+        scholarship_service = ScholarshipService.new(scholarship_params)
+        result = scholarship_service.create_scholarship
+        render json: result, status: result.key?(:errors) ? :unprocessable_entity : :created
+      end
 
-        @requirements = []
-        @eligibilities = []
-        @benefits = []
+      def upload
+        uploaded_file = params[:file]
+        if uploaded_file.respond_to?(:read)
+          begin
+            temp_file = Tempfile.new(["uploaded_file", ".tsv"])
+            temp_file.binmode
+            temp_file.write(uploaded_file.read)
+            temp_file.rewind
 
-        benefit_params.each do |param|
-          @benefits << Benefit.new(benefit_name: param[:benefit_name])
-        end
-
-        requirement_params.each do |param|
-          @requirements << Requirement.new(requirements_text: param[:requirements_text])
-        end
-
-        eligibility_params.each do |param|
-          @eligibilities << Eligibility.new(eligibility_text: param[:eligibility_text])
-        end
-
-        errors = {}
-        errors[:benefit] = @benefits.map { |benefit| benefit.errors } if @benefits.any? { |benefit| benefit.invalid? }
-        errors[:requirement] = @requirements.map { |requirement| requirement.errors } if @requirements.any? { |requirement| requirement.invalid? }
-        errors[:eligibility] = @eligibilities.map { |eligibility| eligibility.errors } if @eligibilities.any? { |eligibility| eligibility.invalid? }
-
-
-        if errors.empty?
-          if @scholarship.save
-            
-            @benefits.each do |benefit|
-              @scholarship.benefits << benefit
+            excel = Roo::CSV.new(temp_file.path, csv_options: {col_sep: "\t"})
+            header = excel.row(1)
+            data = []
+            (3..excel.last_row).each do |i|
+              row = Hash[[header, excel.row(i)].transpose]
+              data << row
             end
 
-            @requirements.each do |requirement|
-              @scholarship.requirements << requirement
+            errors_count = 0
+            success_count = 0
+            results = []
+            file_params = data
+            file_params.each do |file_param|
+              begin
+                user = User.find_by(email_address: cookies[:user_email])
+                start_date = DateTime.strptime(file_param['start_date'], '%d-%m-%Y')
+                due_date = DateTime.strptime(file_param['due_date'], '%d-%m-%Y')
+
+                file_param['status'] = file_param['status'].downcase
+                unless ['active', 'inactive'].include?(file_param['status'])
+                  errors_count += 1
+                  result = { errors: ["Invalid status. Status must be 'active' or 'inactive'."] }
+                  results << result
+                  next
+                end
+
+                scholarship = Scholarship.find_by(scholarship_name: file_param['scholarship_name'], start_date: start_date, due_date: due_date)
+
+                if scholarship
+                  errors_count += 1
+                  result = { errors: [ "Scholarship already exists." ] }
+                else
+                  file_param[:scholarship_provider_id] = user.scholarship_provider.id
+
+                  ben_cats = []
+                  ben_par = file_param['benefit_categories']
+                  benefit_categories_array = ben_par.split(',').map { |num| num.to_i }
+                  benefit_categories_array.each do |ben_cat|
+                    category = BenefitCategory.find(ben_cat)
+                    ben_cats << category if category
+                  end
+                  file_param['benefit_categories'] = ben_cats
+
+                  scholarship_service = ScholarshipService.new(file_param)
+                  result = scholarship_service.create_scholarship
+                  if result.key?(:errors)
+                    errors_count += 1
+                  else
+                    success_count += 1
+                  end
+                end
+                results << result
+              rescue StandardError => e
+                results << { errors: [e.message] }
+                errors_count += 1
+              end
             end
 
-            @eligibilities.each do |eligibility|
-              @scholarship.eligibilities << eligibility
-            end
-          
-            render json: { "message": "Scholarship was successfully created." }, status: :created
-          else
-            render json: @scholarship.errors, status: :unprocessable_entity
+            render json: { results: results, errors_count: errors_count, success_count: success_count, total_count: file_params.size }, status: :created
+          ensure
+            temp_file.close
+            temp_file.unlink
           end
         else
-          render json: errors, status: :unprocessable_entity
+          render json: { error: 'Invalid file' }, status: :unprocessable_entity
         end
       end
     
       # PATCH/PUT /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def update
-        @benefit_errors = {}
-        params[:benefits].each do |benefit_params|
-          if benefit_params[:id].present?
-            benefit = @scholarship.benefits.find_by(id: benefit_params[:id])
-          end
-          puts "THIS"
-          puts benefit
-          if benefit
-            benefit.update!(benefit_name: benefit_params[:benefit_name])
-            p "wew"
-            puts benefit.errors.full_messages
-            @benefit_errors[benefit.id] = benefit.errors.full_messages unless benefit.errors.empty?
-          else
-            benefit = @scholarship.benefits.build(benefit_name: benefit_params[:benefit_name])
-            if benefit.save
-              @scholarship.benefits << benefit
-            else
-              @benefit_errors[benefit.id] = benefit.errors.full_messages
-            end
-          end
-        end
+        scholarship_service = ScholarshipService.new(scholarship_params)
 
-        @requirement_errors = {}
-        params[:requirements].each do |requirement_params|
-          if requirement_params[:id].present?
-            requirement = @scholarship.requirements.find_by(id: requirement_params[:id])
-          end
+        result = scholarship_service.update_scholarship(@scholarship.id)
 
-          if requirement
-            requirement.update!(requirements_text: requirement_params[:requirements_text])
-            @requirement_errors[requirement.id] = requirement.errors.full_messages unless requirement.errors.empty?
-          else
-            requirement = @scholarship.requirements.build(requirements_text: requirement_params[:requirements_text])
-            if requirement.save
-              @scholarship.requirements << requirement
-            else
-              @requirement_errors[requirement.id] = requirement.errors.full_messages
-            end
-          end
-        end
-
-        @eligibility_errors = {}
-        params[:eligibilities].each do |eligibility_params|
-          if eligibility_params[:id].present?
-            eligibility = @scholarship.eligibilities.find_by(id: eligibility_params[:id])
-          end
-
-          if eligibility
-            eligibility.update!(eligibility_text: eligibility_params[:eligibility_text])
-            @eligibility_errors[eligibility.id] = eligibility.errors.full_messages unless eligibility.errors.empty?
-          else
-            eligibility = @scholarship.eligibilities.build(eligibility_text: eligibility_params[:eligibility_text])
-            if eligibility.save
-              @scholarship.eligibilities << eligibility
-            else
-              @eligibility_errors[eligibility.id] = eligibility.errors.full_messages
-            end
-          end
-        end
-
-        errors = {}
-        errors[:benefits] = @benefit_errors if @benefit_errors.is_a?(Hash) && !@benefit_errors.empty?
-        errors[:requirements] = @requirement_errors if @requirement_errors.is_a?(Hash) && !@requirement_errors.empty?
-        errors[:eligibilities] = @eligibility_errors if @eligibility_errors.is_a?(Hash) && !@eligibility_errors.empty?
-        
-        if errors.empty?
-          if Scholarship.is_soft_deleted(@scholarship) 
-            if @scholarship.update(scholarship_params)
-              render json: { "message": "Scholarship details successfully updated." }, status: :ok
-            else
-              render json: @scholarship.errors, status: :unprocessable_entity
-            end
-          else
-            render json: { "message": "Unable to update scholarship." }, status: :unprocessable_entity
-          end
+        if result[:errors].present?
+          render json: result[:errors], status: :unprocessable_entity
         else
-          render json: errors, status: :unprocessable_entity
+          render json: { message: result[:message], scholarship: result[:scholarship] }, status: :ok
         end
       end
     
@@ -174,7 +145,9 @@ module Api
       def destroy
         if Scholarship.is_soft_deleted(@scholarship)
           Scholarship.soft_delete(@scholarship)
-          render json: {message: "Scholarship deleted.", status: :ok}
+          scholarships = Scholarship.where(scholarship_provider_id: @scholarship.scholarship_provider.id)
+          
+          render json: {message: "Scholarship deleted.", scholarships: scholarships.page(params[:page]).per(params[:limit]), status: :ok}
         else
           render json: {message: "Unable to delete scholarship", status: :unprocessable_entity}, status: 422
         end
@@ -188,7 +161,26 @@ module Api
     
         # Only allow a list of trusted parameters through.
         def scholarship_params
-          params.require(:scholarship).permit(:scholarship_name, :status, :description, :start_date, :due_date, :application_link, :school_year, :scholarship_provider_id, :requirements, :eligibilities, :scholarship_type_id, :benefits)
+          params
+          .permit(
+            :scholarship_name, 
+            :status, 
+            :description, 
+            :start_date, 
+            :due_date, 
+            :application_link, 
+            :school_year,
+            :scholarship_type_id,
+            :scholarship_provider_id,
+            :timezone
+          ).merge(eligibilities: params[:eligibilities]).merge(requirements: params[:requirements]).merge(benefits: params[:benefits]).merge(benefit_categories: params[:benefit_categories])
+        end
+
+        def authorize
+          if @scholarship.scholarship_provider.user.email_address != cookies[:user_email]
+            render_unauthorized_response
+            return
+          end
         end
     end
   end

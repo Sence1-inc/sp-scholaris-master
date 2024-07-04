@@ -1,47 +1,74 @@
+import { Box, Typography } from '@mui/material'
 import React from 'react'
 import WelcomeButton from '../../components/Button/WelcomeButton'
-import AngleDownIcon from '../../public/images/angles-down-solid.svg'
-import UserIcon from '../../public/images/users-solid.svg'
+import WelcomePageSearch from '../../components/Search/WelcomePageSearch'
 import SchoolIcon from '../../public/images/school-solid.svg'
-import WelcomeImage from '../../public/images/welcome-icon.png'
+import UserIcon from '../../public/images/users-solid.svg'
 import './WelcomePage.css'
-import { Typography } from '@mui/material'
 
 const WelcomePage: React.FC = () => {
   return (
     <>
-      <div className="content__welcome-intro">
-        <div className="container">
-          <img src={WelcomeImage} alt="" />
-          <Typography variant="h2">
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column' },
+          width: '100vw',
+          padding: { xs: '40px 20px', md: '60px' },
+          gap: { xs: '80px' },
+        }}
+      >
+        <Box
+          sx={{
+            width: { xs: '100%' },
+            paddingLeft: { md: '10px' },
+          }}
+        >
+          <WelcomePageSearch />
+        </Box>
+        <Box
+          sx={{
+            width: { xs: '100%' },
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingRight: { md: '10px' },
+          }}
+        >
+          {/* <img
+            src={WelcomeImage}
+            alt=""
+            style={{ maxWidth: '100%', height: 'auto', padding: 0, margin: 0 }}
+          /> */}
+          <Typography variant="h3" textAlign="center">
             Discover <span className="color-secondary">Scholaris</span>!
           </Typography>
-          <Typography variant="body1">
-            Scholaris functions as a centralized hub where students can explore
-            an extensive array of scholarships aligned with their academic
-            accomplishments, talents, and individual circumstances.
-            Scholarship-granting organizations can also showcase their
-            offerings, contributing to a diverse pool of scholarships that are
-            easily searchable.{' '}
+          <Typography variant="body1" textAlign="center">
+            Everyone deserves an education. Scholaris will help you to overcome
+            the challenges and difficulties in searching for scholarships.
+            <br />
+            <br />
+            Scholaris is an application designed to publicize and promote
+            existing scholarship opportunities, making scholarships easily
+            accessible to many scholarship searchers.
+            <br />
+            <br />
+            It is a centralized hub where students can easily browse and stay
+            updated with the latest offerings from different
+            Scholarship-Granting Organizations or SGOs.
           </Typography>
-          <Typography variant="body1">
-            This approach of consolidating scholarships from various
-            organizations enhances accessibility and guarantees that every
-            deserving student is given an opportunity.{' '}
-          </Typography>
-          <a href="#welcome">
-            <img src={AngleDownIcon} alt="" />
-          </a>
-        </div>
-      </div>
+        </Box>
+      </Box>
       <div id="welcome" className="content__welcome-selection">
         <div className="container">
           <div>
-            <Typography variant="h3" sx={{ mb: 2 }}>
+            <Typography variant="h3" sx={{ mb: 2 }} textAlign="center">
               <span className="color-secondary">Scholaris</span> - Match
               potential <br /> with scholarship opportunities
             </Typography>
-            <Typography variant="body1">
+            <Typography variant="body1" textAlign="center">
               Scholaris connects students and scholarship-granting <br />{' '}
               organizations to discover scholarship opportunities, <br />{' '}
               ensuring no student is left behind.
@@ -61,12 +88,12 @@ const WelcomePage: React.FC = () => {
               />
             </div>
             <div className="content__welcome-annotations">
-              <Typography variant="subtitle1">
+              <Typography variant="subtitle1" textAlign="center">
                 Please select from the button options above to get started with
                 Scholaris.
               </Typography>
               <br />
-              <Typography variant="subtitle1">
+              <Typography variant="subtitle1" textAlign="center">
                 Choose Student if you are looking for scholarships, and choose
                 SGO if you want to list your organization’s scholarship and want
                 to further look for a candidate

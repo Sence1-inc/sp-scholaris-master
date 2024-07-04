@@ -1,0 +1,8174 @@
+[
+  {
+    "city": "Adams",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bacarra",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Badoc",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bangui",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "City of Batac",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Burgos",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Carasi",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Currimao",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Dingras",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Dumalneg",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Banna",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "City of Laoag",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Marcos",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Nueva Era",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Pagudpud",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Paoay",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Pasuquin",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Piddig",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Pinili",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Nicolas",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Sarrat",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Solsona",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Vintar",
+    "province": "Ilocos Norte",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Alilem",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Banayoyo",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bantay",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Burgos",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Cabugao",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "City of Candon",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Caoayan",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Cervantes",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Galimuyod",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Gregorio Del Pilar",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Lidlidda",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Magsingal",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Nagbukel",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Narvacan",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Quirino",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Salcedo",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Emilio",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Esteban",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Ildefonso",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Juan",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Vicente",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santa",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santa Catalina",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santa Cruz",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santa Lucia",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santa Maria",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santiago",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santo Domingo",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Sigay",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Sinait",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Sugpon",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Suyo",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Tagudin",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "City of Vigan",
+    "province": "Ilocos Sur",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Agoo",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Aringay",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bacnotan",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bagulin",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Balaoan",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bangar",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bauang",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Burgos",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Caba",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Luna",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Naguilian",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Pugo",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Rosario",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "City of San Fernando",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Gabriel",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Juan",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santo Tomas",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santol",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Sudipen",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Tubao",
+    "province": "La Union",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Agno",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Aguilar",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "City of Alaminos",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Alcala",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Anda",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Asingan",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Balungao",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bani",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Basista",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bautista",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bayambang",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Binalonan",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Binmaley",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bolinao",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Bugallon",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Burgos",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Calasiao",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "City of Dagupan",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Dasol",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Infanta",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Labrador",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Lingayen",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Mabini",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Malasiqui",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Manaoag",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Mangaldan",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Mangatarem",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Mapandan",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Natividad",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Pozorrubio",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Rosales",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "City of San Carlos",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Fabian",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Jacinto",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Manuel",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Nicolas",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "San Quintin",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santa Barbara",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santa Maria",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Santo Tomas",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Sison",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Sual",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Tayug",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Umingan",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Urbiztondo",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "City of Urdaneta",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Villasis",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Laoac",
+    "province": "Pangasinan",
+    "region": "Region I - Ilocos Region"
+  },
+  {
+    "city": "Basco",
+    "province": "Batanes",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Itbayat",
+    "province": "Batanes",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Ivana",
+    "province": "Batanes",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Mahatao",
+    "province": "Batanes",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Sabtang",
+    "province": "Batanes",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Uyugan",
+    "province": "Batanes",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Abulug",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Alcala",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Allacapan",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Amulung",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Aparri",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Baggao",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Ballesteros",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Buguey",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Calayan",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Camalaniugan",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Claveria",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Enrile",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Gattaran",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Gonzaga",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Iguig",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Lal-Lo",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Lasam",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Pamplona",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Peñablanca",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Piat",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Rizal",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Sanchez-Mira",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Santa Ana",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Santa Praxedes",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Santa Teresita",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Santo Niño",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Solana",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Tuao",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Tuguegarao City",
+    "province": "Cagayan",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Alicia",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Angadanan",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Aurora",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Benito Soliven",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Burgos",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Cabagan",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Cabatuan",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "City of Cauayan",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Cordon",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Dinapigue",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Divilacan",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Echague",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Gamu",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "City of Ilagan",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Jones",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Luna",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Maconacon",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Delfin Albano",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Mallig",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Naguilian",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Palanan",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Quezon",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Quirino",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Ramon",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Reina Mercedes",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Roxas",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "San Agustin",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "San Guillermo",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "San Isidro",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "San Manuel",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "San Mariano",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "San Mateo",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "San Pablo",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Santa Maria",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "City of Santiago",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Santo Tomas",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Tumauini",
+    "province": "Isabela",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Ambaguio",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Aritao",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Bagabag",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Bambang",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Bayombong",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Diadi",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Dupax Del Norte",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Dupax Del Sur",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Kasibu",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Kayapa",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Quezon",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Santa Fe",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Solano",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Villaverde",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Alfonso Castaneda",
+    "province": "Nueva Vizcaya",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Aglipay",
+    "province": "Quirino",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Cabarroguis",
+    "province": "Quirino",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Diffun",
+    "province": "Quirino",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Maddela",
+    "province": "Quirino",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Saguday",
+    "province": "Quirino",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Nagtipunan",
+    "province": "Quirino",
+    "region": "Region II - Cagayan Valley"
+  },
+  {
+    "city": "Abucay",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Bagac",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "City of Balanga",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Dinalupihan",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Hermosa",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Limay",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Mariveles",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Morong",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Orani",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Orion",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Pilar",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Samal",
+    "province": "Bataan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Angat",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Balagtas",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Baliuag",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Bocaue",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Bulacan",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Bustos",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Calumpit",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Guiguinto",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Hagonoy",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "City of Malolos",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Marilao",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "City of Meycauayan",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Norzagaray",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Obando",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Pandi",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Paombong",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Plaridel",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Pulilan",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Ildefonso",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "City of San Jose Del Monte",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Miguel",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Rafael",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Santa Maria",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Doña Remedios Trinidad",
+    "province": "Bulacan",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Aliaga",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Bongabon",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "City of Cabanatuan",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Cabiao",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Carranglan",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Cuyapo",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Gabaldon",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "City of Gapan",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "General Mamerto Natividad",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "General Tinio",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Guimba",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Jaen",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Laur",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Licab",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Llanera",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Lupao",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Science City of Muñoz",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Nampicuan",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "City of Palayan",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Pantabangan",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Peñaranda",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Quezon",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Rizal",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Antonio",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Isidro",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Jose City",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Leonardo",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Santa Rosa",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Santo Domingo",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Talavera",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Talugtug",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Zaragoza",
+    "province": "Nueva Ecija",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "City of Angeles",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Apalit",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Arayat",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Bacolor",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Candaba",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Floridablanca",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Guagua",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Lubao",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Mabalacat City",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Macabebe",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Magalang",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Masantol",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Mexico",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Minalin",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Porac",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "City of San Fernando",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Luis",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Simon",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Santa Ana",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Santa Rita",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Sto. Tomas",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Sasmuan",
+    "province": "Pampanga",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Anao",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Bamban",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Camiling",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Capas",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Concepcion",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Gerona",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "La Paz",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Mayantoc",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Moncada",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Paniqui",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Pura",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Ramos",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Clemente",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Manuel",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Santa Ignacia",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "City of Tarlac",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Victoria",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Jose",
+    "province": "Tarlac",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Botolan",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Cabangan",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Candelaria",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Castillejos",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Iba",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Masinloc",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "City of Olongapo",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Palauig",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Antonio",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Felipe",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Marcelino",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Narciso",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Santa Cruz",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Subic",
+    "province": "Zambales",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Baler",
+    "province": "Aurora",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Casiguran",
+    "province": "Aurora",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Dilasag",
+    "province": "Aurora",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Dinalungan",
+    "province": "Aurora",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Dingalan",
+    "province": "Aurora",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Dipaculao",
+    "province": "Aurora",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Maria Aurora",
+    "province": "Aurora",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "San Luis",
+    "province": "Aurora",
+    "region": "Region III - Central Luzon"
+  },
+  {
+    "city": "Agoncillo",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Alitagtag",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Balayan",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Balete",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Batangas City",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Bauan",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Calaca",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Calatagan",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Cuenca",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Ibaan",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Laurel",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Lemery",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Lian",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Lipa",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Lobo",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Mabini",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Malvar",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Mataasnakahoy",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Nasugbu",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Padre Garcia",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Rosario",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "San Jose",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "San Juan",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "San Luis",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "San Nicolas",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "San Pascual",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Santa Teresita",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Sto. Tomas",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Taal",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Talisay",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Tanauan",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Taysan",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Tingloy",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Tuy",
+    "province": "Batangas",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Alfonso",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Amadeo",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Bacoor",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Carmona",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Cavite",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Dasmariñas",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "General Emilio Aguinaldo",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of General Trias",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Imus",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Indang",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Kawit",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Magallanes",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Maragondon",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Mendez",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Naic",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Noveleta",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Rosario",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Silang",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Tagaytay",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Tanza",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Ternate",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Trece Martires",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Gen. Mariano Alvarez",
+    "province": "Cavite",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Alaminos",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Bay",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Biñan",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Cabuyao",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Calamba",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Calauan",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Cavinti",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Famy",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Kalayaan",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Liliw",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Los Baños",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Luisiana",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Lumban",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Mabitac",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Magdalena",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Majayjay",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Nagcarlan",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Paete",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Pagsanjan",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Pakil",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Pangil",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Pila",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Rizal",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of San Pablo",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of San Pedro",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Santa Cruz",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Santa Maria",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Santa Rosa",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Siniloan",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Victoria",
+    "province": "Laguna",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Agdangan",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Alabat",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Atimonan",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Buenavista",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Burdeos",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Calauag",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Candelaria",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Catanauan",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Dolores",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "General Luna",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "General Nakar",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Guinayangan",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Gumaca",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Infanta",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Jomalig",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Lopez",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Lucban",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Lucena",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Macalelon",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Mauban",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Mulanay",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Padre Burgos",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Pagbilao",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Panukulan",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Patnanungan",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Perez",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Pitogo",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Plaridel",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Polillo",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Quezon",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Real",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Sampaloc",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "San Andres",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "San Antonio",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "San Francisco",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "San Narciso",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Sariaya",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Tagkawayan",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Tayabas",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Tiaong",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Unisan",
+    "province": "Quezon",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Angono",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "City of Antipolo",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Baras",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Binangonan",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Cainta",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Cardona",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Jala-Jala",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Rodriguez",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Morong",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Pililla",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "San Mateo",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Tanay",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Taytay",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Teresa",
+    "province": "Rizal",
+    "region": "Region IV-A - CALABARZON"
+  },
+  {
+    "city": "Boac",
+    "province": "Marinduque",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Buenavista",
+    "province": "Marinduque",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Gasan",
+    "province": "Marinduque",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Mogpog",
+    "province": "Marinduque",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Santa Cruz",
+    "province": "Marinduque",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Torrijos",
+    "province": "Marinduque",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Abra De Ilog",
+    "province": "Occidental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Calintaan",
+    "province": "Occidental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Looc",
+    "province": "Occidental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Lubang",
+    "province": "Occidental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Magsaysay",
+    "province": "Occidental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Mamburao",
+    "province": "Occidental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Paluan",
+    "province": "Occidental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Rizal",
+    "province": "Occidental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Sablayan",
+    "province": "Occidental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "San Jose",
+    "province": "Occidental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Santa Cruz",
+    "province": "Occidental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Baco",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Bansud",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Bongabong",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Bulalacao",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "City of Calapan",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Gloria",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Mansalay",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Naujan",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Pinamalayan",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Pola",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Puerto Galera",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Roxas",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "San Teodoro",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Socorro",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Victoria",
+    "province": "Oriental Mindoro",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Aborlan",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Agutaya",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Araceli",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Balabac",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Bataraza",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Brooke's Point",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Busuanga",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Cagayancillo",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Coron",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Cuyo",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Dumaran",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "El Nido",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Linapacan",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Magsaysay",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Narra",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "City of Puerto Princesa",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Quezon",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Roxas",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "San Vicente",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Taytay",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Kalayaan",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Culion",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Rizal",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Sofronio Española",
+    "province": "Palawan",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Alcantara",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Banton",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Cajidiocan",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Calatrava",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Concepcion",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Corcuera",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Looc",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Magdiwang",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Odiongan",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Romblon",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "San Agustin",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "San Andres",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "San Fernando",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "San Jose",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Santa Fe",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Ferrol",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Santa Maria",
+    "province": "Romblon",
+    "region": "Region IV-B - MIMAROPA"
+  },
+  {
+    "city": "Bacacay",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Camalig",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Daraga",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Guinobatan",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Jovellar",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "City of Legazpi",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Libon",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "City of Ligao",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Malilipot",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Malinao",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Manito",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Oas",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Pio Duran",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Polangui",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Rapu-Rapu",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Santo Domingo",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "City of Tabaco",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Tiwi",
+    "province": "Albay",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Basud",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Capalonga",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Daet",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "San Lorenzo Ruiz",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Jose Panganiban",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Labo",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Mercedes",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Paracale",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "San Vicente",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Santa Elena",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Talisay",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Vinzons",
+    "province": "Camarines Norte",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Baao",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Balatan",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Bato",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Bombon",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Buhi",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Bula",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Cabusao",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Calabanga",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Camaligan",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Canaman",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Caramoan",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Del Gallego",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Gainza",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Garchitorena",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Goa",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "City of Iriga",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Lagonoy",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Libmanan",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Lupi",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Magarao",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Milaor",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Minalabac",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Nabua",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "City of Naga",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Ocampo",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Pamplona",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Pasacao",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Pili",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Presentacion",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Ragay",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Sagñay",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "San Fernando",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "San Jose",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Sipocot",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Siruma",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Tigaon",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Tinambac",
+    "province": "Camarines Sur",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Bagamanoc",
+    "province": "Catanduanes",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Baras",
+    "province": "Catanduanes",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Bato",
+    "province": "Catanduanes",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Caramoran",
+    "province": "Catanduanes",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Gigmoto",
+    "province": "Catanduanes",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Pandan",
+    "province": "Catanduanes",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Panganiban",
+    "province": "Catanduanes",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "San Andres",
+    "province": "Catanduanes",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "San Miguel",
+    "province": "Catanduanes",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Viga",
+    "province": "Catanduanes",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Virac",
+    "province": "Catanduanes",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Aroroy",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Baleno",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Balud",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Batuan",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Cataingan",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Cawayan",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Claveria",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Dimasalang",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Esperanza",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Mandaon",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "City of Masbate",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Milagros",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Mobo",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Monreal",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Palanas",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Pio v. Corpuz",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Placer",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "San Fernando",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "San Jacinto",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "San Pascual",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Uson",
+    "province": "Masbate",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Barcelona",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Bulan",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Bulusan",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Casiguran",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Castilla",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Donsol",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Gubat",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Irosin",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Juban",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Magallanes",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Matnog",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Pilar",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Prieto Diaz",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "Santa Magdalena",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "City of Sorsogon",
+    "province": "Sorsogon",
+    "region": "Region V - Bicol Region"
+  },
+  {
+    "city": "City of Manila",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Mandaluyong",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Marikina",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Pasig",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "Quezon City",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of San Juan",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Caloocan",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Malabon",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Navotas",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Valenzuela",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Las Piñas",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Makati",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Muntinlupa",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Parañaque",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "Pasay City",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "Pateros",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "City of Taguig",
+    "province": "Metro Manila",
+    "region": "NCR - Natiional Capital Region"
+  },
+  {
+    "city": "Bangued",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Boliney",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Bucay",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Bucloc",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Daguioman",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Danglas",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Dolores",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "La Paz",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Lacub",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Lagangilang",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Lagayan",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Langiden",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Licuan-Baay",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Luba",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Malibcong",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Manabo",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Peñarrubia",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Pidigan",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Pilar",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Sallapadan",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "San Isidro",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "San Juan",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "San Quintin",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Tayum",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Tineg",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Tubo",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Villaviciosa",
+    "province": "Abra",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Atok",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "City of Baguio",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Bakun",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Bokod",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Buguias",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Itogon",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Kabayan",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Kapangan",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Kibungan",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "La Trinidad",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Mankayan",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Sablan",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Tuba",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Tublay",
+    "province": "Benguet",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Banaue",
+    "province": "Ifugao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Hungduan",
+    "province": "Ifugao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Kiangan",
+    "province": "Ifugao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Lagawe",
+    "province": "Ifugao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Lamut",
+    "province": "Ifugao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Mayoyao",
+    "province": "Ifugao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Alfonso Lista",
+    "province": "Ifugao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Aguinaldo",
+    "province": "Ifugao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Hingyon",
+    "province": "Ifugao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Tinoc",
+    "province": "Ifugao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Asipulo",
+    "province": "Ifugao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Balbalan",
+    "province": "Kalinga",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Lubuagan",
+    "province": "Kalinga",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Pasil",
+    "province": "Kalinga",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Pinukpuk",
+    "province": "Kalinga",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Rizal",
+    "province": "Kalinga",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "City of Tabuk",
+    "province": "Kalinga",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Tanudan",
+    "province": "Kalinga",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Tinglayan",
+    "province": "Kalinga",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Barlig",
+    "province": "Mountain Province",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Bauko",
+    "province": "Mountain Province",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Besao",
+    "province": "Mountain Province",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Bontoc",
+    "province": "Mountain Province",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Natonin",
+    "province": "Mountain Province",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Paracelis",
+    "province": "Mountain Province",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Sabangan",
+    "province": "Mountain Province",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Sadanga",
+    "province": "Mountain Province",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Sagada",
+    "province": "Mountain Province",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Tadian",
+    "province": "Mountain Province",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Calanasan",
+    "province": "Apayao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Conner",
+    "province": "Apayao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Flora",
+    "province": "Apayao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Kabugao",
+    "province": "Apayao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Luna",
+    "province": "Apayao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Pudtol",
+    "province": "Apayao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+  {
+    "city": "Santa Marcela",
+    "province": "Apayao",
+    "region": "CAR - Cordillera Administrative Region"
+  },
+
+  {
+    "city": "Altavas",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Balete",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Banga",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Batan",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Buruanga",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Ibajay",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Kalibo",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Lezo",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Libacao",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Madalag",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Makato",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Malay",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Malinao",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Nabas",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "New Washington",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Numancia",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Tangalan",
+    "province": "Aklan",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Anini-Y",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Barbaza",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Belison",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Bugasong",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Caluya",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Culasi",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Tobias Fornier",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Hamtic",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Laua-An",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Libertad",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Pandan",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Patnongon",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "San Jose",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "San Remigio",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Sebaste",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Sibalom",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Tibiao",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Valderrama",
+    "province": "Antique",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Cuartero",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Dao",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Dumalag",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Dumarao",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Ivisan",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Jamindan",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Ma-Ayon",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Mambusao",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Panay",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Panitan",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Pilar",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Pontevedra",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "President Roxas",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Roxas",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Sapi-An",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Sigma",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Tapaz",
+    "province": "Capiz",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Ajuy",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Alimodian",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Anilao",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Badiangan",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Balasan",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Banate",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Barotac Nuevo",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Barotac Viejo",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Batad",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Bingawan",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Cabatuan",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Calinog",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Carles",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Concepcion",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Dingle",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Dueñas",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Dumangas",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Estancia",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Guimbal",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Igbaras",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Iloilo",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Janiuay",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Lambunao",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Leganes",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Lemery",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Leon",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Maasin",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Miagao",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Mina",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "New Lucena",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Oton",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Passi",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Pavia",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Pototan",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "San Dionisio",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "San Enrique",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "San Joaquin",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "San Miguel",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "San Rafael",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Santa Barbara",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Sara",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Tigbauan",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Tubungan",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Zarraga",
+    "province": "Iloilo",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Bacolod",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Bago",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Binalbagan",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Cadiz",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Calatrava",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Candoni",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Cauayan",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Enrique B. Magalona",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Escalante",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Himamaylan",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Hinigaran",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Hinoba-An",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Ilog",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Isabela",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Kabankalan",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of La Carlota",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "La Castellana",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Manapla",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Moises Padilla",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Murcia",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Pontevedra",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Pulupandan",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Sagay",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of San Carlos",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "San Enrique",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Silay",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Sipalay",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Talisay",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Toboso",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Valladolid",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "City of Victorias",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Salvador Benedicto",
+    "province": "Negros Occidental",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Buenavista",
+    "province": "Guimaras",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Jordan",
+    "province": "Guimaras",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Nueva Valencia",
+    "province": "Guimaras",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "San Lorenzo",
+    "province": "Guimaras",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Sibunag",
+    "province": "Guimaras",
+    "region": "Region VI - Western Visayas"
+  },
+  {
+    "city": "Alburquerque",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Alicia",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Anda",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Antequera",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Baclayon",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Balilihan",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Batuan",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Bilar",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Buenavista",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Calape",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Candijay",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Carmen",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Catigbian",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Clarin",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Corella",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Cortes",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Dagohoy",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Danao",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Dauis",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Dimiao",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Duero",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Garcia Hernandez",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Guindulman",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Inabanga",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Jagna",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Getafe",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Lila",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Loay",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Loboc",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Loon",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Mabini",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Maribojoc",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Panglao",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Pilar",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "President Carlos P. Garcia",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Sagbayan",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "San Isidro",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "San Miguel",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Sevilla",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Sierra Bullones",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Sikatuna",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Tagbilaran",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Talibon",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Trinidad",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Tubigon",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Ubay",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Valencia",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Bien Unido",
+    "province": "Bohol",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Alcantara",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Alcoy",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Alegria",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Aloguinsan",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Argao",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Asturias",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Badian",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Balamban",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Bantayan",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Barili",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Bogo",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Boljoon",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Borbon",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Carcar",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Carmen",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Catmon",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Cebu",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Compostela",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Consolacion",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Cordova",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Daanbantayan",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Dalaguete",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Danao City",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Dumanjug",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Ginatilan",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Lapu-Lapu",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Liloan",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Madridejos",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Malabuyoc",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Mandaue",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Medellin",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Minglanilla",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Moalboal",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Naga",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Oslob",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Pilar",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Pinamungajan",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Poro",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Ronda",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Samboan",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "San Fernando",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "San Francisco",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "San Remigio",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Santa Fe",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Santander",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Sibonga",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Sogod",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Tabogon",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Tabuelan",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Talisay",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Toledo",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Tuburan",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Tudela",
+    "province": "Cebu",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Amlan",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Ayungon",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Bacong",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Bais",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Basay",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Bayawan",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Bindoy",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Canlaon",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Dauin",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Dumaguete",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Guihulngan",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Jimalalud",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "La Libertad",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Mabinay",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Manjuyod",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Pamplona",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "San Jose",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Santa Catalina",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Siaton",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Sibulan",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "City of Tanjay",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Tayasan",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Valencia",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Vallehermoso",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Zamboanguita",
+    "province": "Negros Oriental",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Enrique Villanueva",
+    "province": "Siquijor",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Larena",
+    "province": "Siquijor",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Lazi",
+    "province": "Siquijor",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Maria",
+    "province": "Siquijor",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "San Juan",
+    "province": "Siquijor",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Siquijor",
+    "province": "Siquijor",
+    "region": "Region VII - Central Visayas"
+  },
+  {
+    "city": "Arteche",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Balangiga",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Balangkayan",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "City of Borongan",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Can-Avid",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Dolores",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "General Macarthur",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Giporlos",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Guiuan",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Hernani",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Jipapad",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Lawaan",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Llorente",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Maslog",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Maydolong",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Mercedes",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Oras",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Quinapondan",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Salcedo",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Julian",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Policarpo",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Sulat",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Taft",
+    "province": "Eastern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Abuyog",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Alangalang",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Albuera",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Babatngon",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Barugo",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Bato",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "City of Baybay",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Burauen",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Calubian",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Capoocan",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Carigara",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Dagami",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Dulag",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Hilongos",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Hindang",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Inopacan",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Isabel",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Jaro",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Javier",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Julita",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Kananga",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "La Paz",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Leyte",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Macarthur",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Mahaplag",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Matag-Ob",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Matalom",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Mayorga",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Merida",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Ormoc City",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Palo",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Palompon",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Pastrana",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Isidro",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Miguel",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Santa Fe",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Tabango",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Tabontabon",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "City of Tacloban",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Tanauan",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Tolosa",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Tunga",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Villaba",
+    "province": "Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Allen",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Biri",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Bobon",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Capul",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Catarman",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Catubig",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Gamay",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Laoang",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Lapinig",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Las Navas",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Lavezares",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Mapanas",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Mondragon",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Palapag",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Pambujan",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Rosario",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Antonio",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Isidro",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Jose",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Roque",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Vicente",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Silvino Lobos",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Victoria",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Lope De Vega",
+    "province": "Northern Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Almagro",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Basey",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "City of Calbayog",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Calbiga",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "City of Catbalogan",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Daram",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Gandara",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Hinabangan",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Jiabong",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Marabut",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Matuguinao",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Motiong",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Pinabacdao",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Jose De Buan",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Sebastian",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Santa Margarita",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Santa Rita",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Santo Niño",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Talalora",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Tarangnan",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Villareal",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Paranas",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Zumarraga",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Tagapul-An",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Jorge",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Pagsanghan",
+    "province": "Samar",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Anahawan",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Bontoc",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Hinunangan",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Hinundayan",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Libagon",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Liloan",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "City of Maasin",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Macrohon",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Malitbog",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Padre Burgos",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Pintuyan",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Saint Bernard",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Francisco",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Juan",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "San Ricardo",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Silago",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Sogod",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Tomas Oppus",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Limasawa",
+    "province": "Southern Leyte",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Almeria",
+    "province": "Biliran",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Biliran",
+    "province": "Biliran",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Cabucgayan",
+    "province": "Biliran",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Caibiran",
+    "province": "Biliran",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Culaba",
+    "province": "Biliran",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Kawayan",
+    "province": "Biliran",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Maripipi",
+    "province": "Biliran",
+    "region": "Region VIII - Eastern Visayas"
+  },
+  {
+    "city": "Naval",
+    "province": "Biliran",
+    "region": "Region VIII - Eastern Visayas"
+  },
+
+  {
+    "city": "City of Dapitan",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "City of Dipolog",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Katipunan",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "La Libertad",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Labason",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Liloy",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Manukan",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Mutia",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Piñan",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Polanco",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Pres. Manuel a. Roxas",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Rizal",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Salug",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Sergio osmeña Sr.",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Siayan",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Sibuco",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Sibutad",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Sindangan",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Siocon",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Sirawai",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Tampilisan",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Jose Dalman",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Gutalac",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Baliguian",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Godod",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Bacungan",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Kalawit",
+    "province": "Zamboanga Del Norte",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Aurora",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Bayog",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Dimataling",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Dinas",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Dumalinao",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Dumingag",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Kumalarang",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Labangan",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Lapuyan",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Mahayag",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Margosatubig",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Midsalip",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Molave",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "City of Pagadian",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Ramon Magsaysay",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "San Miguel",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "San Pablo",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Tabina",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Tambulig",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Tukuran",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "City of Zamboanga",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Lakewood",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Josefina",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Pitogo",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Sominot",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Vincenzo a. Sagun",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Guipos",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Tigbao",
+    "province": "Zamboanga Del Sur",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Alicia",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Buug",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Diplahan",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Imelda",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Ipil",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Kabasalan",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Mabuhay",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Malangas",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Naga",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Olutanga",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Payao",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Roseller Lim",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Siay",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Talusan",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Titay",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Tungawan",
+    "province": "Zamboanga Sibugay",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "City of Isabela",
+    "province": "Basilan",
+    "region": "Region IX - Zamboanga Peninsula"
+  },
+  {
+    "city": "Baungon",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Damulog",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Dangcagan",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Don Carlos",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Impasug-Ong",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Kadingilan",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Kalilangan",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Kibawe",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Kitaotao",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Lantapan",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Libona",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "City of Malaybalay",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Malitbog",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Manolo Fortich",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Maramag",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Pangantucan",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Quezon",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "San Fernando",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Sumilao",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Talakag",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "City of Valencia",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Cabanglasan",
+    "province": "Bukidnon",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Catarman",
+    "province": "Camiguin",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Guinsiliban",
+    "province": "Camiguin",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Mahinog",
+    "province": "Camiguin",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Mambajao",
+    "province": "Camiguin",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Sagay",
+    "province": "Camiguin",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Bacolod",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Baloi",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Baroy",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "City of Iligan",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Kapatagan",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Sultan Naga Dimaporo",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Kauswagan",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Kolambugan",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Lala",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Linamon",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Magsaysay",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Maigo",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Matungao",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Munai",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Nunungan",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Pantao Ragat",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Poona Piagapo",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Salvador",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Sapad",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Tagoloan",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Tangcal",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Tubod",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Pantar",
+    "province": "Lanao Del Norte",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Aloran",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Baliangao",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Bonifacio",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Calamba",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Clarin",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Concepcion",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Jimenez",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Lopez Jaena",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "City of Oroquieta",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "City of Ozamiz",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Panaon",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Plaridel",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Sapang Dalaga",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Sinacaban",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "City of Tangub",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Tudela",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Don Victoriano Chiongbian",
+    "province": "Misamis Occidental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Alubijid",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Balingasag",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Balingoan",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Binuangan",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "City of Cagayan De Oro",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Claveria",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "City of El Salvador",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "City of Gingoog",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Gitagum",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Initao",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Jasaan",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Kinoguitan",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Lagonglong",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Laguindingan",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Libertad",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Lugait",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Magsaysay",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Manticao",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Medina",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Naawan",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Opol",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Salay",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Sugbongcogon",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Tagoloan",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Talisayan",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Villanueva",
+    "province": "Misamis Oriental",
+    "region": "Region X - Northern Mindanao"
+  },
+  {
+    "city": "Asuncion",
+    "province": "Davao Del Norte",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Carmen",
+    "province": "Davao Del Norte",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Kapalong",
+    "province": "Davao Del Norte",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "New Corella",
+    "province": "Davao Del Norte",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "City of Panabo",
+    "province": "Davao Del Norte",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Island Garden City of Samal",
+    "province": "Davao Del Norte",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Santo Tomas",
+    "province": "Davao Del Norte",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "City of Tagum",
+    "province": "Davao Del Norte",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Talaingod",
+    "province": "Davao Del Norte",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Braulio E. Dujali",
+    "province": "Davao Del Norte",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "San Isidro",
+    "province": "Davao Del Norte",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Bansalan",
+    "province": "Davao Del Sur",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "City of Davao",
+    "province": "Davao Del Sur",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "City of Digos",
+    "province": "Davao Del Sur",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Hagonoy",
+    "province": "Davao Del Sur",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Kiblawan",
+    "province": "Davao Del Sur",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Magsaysay",
+    "province": "Davao Del Sur",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Malalag",
+    "province": "Davao Del Sur",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Matanao",
+    "province": "Davao Del Sur",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Padada",
+    "province": "Davao Del Sur",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Santa Cruz",
+    "province": "Davao Del Sur",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Sulop",
+    "province": "Davao Del Sur",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Baganga",
+    "province": "Davao Oriental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Banaybanay",
+    "province": "Davao Oriental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Boston",
+    "province": "Davao Oriental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Caraga",
+    "province": "Davao Oriental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Cateel",
+    "province": "Davao Oriental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Governor Generoso",
+    "province": "Davao Oriental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Lupon",
+    "province": "Davao Oriental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Manay",
+    "province": "Davao Oriental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "City of Mati",
+    "province": "Davao Oriental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "San Isidro",
+    "province": "Davao Oriental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Tarragona",
+    "province": "Davao Oriental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Compostela",
+    "province": "Davao De Oro",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Laak",
+    "province": "Davao De Oro",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Mabini",
+    "province": "Davao De Oro",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Maco",
+    "province": "Davao De Oro",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Maragusan",
+    "province": "Davao De Oro",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Mawab",
+    "province": "Davao De Oro",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Monkayo",
+    "province": "Davao De Oro",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Montevista",
+    "province": "Davao De Oro",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Nabunturan",
+    "province": "Davao De Oro",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "New Bataan",
+    "province": "Davao De Oro",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Pantukan",
+    "province": "Davao De Oro",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Don Marcelino",
+    "province": "Davao Occidental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Jose Abad Santos",
+    "province": "Davao Occidental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Malita",
+    "province": "Davao Occidental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Santa Maria",
+    "province": "Davao Occidental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Sarangani",
+    "province": "Davao Occidental",
+    "region": "Region XI - Davao Region"
+  },
+  {
+    "city": "Alamada",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Carmen",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Kabacan",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "City of Kidapawan",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Libungan",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Magpet",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Makilala",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Matalam",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Midsayap",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "M'lang",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Pigkawayan",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Pikit",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "President Roxas",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Tulunan",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Antipas",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Banisilan",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Aleosan",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Arakan",
+    "province": "Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Banga",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "City of General Santos",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "City of Koronadal",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Norala",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Polomolok",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Surallah",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Tampakan",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Tantangan",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "T'boli",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Tupi",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Santo Niño",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Lake Sebu",
+    "province": "South Cotabato",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Bagumbayan",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Columbio",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Esperanza",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Isulan",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Kalamansig",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Lebak",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Lutayan",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Lambayong",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Palimbang",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "President Quirino",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "City of Tacurong",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Sen. Ninoy Aquino",
+    "province": "Sultan Kudarat",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Alabel",
+    "province": "Sarangani",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Glan",
+    "province": "Sarangani",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Kiamba",
+    "province": "Sarangani",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Maasim",
+    "province": "Sarangani",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Maitum",
+    "province": "Sarangani",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Malapatan",
+    "province": "Sarangani",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Malungon",
+    "province": "Sarangani",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Buenavista",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "City of Butuan",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "City of Cabadbaran",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Carmen",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Jabonga",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Kitcharao",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Las Nieves",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Magallanes",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Nasipit",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Santiago",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Tubay",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Remedios T. Romualdez",
+    "province": "Agusan Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "City of Bayugan",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Bunawan",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Esperanza",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "La Paz",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Loreto",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Prosperidad",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Rosario",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "San Francisco",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "San Luis",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Santa Josefa",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Talacogon",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Trento",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Veruela",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Sibagat",
+    "province": "Agusan Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Alegria",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Bacuag",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Burgos",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Claver",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Dapa",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Del Carmen",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "General Luna",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Gigaquit",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Mainit",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Malimono",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Pilar",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Placer",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "San Benito",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "San Francisco",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "San Isidro",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Santa Monica",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Sison",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Socorro",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "City of Surigao",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Tagana-An",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Tubod",
+    "province": "Surigao Del Norte",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Barobo",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Bayabas",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "City of Bislig",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Cagwait",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Cantilan",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Carmen",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Carrascal",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Cortes",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Hinatuan",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Lanuza",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Lianga",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Lingig",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Madrid",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Marihatag",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "San Agustin",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "San Miguel",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Tagbina",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Tago",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "City of Tandag",
+    "province": "Surigao Del Sur",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Basilisa",
+    "province": "Dinagat Island",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Cagdianao",
+    "province": "Dinagat Island",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Dinagat",
+    "province": "Dinagat Island",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Libjo",
+    "province": "Dinagat Island",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Loreto",
+    "province": "Dinagat Island",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "San Jose",
+    "province": "Dinagat Island",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "Tubajon",
+    "province": "Dinagat Island",
+    "region": "Region XIII - CARAGA"
+  },
+  {
+    "city": "City of Lamitan",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Lantawan",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Maluso",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Sumisip",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Tipo-Tipo",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Tuburan",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Akbar",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Al-Barka",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Hadji Mohammad Ajul",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Ungkaya Pukan",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Hadji Muhtamad",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Tabuan-Lasa",
+    "province": "Basilan",
+    "region": "BARMM"
+  },
+  {
+    "city": "Bacolod-Kalawi",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Balabagan",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Balindong",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Bayang",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Binidayan",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Bubong",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Butig",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Ganassi",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Kapai",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Lumba-Bayabao",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Lumbatan",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Madalum",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Madamba",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Malabang",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Marantao",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "City of Marawi",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Masiu",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Mulondo",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Pagayawan",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Piagapo",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Poona Bayabao",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Pualas",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Ditsaan-Ramain",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Saguiaran",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Tamparan",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Taraka",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Tubaran",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Tugaya",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Wao",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Marogong",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Calanogas",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Buadiposo-Buntong",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Maguing",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Picong",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Lumbayanague",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Amai Manabilang",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Tagoloan Ii",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Kapatagan",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Sultan Dumalondong",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Lumbaca-Unayan",
+    "province": "Lanao Del Sur",
+    "region": "BARMM"
+  },
+  {
+    "city": "Ampatuan",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Buldon",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Buluan",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "City of Cotabato",
+    "province": "Maguindanao Del Norte",
+    "region": "Region XII - SOCCSKSARGEN"
+  },
+  {
+    "city": "Datu Paglas",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Datu Piang",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Datu Odin Sinsuat",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Shariff Aguak",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Matanog",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Pagalungan",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Parang",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Sultan Kudarat",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Sultan Sa Barongis",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Kabuntalan",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Upi",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Talayan",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "South Upi",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Barira",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Gen. s.k. Pendatun",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Mamasapano",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Talitay",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Pagagawan",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Paglat",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Sultan Mastura",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Guindulungan",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Datu Saudi-Ampatuan",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Datu Unsay",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Datu Abdullah Sangki",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Rajah Buayan",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Datu Blah T. Sinsuat",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Datu Anggal Midtimbang",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Mangudadatu",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Pandag",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Northern Kabuntalan",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Datu Hoffer Ampatuan",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Datu Salibo",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Shariff Saydona Mustapha",
+    "province": "Maguindanao",
+    "region": "BARMM"
+  },
+  {
+    "city": "Indanan",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Jolo",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Kalingalan Caluang",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Luuk",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Maimbung",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Hadji Panglima Tahil",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Old Panamao",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Pangutaran",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Parang",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Pata",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Patikul",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Siasi",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Talipao",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Tapul",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Tongkil",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Panglima Estino",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Lugus",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Pandami",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Omar",
+    "province": "Sulu",
+    "region": "BARMM"
+  },
+  {
+    "city": "Panglima Sugala",
+    "province": "Tawi-Tawi",
+    "region": "BARMM"
+  },
+  {
+    "city": "Bongao",
+    "province": "Tawi-Tawi",
+    "region": "BARMM"
+  },
+  {
+    "city": "Mapun",
+    "province": "Tawi-Tawi",
+    "region": "BARMM"
+  },
+  {
+    "city": "Simunul",
+    "province": "Tawi-Tawi",
+    "region": "BARMM"
+  },
+  {
+    "city": "Sitangkai",
+    "province": "Tawi-Tawi",
+    "region": "BARMM"
+  },
+  {
+    "city": "South Ubian",
+    "province": "Tawi-Tawi",
+    "region": "BARMM"
+  },
+  {
+    "city": "Tandubas",
+    "province": "Tawi-Tawi",
+    "region": "BARMM"
+  },
+  {
+    "city": "Turtle Islands",
+    "province": "Tawi-Tawi",
+    "region": "BARMM"
+  },
+  {
+    "city": "Languyan",
+    "province": "Tawi-Tawi",
+    "region": "BARMM"
+  },
+  {
+    "city": "Sapa-Sapa",
+    "province": "Tawi-Tawi",
+    "region": "BARMM"
+  },
+  {
+    "city": "Sibutu",
+    "province": "Tawi-Tawi",
+    "region": "BARMM"
+  }
+]

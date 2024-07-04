@@ -7,6 +7,7 @@ class NewsletterService
     @user_type = params[:user_type]
     @to_subscriber = params[:email]
   end
+  
 
   def send_newsletter
     if @to_subscriber.present?

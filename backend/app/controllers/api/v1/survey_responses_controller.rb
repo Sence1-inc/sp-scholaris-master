@@ -29,8 +29,8 @@ module Api
           return
         end
 
-        if !params[:email].match?(URI::MailTo::EMAIL_REGEXP)
-          render json: { error: 'Email is not in the proper format' }, status: :unprocessable_entity
+        if params[:classification].blank?
+          render json: { error: 'Classification cannot be empty' }, status: :unprocessable_entity
           return
         end
 
@@ -39,11 +39,9 @@ module Api
           return
         end
 
-        params[:responses].each do |response|
-          if response[:survey_question_id].blank? || response[:answer].blank?
-            render json: { error: 'Each question must have an answer' }, status: :unprocessable_entity
-            return
-          end
+        if !params[:email].match?(URI::MailTo::EMAIL_REGEXP)
+          render json: { error: 'Email is not in the proper format' }, status: :unprocessable_entity
+          return
         end
 
         if SurveyResponse.exists?(email: params[:email])
@@ -96,7 +94,7 @@ module Api
     
         # Only allow a list of trusted parameters through.
         def survey_params
-          params.require(:survey_response).permit(:email, :user_id, responses: [:survey_question_id, :answer])
+          params.require(:survey_response).permit(:email, :classification, :user_id, responses: [:survey_question_id, :answer])
         end
     end
   end

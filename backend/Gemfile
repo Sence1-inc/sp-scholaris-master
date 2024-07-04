@@ -70,6 +70,14 @@ gem 'kaminari'
 
 gem 'rack-cors', '~> 1.1', require: 'rack/cors'
 
+gem "roo", "~> 2.9.0"
+
+gem 'roo-xls'
+
+gem 'rest-client'
+
+gem 'jwt'
+
 gem "dockerfile-rails", ">= 1.6", :group => :development
 
 group :development, :test do

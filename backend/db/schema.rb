@@ -10,9 +10,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_27_081012) do
+  create_table "benefit_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "category_name"
+    t.timestamp "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "benefits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "benefit_name"
+    t.text "benefit_name"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
@@ -69,6 +76,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
     t.timestamp "sent_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_newsletter_logs_on_deleted_at"
     t.index ["email"], name: "index_newsletter_logs_on_email"
     t.index ["newsletter_id"], name: "index_newsletter_logs_on_newsletter_id"
   end
@@ -79,6 +88,18 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
     t.text "user_type", null: false
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
+    t.datetime "deleted_at"
+    t.index ["deleted_at"], name: "index_newsletters_on_deleted_at"
+  end
+
+  create_table "ph_addresses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "barangay"
+    t.string "city"
+    t.string "province"
+    t.string "region"
+    t.timestamp "deleted_at"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "provinces", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -109,6 +130,16 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
     t.timestamp "deleted_at"
   end
 
+  create_table "scholarship_benefit_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "scholarship_id", null: false
+    t.bigint "benefit_category_id", null: false
+    t.timestamp "deleted_at"
+    t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
+    t.index ["benefit_category_id"], name: "fk_scholarship_benefit_categories_benefit_categories"
+    t.index ["scholarship_id"], name: "fk_scholarship_benefit_categories_scholarships"
+  end
+
   create_table "scholarship_benefits", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "scholarship_id"
     t.bigint "benefit_id"
@@ -133,15 +164,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
     t.bigint "scholarship_provider_id", null: false
     t.string "provider_type"
     t.text "description"
-    t.integer "region_id"
-    t.integer "province_id"
-    t.integer "city_id"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
-    t.index ["city_id"], name: "index_scholarship_provider_profiles_on_city_id"
-    t.index ["province_id"], name: "index_scholarship_provider_profiles_on_province_id"
-    t.index ["region_id"], name: "index_scholarship_provider_profiles_on_region_id"
+    t.bigint "ph_address_id"
+    t.index ["ph_address_id"], name: "index_scholarship_provider_profiles_on_ph_address_id"
     t.index ["scholarship_provider_id"], name: "index_scholarship_provider_profiles_on_scholarship_provider_id"
   end
 
@@ -151,6 +178,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
+    t.string "provider_link"
     t.index ["user_id"], name: "index_scholarship_providers_on_user_id"
   end
 
@@ -184,7 +212,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
-    t.string "description"
+    t.text "description"
     t.string "status"
     t.index ["eligibility_id"], name: "index_scholarships_on_eligibility_id"
     t.index ["requirement_id"], name: "index_scholarships_on_requirement_id"
@@ -232,7 +260,6 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
     t.timestamp "deleted_at"
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
-    t.index ["email"], name: "index_subscribers_on_email", unique: true
   end
 
   create_table "survey_questions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -241,6 +268,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "deleted_at"
+    t.string "input_type"
+    t.string "choices"
+    t.boolean "is_required"
     t.index ["deleted_at"], name: "index_survey_questions_on_deleted_at"
   end
 
@@ -251,6 +281,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }, null: false
     t.datetime "deleted_at"
+    t.string "classification"
+    t.integer "rating"
     t.index ["deleted_at"], name: "index_survey_responses_on_deleted_at"
     t.index ["email"], name: "index_survey_responses_on_email", unique: true
     t.index ["user_id"], name: "fk_survey_responses_users"
@@ -278,6 +310,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
+    t.string "uuid"
+    t.string "verification_token"
+    t.boolean "is_verified"
+    t.datetime "verification_expires_at"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"
   end
@@ -286,9 +322,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_03_13_094548) do
   add_foreign_key "course_scholarship_schools", "scholarships", name: "fk_course_scholarship_schools_scholarships"
   add_foreign_key "course_scholarship_schools", "schools", name: "fk_course_scholarship_schools_schools"
   add_foreign_key "newsletter_logs", "newsletters"
+  add_foreign_key "scholarship_benefit_categories", "benefit_categories", name: "fk_scholarship_benefit_categories_benefit_categories"
+  add_foreign_key "scholarship_benefit_categories", "scholarships", name: "fk_scholarship_benefit_categories_scholarships"
   add_foreign_key "scholarship_benefits", "benefits", name: "fk_scholarship_benefits_benefits"
   add_foreign_key "scholarship_benefits", "benefits", name: "fk_scholarships_benefits"
   add_foreign_key "scholarship_benefits", "scholarships", name: "fk_scholarship_benefits_scholarships"
+  add_foreign_key "scholarship_provider_profiles", "ph_addresses"
   add_foreign_key "scholarship_provider_profiles", "scholarship_providers", name: "fk_scholarship_provider_profiles_scholarship_providers"
   add_foreign_key "scholarship_providers", "users", name: "fk_scholarship_providers_users"
   add_foreign_key "scholarships", "eligibilities", name: "fk_scholarships_eligibilities"

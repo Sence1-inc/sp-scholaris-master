@@ -15,6 +15,7 @@ import {
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Logo from '../../public/images/logo.png'
+import { useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
 interface NavbarProps {
@@ -26,6 +27,10 @@ const drawerWidth = '90vw'
 const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const location = useLocation()
   const pathname = location.pathname
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const isAuthenticated = useAppSelector(
+    (state) => state.persistedReducer.isAuthenticated
+  )
 
   const renderItems = () => {
     if (pathname.includes('/student')) {
@@ -36,33 +41,49 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             flexDirection: { xs: 'column', md: 'row' },
           }}
         >
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Link}
-              to="/student"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
-            >
-              Newsletter
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Link}
-              to="/student/survey"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
-            >
-              Survey
-            </Typography>
-          </ListItem>
+          {location.pathname !== '/student/survey' && (
+            <>
+              <ListItem>
+                <Typography
+                  variant="body1"
+                  component={Button}
+                  onClick={() => {
+                    const fabButton =
+                      document.getElementById('fab-button-student')
+
+                    if (fabButton) {
+                      fabButton.click()
+                    }
+                  }}
+                  sx={{
+                    color: 'common.white',
+                    textDecoration: 'none',
+                    textTransform: 'capitalize',
+                  }}
+                >
+                  Newsletter
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography
+                  variant="body1"
+                  component={Link}
+                  to="/student/survey"
+                  sx={{ color: 'common.white', textDecoration: 'none' }}
+                >
+                  Survey
+                </Typography>
+              </ListItem>
+            </>
+          )}
+
           <ListItem disablePadding>
             <Button
               sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
               component={Link}
               to="/scholarships"
             >
-              Scholarship Search
+              Search Scholarships
             </Button>
           </ListItem>
         </List>
@@ -70,23 +91,67 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
     }
 
     if (pathname.includes('/provider')) {
-      return (
+      return !isAuthenticated ? (
         <List
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
           }}
         >
-          <ListItem>
-            <Typography
-              variant="body1"
+          {location.pathname !== '/provider/survey' && (
+            <>
+              <ListItem>
+                <Typography
+                  variant="body1"
+                  component={Button}
+                  onClick={() => {
+                    const fabButton = document.getElementById(
+                      'fab-button-provider'
+                    )
+
+                    if (fabButton) {
+                      fabButton.click()
+                    }
+                  }}
+                  sx={{
+                    color: 'common.white',
+                    textDecoration: 'none',
+                    textTransform: 'capitalize',
+                  }}
+                >
+                  Newsletter
+                </Typography>
+              </ListItem>
+              <ListItem>
+                <Typography
+                  variant="body1"
+                  component={Link}
+                  to="/provider/survey"
+                  sx={{ color: 'common.white', textDecoration: 'none' }}
+                >
+                  Survey
+                </Typography>
+              </ListItem>
+            </>
+          )}
+
+          <ListItem disablePadding sx={{ width: 'auto' }}>
+            <Button
+              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
               component={Link}
-              to="/provider"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
+              to="/scholarships"
             >
-              Newsletter
-            </Typography>
+              Search Scholarships
+            </Button>
           </ListItem>
+        </List>
+      ) : (
+        <List
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+          }}
+        >
           <ListItem>
             <Typography
               variant="body1"
@@ -101,7 +166,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             <Typography
               variant="body1"
               component={Link}
-              to="/dashboard"
+              to="/provider/dashboard"
               sx={{ color: 'common.white', textDecoration: 'none' }}
             >
               Dashboard
@@ -109,18 +174,22 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           </ListItem>
           <ListItem disablePadding sx={{ width: 'auto' }}>
             <Button
-              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
+              sx={{
+                ...ctaButtonStyle,
+                whiteSpace: 'nowrap',
+                backgroundColor: 'primary.light',
+              }}
               component={Link}
-              to="/scholarships"
+              to={`/provider/account/${user?.scholarship_provider?.id}/view-profile`}
             >
-              Scholarship Search
+              Account
             </Button>
           </ListItem>
         </List>
       )
     }
 
-    return (
+    return !isAuthenticated ? (
       <List
         sx={{
           display: 'flex',
@@ -134,9 +203,40 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               component={Link}
               to="/scholarships"
             >
-              Scholarship Search
+              Search Scholarships
             </Button>
           </ListItemButton>
+        </ListItem>
+      </List>
+    ) : (
+      <List
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+        }}
+      >
+        <ListItem>
+          <Typography
+            variant="body1"
+            component={Link}
+            to="/provider/dashboard"
+            sx={{ color: 'common.white', textDecoration: 'none' }}
+          >
+            Dashboard
+          </Typography>
+        </ListItem>
+        <ListItem disablePadding sx={{ width: 'auto' }}>
+          <Button
+            sx={{
+              ...ctaButtonStyle,
+              whiteSpace: 'nowrap',
+              backgroundColor: 'primary.light',
+            }}
+            component={Link}
+            to={`/provider/account/${user?.scholarship_provider?.id}/view-profile`}
+          >
+            Account
+          </Button>
         </ListItem>
       </List>
     )

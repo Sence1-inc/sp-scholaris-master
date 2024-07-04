@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material'
 import React from 'react'
-import { useLocation } from 'react-router-dom'
-import PrimaryButton from '../Button/PrimaryButton'
+import { useLocation, useNavigate } from 'react-router-dom'
+import CTAButton from '../CustomButton/CTAButton'
 
 import './WelcomeSection.css'
 
@@ -15,6 +15,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
   third_level_header,
 }) => {
   const location = useLocation()
+  const navigate = useNavigate()
 
   return (
     <section className="section__welcome">
@@ -27,18 +28,38 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
           <Typography variant="h4">{third_level_header}</Typography>
         )}
         <div className="section__buttons">
-          <PrimaryButton
-            url={
+          <CTAButton
+            handleClick={() =>
               location.pathname === '/student'
-                ? '/student#search'
-                : '/provider#features'
+                ? navigate('/scholarships')
+                : navigate('/sign-up')
             }
             label={
               location.pathname === '/student'
-                ? 'Seach Scholarships'
+                ? 'Search Scholarships'
                 : 'Get Started'
             }
+            loading={false}
+            styles={{
+              fontSize: '1.25rem',
+              fontWeight: 700,
+              width: 'auto',
+              margin: '0 20px',
+            }}
           />
+          {location.pathname === '/provider' && (
+            <CTAButton
+              handleClick={() => navigate('/sign-in')}
+              label="Have an account?"
+              loading={false}
+              styles={{
+                fontSize: '1.25rem',
+                fontWeight: 700,
+                width: 'auto',
+                margin: '0 20px',
+              }}
+            />
+          )}
         </div>
       </div>
     </section>

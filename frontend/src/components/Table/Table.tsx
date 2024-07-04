@@ -1,14 +1,16 @@
+import OpenInNewIcon from '@mui/icons-material/OpenInNew'
 import { Typography } from '@mui/material'
 import { format } from 'date-fns'
 import React from 'react'
 import { Link } from 'react-router-dom'
-import viewSvg from '../../public/images/view.svg'
 import { Scholarship } from '../../redux/types'
 import './Table.css'
 
 interface TableProps {
   hasPagination: boolean
   scholarships: Scholarship[]
+  total_count?: number
+  total_pages?: number
   page?: number
   handlePrevious?: () => void
   handleNext?: () => void
@@ -18,6 +20,8 @@ export const Table: React.FC<TableProps> = ({
   hasPagination,
   scholarships,
   page,
+  total_count,
+  total_pages,
   handlePrevious,
   handleNext,
 }) => {
@@ -31,7 +35,7 @@ export const Table: React.FC<TableProps> = ({
           <Typography variant="body1">Provider</Typography>
           <Typography variant="body1">Actions</Typography>
         </div>
-        {scholarships.length > 0 ? (
+        {(total_count as number) > 0 ? (
           scholarships.map((scholarship: Scholarship, index: number) => (
             <ul key={index}>
               <li className="search__results-content">
@@ -47,20 +51,28 @@ export const Table: React.FC<TableProps> = ({
                 <p className="search__results-item">
                   {scholarship.scholarship_provider.provider_name}
                 </p>
-                <Link
+                <Typography
+                  color="secondary"
+                  component={Link}
                   to={`/scholarships/${scholarship.id}`}
-                  className="seach__results-link"
+                  sx={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '8px',
+                    width: '150px',
+                  }}
                 >
                   View
-                  <img src={viewSvg} alt="View icon" />
-                </Link>
+                  <OpenInNewIcon fontSize="small" />
+                </Typography>
               </li>
             </ul>
           ))
         ) : (
           <ul>
             <li className="search__results-content">
-              <Typography variant="h5">No scholarship found.</Typography>
+              <Typography variant="h5">No matching results</Typography>
             </li>
           </ul>
         )}
@@ -68,7 +80,7 @@ export const Table: React.FC<TableProps> = ({
       {hasPagination && (
         <div className="search__results-pagination">
           <Typography variant="h6" sx={{ color: 'secondary.main' }}>
-            Results: <span>{scholarships.length}</span>
+            Total Results: <span>{total_count as number}</span>
           </Typography>
           <Typography
             variant="h6"
@@ -81,15 +93,18 @@ export const Table: React.FC<TableProps> = ({
             Previous
           </Typography>
           <Typography variant="h6" sx={{ color: 'secondary.main' }}>
-            Page: <span>{page}</span>
+            Page:{' '}
+            <span>
+              {page}/{total_pages}
+            </span>
           </Typography>
           <Typography
             variant="h6"
             sx={{
               color: 'secondary.main',
-              cursor: scholarships.length < 10 ? 'not-allowed' : 'pointer',
+              cursor: (total_count as number) < 10 ? 'not-allowed' : 'pointer',
             }}
-            {...(scholarships.length >= 10 && { onClick: handleNext })}
+            {...((total_count as number) >= 10 && { onClick: handleNext })}
           >
             Next
           </Typography>

@@ -14,7 +14,7 @@ const theme: Theme = createTheme({
       dark: '#e86231',
     },
     background: {
-      paper: '#a8dadc',
+      paper: '#ffffff', // #a8dadc
       default: '#ffffff',
     },
   },
@@ -116,12 +116,36 @@ const theme: Theme = createTheme({
         },
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          borderRadius: '16px',
+          padding: '20px',
+          width: '100%',
+          '& fieldset': { border: 'none' },
+          border: '1px solid var(--primary-color)',
+          boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
+          backgroundColor: 'white',
+        },
+      },
+    },
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
           '& .MuiOutlinedInput-input': {
             padding: '0',
           },
+        },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Roboto',
+          fontSize: '24px',
+          fontWeight: 'bold',
+          marginBottom: '1px',
+          color: '#002147',
         },
       },
     },

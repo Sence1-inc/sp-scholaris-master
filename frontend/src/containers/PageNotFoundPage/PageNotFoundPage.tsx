@@ -1,17 +1,19 @@
-import { Box, Typography } from '@mui/material'
-import PrimaryButton from '../../components/Button/PrimaryButton'
+import { Box, Button, Typography } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 import image from '../../public/images/404.png'
+import { ctaButtonStyle } from '../../styles/globalStyles'
 
 import './PageNotFoundPage.css'
 
 const PageNotFoundPage = () => {
+  const navigate = useNavigate()
   return (
     <Box
       sx={{
-        height: '80vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        margin: '40px 0',
       }}
     >
       <Box
@@ -31,7 +33,14 @@ const PageNotFoundPage = () => {
         <Typography variant="h3">
           We are sorry, the page you requested was not found.
         </Typography>
-        <PrimaryButton label="Go to Home" url="/"></PrimaryButton>
+        <Box sx={{ display: 'flex', gap: '40px', margin: '40px 0' }}>
+          <Button sx={{ ...ctaButtonStyle }} onClick={() => navigate(-2)}>
+            Go Back
+          </Button>
+          <Button sx={{ ...ctaButtonStyle }} onClick={() => navigate('/')}>
+            Go to Home
+          </Button>
+        </Box>
       </Box>
     </Box>
   )
