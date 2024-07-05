@@ -106,9 +106,13 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       message: 'Please provide your last name.',
     },
     {
-      condition: !userCredentials.birthdate,
+      condition:
+        !userCredentials.birthdate ||
+        isNaN(new Date(userCredentials.birthdate).getTime()) ||
+        new Date(userCredentials.birthdate) > new Date() ||
+        new Date(userCredentials.birthdate) < new Date('1920-01-01'),
       field: 'birthdate',
-      message: 'Please provide your birthday.',
+      message: 'Please provide your valid birthday.',
     },
   ]
 
