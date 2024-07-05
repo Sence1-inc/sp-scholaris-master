@@ -75,7 +75,7 @@ module Api
             render json: { msg: 'User registered and saved successfully, but email sending failed' }, status: :created
           end
         else
-          render json: { error: 'Failed to save user details' }, status: :unprocessable_entity
+          render json: { error: 'Failed to save user details', details: @user.errors.full_messages }, status: :unprocessable_entity
         end
       elsif registration_response[:status] == 409
         render json: { error: "Please try logging in or reset your password" }, status: registration_response[:status]

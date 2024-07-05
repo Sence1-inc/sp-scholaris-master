@@ -185,19 +185,13 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         setSuccessMessage('')
         if (error) {
           setButtonLoading(false)
-          let errorMsg = 'Registration failed. Please try again.'
-          if (
-            error.response &&
-            error.response.data &&
-            error.response.data.error
-          ) {
-            errorMsg = error.response.data.error
-          } else if (error.message) {
-            errorMsg = error.message
-          }
           setIsSnackbarOpen(true)
-          setErrorMessage(errorMsg)
-          setErrors({
+          setErrorMessage(
+            error.response.data.error ??
+              'Registration failed. Please try again.'
+          )
+
+          const errors = {
             email_address: '',
             password: '',
             password2: '',
@@ -205,7 +199,36 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
             last_name: '',
             middle_name: '',
             birthdate: '',
-          })
+          }
+
+          if (
+            error.response &&
+            error.response.data &&
+            Array.isArray(error.response.data.details)
+          ) {
+            error.response.data.details.forEach((errorMessage: string) => {
+              if (errorMessage.includes('Email')) {
+                errors.email_address = errorMessage
+              } else if (
+                errorMessage.includes('Password') &&
+                !errorMessage.includes('match')
+              ) {
+                errors.password = errorMessage
+              } else if (errorMessage.includes('match')) {
+                errors.password2 = errorMessage
+              } else if (errorMessage.includes('First name')) {
+                errors.first_name = errorMessage
+              } else if (errorMessage.includes('Last name')) {
+                errors.last_name = errorMessage
+              } else if (errorMessage.includes('Middle name')) {
+                errors.middle_name = errorMessage
+              } else if (errorMessage.includes('Birthdate')) {
+                errors.birthdate = errorMessage
+              }
+            })
+          }
+
+          setErrors(errors)
         }
       }
     }
