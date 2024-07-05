@@ -167,6 +167,7 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
                   <TextField sx={{ padding: '0' }} {...params} fullWidth />
                 )}
                 fullWidth
+                ListboxProps={{ style: { maxHeight: 150 } }}
               />
             </FormControl>
           </Box>
