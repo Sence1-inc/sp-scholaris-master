@@ -289,7 +289,10 @@ const Survey: React.FC<SurveyProps> = ({
                     return (
                       <Box
                         key={`${question.id}-${index}`}
-                        sx={{ display: 'flex' }}
+                        sx={{
+                          display: 'flex',
+                          width: { sm: '90%', xs: '100%' },
+                        }}
                       >
                         <FormControlLabel
                           key={index}
@@ -315,7 +318,31 @@ const Survey: React.FC<SurveyProps> = ({
                         />
                         {choice.trim() === 'others' && (
                           <CustomTextfield
-                            styles={{ padding: '6px', borderRadius: '10px' }}
+                            placeholder="Please provide details."
+                            styles={{
+                              padding: '6px',
+                              borderRadius: '10px',
+                            }}
+                            handleChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                              const data = checkedChoices[question.id]
+
+                              handleChange(
+                                [data, e.target.value.trim()].toString(),
+                                'responses',
+                                question.id
+                              )
+                            }}
+                          />
+                        )}
+                        {choice.trim() === 'advertisements' && (
+                          <CustomTextfield
+                            placeholder="Kindly specify the type of advertisement."
+                            styles={{
+                              padding: '6px',
+                              borderRadius: '10px',
+                            }}
                             handleChange={(
                               e: React.ChangeEvent<HTMLInputElement>
                             ) => {
