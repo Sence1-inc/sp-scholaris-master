@@ -110,6 +110,11 @@ const AccountProfile: React.FC<AccountProfileProps> = ({
         ) : (
           <Typography sx={profileTheme.text.textRegular}>{link}</Typography>
         )}
+        <Typography variant="subtitle1">
+          {link
+            ? 'This is the link where students can learn more about your organization.'
+            : 'Please provide a link where students can learn more about your organization.'}
+        </Typography>
       </FormGroup>
       <Box
         sx={{

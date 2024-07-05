@@ -672,16 +672,24 @@ const ScholarshipEditorPage = () => {
             </Select>
             <HelperText error={errors.scholarship_type} />
           </Box>
-          <CustomTextfield
-            label="Application link"
-            multiline={true}
-            error={errors.application_link}
-            value={applicationLink}
-            handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              setApplicationLink(e.target.value)
-            }
-            placeholder="e.g. www.excellenceinsciencescholarship.org"
-          />
+          <Box sx={{ width: '100%' }}>
+            <CustomTextfield
+              label="Application link"
+              multiline={true}
+              error={errors.application_link}
+              value={applicationLink}
+              handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setApplicationLink(e.target.value)
+              }
+              placeholder="e.g. www.excellenceinsciencescholarship.org"
+            />
+            <Typography variant="subtitle1">
+              {applicationLink
+                ? 'This is the link for students to apply.'
+                : 'Please provide the link where students can apply for your scholarship.'}
+            </Typography>
+          </Box>
+
           <Box
             sx={{
               width: '100%',
