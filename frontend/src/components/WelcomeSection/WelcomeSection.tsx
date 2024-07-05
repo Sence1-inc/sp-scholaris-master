@@ -1,6 +1,7 @@
 import { Typography } from '@mui/material'
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { useAppSelector } from '../../redux/store'
 import CTAButton from '../CustomButton/CTAButton'
 
 import './WelcomeSection.css'
@@ -16,6 +17,9 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
 }) => {
   const location = useLocation()
   const navigate = useNavigate()
+  const isAuthenticated = useAppSelector(
+    (state) => state.persistedReducer.isAuthenticated
+  )
 
   return (
     <section className="section__welcome">
@@ -47,7 +51,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
               margin: '0 20px',
             }}
           />
-          {location.pathname === '/provider' && (
+          {location.pathname === '/provider' && !isAuthenticated && (
             <CTAButton
               handleClick={() => navigate('/sign-in')}
               label="Have an account?"

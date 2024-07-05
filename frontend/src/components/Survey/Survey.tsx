@@ -43,7 +43,7 @@ const Survey: React.FC<SurveyProps> = ({
 
   const classifications =
     pathname === '/student/survey'
-      ? ['parent', 'guardian', 'teacher', 'student', 'school personnel']
+      ? ['student', 'parent', 'guardian', 'teacher', 'school personnel']
       : [
           'school',
           'company',
@@ -196,9 +196,15 @@ const Survey: React.FC<SurveyProps> = ({
                 alignItems: 'start',
               }}
             >
-              <Typography variant="subtitle1" color="primary">
-                1 = Very Easy, 2 = Easy, 3 = Medium, 4 = Difficult, 5 = Very
-                Difficult
+              <Typography
+                variant="subtitle1"
+                color="primary"
+                sx={{ textAlign: 'start' }}
+              >
+                1 = Very Unlikely / Very Dissatisfied / Very Poor <br />2 =
+                Unlikely / Dissatisfied / Poor <br />3 = Neutral / Neither
+                Satisfied nor Dissatisfied / Fair <br />4 = Likely / Satisfied /
+                Good <br />5 = Very Likely / Very Satisfied / Excellent
               </Typography>
               <Box
                 sx={{
