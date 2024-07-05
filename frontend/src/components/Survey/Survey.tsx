@@ -201,10 +201,11 @@ const Survey: React.FC<SurveyProps> = ({
                 color="primary"
                 sx={{ textAlign: 'start' }}
               >
-                1 = Very Unlikely / Very Dissatisfied / Very Poor <br />2 =
-                Unlikely / Dissatisfied / Poor <br />3 = Neutral / Neither
-                Satisfied nor Dissatisfied / Fair <br />4 = Likely / Satisfied /
-                Good <br />5 = Very Likely / Very Satisfied / Excellent
+                Please consider the following scale when rating: <br />1 = Very
+                Unlikely / Very Dissatisfied / Very Poor <br />2 = Unlikely /
+                Dissatisfied / Poor <br />3 = Neutral / Neither Satisfied nor
+                Dissatisfied / Fair <br />4 = Likely / Satisfied / Good <br />5
+                = Very Likely / Very Satisfied / Excellent
               </Typography>
               <Box
                 sx={{
