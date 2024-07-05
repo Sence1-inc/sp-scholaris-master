@@ -193,13 +193,15 @@ export const ScholarshipDetailsPage: React.FC<
                         .scholarship_provider_profile?.description
                     }
                   </p>
-                  <a
-                    target="_blank"
-                    style={{ color: '#002147', marginTop: '20px' }}
-                    href={`https://${scholarshipData.scholarship_provider.provider_link}`}
-                  >
-                    Link to Provider Page
-                  </a>
+                  {scholarshipData.scholarship_provider.provider_link && (
+                    <a
+                      target="_blank"
+                      style={{ color: '#002147', marginTop: '20px' }}
+                      href={`https://${scholarshipData.scholarship_provider.provider_link}`}
+                    >
+                      Link to Provider Page
+                    </a>
+                  )}
                 </div>
               </div>
             </div>
