@@ -33,7 +33,7 @@ const Filter: React.FC<FilterProps> = () => {
   const [providers, setProviders] = useState<Option[] | []>([])
   const [selectedParams, setSelectedParams] = useState<Params>({})
   const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null)
-  const [selectedDueDate, setSelectedDueDate] = useState<Dayjs | null>(null)
+  // const [selectedDueDate, setSelectedDueDate] = useState<Dayjs | null>(null)
 
   const dropdownRef = useRef<HTMLDivElement | null>(null)
 
@@ -125,7 +125,7 @@ const Filter: React.FC<FilterProps> = () => {
       >
         Application Start Date
       </FilterOption>
-      <FilterOption
+      {/* <FilterOption
         selectedDueDate={selectedDueDate}
         setSelectedDueDate={setSelectedDueDate}
         setSelectedParams={setSelectedParams}
@@ -134,7 +134,7 @@ const Filter: React.FC<FilterProps> = () => {
         onToggleVisibility={() => handleDropdownToggle('dueDate')}
       >
         Application Due Date
-      </FilterOption>
+      </FilterOption> */}
       <FilterOption
         handleOptionClick={handleOptionClick}
         options={benefits}

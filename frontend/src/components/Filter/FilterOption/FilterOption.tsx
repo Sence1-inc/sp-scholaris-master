@@ -103,13 +103,16 @@ const FilterOption: React.FC<FilterOptionProps> = ({
         >
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <StaticDatePicker
+              views={['month', 'year']}
               defaultValue={dayjs(selectedStartDate)}
               onChange={(newValue) => {
                 setSelectedStartDate(newValue as Dayjs)
                 dispatch(
                   initializeParams({
                     ...params.params,
-                    start_date: dayjs(newValue).format('MMMM DD, YYYY'),
+                    start_date: dayjs(newValue)
+                      .startOf('month')
+                      .format('MMMM DD, YYYY'),
                   })
                 )
               }}
@@ -122,7 +125,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
         </div>
       )}
 
-      {isVisible && type === 'dueDate' && setSelectedDueDate && (
+      {/* {isVisible && type === 'dueDate' && setSelectedDueDate && (
         <div
           className="dropdown-options"
           style={{ maxHeight: '600px', padding: 0 }}
@@ -150,7 +153,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
             />
           </LocalizationProvider>
         </div>
-      )}
+      )} */}
 
       {isVisible && type !== 'startDate' && type !== 'dueDate' && (
         <div className="dropdown-options">

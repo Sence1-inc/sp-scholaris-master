@@ -10,6 +10,7 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import { DataGrid, GridRowParams } from '@mui/x-data-grid'
+import dayjs from 'dayjs'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
@@ -305,7 +306,11 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
                   return key === 'limit' || key === 'page' ? null : (
                     <Chip
                       key={key}
-                      label={`${formatString(key)}: ${value}`}
+                      label={
+                        key === 'start_date'
+                          ? `${formatString(key)}: ${dayjs(value).format('MMMM YYYY')}`
+                          : `${formatString(key)}: ${value}`
+                      }
                       variant="outlined"
                       onDelete={() => handleChipDelete(key)}
                     />
@@ -417,7 +422,11 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
                 {Object.entries(restParams)?.map(([key, value]) => (
                   <Chip
                     key={key}
-                    label={`${formatString(key)}: ${value}`}
+                    label={
+                      key === 'start_date'
+                        ? `${formatString(key)}: ${dayjs(value).format('MMMM YYYY')}`
+                        : `${formatString(key)}: ${value}`
+                    }
                     variant="outlined"
                     onDelete={() => handleChipDelete(key)}
                   />
