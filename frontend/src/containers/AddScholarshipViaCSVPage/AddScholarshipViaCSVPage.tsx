@@ -1,7 +1,17 @@
+import { KeyboardArrowDown } from '@mui/icons-material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import { Box, Button, Container, Link, Typography } from '@mui/material'
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Box,
+  Button,
+  Container,
+  Link,
+  Typography,
+} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
 import PrimaryButton from '../../components/CustomButton/PrimaryButton'
@@ -179,6 +189,172 @@ const AddScholarshipViaCSVPage: React.FC = () => {
               </Typography>
             </Button>
           </Box>
+          <Box>
+            <Accordion
+              sx={{
+                margin: '0',
+                backgroundColor: 'primary.light',
+              }}
+            >
+              <AccordionSummary
+                sx={{ margin: '0', color: '#686868' }}
+                expandIcon={
+                  <KeyboardArrowDown
+                    sx={{ color: '#686868' }}
+                    fontSize="small"
+                  />
+                }
+                aria-controls="panel1-content"
+                id="panel1-header"
+              >
+                <Typography sx={{ margin: '0' }} variant="subtitle1">
+                  Open TSV in Excel (Windows)
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ margin: '0' }}>
+                <Box>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    1. Open Excel.
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    2. Drag and drop the TSV file into the Excel window, or go
+                    to File &gt; Open and select the TSV file (ensure the file
+                    type is set to "All Files" or "Text Files").
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    3. Select "Delimited" in the Text Import Wizard, then click
+                    "Next."
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    4. Check the "Tab" delimiter, then click "Finish."
+                  </Typography>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion
+              sx={{
+                margin: '0',
+                backgroundColor: 'primary.light',
+              }}
+            >
+              <AccordionSummary
+                sx={{ margin: '0', color: '#686868' }}
+                expandIcon={
+                  <KeyboardArrowDown
+                    sx={{ color: '#686868' }}
+                    fontSize="small"
+                  />
+                }
+                aria-controls="panel2-content"
+                id="panel2-header"
+              >
+                <Typography sx={{ margin: '0' }} variant="subtitle1">
+                  Open TSV in Excel (Mac)
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ margin: '0' }}>
+                <Box>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    1. Open Excel.
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    2. Drag and drop the TSV file into the Excel window, or go
+                    to File &gt; Open... and select the TSV file (ensure the
+                    file type is set to "All Files" or "Text Files").
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    3. Select "Delimited" in the Text Import Wizard, then click
+                    "Next."
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    4. Check the "Tab" delimiter, then click "Finish."
+                  </Typography>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion
+              sx={{
+                margin: '0',
+                backgroundColor: 'primary.light',
+              }}
+            >
+              <AccordionSummary
+                sx={{ margin: '0', color: '#686868' }}
+                expandIcon={
+                  <KeyboardArrowDown
+                    sx={{ color: '#686868' }}
+                    fontSize="small"
+                  />
+                }
+                aria-controls="panel3-content"
+                id="panel3-header"
+              >
+                <Typography sx={{ margin: '0' }} variant="subtitle1">
+                  Open TSV in Google Sheets
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ margin: '0' }}>
+                <Box>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    1. Open Google Sheets.
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    2. Create a new spreadsheet.
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    3. Drag and drop the TSV file into the browser window, or go
+                    to File &gt; Import &gt; Upload and select the TSV file.
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    4. Ensure "Separator type" is set to "Tab" and click "Import
+                    Data."
+                  </Typography>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+
+            <Accordion
+              sx={{
+                margin: '0',
+                backgroundColor: 'primary.light',
+              }}
+            >
+              <AccordionSummary
+                sx={{ margin: '0', color: '#686868' }}
+                expandIcon={
+                  <KeyboardArrowDown
+                    sx={{ color: '#686868' }}
+                    fontSize="small"
+                  />
+                }
+                aria-controls="panel4-content"
+                id="panel4-header"
+              >
+                <Typography sx={{ margin: '0' }} variant="subtitle1">
+                  Open TSV in Numbers (Mac)
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ margin: '0' }}>
+                <Box>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    1. Open Numbers.
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    2. Drag and drop the TSV file into the Numbers window, or go
+                    to File &gt; Open... and select the TSV file.
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    3. Review and confirm import settings.
+                  </Typography>
+                  <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+                    4. Click "Open."
+                  </Typography>
+                </Box>
+              </AccordionDetails>
+            </Accordion>
+          </Box>
           <Box
             sx={{
               margin: '20px 0',
@@ -254,7 +430,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
             </Typography>
           </Box>
           <Box>
-            <Typography variant="subtitle1">
+            <Typography variant="subtitle1" sx={{ color: '#686868' }}>
               Please ensure the following steps are taken when addressing
               errors: <br />
               1. DO NOT remove the second row. <br />
