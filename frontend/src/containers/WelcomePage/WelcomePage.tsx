@@ -26,7 +26,7 @@ const WelcomePage: React.FC = () => {
         >
           <WelcomePageSearch />
         </Box>
-        </Box>
+      </Box>
       <Box
         sx={{
           display: 'flex',
@@ -34,7 +34,7 @@ const WelcomePage: React.FC = () => {
           width: '100vw',
           // padding: { xs: '40px 20px', md: '60px' },
           gap: { xs: '80px' },
-          position: 'relative'
+          position: 'relative',
         }}
       >
         <Box
@@ -46,24 +46,30 @@ const WelcomePage: React.FC = () => {
             alignItems: 'center',
             justifyContent: 'center',
             paddingRight: { md: '10px' },
-            padding: { xs: '40px 20px', md: '60px' },
+            padding: { xs: '20px 20px', md: '60px' },
           }}
         >
-          
           {/* <img
             src={WelcomeImage}
             alt=""
             style={{ maxWidth: '100%', height: 'auto', padding: 0, margin: 0 }}
           /> */}
-          <Typography variant="h3" textAlign="center" sx={{ textShadow: '1px 4px 4px #FFFFFF', fontSize: '3.5rem'}}>
+          <Typography
+            variant="h3"
+            textAlign="center"
+            sx={{ textShadow: '1px 4px 4px #FFFFFF', fontSize: '3.5rem' }}
+          >
             Discover <span className="color-secondary">Scholaris</span>!
           </Typography>
-          <Typography variant="body1" textAlign="center" 
+          <Typography
+            variant="body1"
+            textAlign="center"
             sx={{
               maxWidth: '706px',
               fontWeight: '500',
-              textShadow: '1px 4px 4px #FFFFFF'
-            }}>
+              textShadow: '1px 4px 4px #FFFFFF',
+            }}
+          >
             Everyone deserves an education. Scholaris will help you to overcome
             the challenges and difficulties in searching for scholarships.
             <br />
@@ -76,9 +82,10 @@ const WelcomePage: React.FC = () => {
             It is a centralized hub where students can easily browse and stay
             updated with the latest offerings from different
             Scholarship-Granting Organizations or SGOs.
-          </Typography>   
+          </Typography>
         </Box>
-        <Box component="img"
+        <Box
+          component="img"
           sx={{
             position: 'absolute',
             top: '0',
@@ -89,8 +96,7 @@ const WelcomePage: React.FC = () => {
           }}
           src="/images/graduation_picture.jpg"
           alt="graduation"
-          >
-          </Box>
+        ></Box>
       </Box>
       <div id="welcome" className="content__welcome-selection">
         <div className="container">

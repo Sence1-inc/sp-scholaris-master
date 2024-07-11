@@ -53,8 +53,9 @@
 
 @media screen and (max-width: 768px) {
   .button__welcome-primary {
-    padding: 15px;
+    padding: 20px;
     max-width: 100%;
+    min-height: auto;
   }
 
   .button__welcome-primary p {
