@@ -17,8 +17,8 @@ import './SearchResultsPage.css'
 
 interface GridRowDef {
   scholarshipName: string
-  startDate: Date
-  endDate: Date
+  startDate: string | Date
+  endDate: string | Date
   provider: string
 }
 
@@ -61,13 +61,11 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     {
       field: 'startDate',
       headerName: 'Start Date',
-      type: 'date',
       ...(sm ? { flex: 1 } : { width: 150 }),
     },
     {
       field: 'endDate',
       headerName: 'End Date',
-      type: 'date',
       ...(sm ? { flex: 1 } : { width: 150 }),
     },
     {
@@ -112,8 +110,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
       return {
         id: scholarship.id,
         scholarshipName: scholarship.scholarship_name,
-        startDate: new Date(scholarship.start_date),
-        endDate: new Date(scholarship.due_date),
+        startDate: new Date(scholarship.start_date).toDateString(),
+        endDate: new Date(scholarship.due_date).toDateString(),
         provider: scholarship.scholarship_provider.provider_name,
       }
     })
