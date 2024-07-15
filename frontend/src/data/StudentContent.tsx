@@ -1,7 +1,7 @@
 export const FEATURES: FeatureProps[] = [
   {
     title: 'A portal for a wide range of scholarship opportunities',
-    desc: 'Effortlessly upload and manage scholarship details with our user-friendly interface. Whether you prefer hands-on manual editing or the efficiency of bulk uploads through CSV files, Scholaris ensures a seamless experience, saving you time and effort.',
+    desc: 'We recognize the need for a centralized source where students can easily search and apply for scholarship opportunities. Scholaris - a scholarship pooling application, will help bridge students and available opportunities, resolving challenges experienced by students when searching for scholarships.',
     image: '/images/img_feat-student-1.png',
   },
   {

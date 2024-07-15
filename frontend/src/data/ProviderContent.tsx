@@ -1,7 +1,7 @@
 export const FEATURES: FeatureProps[] = [
   {
     title: 'Seamless Scholarship Management',
-    desc: 'Effortlessly upload and manage scholarship details with our user-friendly interface. Whether you prefer hands-on manual editing or the efficiency of bulk uploads through CSV files, Scholaris ensures a seamless experience, saving you time and effort.',
+    desc: 'Effortlessly upload scholarship details with our user-friendly interface. Whether you prefer hands-on manual editing or the efficiency of bulk uploads through CSV files, Scholaris ensures a seamless experience, saving you time and effort.',
     image: '/images/img_feat-provider-1.png',
   },
   {
@@ -16,7 +16,7 @@ export const FEATURES: FeatureProps[] = [
   },
   {
     title: 'Intuitive Scholarship Search',
-    desc: 'Enhance the exposure of your scholarships through our robust search feature. Students can easily find your scholarship offerings using filters such as application date, location, benefits, course, and school on Scholaris. With these tailored options, your opportunities will be easily discoverable by eligible candidates.',
+    desc: 'Enhance the exposure of your scholarships through our robust search feature. Students can easily find your scholarship offerings using filters such as application date, and benefits on Scholaris. With these tailored options, your opportunities will be easily discoverable by eligible candidates.',
     image: '/images/img_feat-provider-4.png',
   },
 ]
