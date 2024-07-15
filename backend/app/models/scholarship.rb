@@ -1,4 +1,5 @@
 class Scholarship < ApplicationRecord
+  before_validation :set_default_listing_id, on: :create
   before_destroy :soft_delete_associations
 
   belongs_to :scholarship_provider
@@ -67,6 +68,16 @@ class Scholarship < ApplicationRecord
   end
 
   private
+
+  def set_default_listing_id
+    self.listing_id ||= generate_listing_id
+  end
+
+  def generate_listing_id
+    date_part = Time.now.strftime("%d%m") # Format date as DDMM
+    time_part = Time.now.strftime("%S%L")[-2, 2] # Last 2 digits of seconds and milliseconds
+    "#{date_part}#{time_part}".to_i # Combine and convert to integer
+  end
 
   def valid_dates
     if due_date.present? && start_date.present? && due_date <= start_date

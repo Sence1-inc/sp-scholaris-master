@@ -67,7 +67,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   const { pathname } = location
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const subscriber = useAppSelector(
+  const subscriber: SubscriberData = useAppSelector(
     (state) => state.persistedReducer.subscriber
   )
   const [isASubscriber, setIsASubscriber] = useState<boolean>(false)

@@ -1,5 +1,6 @@
 export type Scholarship = {
   id: number
+  listing_id: number
   scholarship_name: string
   start_date: string
   due_date: string

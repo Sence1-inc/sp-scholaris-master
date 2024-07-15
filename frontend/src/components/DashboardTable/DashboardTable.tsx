@@ -85,6 +85,7 @@ export default function DataTable() {
     const row = data.map((scholarship: Scholarship) => {
       return {
         id: scholarship.id,
+        listing_id: scholarship.listing_id,
         scholarshipName: scholarship.scholarship_name,
         startDate: new Date(scholarship.start_date),
         endDate: new Date(scholarship.due_date),
@@ -166,7 +167,8 @@ export default function DataTable() {
   }
 
   const columns = [
-    { field: 'id', headerName: 'ID', flex: 0.3 },
+    // { field: 'id', headerName: 'ID', flex: 0.3 },
+    { field: 'listing_id', headerName: 'Listing ID', flex: 0.5 },
     {
       field: 'scholarshipName',
       headerName: 'Scholarship Name',
