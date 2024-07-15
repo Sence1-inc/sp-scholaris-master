@@ -686,7 +686,7 @@ const ScholarshipEditorPage = () => {
             <Typography variant="subtitle1">
               {applicationLink
                 ? 'This is the link for students to apply.'
-                : 'Please provide the link where students can apply for your scholarship.'}
+                : 'Please provide the link or the email address where students can apply for your scholarship.'}
             </Typography>
           </Box>
 

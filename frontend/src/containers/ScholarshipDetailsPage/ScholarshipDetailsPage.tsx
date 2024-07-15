@@ -153,7 +153,11 @@ export const ScholarshipDetailsPage: React.FC<
               {scholarshipData.application_link && (
                 <div className="details-section">
                   <h4 className="title4">Application Link</h4>
-                  <Link to={scholarshipData.application_link} target="_blank">
+                  <Link
+                    style={{ wordWrap: 'break-word' }}
+                    to={scholarshipData.application_link}
+                    target="_blank"
+                  >
                     {scholarshipData.application_link}
                   </Link>
                 </div>
