@@ -39,6 +39,7 @@ const Filter: React.FC<FilterProps> = () => {
 
   const handleOptionClick = (option: Option) => {
     const key: string | null = activeDropdown
+
     if (activeDropdown) {
       dispatch(
         initializeParams({
@@ -84,26 +85,6 @@ const Filter: React.FC<FilterProps> = () => {
     )
   }
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setActiveDropdown(null)
-    }
-  }
-
-  useEffect(() => {
-    if (activeDropdown) {
-      document.addEventListener('mousedown', handleClickOutside)
-    } else {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [activeDropdown])
-
   useEffect(() => {
     if (!activeDropdown) {
       dispatch(initializeParams({}))
@@ -118,6 +99,7 @@ const Filter: React.FC<FilterProps> = () => {
       </div>
       <FilterOption
         selectedStartDate={selectedStartDate}
+        setSelectedParams={setSelectedParams}
         setSelectedStartDate={setSelectedStartDate}
         type="startDate"
         isVisible={activeDropdown === 'startDate'}
