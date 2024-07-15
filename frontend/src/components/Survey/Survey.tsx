@@ -7,6 +7,8 @@ import {
   FormControlLabel,
   FormGroup,
   MenuItem,
+  Radio,
+  RadioGroup,
   Rating,
   Select,
   TextField,
@@ -40,6 +42,7 @@ const Survey: React.FC<SurveyProps> = ({
 }) => {
   const user = useAppSelector((state) => state.persistedReducer.user)
   const [checkedChoices, setCheckedChoices] = useState<any>({})
+  const [radioChoices, setRadioChoices] = useState<any>({})
 
   const classifications =
     pathname === '/student/survey'
@@ -104,6 +107,16 @@ const Survey: React.FC<SurveyProps> = ({
       })
       handleChange(filteredData.toString(), 'responses', question.id)
     }
+  }
+
+  const handleRadioChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    question: SurveyQuestion
+  ) => {
+    setRadioChoices({
+      [question.id]: e.target.value,
+    })
+    handleChange(e.target.value, 'responses', question.id)
   }
 
   return (
@@ -171,7 +184,11 @@ const Survey: React.FC<SurveyProps> = ({
           onChange={(e: any) => handleChange(e.target.value, 'classification')}
         >
           {classifications.map((classification: string) => {
-            return <MenuItem value={classification}>{classification}</MenuItem>
+            return (
+              <MenuItem key={classification} value={classification}>
+                {classification}
+              </MenuItem>
+            )
           })}
         </Select>
       </Container>
@@ -360,6 +377,47 @@ const Survey: React.FC<SurveyProps> = ({
                     )
                   })}
               </FormGroup>
+            </FormControl>
+          )}
+          {question['input_type'].includes('radio') && (
+            <FormControl
+              key={question.id}
+              component="fieldset"
+              variant="standard"
+              fullWidth
+            >
+              <RadioGroup
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="controlled-radio-buttons-group"
+                value={
+                  Object.keys(radioChoices).length > 0
+                    ? radioChoices[question.id]
+                    : question['choices'][0]
+                }
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleRadioChange(e, question)
+                }
+              >
+                {question['choices']
+                  .split(',')
+                  .map((choice: string, index: number) => {
+                    return (
+                      <Box
+                        key={`${question.id}-${index}-radio`}
+                        sx={{
+                          display: 'flex',
+                          width: { sm: '90%', xs: '100%' },
+                        }}
+                      >
+                        <FormControlLabel
+                          value={choice.trim()}
+                          control={<Radio />}
+                          label={choice.toUpperCase()}
+                        />
+                      </Box>
+                    )
+                  })}
+              </RadioGroup>
             </FormControl>
           )}
         </Container>

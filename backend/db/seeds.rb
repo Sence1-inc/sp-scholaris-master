@@ -24,12 +24,17 @@ begin
   file = File.read(json_file_path)
   data = JSON.parse(file)
 
-  PhAddress.delete_all
-
   ActiveRecord::Base.connection.execute("ALTER TABLE ph_addresses AUTO_INCREMENT = 1")
 
   data.each do |item|
-    PhAddress.create!(item)
+    id = item[:id]
+    existing_data = PhAddress.find_by(id: id)
+    
+    if existing_data.nil?
+      PhAddress.create!(item)
+    else
+      puts "Skipping address with id #{id} because it already exists."
+    end
   end
 
   puts 'JSON ph_addresses seeded successfully.'
