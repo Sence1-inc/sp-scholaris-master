@@ -12,7 +12,7 @@ import theme from '../../styles/theme'
 
 const OpenTsvInstructions = () => {
   const [open, setOpen] = React.useState(false)
-  const isXs = useMediaQuery(() => theme.breakpoints.down('xs'))
+  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'))
 
   const toggleCollapse = () => {
     setOpen((prev) => !prev)
@@ -49,12 +49,12 @@ const OpenTsvInstructions = () => {
 
   return (
     <Box sx={{ margin: '30px 0' }}>
-      {isXs && (
+      {isSm && (
         <Button color="secondary" variant="text" onClick={toggleCollapse}>
           {open ? 'Hide Instructions' : 'How to Open TSV?'}
         </Button>
       )}
-      <Collapse in={isXs ? open : true}>
+      <Collapse in={isSm ? open : true}>
         <Grid container spacing={2}>
           {instructions.map((instruction, index) => (
             <Grid item xs={12} sm={4} key={index}>
