@@ -30,7 +30,7 @@ type SideBarObject = {
   Icon: JSX.Element
 }
 
-const sideItem: SideBarObject[] = [
+export const sideItem: SideBarObject[] = [
   { id: 'view-profile', title: 'View Scholarship Profile', Icon: <HomeIcon /> },
   { id: 'account-profile', title: 'Account Profile', Icon: <PersonIcon /> },
   { id: 'account-security', title: 'Account Security', Icon: <SecurityIcon /> },
