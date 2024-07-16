@@ -371,6 +371,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         Already have and account? Sign-in here
       </MuiLink>
       <CTAButton
+        id="sign-up"
         label="Sign up"
         loading={buttonLoading}
         handleClick={handleSignUp}

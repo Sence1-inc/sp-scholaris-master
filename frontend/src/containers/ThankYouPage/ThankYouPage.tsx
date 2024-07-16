@@ -16,6 +16,7 @@ const ThankYouPage: React.FC = () => {
           We will keep on improving our services and feature.
         </Typography>
         <Button
+          id="back-home"
           variant="contained"
           sx={{
             bgcolor: '#f36b3b',

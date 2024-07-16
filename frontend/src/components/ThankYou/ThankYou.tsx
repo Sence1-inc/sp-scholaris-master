@@ -31,6 +31,7 @@ const ThankYou = () => {
         better meet your needs.
       </Typography>
       <Button
+        id="answer-survey"
         onClick={() => navigate(`/${subscriber.user_type}/survey`)}
         fullWidth
         sx={{

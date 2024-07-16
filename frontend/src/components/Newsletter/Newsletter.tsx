@@ -154,6 +154,7 @@ const Newsletter: React.FC<NewsletterProps> = ({
             />
             {errorMessage && <Alert severity="error">{errorMessage}</Alert>}
             <Button
+              id="subscribe"
               variant="contained"
               sx={ctaButtonStyle}
               onClick={handleSubscribe}

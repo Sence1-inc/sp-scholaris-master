@@ -167,7 +167,11 @@ const AddScholarshipViaCSVPage: React.FC = () => {
             >
               Upload TSV File
             </Typography>
-            <Button variant="text" onClick={handleDownload}>
+            <Button
+              variant="text"
+              onClick={handleDownload}
+              id="download-template"
+            >
               <Typography
                 sx={{
                   color: '#686868',
@@ -222,6 +226,7 @@ const AddScholarshipViaCSVPage: React.FC = () => {
             </Typography>
           </Box>
           <PrimaryButton
+            id="save-scholarship-via-file"
             handleClick={handleUpload}
             label="Save Scholarship"
             loading={isUploading}

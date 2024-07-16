@@ -284,6 +284,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               }}
             />
             <Button
+              id="search"
               sx={{
                 ...ctaButtonStyle,
                 flexGrow: 1,
@@ -400,6 +401,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               }}
             />
             <Button
+              id="search"
               sx={{
                 ...ctaButtonStyle,
                 flexGrow: 1,

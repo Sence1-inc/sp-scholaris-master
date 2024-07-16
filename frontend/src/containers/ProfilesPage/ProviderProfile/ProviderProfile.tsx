@@ -157,7 +157,7 @@ const ProviderProfile: React.FC = () => {
       setErrorMessage('Not yet a subscriber, please subscribe.')
     }
   }
-  console.log(activeContent)
+
   return (
     <Box sx={profileTheme.container.rootContainer}>
       <CustomSnackbar
@@ -185,6 +185,7 @@ const ProviderProfile: React.FC = () => {
                   {data.profile.scholarship_provider?.provider_name}
                 </Typography>
                 <PrimaryButton
+                  id="logout-from-provide-profile"
                   label="Logout"
                   loading={false}
                   handleClick={handleDeleteCookie}

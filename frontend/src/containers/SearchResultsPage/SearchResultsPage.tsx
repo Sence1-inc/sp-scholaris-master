@@ -197,6 +197,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     <section className="search-results">
       <div className="container-1040" style={{ width: '100%' }}>
         <Button
+          id="back-from-search-results-page"
           onClick={() => {
             navigate((Cookies.get('lastVisited') as string) ?? '/')
           }}

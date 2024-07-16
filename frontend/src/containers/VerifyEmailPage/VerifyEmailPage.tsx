@@ -130,6 +130,7 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
         </Typography>
         {isAlreadyVerified ? (
           <Button
+            id="sign-in-from-verification-page"
             onClick={() => navigate('/sign-in')}
             variant="contained"
             color="primary"
@@ -149,6 +150,7 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
           </Button>
         ) : isExpired ? (
           <Button
+            id="resend-verification"
             onClick={handleResendVerificationEmail}
             variant="contained"
             color="primary"
@@ -168,6 +170,7 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
           </Button>
         ) : (
           <Button
+            id="verify"
             onClick={handleVerifyEmail}
             variant="contained"
             color="primary"

@@ -57,6 +57,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
   return (
     <Box position="relative">
       <Box
+        id={`${type}-filter`}
         onClick={toggleDropdown}
         sx={{
           cursor: 'pointer',

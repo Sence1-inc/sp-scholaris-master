@@ -810,6 +810,7 @@ const ScholarshipEditorPage = () => {
             <HelperText error={errors.status} />
           </Box>
           <CTAButton
+            id="save-scholarship-via-manual"
             handleClick={handleSubmit}
             label="Save Scholarship"
             loading={isButtonLoading}

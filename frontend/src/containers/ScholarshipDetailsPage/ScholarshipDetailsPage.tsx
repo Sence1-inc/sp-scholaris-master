@@ -83,6 +83,7 @@ export const ScholarshipDetailsPage: React.FC<
         <div className="container" style={{ padding: '80px 20px' }}>
           <aside id="aside">
             <Button
+              id="back-to-search"
               onClick={() => {
                 dispatch(initializeScholarshipData({}))
                 navigate(-1)
@@ -154,6 +155,7 @@ export const ScholarshipDetailsPage: React.FC<
                 <div className="details-section">
                   <h4 className="title4">Application Link</h4>
                   <Link
+                    id="application-link"
                     style={{ wordWrap: 'break-word' }}
                     to={scholarshipData.application_link}
                     target="_blank"

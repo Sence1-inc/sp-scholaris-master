@@ -187,6 +187,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         }}
       >
         <Button
+          id="forgot-password"
           disableRipple
           variant="text"
           sx={{
@@ -210,6 +211,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           Forgot password?
         </Button>
         <Button
+          id="to-sign-up"
           disableRipple
           component={RouterLink}
           to="/sign-up"
@@ -233,6 +235,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       </Container>
 
       <CTAButton
+        id="sign-in-from-sigin-page"
         handleClick={handleSignIn}
         label="Login"
         loading={isButtonLoading}

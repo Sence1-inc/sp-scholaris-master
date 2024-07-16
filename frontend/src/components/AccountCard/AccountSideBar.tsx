@@ -133,6 +133,7 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
           )}
         </List>
         <PrimaryButton
+          id="logout-from-sidebar"
           label="Logout"
           loading={false}
           handleClick={handleDeleteCookie}

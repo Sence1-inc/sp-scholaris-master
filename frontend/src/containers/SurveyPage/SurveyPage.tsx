@@ -260,6 +260,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
       }}
     >
       <Button
+        id="back-from-survey-page"
         onClick={() => {
           console.log(Cookies.get('lastVisited'))
           navigate((Cookies.get('lastVisited') as string) ?? '/')
@@ -357,6 +358,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
         </Box>
       )}
       <Button
+        id="submit-survey"
         variant="contained"
         color="secondary"
         onClick={handleSubmit}

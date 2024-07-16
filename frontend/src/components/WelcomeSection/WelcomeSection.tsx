@@ -33,6 +33,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
         )}
         <div className="section__buttons">
           <CTAButton
+            id="search-scholarship"
             handleClick={() =>
               location.pathname === '/student'
                 ? navigate('/scholarships')
@@ -53,6 +54,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
           />
           {location.pathname === '/provider' && !isAuthenticated && (
             <CTAButton
+              id="have-an-account"
               handleClick={() => navigate('/sign-in')}
               label="Have an account?"
               loading={false}

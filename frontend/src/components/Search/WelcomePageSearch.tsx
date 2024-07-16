@@ -241,6 +241,7 @@ const WelcomePageSearch: React.FC = () => {
               }}
             />
             <Button
+              id="search-from-welcome-page"
               sx={{
                 ...ctaButtonStyle,
                 flexGrow: 1,

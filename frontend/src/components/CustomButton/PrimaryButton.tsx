@@ -7,6 +7,7 @@ interface PrimaryButtonProps {
   loading: boolean
   styles?: any
   disabled?: boolean
+  id?: string
 }
 
 const PrimaryButton: React.FC<PrimaryButtonProps> = ({
@@ -15,9 +16,11 @@ const PrimaryButton: React.FC<PrimaryButtonProps> = ({
   loading,
   styles,
   disabled = false,
+  id,
 }) => {
   return (
     <LoadingButton
+      id={id}
       disabled={disabled}
       fullWidth
       loading={loading}
