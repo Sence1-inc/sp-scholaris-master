@@ -27,14 +27,14 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
     <section className={ usertype == 'provider' ? 'section__welcome section__welcome__provider' : 'section__welcome'}>
       <div className="container">
         <Typography variant="h2">
-          {usertype == 'provider' ? <span className="h-subtext-provider">Bridging Students and Education through </span> : <span>Welcome to </span>}
+          {usertype == 'provider' ? <span className="h-subtext-gradient">Bridging Students and Education through </span> : <span className="h-subtext-gradient">Welcome to </span>}
          <span className="color-secondary h-subtext">Scholaris</span>
         </Typography>
         {subheader && <Typography variant="h3">{subheader}</Typography>}
         {third_level_header && (
           <Typography variant="h4">{third_level_header}</Typography>
         )}
-        <div className="section__buttons">
+        <div className={location.pathname === '/student' ? 'section__buttons section__buttons__student' : 'section__buttons'}>
           <CTAButton
             handleClick={() =>
               location.pathname === '/student'
@@ -48,10 +48,10 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
             }
             loading={false}
             styles={{
-              fontSize: '1.25rem',
+              fontSize: '1.1rem',
               fontWeight: 700,
-              width: 'auto',
-              margin: '0 20px',
+              width: '80%',
+              padding: {xs: '10px 20px', md: '12px 20px'}
             }}
           />
           {location.pathname === '/provider' && !isAuthenticated && (
@@ -60,10 +60,10 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
               label="Have an account?"
               loading={false}
               styles={{
-                fontSize: '1.25rem',
+                fontSize: '1.1rem',
                 fontWeight: 700,
-                width: 'auto',
-                margin: '0 20px',
+                width: '80%',
+                padding: {xs: '10px 20px', md: '12px 20px'}
               }}
             />
           )}

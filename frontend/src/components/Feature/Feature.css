@@ -1,7 +1,7 @@
 .featureGuides {
   background: var(--accent-color);
-  padding-top: 120px;
-  padding-bottom: 120px;
+  padding-top: 70px;
+  padding-bottom: 70px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,15 +10,17 @@
 .featureGuides .container-1040 {
   display: flex;
   flex-direction: column;
-  gap: 40px;
+  row-gap: 10px;
 }
 
-.featureGuides.studentFeatures .container-1040 {
-  gap: 120px;
+.featureGuides h2 {
+  font-size: 3.25rem;
+  text-align: left;
 }
 
-.featureGuides.studentFeatures h2 {
-  margin-bottom: -5px;
+.featureGuides h3 {
+  font-size: 2.5rem;
+  margin-top: 40px;
 }
 
 .featureGuides__feature {
@@ -47,11 +49,17 @@
     line-height: normal;
 } */
 
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 375px) {
+  .featureGuides h2 {
+    font-size: 2rem;
+  }
+}
+@media screen and (min-width: 376) and (max-width: 1024px) {
   .featureGuides {
     padding-left: 50px;
     padding-right: 50px;
   }
+
   .featureGuides__feature {
     flex-direction: column-reverse;
     align-items: center;
@@ -74,4 +82,26 @@
     padding-left: 20px !important;
     padding-right: 20px !important;
   }
+}
+
+@media screen and (max-width: 1024px) {
+  .featureGuides h2{
+    font-size: 2.5rem;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .featureGuides__feature-img {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .featureGuides h3 {
+    font-size: 1.7rem;
+  }
+  
+  .featureGuides .container-1040 {
+    row-gap: 30px;
+  }
+  
 }
