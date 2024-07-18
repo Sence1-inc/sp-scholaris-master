@@ -32,7 +32,7 @@ const HomePage: React.FC = () => {
 
   return (
     <>
-      <WelcomeSection subheader={PROVIDER_WELCOME_SUBHEADER} />
+      <WelcomeSection subheader={PROVIDER_WELCOME_SUBHEADER} usertype={PROVIDER_TYPE}/>
       <FeatureGuides features={FEATURES} contentType="providerFeatures" />
       <FloatingElement anchorEl={anchorEl} handleClose={handleClose}>
         <Newsletter

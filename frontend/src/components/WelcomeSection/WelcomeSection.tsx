@@ -9,11 +9,13 @@ import './WelcomeSection.css'
 interface WelcomeSectionProps {
   subheader?: string
   third_level_header?: string
+  usertype?: string
 }
 
 const WelcomeSection: React.FC<WelcomeSectionProps> = ({
   subheader,
   third_level_header,
+  usertype
 }) => {
   const location = useLocation()
   const navigate = useNavigate()
@@ -22,10 +24,11 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
   )
 
   return (
-    <section className="section__welcome">
+    <section className={ usertype == 'provider' ? 'section__welcome section__welcome__provider' : 'section__welcome'}>
       <div className="container">
-        <Typography variant="h2" sx={{ mb: 2 }}>
-          Welcome to <span className="color-secondary">Scholaris</span>
+        <Typography variant="h2">
+          {usertype == 'provider' ? <span className="h-subtext-provider">Bridging Students and Education through </span> : <span>Welcome to </span>}
+         <span className="color-secondary h-subtext">Scholaris</span>
         </Typography>
         {subheader && <Typography variant="h3">{subheader}</Typography>}
         {third_level_header && (
