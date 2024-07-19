@@ -1,5 +1,5 @@
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import { Backdrop, Button, CircularProgress } from '@mui/material'
+import { Backdrop, Button, CircularProgress, Typography } from '@mui/material'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import TextLoading from '../../components/Loading/TextLoading'
@@ -215,6 +215,14 @@ export const ScholarshipDetailsPage: React.FC<
               </div>
             </div>
           )}
+          <Typography variant="subtitle1" sx={{ margin: '30px 0' }}>
+            For Scholarship Granting Organizations:
+            <br />
+            If you are a scholarship granting organization and would like to
+            request edits to the listed data, please contact us with the title
+            and details page link of the relevant scholarship at
+            support-scholaris@sence1.com
+          </Typography>
         </div>
       </section>
       <section id="details">
