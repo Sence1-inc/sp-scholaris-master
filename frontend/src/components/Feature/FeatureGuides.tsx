@@ -4,7 +4,7 @@ import { useLocation } from 'react-router-dom'
 import Feature from './Feature'
 import './Feature.css'
 
-const FeatureGuides = ({ features, contentType }: FeaturesProps) => {
+const FeatureGuides = ({ features, contentType, usertype }: FeaturesProps) => {
   const [hasScrolled, setHasScrolled] = useState(false)
   const { hash } = useLocation()
   const featuresRef = useRef<HTMLElement>(null)
@@ -32,6 +32,7 @@ const FeatureGuides = ({ features, contentType }: FeaturesProps) => {
     >
       <Container className="container-1040">
         <Typography variant="h2">Feature Guides</Typography>
+        { usertype == 'provider' ? <Typography>We are planning to implement some functions that will be more convenient for students to use. Please subscribe to our newsletter to receive the latest updates.</Typography> : '' }
         {features.map((feature: FeatureProps, index: number) => {
           return (
             <Feature

@@ -96,7 +96,7 @@
 
 @media screen and (max-width: 768px) {
   .section__welcome.section__welcome__provider {
-    padding: 70px 20px !important;
+    padding: 80px 20px !important;
   }
   .section__welcome.section__welcome__provider h2 {
     margin-bottom: 30px !important;
@@ -113,6 +113,10 @@
     background-position: center right !important;
     height: 90vh;
     padding: 95px 20px !important;
+  }
+
+  .section__welcome__provider {
+    background: url('../../public/images/graduation-students.jpg') center bottom no-repeat !important;
   }
 
   .section__welcome h2 {
@@ -152,5 +156,8 @@
 @media screen and (min-width: 1024px) {
   .section__welcome {
     padding: 144px 20px !important;
+  }
+  .section__welcome.section__welcome__provider h2{
+    letter-spacing: -0.2px;
   }
 }
