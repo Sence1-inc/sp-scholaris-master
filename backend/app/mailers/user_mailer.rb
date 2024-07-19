@@ -34,6 +34,6 @@ class UserMailer < ApplicationMailer
 
   def email_verification(user)
     @user = user
-    mail(to: @user.email_address, subject: 'Verify your email')
+    mail(to: @user.email_address, subject: 'Verify Your Email for Scholaris')
   end
 end
