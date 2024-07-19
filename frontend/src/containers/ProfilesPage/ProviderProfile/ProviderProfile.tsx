@@ -237,7 +237,7 @@ const ProviderProfile: React.FC = () => {
                     />
                   </TabPanel>
                   <TabPanel sx={{ padding: '20px 0' }} value="account-profile">
-                    <AccountViewProfile
+                    <AccountProfile
                       handleSetSuccessMessage={(value) =>
                         setSuccessMessage(value)
                       }

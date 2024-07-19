@@ -137,7 +137,14 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
           label="Logout"
           loading={false}
           handleClick={handleDeleteCookie}
-          styles={{ width: '80%', margin: '20px 34px' }}
+          styles={{
+            padding: '10px 0',
+            width: '80%',
+            position: 'relative',
+            right: '-50%',
+            transform: 'translate(-50%)',
+            margin: '20px 0',
+          }}
         />
       </Box>
     </Card>
