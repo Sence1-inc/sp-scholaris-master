@@ -290,7 +290,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           If you are a scholarship granting organization and would like to
           request edits to the listed data, please contact us with the title and
           details page link of the relevant scholarship at
-          scholaris-support@sence1.com
+          support-scholaris@sence1.com
         </Typography>
       </div>
     </section>
