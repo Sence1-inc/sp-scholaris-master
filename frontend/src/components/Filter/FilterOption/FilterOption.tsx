@@ -3,6 +3,7 @@ import { LocalizationProvider, StaticDatePicker } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs, { Dayjs } from 'dayjs'
 import React, { useState } from 'react'
+import DropdownArrow from '../../../public/images/dropdownArr.svg'
 import { initializeParams } from '../../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../../redux/store'
 
@@ -73,7 +74,20 @@ const FilterOption: React.FC<FilterOptionProps> = ({
           ? selectedOption
           : selectedOption
             ? selectedOption.label
-            : children}
+            : children}{' '}
+        <img
+          style={
+            Boolean(anchorEl)
+              ? {
+                  transform: 'rotate(180deg)',
+                  transition: 'all 0.4s ease',
+                  marginLeft: '6px',
+                }
+              : { marginLeft: '6px' }
+          }
+          src={DropdownArrow}
+          alt="Dropdown arrow"
+        />
       </Box>
 
       <Menu
