@@ -11,9 +11,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  row-gap: 10px;
   max-width: 340px;
-  min-height: 380px;
+  height: auto;
   width: 100%;
   background-color: var(--secondary-color);
   border: none;
@@ -29,7 +29,7 @@
 }
 
 .button__welcome-primary img {
-  margin: 50px 0 25px;
+  margin: 30px 0 25px;
 }
 
 .button__welcome-primary p {
@@ -51,11 +51,16 @@
   color: var(--white);
 }
 
+@media screen and (max-width: 767px) {
+  .button__welcome-primary {
+    max-height: 200px;
+  }
+}
+
 @media screen and (max-width: 768px) {
   .button__welcome-primary {
     padding: 20px;
     max-width: 100%;
-    min-height: auto;
   }
 
   .button__welcome-primary p {

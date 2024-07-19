@@ -21,7 +21,7 @@
 
 .content__welcome-selection {
   background-color: var(--accent-color);
-  padding: 130px 20px;
+  padding: 40px 20px;
 }
 
 .content__welcome-selection .container {
@@ -34,6 +34,7 @@
   justify-content: space-between;
   max-width: 720px;
   margin: 50px auto;
+  column-gap: 20px;
 }
 
 .content__welcome-annotations {
@@ -47,18 +48,20 @@
   font-weight: 300;
 }
 
-@media screen and (max-width: 768px) {
-  .content__welcome-intro .container > img {
-    max-width: 100%;
-  }
-
+@media screen and (max-width: 767px) {
   .content__welcome-buttons {
     flex-direction: column;
     max-width: 100%;
     gap: 1.25rem;
   }
+}
+
+@media screen and (max-width: 768px) {
+  .content__welcome-intro .container > img {
+    max-width: 100%;
+  }
 
   .content__welcome-selection {
-    padding: 80px 20px;
+    padding: 10px 20px;
   }
 }

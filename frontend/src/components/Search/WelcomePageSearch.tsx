@@ -184,7 +184,7 @@ const WelcomePageSearch: React.FC = () => {
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          gap: '60px',
+          gap: '40px',
           alignItems: 'center',
           justifyContent: 'center',
           width: { xs: '100%', md: '80%' },

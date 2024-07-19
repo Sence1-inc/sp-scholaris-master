@@ -3,6 +3,7 @@
 interface FeaturesProps {
   features: FeatureProps[]
   contentType?: string
+  usertype?: string
 }
 
 interface FeatureProps {

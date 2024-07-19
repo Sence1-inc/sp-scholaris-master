@@ -14,14 +14,13 @@ const WelcomePage: React.FC = () => {
           display: 'flex',
           flexDirection: { xs: 'column' },
           width: '100vw',
-          padding: { xs: '40px 20px', md: '60px' },
+          padding: {xs: '60px 20px', md: '80px 20px'},
           gap: { xs: '80px' },
         }}
       >
         <Box
           sx={{
-            width: { xs: '100%' },
-            paddingLeft: { md: '10px' },
+            width: { xs: '100%' }
           }}
         >
           <WelcomePageSearch />
@@ -42,11 +41,11 @@ const WelcomePage: React.FC = () => {
             width: { xs: '100%' },
             display: 'flex',
             flexDirection: 'column',
-            gap: '35px',
+            rowGap: {xs: '20px', md: '35px'},
             alignItems: 'center',
             justifyContent: 'center',
             paddingRight: { md: '10px' },
-            padding: { xs: '20px 20px', md: '60px' },
+            padding: { xs: '60px 20px', md: '80px' },
           }}
         >
           {/* <img
@@ -105,9 +104,9 @@ const WelcomePage: React.FC = () => {
               <span className="color-secondary">Scholaris</span> - Match
               potential <br /> with scholarship opportunities
             </Typography>
-            <Typography variant="body1" textAlign="center">
-              Scholaris connects students and scholarship-granting <br />{' '}
-              organizations to discover scholarship opportunities, <br />{' '}
+            <Typography variant="body1" textAlign="center" sx={{maxWidth: '650px', margin: '0 auto'}}>
+              Scholaris connects students and scholarship-granting 
+              organizations to discover scholarship opportunities, 
               ensuring no student is left behind.
             </Typography>
             <div className="content__welcome-buttons">
