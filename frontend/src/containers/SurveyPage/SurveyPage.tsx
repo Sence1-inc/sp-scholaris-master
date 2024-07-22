@@ -40,7 +40,7 @@ interface SurveyPageProps {
 interface Response {
   survey_question_id: number
   answer: string
-  rating: number | null
+  rating?: number | null
 }
 
 export interface SurveyResponse {
@@ -53,13 +53,7 @@ export interface SurveyResponse {
 const initialSurveyResponses = {
   email: '',
   classification: '',
-  responses: [
-    {
-      survey_question_id: 1,
-      answer: '',
-      rating: null,
-    },
-  ],
+  responses: [],
 }
 
 const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
@@ -85,9 +79,14 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   useEffect(() => {
     if (surveyQuestions) {
       const formattedQuestions = surveyQuestions.map((question) => {
+        let defaultValue = ''
+        if (question['input_type'].includes('radio')) {
+          defaultValue = question['choices'].split(', ')[0]
+        }
+
         return {
           survey_question_id: question.id,
-          answer: '',
+          answer: defaultValue,
           rating: null,
         }
       })

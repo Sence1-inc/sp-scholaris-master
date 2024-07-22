@@ -119,6 +119,19 @@ const Survey: React.FC<SurveyProps> = ({
     handleChange(e.target.value, 'responses', question.id)
   }
 
+  useEffect(() => {
+    const initialRadioChoices: any = {}
+    surveyQuestions?.forEach((question) => {
+      if (question['input_type'].includes('radio')) {
+        const defaultValue = question['choices'].split(', ')[0]
+        initialRadioChoices[question.id] = defaultValue
+      }
+    })
+    setRadioChoices(initialRadioChoices)
+
+    // eslint-disable-next-line
+  }, [surveyQuestions])
+
   return (
     <>
       <Typography
@@ -392,7 +405,7 @@ const Survey: React.FC<SurveyProps> = ({
                 value={
                   Object.keys(radioChoices).length > 0
                     ? radioChoices[question.id]
-                    : question['choices'][0]
+                    : question['choices'].split(', ')[0]
                 }
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                   handleRadioChange(e, question)
