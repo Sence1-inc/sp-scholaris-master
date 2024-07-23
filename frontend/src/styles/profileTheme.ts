@@ -61,13 +61,13 @@ const profiletheme = {
       gap: 3,
     },
     cardContainer: {
-      width: { md: '50%', sm: '100%' },
+      width: { md: '50%', sm: '100%', lg: '70%' },
       height: 'auto',
       backgroundColor: '#afc3d9',
       borderRadius: 8,
     },
     cardSideContainer: {
-      width: '50%',
+      width: { md: '50%', sm: '100%', lg: '30%' },
       backgroundColor: '#e2e1e1',
       borderRadius: 8,
     },
