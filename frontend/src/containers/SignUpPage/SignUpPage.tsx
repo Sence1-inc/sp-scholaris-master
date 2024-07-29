@@ -1,101 +1,238 @@
-import CloseIcon from '@mui/icons-material/Close'
-import {
-  Button,
-  Container,
-  IconButton,
-  Link as MuiLink,
-  Snackbar,
-  TextField,
-  Typography,
-} from '@mui/material'
-import { Fragment, useState } from 'react'
+import { Box, Container, Link as MuiLink, Typography } from '@mui/material'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import dayjs from 'dayjs'
+import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
+import CTAButton from '../../components/CustomButton/CTAButton'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
+import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
+import HelperText from '../../components/HelperText/HelperText'
+import { useAppSelector } from '../../redux/store'
 
 interface SignUpPageProps {}
 
+type Errors = {
+  email_address: string
+  password: string
+  password2: string
+  first_name: string
+  last_name: string
+  middle_name: string
+  birthdate: string
+}
+
 const SignUpPage: React.FC<SignUpPageProps> = () => {
+  const navigate = useNavigate()
   const [userCredentials, setUserCredentials] = useState({
-    email: '',
+    email_address: '',
     password: '',
     password2: '',
+    first_name: '',
+    last_name: '',
+    middle_name: '',
+    birthdate: null,
+    is_active: 1,
+    service_id: 1,
+    role: 'provider',
   })
-
-  const [snackBarState, setSnackBarState] = useState({
-    state: false,
-    snackBarMessage: '',
+  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
+  const isAuthenticated = useAppSelector(
+    (state) => state.persistedReducer.isAuthenticated
+  )
+  const [errors, setErrors] = useState<Errors>({
+    email_address: '',
+    password: '',
+    password2: '',
+    first_name: '',
+    last_name: '',
+    middle_name: '',
+    birthdate: '',
   })
+  const [buttonLoading, setButtonLoading] = useState<boolean>(false)
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
 
-  const navigate = useNavigate()
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/provider/dashboard')
+    }
+    // eslint-disable-next-line
+  }, [isAuthenticated])
 
-  function handleEmail(inputValue: string) {
+  const handleUserCredentials = (inputValue: string, key: string) => {
     setUserCredentials((prevUserCredentials) => ({
       ...prevUserCredentials,
-      email: inputValue,
+      [key]: inputValue,
     }))
   }
 
-  function handlePassword(inputValue: string) {
-    setUserCredentials((prevUserCredentials) => ({
-      ...prevUserCredentials,
-      password: inputValue,
-    }))
-  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  const isValidEmail = emailRegex.test(userCredentials.email_address)
+  const isPasswordValid = userCredentials.password.length > 6
+  const isPassword2 = userCredentials.password === userCredentials.password2
 
-  function handlePassword2(inputValue: string) {
-    setUserCredentials((prevUserCredentials) => ({
-      ...prevUserCredentials,
-      password2: inputValue,
-    }))
-  }
+  const validationConditions = [
+    {
+      condition: !isValidEmail || !userCredentials.email_address,
+      field: 'email_address',
+      message: 'Please provide a valid email address.',
+    },
+    {
+      condition: !isPasswordValid || !userCredentials.password,
+      field: 'password',
+      message: 'Password must be at least 6 characters.',
+    },
+    {
+      condition: !isPassword2 || !userCredentials.password2,
+      field: 'password2',
+      message: 'Passwords do not match.',
+    },
+    {
+      condition: !userCredentials.first_name,
+      field: 'first_name',
+      message: 'Please provide your first name.',
+    },
+    {
+      condition: !userCredentials.middle_name,
+      field: 'middle_name',
+      message: 'Please provide your middle name.',
+    },
+    {
+      condition: !userCredentials.last_name,
+      field: 'last_name',
+      message: 'Please provide your last name.',
+    },
+    {
+      condition:
+        !userCredentials.birthdate ||
+        isNaN(new Date(userCredentials.birthdate).getTime()) ||
+        new Date(userCredentials.birthdate) > new Date() ||
+        new Date(userCredentials.birthdate) < new Date('1920-01-01'),
+      field: 'birthdate',
+      message: 'Please provide your valid birthday.',
+    },
+  ]
 
-  function handleSignUp() {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    const isValidEmail = emailRegex.test(userCredentials.email)
-    const isPasswordValid = userCredentials.password.length > 6
-    const isPassword2 = userCredentials.password === userCredentials.password2
+  useEffect(() => {
+    if (!isInitialLoad) {
+      const errorMessages: any = validationConditions
+        .filter(({ condition }) => condition)
+        .reduce((acc: any, item) => {
+          acc[item.field] = item.message
+          return acc
+        }, {})
+      setErrors(errorMessages)
+    }
+    // eslint-disable-next-line
+  }, [userCredentials, isInitialLoad])
 
-    if (!isValidEmail || !userCredentials.email) {
-      setSnackBarState((prevState) => ({
-        ...prevState,
-        state: true,
-        snackBarMessage: 'Please provide a valid email address.',
-      }))
-    } else if (!isPasswordValid) {
-      setSnackBarState((prevState) => ({
-        ...prevState,
-        state: true,
-        snackBarMessage: 'Please provide a valid password.',
-      }))
-    } else if (!isPassword2) {
-      setSnackBarState((prevState) => ({
-        ...prevState,
-        state: true,
-        snackBarMessage: 'Password does not match.',
-      }))
+  const handleSignUp = async () => {
+    setIsInitialLoad(false)
+
+    const errorMessages = validationConditions
+      .filter(({ condition }) => condition)
+      .map(({ message }) => message)
+    const hasErrors = errorMessages.length > 0
+
+    if (hasErrors) {
+      setSuccessMessage('')
+      setIsSnackbarOpen(true)
+      setErrorMessage('Please fill in the required details.')
+      const newErrors = validationConditions.reduce<{ [key: string]: string }>(
+        (acc, { condition, field, message }) => {
+          if (condition) {
+            acc[field] = message
+          }
+          return acc
+        },
+        {}
+      )
+
+      setErrors({ ...errors, ...newErrors })
     } else {
-      navigate('/verify-email')
+      setButtonLoading(true)
+      try {
+        const response = await axiosInstance.post(
+          '/api/v1/register',
+          userCredentials,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+          }
+        )
+        if (response.data) {
+          setButtonLoading(false)
+          setIsSnackbarOpen(true)
+          setErrorMessage('')
+          setSuccessMessage(
+            "We've sent you a verification email. Please confirm your email address before you log in."
+          )
+          setErrors({
+            email_address: '',
+            password: '',
+            password2: '',
+            first_name: '',
+            last_name: '',
+            middle_name: '',
+            birthdate: '',
+          })
+        }
+      } catch (error: any) {
+        setSuccessMessage('')
+        if (error) {
+          setButtonLoading(false)
+          setIsSnackbarOpen(true)
+          setErrorMessage(
+            error.response.data.error ??
+              'Registration failed. Please try again.'
+          )
+
+          const errors = {
+            email_address: '',
+            password: '',
+            password2: '',
+            first_name: '',
+            last_name: '',
+            middle_name: '',
+            birthdate: '',
+          }
+
+          if (
+            error.response &&
+            error.response.data &&
+            Array.isArray(error.response.data.details)
+          ) {
+            error.response.data.details.forEach((errorMessage: string) => {
+              if (errorMessage.includes('Email')) {
+                errors.email_address = errorMessage
+              } else if (
+                errorMessage.includes('Password') &&
+                !errorMessage.includes('match')
+              ) {
+                errors.password = errorMessage
+              } else if (errorMessage.includes('match')) {
+                errors.password2 = errorMessage
+              } else if (errorMessage.includes('First name')) {
+                errors.first_name = errorMessage
+              } else if (errorMessage.includes('Last name')) {
+                errors.last_name = errorMessage
+              } else if (errorMessage.includes('Middle name')) {
+                errors.middle_name = errorMessage
+              } else if (errorMessage.includes('Birthdate')) {
+                errors.birthdate = errorMessage
+              }
+            })
+          }
+
+          setErrors(errors)
+        }
+      }
     }
   }
-
-  const handleClose = (event: React.SyntheticEvent | Event) => {
-    setSnackBarState((prevState) => ({
-      ...prevState,
-      state: false,
-    }))
-  }
-
-  const action = (
-    <Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </Fragment>
-  )
 
   return (
     <Container
@@ -107,6 +244,12 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         marginBlock: '40px',
       }}
     >
+      <CustomSnackbar
+        errorMessage={errorMessage}
+        successMessage={successMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+      />
       <Typography
         variant="h2"
         sx={{
@@ -118,118 +261,101 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       >
         Sign-up
       </Typography>
-      <Snackbar
-        open={snackBarState.state}
-        autoHideDuration={6000}
-        onClose={handleClose}
-        message={snackBarState.snackBarMessage}
-        action={action}
-      />
-      <TextField
-        onChange={(e) => handleEmail(e.target.value)}
-        type="email"
-        id="email"
-        label="Email address"
-        placeholder="Input your email"
-        sx={{
-          backgroundColor: '#fff',
-          borderRadius: '16px',
-          marginTop: '35px',
-          width: '100%',
-          '& fieldset': { border: 'none' },
-          border: '1px solid #0E2F71',
-          boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
-        }}
-        inputProps={{
-          sx: {
-            fontSize: '24px',
-            color: 'var(--primary-color)',
-            padding: '30px',
-          },
-        }}
-        InputProps={{
-          placeholder: 'Input your email',
-        }}
-        InputLabelProps={{
-          sx: {
-            top: '-55px',
-            left: '-15px',
-            fontSize: '24px',
-            fontWeight: '700',
-          },
-          shrink: false,
-        }}
-      />
-      <TextField
-        onChange={(e) => handlePassword(e.target.value)}
-        type="password"
-        id="password"
-        label="Password"
-        placeholder="Input your password"
-        sx={{
-          backgroundColor: '#fff',
-          borderRadius: '16px',
-          marginTop: '35px',
-          width: '100%',
-          '& fieldset': { border: 'none' },
-          border: '1px solid #0E2F71',
-          boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
-        }}
-        inputProps={{
-          sx: {
-            fontSize: '24px',
-            color: 'var(--primary-color)',
-            padding: '30px',
-          },
-        }}
-        InputProps={{
-          placeholder: 'Input your password',
-        }}
-        InputLabelProps={{
-          sx: {
-            top: '-55px',
-            left: '-15px',
-            fontSize: '24px',
-            fontWeight: '700',
-          },
-          shrink: false,
-        }}
-      />
-      <TextField
-        onChange={(e) => handlePassword2(e.target.value)}
-        type="password"
-        id="password2"
-        label="Confirm Password"
-        placeholder="Input your password"
-        sx={{
-          backgroundColor: '#fff',
-          borderRadius: '16px',
-          marginTop: '35px',
-          width: '100%',
-          '& fieldset': { border: 'none' },
-          border: '1px solid #0E2F71',
-          boxShadow: '-4px -4px 1.9px 0 rgba(0, 0, 0, 10%) inset',
-        }}
-        inputProps={{
-          sx: {
-            fontSize: '24px',
-            color: 'var(--primary-color)',
-            padding: '30px',
-          },
-        }}
-        InputProps={{
-          placeholder: 'Input your password',
-        }}
-        InputLabelProps={{
-          sx: {
-            top: '-55px',
-            left: '-15px',
-            fontSize: '24px',
-            fontWeight: '700',
-          },
-          shrink: false,
-        }}
-      />
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
+          label="Email address"
+          error={errors.email_address}
+          handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleUserCredentials(e.target.value.toLowerCase(), 'email_address')
+          }
+          value={userCredentials.email_address.toLowerCase()}
+          placeholder="Input your email"
+        />
+        <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
+          type="password"
+          label="Password"
+          error={errors.password}
+          handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleUserCredentials(e.target.value, 'password')
+          }
+          value={userCredentials.password}
+          placeholder="Input your password"
+        />
+        <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
+          type="password"
+          label="Confirm Password"
+          error={errors.password2}
+          handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleUserCredentials(e.target.value, 'password2')
+          }
+          value={userCredentials.password2}
+          placeholder="Confirm your password"
+        />
+        <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
+          label="First name"
+          error={errors.first_name}
+          handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleUserCredentials(e.target.value, 'first_name')
+          }
+          value={userCredentials.first_name}
+          placeholder="Input your first name"
+        />
+        <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
+          label="Middle name"
+          error={errors.middle_name}
+          handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleUserCredentials(e.target.value, 'middle_name')
+          }
+          value={userCredentials.middle_name}
+          placeholder="Input your middle name"
+        />
+        <CustomTextfield
+          handleOnKeyDonw={handleSignUp}
+          label="Last name"
+          error={errors.last_name}
+          handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            handleUserCredentials(e.target.value, 'last_name')
+          }
+          value={userCredentials.last_name}
+          placeholder="Input your last name"
+        />
+        <Box>
+          <Typography
+            sx={{
+              fontFamily: 'Roboto',
+              fontSize: '24px',
+              fontWeight: '700',
+              color: '#002147',
+            }}
+          >
+            Birthdate
+          </Typography>
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              onChange={(date) =>
+                handleUserCredentials(date?.toString() as string, 'birthdate')
+              }
+              value={
+                userCredentials.birthdate === null
+                  ? null
+                  : dayjs(userCredentials.birthdate)
+              }
+              slotProps={{
+                textField: {
+                  variant: 'outlined',
+                  sx: { borderColor: errors.birthdate ? 'red' : '' },
+                },
+              }}
+            />
+            <HelperText error={errors.birthdate ? errors.birthdate : ''} />
+          </LocalizationProvider>
+        </Box>
+      </Box>
       <MuiLink
         component={RouterLink}
         to="/sign-in"
@@ -244,7 +370,15 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       >
         Already have and account? Sign-in here
       </MuiLink>
-      <Button
+      <CTAButton
+        id="sign-up"
+        label="Sign up"
+        loading={buttonLoading}
+        handleClick={handleSignUp}
+        styles={{ fontSize: '24px' }}
+      />
+
+      {/* <Button
         onClick={handleSignUp}
         variant="contained"
         color="primary"
@@ -261,7 +395,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         }}
       >
         Sign up
-      </Button>
+      </Button> */}
     </Container>
   )
 }

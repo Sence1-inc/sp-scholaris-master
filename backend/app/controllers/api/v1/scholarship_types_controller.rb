@@ -6,6 +6,7 @@ module Api
     # GET /scholarship_types or /scholarship_types.json
     def index
       @scholarship_types = ScholarshipType.all
+      render json: @scholarship_types
     end
 
     # GET /scholarship_types/1 or /scholarship_types/1.json

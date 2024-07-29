@@ -8,6 +8,7 @@ const theme: Theme = createTheme({
     },
     primary: {
       main: '#002147',
+      light: '#AFC3D9',
     },
     secondary: {
       main: '#f36b3b',
@@ -135,6 +136,17 @@ const theme: Theme = createTheme({
           '& .MuiOutlinedInput-input': {
             padding: '0',
           },
+        },
+      },
+    },
+    MuiFormLabel: {
+      styleOverrides: {
+        root: {
+          fontFamily: 'Roboto',
+          fontSize: '24px',
+          fontWeight: 'bold',
+          marginBottom: '1px',
+          color: '#002147',
         },
       },
     },

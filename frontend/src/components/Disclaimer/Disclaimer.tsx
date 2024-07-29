@@ -11,10 +11,12 @@ export class Disclaimer extends Component {
             DISCLAIMER
           </Typography>
           <Typography variant="body1">
-            We have no affiliation with DepEd, CHED, or any educational
-            institutions, and we do not oversee the scholarship listings on this
-            website. Moreover, we are not connected to any schools or
-            organizations providing scholarship assistance.
+            We are not associated with DepEd, CHED, or any educational
+            institutions, and we do not manage the scholarship listings on this
+            website. Furthermore, we have no affiliation with any schools or
+            organizations offering scholarship assistance. Our role is solely to
+            provide a platform; we are not involved in the content posted and
+            cannot be held responsible for it.
           </Typography>
         </div>
       </section>

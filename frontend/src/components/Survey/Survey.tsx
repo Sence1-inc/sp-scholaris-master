@@ -1,23 +1,32 @@
+import { ThumbUp } from '@mui/icons-material'
 import {
+  Box,
+  Checkbox,
   Container,
+  FormControl,
+  FormControlLabel,
+  FormGroup,
   MenuItem,
+  Radio,
+  RadioGroup,
+  Rating,
   Select,
   TextField,
   Typography,
 } from '@mui/material'
-import React from 'react'
-import { STUDENT_TYPE } from '../../constants/constants'
+import React, { useEffect, useState } from 'react'
 import {
   SurveyQuestion,
   SurveyResponse,
 } from '../../containers/SurveyPage/SurveyPage'
 import { useAppSelector } from '../../redux/store'
+import CustomTextfield from '../CutomTextfield/CustomTextfield'
 
 interface SurveyProps {
   surveyQuestions: SurveyQuestion[] | null
   surveyResponses: SurveyResponse
   handleChange: (
-    event: React.ChangeEvent<HTMLInputElement>,
+    value: string,
     field: string,
     survey_question_id?: number
   ) => void
@@ -29,10 +38,99 @@ const Survey: React.FC<SurveyProps> = ({
   surveyQuestions,
   surveyResponses,
   handleChange,
+  pathname,
 }) => {
-  const subscriber = useAppSelector((state) => state.subscriber)
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const [checkedChoices, setCheckedChoices] = useState<any>({})
+  const [radioChoices, setRadioChoices] = useState<any>({})
 
-  const classifications = ['parent', 'guardian', 'teacher', 'student']
+  const classifications =
+    pathname === '/student/survey'
+      ? ['student', 'parent', 'guardian', 'teacher', 'school personnel']
+      : [
+          'school',
+          'company',
+          'private organization or agency',
+          'government organization, group or agency',
+          'non-profit organization',
+          'individual',
+          'foundation',
+        ]
+
+  useEffect(() => {
+    if (user.email_address) {
+      handleChange(user.email_address, 'email')
+    }
+    // eslint-disable-next-line
+  }, [])
+
+  const handleCheckboxChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    question: SurveyQuestion,
+    choice: string
+  ) => {
+    if (e.target.checked) {
+      if (
+        checkedChoices &&
+        Object.keys(checkedChoices).includes(String(question.id))
+      ) {
+        const data = checkedChoices[question.id]
+        setCheckedChoices({
+          ...checkedChoices,
+          ...{
+            [question.id]: [...data, e.target.name.trim()],
+          },
+        })
+        if (choice.trim() !== 'others') {
+          handleChange(
+            [data, e.target.name.trim()].toString(),
+            'responses',
+            question.id
+          )
+        }
+      } else {
+        setCheckedChoices({
+          ...checkedChoices,
+          ...{
+            [question.id]: [e.target.name.trim()],
+          },
+        })
+        handleChange(e.target.name.trim(), 'responses', question.id)
+      }
+    } else {
+      const data = checkedChoices[question.id]
+      const filteredData = data?.filter((item: string) => item !== choice)
+
+      setCheckedChoices({
+        ...checkedChoices,
+        ...{ [question.id]: filteredData },
+      })
+      handleChange(filteredData.toString(), 'responses', question.id)
+    }
+  }
+
+  const handleRadioChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    question: SurveyQuestion
+  ) => {
+    setRadioChoices({
+      [question.id]: e.target.value,
+    })
+    handleChange(e.target.value, 'responses', question.id)
+  }
+
+  useEffect(() => {
+    const initialRadioChoices: any = {}
+    surveyQuestions?.forEach((question) => {
+      if (question['input_type'].includes('radio')) {
+        const defaultValue = question['choices'].split(', ')[0]
+        initialRadioChoices[question.id] = defaultValue
+      }
+    })
+    setRadioChoices(initialRadioChoices)
+
+    // eslint-disable-next-line
+  }, [surveyQuestions])
 
   return (
     <>
@@ -67,12 +165,16 @@ const Survey: React.FC<SurveyProps> = ({
           required
           size="medium"
           inputProps={{
-            sx: { fontSize: '20px', color: 'var(--primary-color)' },
+            sx: { fontSize: '16px', color: 'var(--primary-color)' },
           }}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            handleChange(e, 'email')
+            handleChange(e.target.value, 'email')
           }
-          value={surveyResponses.email}
+          value={
+            user && user.email_address
+              ? user.email_address
+              : surveyResponses.email
+          }
         />
       </Container>
       <Container sx={{ padding: '0!important' }}>
@@ -85,64 +187,252 @@ const Survey: React.FC<SurveyProps> = ({
         >
           What is your classification?
         </Typography>
-        {subscriber.user_type === STUDENT_TYPE ? (
-          <Select
-            fullWidth
-            labelId="demo-simple-select-label"
-            id="demo-simple-select"
-            value={surveyResponses.classification}
-            sx={{ textAlign: 'left' }}
-            label="Classification"
-            onChange={(e: any) => handleChange(e, 'classification')}
-          >
-            {classifications.map((classification: string) => {
-              return (
-                <MenuItem value="classification">{classification}</MenuItem>
-              )
-            })}
-          </Select>
-        ) : (
-          <TextField
-            required
-            size="medium"
-            inputProps={{
-              sx: { fontSize: '20px', color: 'var(--primary-color)' },
-            }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleChange(e, 'classification')
-            }
-            value={surveyResponses.classification}
-          />
-        )}
+        <Select
+          fullWidth
+          labelId="demo-simple-select-label"
+          id="demo-simple-select"
+          value={surveyResponses.classification}
+          sx={{ textAlign: 'left' }}
+          label="Classification"
+          onChange={(e: any) => handleChange(e.target.value, 'classification')}
+        >
+          {classifications.map((classification: string) => {
+            return (
+              <MenuItem key={classification} value={classification}>
+                {classification}
+              </MenuItem>
+            )
+          })}
+        </Select>
       </Container>
-      {surveyQuestions?.map((questionText, index) => (
+      {surveyQuestions?.map((question: SurveyQuestion, index: number) => (
         <Container key={index} sx={{ padding: '0!important' }}>
           <Typography
             variant="h6"
             sx={{
               marginBottom: '10px',
               textAlign: 'start',
+              whiteSpace: 'pre-line',
             }}
           >
-            {questionText['question_text']}
+            {question['question_text']}
           </Typography>
-          <TextField
-            required
-            multiline
-            minRows={2}
-            size="medium"
-            inputProps={{
-              sx: { fontSize: '20px', color: 'var(--primary-color)' },
-            }}
-            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleChange(e, `responses`, questionText.id)
-            }
-            value={
-              surveyResponses.responses.find(
-                (response) => response.survey_question_id === questionText.id
-              )?.answer || ''
-            }
-          />
+          {question['input_type'].includes('rating') && (
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'start',
+              }}
+            >
+              <Typography
+                variant="subtitle1"
+                color="primary"
+                sx={{ textAlign: 'start' }}
+              >
+                Please consider the following scale when rating: <br />1 = Very
+                Unlikely / Very Dissatisfied / Very Poor <br />2 = Unlikely /
+                Dissatisfied / Poor <br />3 = Neutral / Neither Satisfied nor
+                Dissatisfied / Fair <br />4 = Likely / Satisfied / Good <br />5
+                = Very Likely / Very Satisfied / Excellent
+              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: '40px',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  margin: '10px 0',
+                }}
+              >
+                <Typography variant="body1" color="primary">
+                  Rating:{' '}
+                </Typography>
+                <Rating
+                  sx={{
+                    '& .MuiRating-iconFilled': {
+                      color: 'secondary.main',
+                    },
+                    '& .MuiRating-iconHover': {
+                      color: 'secondary.main',
+                    },
+                  }}
+                  name="text-feedback"
+                  onChange={(e: any) => {
+                    handleChange(e.target.value, 'rating', question.id)
+                  }}
+                  precision={1}
+                  icon={<ThumbUp fontSize="small" sx={{ margin: '0 4px' }} />}
+                  emptyIcon={
+                    <ThumbUp fontSize="small" sx={{ margin: '0 4px' }} />
+                  }
+                />
+              </Box>
+            </Box>
+          )}
+          {question['input_type'].includes('textfield') && (
+            <TextField
+              placeholder={
+                question['input_type'].includes('rating')
+                  ? 'Feel free to share the details or comments behind your rating.'
+                  : ''
+              }
+              required={question['is_required']}
+              multiline
+              minRows={2}
+              size="medium"
+              sx={{ padding: '0' }}
+              inputProps={{
+                sx: {
+                  fontSize: '16px',
+                  color: 'var(--primary-color)',
+                },
+              }}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                handleChange(e.target.value, `responses`, question.id)
+              }
+              value={
+                surveyResponses.responses.find(
+                  (response) => response.survey_question_id === question.id
+                )?.answer || ''
+              }
+            />
+          )}
+          {question['input_type'].includes('checkbox') && (
+            <FormControl
+              key={question.id}
+              component="fieldset"
+              variant="standard"
+              fullWidth
+            >
+              <FormGroup
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'flex-start',
+                }}
+              >
+                {question['choices']
+                  .split(',')
+                  .map((choice: string, index: number) => {
+                    return (
+                      <Box
+                        key={`${question.id}-${index}`}
+                        sx={{
+                          display: 'flex',
+                          width: { sm: '90%', xs: '100%' },
+                        }}
+                      >
+                        <FormControlLabel
+                          key={index}
+                          control={
+                            <Checkbox
+                              onChange={(
+                                e: React.ChangeEvent<HTMLInputElement>
+                              ) => handleCheckboxChange(e, question, choice)}
+                              name={choice}
+                              sx={{
+                                color: 'var(--primary-color)',
+                                '&.Mui-checked': {
+                                  color: 'var(--primary-color)',
+                                },
+                              }}
+                            />
+                          }
+                          label={
+                            <Typography variant="body1" color="primary">
+                              {choice.toUpperCase()}
+                            </Typography>
+                          }
+                        />
+                        {choice.trim() === 'others' && (
+                          <CustomTextfield
+                            placeholder="Please provide details."
+                            styles={{
+                              padding: '6px',
+                              borderRadius: '10px',
+                            }}
+                            handleChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                              const data = checkedChoices[question.id]
+
+                              handleChange(
+                                [data, e.target.value.trim()].toString(),
+                                'responses',
+                                question.id
+                              )
+                            }}
+                          />
+                        )}
+                        {choice.trim() === 'advertisements' && (
+                          <CustomTextfield
+                            placeholder="Kindly specify the type of advertisement."
+                            styles={{
+                              padding: '6px',
+                              borderRadius: '10px',
+                            }}
+                            handleChange={(
+                              e: React.ChangeEvent<HTMLInputElement>
+                            ) => {
+                              const data = checkedChoices[question.id]
+
+                              handleChange(
+                                [data, e.target.value.trim()].toString(),
+                                'responses',
+                                question.id
+                              )
+                            }}
+                          />
+                        )}
+                      </Box>
+                    )
+                  })}
+              </FormGroup>
+            </FormControl>
+          )}
+          {question['input_type'].includes('radio') && (
+            <FormControl
+              key={question.id}
+              component="fieldset"
+              variant="standard"
+              fullWidth
+            >
+              <RadioGroup
+                aria-labelledby="demo-controlled-radio-buttons-group"
+                name="controlled-radio-buttons-group"
+                value={
+                  Object.keys(radioChoices).length > 0
+                    ? radioChoices[question.id]
+                    : question['choices'].split(', ')[0]
+                }
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  handleRadioChange(e, question)
+                }
+              >
+                {question['choices']
+                  .split(',')
+                  .map((choice: string, index: number) => {
+                    return (
+                      <Box
+                        key={`${question.id}-${index}-radio`}
+                        sx={{
+                          display: 'flex',
+                          width: { sm: '90%', xs: '100%' },
+                        }}
+                      >
+                        <FormControlLabel
+                          value={choice.trim()}
+                          control={<Radio />}
+                          label={choice.toUpperCase()}
+                        />
+                      </Box>
+                    )
+                  })}
+              </RadioGroup>
+            </FormControl>
+          )}
         </Container>
       ))}
     </>

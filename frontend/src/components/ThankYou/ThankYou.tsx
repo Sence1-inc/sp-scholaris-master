@@ -3,7 +3,9 @@ import { useNavigate } from 'react-router-dom'
 import { useAppSelector } from '../../redux/store'
 
 const ThankYou = () => {
-  const subscriber = useAppSelector((state) => state.subscriber)
+  const subscriber = useAppSelector(
+    (state) => state.persistedReducer.subscriber
+  )
   const navigate = useNavigate()
   return (
     <Box
@@ -29,6 +31,7 @@ const ThankYou = () => {
         better meet your needs.
       </Typography>
       <Button
+        id="answer-survey"
         onClick={() => navigate(`/${subscriber.user_type}/survey`)}
         fullWidth
         sx={{

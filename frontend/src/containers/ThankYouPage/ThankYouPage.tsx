@@ -11,11 +11,14 @@ const ThankYouPage: React.FC = () => {
     <Box className="content__thank-you">
       <Container className="container">
         <Typography variant="h2">Thank you for your Feedback!</Typography>
-        <Typography variant="h3">We're grateful for your feedback</Typography>
+        <Typography variant="h3">
+          We're grateful for your suggestions and comments.
+        </Typography>
         <Typography variant="body1">
-          We will keep on improving our services and feature.
+          We will keep on improving our services and features.
         </Typography>
         <Button
+          id="back-home"
           variant="contained"
           sx={{
             bgcolor: '#f36b3b',

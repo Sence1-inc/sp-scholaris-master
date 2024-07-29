@@ -1,22 +1,16 @@
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import {
-  Alert,
-  Box,
-  Button,
-  IconButton,
-  Snackbar,
-  Tooltip,
-  Typography,
-} from '@mui/material'
+import { Box, IconButton, Tooltip } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
-import useGetScholarships from '../../hooks/useGetScholarships'
-import { useAppSelector } from '../../redux/store'
+import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
+import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
+import CustomSnackbar from '../CustomSnackbar/CustomSnackbar'
 
 interface GridRowDef {
   id: number
@@ -28,42 +22,25 @@ interface GridRowDef {
 
 export default function DataTable() {
   const navigate = useNavigate()
-  const { getScholarships } = useGetScholarships()
-  const data: any = useAppSelector((state) => state.scholarships)
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const dispatch = useAppDispatch()
+  const { getScholarshipData } = useGetScholarshipsData()
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [selectedRow, setSelectedRow] = useState<number>(0)
   const [successMessage, setSuccessMessage] = useState<string>('')
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [warningMessage, setWarningMessage] = useState<string>('')
+  const [page, setPage] = useState<number>(0)
+  const [pageSize, setPageSize] = useState<number>(10)
+  const [rowCount, setRowCount] = useState<number>(0)
 
   useEffect(() => {
-    getScholarships(false)
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    if (data.scholarships.length > 0) {
+    if (rowCount === 0) {
       setIsLoading(false)
-    } else {
-      setIsLoading(true)
     }
-  }, [data])
-
-  useEffect(() => {
-    if (data.scholarships) {
-      const row = data.scholarships.map((scholarship: Scholarship) => {
-        return {
-          id: scholarship.id,
-          scholarshipName: scholarship.scholarship_name,
-          startDate: new Date(scholarship.start_date),
-          endDate: new Date(scholarship.due_date),
-          status: scholarship.status,
-        }
-      })
-
-      setRowData(row)
-    }
-  }, [data])
+  }, [rowCount])
 
   useEffect(() => {
     if (!isSnackbarOpen) {
@@ -72,20 +49,84 @@ export default function DataTable() {
   }, [isSnackbarOpen])
 
   const handleDelete = async () => {
+    setIsLoading(true)
     try {
       const response = await axiosInstance.delete(
-        `/api/v1/scholarships/${selectedRow}`
+        `/api/v1/scholarships/${selectedRow}?page=${page + 1}&limit=${pageSize}`,
+        {
+          timeout: 100000,
+          withCredentials: true,
+        }
       )
-      console.log(response)
-      if (response) {
+      setIsLoading(false)
+      if (response.data) {
         setIsSnackbarOpen(true)
-        setSuccessMessage(response.data.message)
-        getScholarships(false)
+        setWarningMessage('')
+        setSuccessMessage('Successfully deleted')
+        formatScholarships(response.data.scholarships)
       }
     } catch (error) {
-      console.log(error)
+      setIsLoading(false)
+      if (error) {
+        setIsSnackbarOpen(true)
+        setWarningMessage('')
+        setSuccessMessage('')
+        setErrorMessage('Error deleting scholarship')
+      }
     }
   }
+
+  useEffect(() => {
+    dispatch(initializeScholarshipData({}))
+    // eslint-disable-next-line
+  }, [])
+
+  const formatScholarships = (data: Scholarship[]) => {
+    const row = data.map((scholarship: Scholarship) => {
+      return {
+        id: scholarship.id,
+        listing_id: scholarship.listing_id,
+        scholarshipName: scholarship.scholarship_name,
+        startDate: new Date(scholarship.start_date),
+        endDate: new Date(scholarship.due_date),
+        status: scholarship.status,
+      }
+    })
+
+    setRowData(row)
+  }
+
+  useEffect(() => {
+    const getProviderScholarships = async () => {
+      try {
+        setIsLoading(true)
+        const response = await axiosInstance.get(
+          `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships?page=${page + 1}&limit=${pageSize}`,
+          {
+            timeout: 100000,
+            withCredentials: true,
+          }
+        )
+
+        if (response.status === 200) {
+          setIsLoading(false)
+          setRowCount(response.data.total_count)
+          formatScholarships(response.data.scholarships)
+        }
+      } catch (error: any) {
+        setIsLoading(false)
+        if (error) {
+          setRowData([])
+          if (error.response && error.response.status === 403) {
+            navigate('/')
+          }
+        }
+      }
+    }
+
+    getProviderScholarships()
+    // eslint-disable-next-line
+  }, [page, pageSize])
 
   const renderActions = (params: any) => {
     return (
@@ -100,7 +141,10 @@ export default function DataTable() {
         </Tooltip>
         <Tooltip title="Edit">
           <IconButton
-            onClick={() => navigate(`/scholarships/${params.row.id}/update`)}
+            onClick={() => {
+              getScholarshipData(params.row.id)
+              navigate(`/scholarships/${params.row.id}/update`)
+            }}
             sx={{ color: '#1F4BEA' }}
           >
             <EditIcon />
@@ -109,6 +153,7 @@ export default function DataTable() {
         <Tooltip title="Delete">
           <IconButton
             onClick={() => {
+              setWarningMessage('Are you sure you want to delete?')
               setSelectedRow(params.row.id)
               setIsSnackbarOpen(true)
             }}
@@ -122,8 +167,13 @@ export default function DataTable() {
   }
 
   const columns = [
-    { field: 'id', headerName: 'ID', flex: 0.3 },
-    { field: 'scholarshipName', headerName: 'Scholarship Name', flex: 1.5 },
+    // { field: 'id', headerName: 'ID', flex: 0.3 },
+    { field: 'listing_id', headerName: 'Listing ID', flex: 0.5 },
+    {
+      field: 'scholarshipName',
+      headerName: 'Scholarship Name',
+      flex: 1.5,
+    },
     { field: 'startDate', headerName: 'Start Date', type: 'date', flex: 0.5 },
     { field: 'endDate', headerName: 'End Date', type: 'date', flex: 0.5 },
     { field: 'status', headerName: 'Status', flex: 0.5 },
@@ -136,65 +186,38 @@ export default function DataTable() {
     },
   ]
 
+  const handlePageChange = (params: { page: number; pageSize: number }) => {
+    setPage(params.page)
+    setPageSize(params.pageSize)
+  }
+
   return (
     <div style={{ height: 'auto', width: '100%', borderRadius: '16px' }}>
-      <Snackbar
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-        open={isSnackbarOpen}
-        onClose={() => setIsSnackbarOpen(false)}
-        autoHideDuration={6000}
-        key="topcenter"
-      >
-        <Alert
-          onClose={() => setIsSnackbarOpen(false)}
-          severity={successMessage ? 'success' : 'warning'}
-          variant={successMessage ? 'filled' : 'standard'}
-          sx={{ width: '100%' }}
-        >
-          {successMessage ? (
-            <Typography>{successMessage}</Typography>
-          ) : (
-            <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-              <Typography>Are you sure you want to delete?</Typography>
-              <Box
-                sx={{
-                  display: 'flex',
-                  gap: '20px',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}
-              >
-                <Button
-                  color="primary"
-                  onClick={() => setIsSnackbarOpen(false)}
-                  sx={{ alignSelf: 'center' }}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  color="inherit"
-                  onClick={handleDelete}
-                  sx={{ alignSelf: 'center' }}
-                >
-                  Delete
-                </Button>
-              </Box>
-            </Box>
-          )}
-        </Alert>
-      </Snackbar>
+      <CustomSnackbar
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+        warningMessage={warningMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+        handleWarningProceed={handleDelete}
+      />
       <DataGrid
+        localeText={{ noRowsLabel: 'No saved data' }}
         rows={rowData}
+        rowCount={rowCount}
         columns={columns}
+        onPaginationModelChange={handlePageChange}
         initialState={{
           pagination: {
-            paginationModel: { page: 0, pageSize: 10 },
+            paginationModel: { page: page, pageSize: 10 },
           },
         }}
         pageSizeOptions={[5, 10]}
-        checkboxSelection
+        pagination
+        paginationMode="server"
         loading={isLoading}
         sx={{
+          height: Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,
           '.MuiDataGrid-root': {
             border: 'none',
           },
@@ -220,11 +243,17 @@ export default function DataTable() {
               backgroundColor: '#F1F1F1', // Change background color of odd rows
             },
           },
+          '& .MuiDataGrid-overlay': {
+            zIndex: '20',
+          },
           borderRadius: '16px',
           fontFamily: 'Outfit',
           fontSize: {
             xs: '12px',
             md: '1rem',
+          },
+          '& .MuiDataGrid-row:hover': {
+            backgroundColor: 'secondary.main',
           },
         }}
       />

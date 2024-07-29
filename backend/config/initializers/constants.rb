@@ -1,9 +1,9 @@
 PROVIDER_TYPE = 'provider'.freeze
 STUDENT_TYPE = 'student'.freeze
 
-STUDENT_NEWSLETTER_SUBJECT = "Thank you for subscribing!".freeze
+STUDENT_NEWSLETTER_SUBJECT = "Thank you for subscribing to Scholaris!".freeze
 STUDENT_NEWSLETTER_CONTENT = "
-  <h1>Thank You for Subscribing to the <span class='color-secondary'>Scholaris</span> Newsletter!</h1>
+  <h1>Thank You for Subscribing to the <span class='color-secondary'>Scholaris</span> newsletter!</h1>
   <p>
     Stay ahead of the competition with exclusive access to the latest scholarships, application tips, and other exciting news delivered straight to your inbox.
   </p>
@@ -29,19 +29,28 @@ STUDENT_NEWSLETTER_CONTENT = "
 
   <p>
     Stay tuned for what's ahead in the next few months for <span class='color-secondary'>Scholaris</span>. We look forward to being part of your academic success story. Welcome to the <span class='color-secondary'>Scholaris</span> community!
-  </p> 
+  </p>
+
+  <section>
+    <p>Best regards, <br/>The Scholaris Team</p>
+    <hr/>
+    <p>For any issues, please contact us: <br/>
+      Email: <a href='mailto:scholaris-support@sence1.com'>scholaris-support@sence1.com</a> <br/>
+      Visit our website: <a href='https://scholaristest.sence1.com'>https://scholaristest.sence1.com</a>
+    </p>
+  </section>
 ".freeze
 
-PROVIDER_NEWSLETTER_SUBJECT = "Thank you for subscribing!".freeze
+PROVIDER_NEWSLETTER_SUBJECT = "Thank you for subscribing to Scholaris!".freeze
 PROVIDER_NEWSLETTER_CONTENT = "
-  <h1>Thank You for Signing Up for <span class='color-secondary'>Scholaris</span>!</h1>
+  <h1>Thank you for signing up to our newsletter! You will now be receiving the latest updates from <span class='color-secondary'>Scholaris</span>!</h1>
 
   <p>
     <span class='color-secondary'>Scholaris</span> is a service that will revolutionize the way scholarship programs are implemented. This service will aid you in finding the best candidate for your scholarships, matching their inclinations, aptitudes, and competencies that suit your organization’s vision.
   </p>
 
   <p>
-    As a Scholarship Granting Organization, we have the following features in store for the future:
+    For Scholarship Granting Organizations, we have the following features in store for you in the future:
   </p>
 
   <ul>
@@ -66,4 +75,13 @@ PROVIDER_NEWSLETTER_CONTENT = "
   <p>
     Stay tuned for what's ahead in the next few months for <span class='color-secondary'>Scholaris</span>. We are proud that you will become part of something revolutionary for the education scene!
   </p>
+
+  <section>
+    <p>Best regards, <br/>The Scholaris Team</p>
+    <hr/>
+    <p>For any issues, please contact us: <br/>
+      Email: <a href='mailto:scholaris-support@sence1.com'>scholaris-support@sence1.com</a> <br/>
+      Visit our website: <a href='https://scholaristest.sence1.com'>https://scholaristest.sence1.com</a>
+    </p>
+  </section>
 ".freeze

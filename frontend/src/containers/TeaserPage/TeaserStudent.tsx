@@ -1,7 +1,7 @@
 import EmailIcon from '@mui/icons-material/Email'
 import { Box } from '@mui/material'
 import { keyframes } from '@mui/system'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import FabButton from '../../components/FabButton/FabButton'
 import FeatureGuides from '../../components/Feature/FeatureGuides'
 import FloatingElement from '../../components/FloatingElement/FloatingElement'
@@ -14,6 +14,8 @@ import {
   STUDENT_WELCOME_SUBHEADER,
   STUDENT_WELCOME_THIRD_LEVEL_HEADING,
 } from '../../data/StudentContent'
+import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
+import { useAppDispatch } from '../../redux/store'
 
 const jump = keyframes({
   '0%': { transform: 'translateY(0)' },
@@ -22,6 +24,7 @@ const jump = keyframes({
 })
 
 const HomePage: React.FC = () => {
+  const dispatch = useAppDispatch()
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -31,6 +34,11 @@ const HomePage: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
+  useEffect(() => {
+    dispatch(initializeParams({}))
+    // eslint-disable-next-line
+  }, [])
 
   return (
     <>
@@ -58,6 +66,7 @@ const HomePage: React.FC = () => {
         />
       </FloatingElement>
       <FabButton
+        id="fab-button-student"
         icon={
           <EmailIcon
             sx={{

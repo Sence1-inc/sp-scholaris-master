@@ -1,21 +1,78 @@
+import { Button, Container, Typography } from '@mui/material'
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Button, Container, Typography, Alert, IconButton } from '@mui/material'
-import CloseIcon from '@mui/icons-material/Close'
-import CheckIcon from '../../public/images/checkIcon.svg'
+import { useNavigate, useParams } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
+import { User } from '../../redux/types'
 
 interface VerifyEmailProps {}
 
 const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
-  const [showAlert, setShowAlert] = useState(false)
+  const { token } = useParams()
   const navigate = useNavigate()
+  const [errorMessage, setErrorMessage] = useState<string>('')
+  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
+  const [isExpired, setIsExpired] = useState<boolean>(false)
+  const [isAlreadyVerified, setIsAlreadyVerified] = useState<boolean>(false)
+  const [user, setUser] = useState<User | null>(null)
 
-  const handleVerifyEmail = () => {
-    setShowAlert(true)
+  const handleVerifyEmail = async () => {
+    try {
+      const response = await axiosInstance.get(`/api/v1/verify_email/${token}`)
+      setSuccessMessage('')
+      if (response.data.status === 'verified') {
+        navigate('/sign-in')
+      } else if (response.data.status === 'invalid link') {
+        setIsSnackbarOpen(true)
+        setIsExpired(false)
+        setErrorMessage('Invalid link. Your account may already be verified.')
+        setIsAlreadyVerified(true)
+      } else {
+        setIsSnackbarOpen(true)
+        setErrorMessage('Failed verifying account')
+        setIsExpired(false)
+        setIsAlreadyVerified(false)
+      }
+    } catch (error: any) {
+      setSuccessMessage('')
+      setIsSnackbarOpen(true)
+      if (error) {
+        if (error?.response?.data?.status === 'expired') {
+          setIsExpired(true)
+          setUser(error?.response?.data?.user)
+          setIsAlreadyVerified(false)
+          setErrorMessage(error?.response?.data?.msg)
+        } else {
+          setIsExpired(false)
+          setIsAlreadyVerified(false)
+          setErrorMessage('Failed verifying account')
+        }
+      }
+    }
+  }
 
-    setTimeout(() => {
-      setShowAlert(false)
-    }, 5000)
+  const handleResendVerificationEmail = async () => {
+    try {
+      const response = await axiosInstance.post(
+        '/api/v1/resend_verification',
+        {
+          token: token,
+          id: user?.id,
+        },
+        { withCredentials: true }
+      )
+
+      if (response.status === 200) {
+        setErrorMessage('')
+        setIsSnackbarOpen(true)
+        setSuccessMessage(response.data.msg)
+      }
+    } catch (error: any) {
+      setIsSnackbarOpen(true)
+      setSuccessMessage('')
+      setErrorMessage(error?.response?.data?.msg)
+    }
   }
 
   return (
@@ -24,128 +81,126 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
       sx={{
         display: 'flex',
         flexDirection: 'column',
-        gap: '50px',
+        gap: '30px',
         alignItems: 'center',
         paddingBlock: '120px',
       }}
     >
-      {showAlert && (
-        <Alert
+      <CustomSnackbar
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+      />
+      <>
+        <Typography
+          variant="h2"
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            position: 'absolute',
-            right: '20px',
-            top: '120px',
-            padding: '10px 25px',
-            fontSize: '26px',
-            color: '#fff',
-            backgroundColor: '#1AA5D8',
-            borderRadius: '16px',
+            textTransform: 'capitalize',
+            fontSize: '64px',
+            fontWeight: '700',
+            color: 'var(--secondary-color)',
+            textAlign: 'center',
+            paddingBottom: '50px',
           }}
-          iconMapping={{
-            success: (
-              <img
-                src={CheckIcon}
-                alt="Check Icon"
-                style={{ width: 'inherit', height: 'inherit' }}
-              />
-            ),
-            error: <CloseIcon fontSize="inherit" />,
-          }}
-          action={
-            <IconButton
-              color="inherit"
-              size="medium"
-              sx={{
-                width: '50px',
-                height: '50px',
-              }}
-              edge="end"
-              onClick={() => setShowAlert(false)}
-            >
-              <CloseIcon fontSize="inherit" />
-            </IconButton>
-          }
         >
-          Signed up successfully
-        </Alert>
-      )}
-      <Typography
-        variant="h2"
-        sx={{
-          textTransform: 'capitalize',
-          fontSize: '64px',
-          fontWeight: '700',
-          color: 'var(--secondary-color)',
-          textAlign: 'center',
-        }}
-      >
-        Thank you for signing up
-      </Typography>
-      <Typography
-        sx={{
-          fontSize: '16px',
-          fontWeight: '300px',
-          textAlign: 'center',
-          color: '#767676',
-        }}
-      >
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sit amet
-        purus nulla. Suspendisse egestas erat eu lectus semper, quis
-        sollicitudin diam blandit. Sed rhoncus, nisi ac sollicitudin ultricies,
-        ante turpis fermentum elit, id euismod dolor augue mollis dui. Integer
-        efficitur diam sed tellus feugiat, et posuere tortor vestibulum.
-      </Typography>
-      <Button
-        onClick={handleVerifyEmail}
-        variant="contained"
-        color="primary"
-        sx={{
-          borderRadius: '16px',
-          backgroundColor: '#f36b3b',
-          padding: '20px',
-          margin: '0 auto',
-          width: '100%',
-          maxWidth: '550px',
-          '&:hover': { backgroundColor: '#d2522b' },
-          textTransform: 'inherit',
-          fontSize: '24px',
-        }}
-      >
-        Verify Email
-      </Button>
-      <Typography
-        sx={{
-          fontSize: '16px',
-          fontWeight: '300px',
-          textAlign: 'center',
-          color: '#767676',
-        }}
-      >
-        Check your email to verify your account
-      </Typography>
-      <Button
-        onClick={() => navigate('/sign-in')}
-        variant="contained"
-        sx={{
-          backgroundColor: 'transparent',
-          border: 'none',
-          boxShadow: 'none',
-          padding: '0',
-          margin: '0 auto',
-          width: '100%',
-          maxWidth: '320px',
-          '&:hover': { backgroundColor: 'transparent', boxShadow: 'none' },
-          textTransform: 'inherit',
-          fontStyle: 'italic',
-          fontSize: '24px',
-          color: '#1AA5D8',
-        }}
-      >
-        Sign-in Account
-      </Button>
+          Thank you for signing up!
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: '16px',
+            fontWeight: '300px',
+            textAlign: 'center',
+            color: '#767676',
+          }}
+        >
+          To make sure your email address is valid, click on the Verify Email
+          button below.
+        </Typography>
+        <Typography
+          sx={{
+            fontSize: '16px',
+            fontWeight: '300px',
+            textAlign: 'center',
+            color: '#767676',
+          }}
+        >
+          Thank you for taking the time to verify your email. We look forward to
+          bringing you the best experience possible!
+        </Typography>
+        {isAlreadyVerified ? (
+          <Button
+            id="sign-in-from-verification-page"
+            onClick={() => navigate('/sign-in')}
+            variant="contained"
+            color="primary"
+            sx={{
+              borderRadius: '16px',
+              backgroundColor: '#f36b3b',
+              padding: '20px',
+              margin: '0 auto',
+              width: '100%',
+              maxWidth: '550px',
+              '&:hover': { backgroundColor: '#d2522b' },
+              textTransform: 'inherit',
+              fontSize: '24px',
+            }}
+          >
+            Sign in
+          </Button>
+        ) : isExpired ? (
+          <Button
+            id="resend-verification"
+            onClick={handleResendVerificationEmail}
+            variant="contained"
+            color="primary"
+            sx={{
+              borderRadius: '16px',
+              backgroundColor: '#f36b3b',
+              padding: '20px',
+              margin: '50px auto',
+              width: '100%',
+              maxWidth: '550px',
+              '&:hover': { backgroundColor: '#d2522b' },
+              textTransform: 'inherit',
+              fontSize: '24px',
+            }}
+          >
+            Resend Verification Email
+          </Button>
+        ) : (
+          <Button
+            id="verify"
+            onClick={handleVerifyEmail}
+            variant="contained"
+            color="primary"
+            sx={{
+              borderRadius: '16px',
+              backgroundColor: '#f36b3b',
+              padding: '20px',
+              margin: '50px auto',
+              width: '100%',
+              maxWidth: '550px',
+              '&:hover': { backgroundColor: '#d2522b' },
+              textTransform: 'inherit',
+              fontSize: '24px',
+            }}
+          >
+            Verify Email
+          </Button>
+        )}
+        <Typography
+          sx={{
+            fontSize: '16px',
+            fontWeight: '300px',
+            textAlign: 'center',
+            color: '#767676',
+          }}
+        >
+          If you need any help or have any questions, please contact our support
+          team at scholaris@sence1.com.
+        </Typography>
+      </>
     </Container>
   )
 }

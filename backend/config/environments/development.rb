@@ -33,6 +33,8 @@ Rails.application.configure do
     config.cache_store = :null_store
   end
 
+  config.action_dispatch.cookies_same_site_protection = :lax
+
   # Store uploaded files on the local file system (see config/storage.yml for options).
   config.active_storage.service = :local
 
@@ -82,6 +84,14 @@ Rails.application.configure do
     address: 'mailhog',
     port: 1025,
   }
+  # config.action_mailer.smtp_settings = {
+  #   address:              'smtp.sendgrid.net',
+  #   port:                 587,
+  #   user_name:            ENV['SENDGRID_USERNAME'],
+  #   password:             ENV['SENDGRID_PASSWORD'],
+  #   authentication:       :plain,
+  #   enable_starttls_auto: true
+  # }
 
   config.hosts << "backend:5001"
 

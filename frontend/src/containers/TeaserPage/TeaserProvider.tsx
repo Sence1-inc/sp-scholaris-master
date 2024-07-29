@@ -11,6 +11,7 @@ import { PROVIDER_TYPE } from '../../constants/constants'
 import {
   FEATURES,
   PROVIDER_WELCOME_SUBHEADER,
+  PROVIDER_WELCOME_THIRD_LEVEL_HEADING
 } from '../../data/ProviderContent'
 
 const jump = keyframes({
@@ -29,10 +30,11 @@ const HomePage: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null)
   }
+
   return (
     <>
-      <WelcomeSection subheader={PROVIDER_WELCOME_SUBHEADER} />
-      <FeatureGuides features={FEATURES} contentType="providerFeatures" />
+      <WelcomeSection subheader={PROVIDER_WELCOME_SUBHEADER} third_level_header={PROVIDER_WELCOME_THIRD_LEVEL_HEADING} usertype={PROVIDER_TYPE} />
+      <FeatureGuides features={FEATURES} contentType="providerFeatures" usertype={PROVIDER_TYPE}/>
       <FloatingElement anchorEl={anchorEl} handleClose={handleClose}>
         <Newsletter
           user_type={PROVIDER_TYPE}
@@ -51,6 +53,7 @@ const HomePage: React.FC = () => {
         />
       </FloatingElement>
       <FabButton
+        id="fab-button-provider"
         icon={
           <EmailIcon
             sx={{ mr: 1, animation: `${jump} 0.5s ease-in-out infinite` }}

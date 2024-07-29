@@ -1,17 +1,25 @@
-import { Typography, useTheme } from '@mui/material'
+import { OpenInNew } from '@mui/icons-material'
+import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
+import HomeIcon from '@mui/icons-material/Home'
+import { Box, Button, Typography, useMediaQuery } from '@mui/material'
+import { DataGrid, GridRowParams } from '@mui/x-data-grid'
+import Cookies from 'js-cookie'
+import queryString from 'query-string'
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
-import Breadcrumbs from '../../components/Breadcrumbs/Breadcrumbs'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import Search from '../../components/Search/Search'
-import Table from '../../components/Table/Table'
 import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
+import theme from '../../styles/theme'
 import './SearchResultsPage.css'
 
-interface Results {
-  scholarships: Scholarship[]
+interface GridRowDef {
+  scholarshipName: string
+  startDate: string | Date
+  endDate: string | Date
+  provider: string
 }
 
 interface SearchResultsPageProps {
@@ -21,8 +29,8 @@ interface SearchResultsPageProps {
 export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   isASection,
 }) => {
-  const theme = useTheme()
   const dispatch = useAppDispatch()
+  const navigate = useNavigate()
   const { getScholarships } = useGetScholarships()
   const [searchParams] = useSearchParams()
   const course = searchParams.get('course')
@@ -33,82 +41,257 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const due_date = searchParams.get('due_date')
   const location = searchParams.get('location')
   const name = searchParams.get('name')
-  const result = useAppSelector((state) => state.scholarships) as Results
-  const [scholarships, setScholarships] = useState<Scholarship[]>([])
-  const [page, setPage] = useState<number>(1)
+  const result: any = useAppSelector(
+    (state) => state.persistedReducer.scholarships
+  )
+  const [page, setPage] = useState<number>(0)
   const params = useAppSelector((state) => state.searchParams)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [totalCount, setTotalCount] = useState<number>(10)
+  const [rowData, setRowData] = useState<GridRowDef[]>([])
+
+  const sm = useMediaQuery(theme.breakpoints.up('sm'))
+
+  const columns = [
+    {
+      field: 'scholarshipName',
+      headerName: 'Scholarship Name',
+      ...(sm ? { flex: 1.5 } : { width: 200 }),
+    },
+    {
+      field: 'startDate',
+      headerName: 'Start Date',
+      ...(sm ? { flex: 1 } : { width: 150 }),
+    },
+    {
+      field: 'endDate',
+      headerName: 'End Date',
+      ...(sm ? { flex: 1 } : { width: 150 }),
+    },
+    {
+      field: 'provider',
+      headerName: 'Organization',
+      type: 'string',
+      ...(sm ? { flex: 1 } : { width: 200 }),
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      ...(sm ? { flex: 1 } : {}),
+      renderCell: (params: any) => renderActions(params),
+    },
+  ]
+
+  const renderActions = (params: any) => {
+    return (
+      <Box>
+        <Typography
+          color="primary"
+          component={Link}
+          to={`/scholarships/${params.row.id}`}
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: '8px',
+            width: '150px',
+          }}
+        >
+          View
+          <OpenInNew fontSize="small" />
+        </Typography>
+      </Box>
+    )
+  }
+
+  const formatScholarships = (data: Scholarship[]) => {
+    const row = data.map((scholarship: Scholarship) => {
+      return {
+        id: scholarship.id,
+        scholarshipName: scholarship.scholarship_name,
+        startDate: new Date(scholarship.start_date).toDateString(),
+        endDate: new Date(scholarship.due_date).toDateString(),
+        provider: scholarship.scholarship_provider.provider_name,
+      }
+    })
+    setIsLoading(false)
+    setRowData(row)
+  }
+
+  const handlePageChange = (par: { page: number; pageSize: number }) => {
+    setIsLoading(true)
+    setPage(par.page + 1)
+    dispatch(initializeParams({ ...params.params, limit: par.pageSize }))
+    setIsLoading(false)
+  }
 
   useEffect(() => {
-    setScholarships(result.scholarships)
-  }, [result.scholarships])
-
-  const handleNext = () => {
-    if (scholarships.length === 10) {
-      setPage(page + 1)
-      dispatch(initializeParams({ ...params.params, page: page + 1 }))
+    if (page > 0) {
+      dispatch(initializeParams({ ...params.params, page: page }))
     }
-  }
+    // eslint-disable-next-line
+  }, [page])
 
-  const handlePrevious = () => {
-    if (page >= 2) {
-      setPage((prevPage) => prevPage - 1)
-      dispatch(initializeParams({ ...params.params, page: page - 1 }))
+  useEffect(() => {
+    if (params.params.page) {
+      getScholarships()
     }
-  }
+    // eslint-disable-next-line
+  }, [params.params.page])
+
+  useEffect(() => {
+    if (
+      Array.isArray(result.scholarships.scholarships) &&
+      result.scholarships.scholarships.length > 0
+    ) {
+      formatScholarships(result.scholarships.scholarships)
+      setTotalCount(result.scholarships.total_count)
+    } else {
+      setRowData([])
+    }
+    // eslint-disable-next-line
+  }, [result.scholarships.scholarships])
+
+  useEffect(() => {
+    if ((params?.params?.page as number) > result?.scholarships?.total_pages) {
+      setPage(result.scholarships.total_pages)
+      dispatch(
+        initializeParams({
+          ...params.params,
+          page: result.scholarships.total_pages,
+        })
+      )
+    }
+    // eslint-disable-next-line
+  }, [params.params.page, result.scholarships.total_pages])
 
   useEffect(() => {
     const initialData = {
-      params: {
-        ...params.params,
-        ...(course && { course: course }),
-        ...(school && { school: school }),
-        ...(benefits && { benefits: benefits }),
-        ...(location && { location: location }),
-        ...(start_date && { start_date: start_date }),
-        ...(due_date && { due_date: due_date }),
-        ...(provider && { provider: provider }),
-        ...(name && { name: name }),
-      },
+      ...params.params,
+      ...(course && { course: course }),
+      ...(school && { school: school }),
+      ...(benefits && { benefits: benefits }),
+      ...(location && { location: location }),
+      ...(start_date && { start_date: start_date }),
+      ...(due_date && { due_date: due_date }),
+      ...(provider && { provider: provider }),
+      ...(name && { name: name }),
     }
 
-    dispatch(initializeParams(initialData.params))
+    dispatch(initializeParams(initialData))
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [course, school, benefits, location, start_date, due_date, provider, name])
 
   useEffect(() => {
-    const hasParametersInURL = searchParams.size > 0
+    const queryParams = queryString.stringify(params.params)
+    navigate(`/scholarships?${queryParams}`)
+    // eslint-disable-next-line
+  }, [params.params])
 
-    if (
-      Object.keys(params.params).some(
-        (param) => params.params[param] !== undefined
-      ) &&
-      hasParametersInURL
-    ) {
-      getScholarships()
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, params.params])
+  const handleRowClick = (params: GridRowParams) => {
+    navigate(`/scholarships/${params.row.id}`)
+  }
 
   return (
     <section className="search-results">
-      <div className="container-1040">
-        <Breadcrumbs />
+      <div className="container-1040" style={{ width: '100%' }}>
+        <Button
+          id="back-from-search-results-page"
+          onClick={() => {
+            navigate((Cookies.get('lastVisited') as string) ?? '/')
+          }}
+          sx={{
+            alignSelf: 'flex-start',
+            color: 'secondary.main',
+            fontSize: '24px',
+            fontWeight: 700,
+            textDecoration: 'none',
+            '&:hover': {
+              textDecoration: 'underline',
+            },
+          }}
+        >
+          {!Cookies.get('lastVisited') ? (
+            <>
+              <HomeIcon />
+              Main Menu
+            </>
+          ) : (
+            <>
+              <ArrowBackIos /> Back
+            </>
+          )}
+        </Button>
         <Typography variant="h3">Search Results</Typography>
         <Search isSection={false} />
-        {window.innerWidth > theme.breakpoints.values.md ? (
-          <Table
-            page={page}
-            hasPagination={true}
-            handleNext={handleNext}
-            handlePrevious={handlePrevious}
-            scholarships={scholarships}
-          />
-        ) : (
-          <Typography sx={{ textAlign: 'center' }}>
-            You can see the results on a larger display or switch to landscape
-            mode for better viewing.
-          </Typography>
-        )}
+        <DataGrid
+          onRowClick={handleRowClick}
+          localeText={{ noRowsLabel: 'No saved data' }}
+          rows={rowData}
+          rowCount={totalCount}
+          columns={columns}
+          onPaginationModelChange={handlePageChange}
+          initialState={{
+            pagination: {
+              paginationModel: { page: page, pageSize: 10 },
+            },
+          }}
+          pageSizeOptions={[10]}
+          pagination
+          paginationMode="server"
+          loading={isLoading}
+          sx={{
+            height: 'auto',
+            '.MuiDataGrid-root': {
+              border: 'none',
+            },
+            '& .MuiDataGrid-columnHeaders': {
+              backgroundColor: '#AFC3D9',
+            },
+            '& .MuiDataGrid-footerContainer': {
+              backgroundColor: '#AFC3D9', // Change table header color
+            },
+            '& .MuiDataGrid-row': {
+              '&:nth-of-type(odd)': {
+                backgroundColor: '#E0EFFF', // Change background color of odd rows
+              },
+              '&:nth-of-type(even)': {
+                backgroundColor: '#E0EFFF', // Change background color of odd rows
+              },
+            },
+            '& .MuiDataGrid-overlay': {
+              zIndex: '20',
+            },
+            '.MuiDataGrid-overlayWrapper': {
+              minHeight: '200px',
+              height:
+                rowData.length > 0 ? 'auto !important' : '200px !important',
+            },
+            '.MuiDataGrid-overlayWrapperInner': {
+              minHeight: '200px',
+              height:
+                rowData.length > 0 ? 'auto !important' : '200px !important',
+            },
+            fontFamily: 'Outfit',
+            fontSize: {
+              xs: '15px',
+              md: '1rem',
+            },
+            '& .MuiDataGrid-row:hover': {
+              backgroundColor: 'secondary.main',
+              cursor: 'pointer',
+            },
+          }}
+        />
+        <Typography variant="body1">
+          For Scholarship Granting Organizations:
+          <br />
+          If you are a scholarship granting organization and would like to
+          request edits to the listed data, please contact us with the title and
+          details page link of the relevant scholarship at
+          support-scholaris@sence1.com
+        </Typography>
       </div>
     </section>
   )
