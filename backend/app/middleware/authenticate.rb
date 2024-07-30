@@ -44,6 +44,7 @@ class Authenticate
     '/api/v1/provinces/index',
     '/api/v1/regions',
     '/api/v1/regions/index',
+    '/api/v1/scholarship_applications/send_email',
   ].freeze
 
 
