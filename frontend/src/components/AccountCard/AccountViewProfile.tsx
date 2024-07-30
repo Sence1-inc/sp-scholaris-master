@@ -14,6 +14,7 @@ import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { useAppSelector } from '../../redux/store'
 import { Profile } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
+import CustomSnackbar from '../CustomSnackbar/CustomSnackbar'
 import AccountCard from './AccountCard'
 
 export interface ProfileData {
@@ -48,6 +49,8 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
     null
   )
   const [isEditting, setIsEditting] = useState<boolean>(false)
+  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
+  const [errorMessage, setErrorMessage] = useState<string>('')
 
   useEffect(() => {
     if (profile) {
@@ -99,10 +102,9 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
         if (response) {
           setPhAddresses(response.data)
         }
-      } catch (error) {
-        if (error) {
-          console.log('Error in fetching regions : ', error)
-        }
+      } catch (error: any) {
+        setIsSnackbarOpen(true)
+        setErrorMessage(error.response.data.error)
       }
     }
 
@@ -118,6 +120,11 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
       heading="Account View Profile"
       subHeading="Check and edit your organization account information"
     >
+      <CustomSnackbar
+        errorMessage={errorMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+      />
       <Box sx={profileTheme.box.boxContentStyle}>
         <Typography sx={profileTheme.heading.titleHeading2}>
           Account Name:

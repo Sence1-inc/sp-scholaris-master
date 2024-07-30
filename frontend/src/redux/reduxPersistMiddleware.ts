@@ -47,10 +47,6 @@ const saveUserToIndexedDB = (user: User) => {
         event.target.errorCode
       )
     }
-
-    transaction.oncomplete = () => {
-      // console.log('User state saved to IndexedDB')
-    }
   }
 }
 

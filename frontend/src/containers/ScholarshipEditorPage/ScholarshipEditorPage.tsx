@@ -154,8 +154,9 @@ const ScholarshipEditorPage = () => {
         if (response.data) {
           setBenefitCategories(response.data)
         }
-      } catch (error) {
-        console.log('Error getting benefit categories: ', error)
+      } catch (error: any) {
+        setIsSnackbarOpen(true)
+        setErrorMessage(error.response.data.error)
       }
     }
 
@@ -489,8 +490,6 @@ const ScholarshipEditorPage = () => {
               acc[key] = errorMessages[key]
               return acc
             }, {})
-
-          setErrors(filteredErrors as Errors)
 
           setErrors(filteredErrors as Errors)
         }
