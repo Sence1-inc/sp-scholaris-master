@@ -16,6 +16,7 @@ class Scholarship < ApplicationRecord
   validates :start_date, presence: true
   validates :due_date, presence: true
   validates :application_link, presence: true
+  validates :application_email, presence: true
   validates :school_year, presence: true
   validates :scholarship_provider, presence: true
   validates :scholarship_type, presence: true

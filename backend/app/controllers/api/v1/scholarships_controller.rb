@@ -169,6 +169,7 @@ module Api
             :start_date, 
             :due_date, 
             :application_link, 
+            :application_email, 
             :school_year,
             :scholarship_type_id,
             :scholarship_provider_id,

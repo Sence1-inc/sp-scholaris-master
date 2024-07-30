@@ -23,6 +23,7 @@ export type ScholarshipData = {
   start_date: string
   due_date: string
   application_link: string
+  application_email: string
   school_year: string
   status: string
   scholarship_type: {
