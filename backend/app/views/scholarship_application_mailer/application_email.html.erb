@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <p>Dear <%= @provider_name %>,</p>
+    <p><%= @user_message %></p>
+    <section>
+      <p>Best regards,<br/><%= @student_name %><br/><%= @student_email %></p>
+    </section>
+    <hr>
+    <p><%= @promotional_message.html_safe %></p>
+    <p>You may reach out <%= @student_name %> through <%= @student_email %> or by replying to this email.</p>
+    <p>Thank you.</p>
+    <hr>
+    <section>
+      <p>For any issues, please contact us at scholaris-support@sence1.com.</p>
+    </section>
+
+    <section>
+      <p>Visit our website: <a href="https://scholaristest.sence1.com">https://scholaristest.sence1.com</a></p>
+    </section>
+
+    <section>
+      <p><i>To stay updated with the latest features, subscribe to our newsletter! <a href="https://scholaristest.sence1.com/provider">Subscribe</a></i></p>
+    </section>
+  </body>
+</html>
