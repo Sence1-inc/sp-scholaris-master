@@ -62,7 +62,7 @@ module Api
 
       def send_email
         user_message = params[:user_message]
-        scholarship_id = params[:scholarship_id]
+        scholarship_id = params[:scholarship_id].to_i
         student_name = params[:student_name]
         student_email = params[:student_email]
         scholarship = Scholarship.find(scholarship_id)
@@ -79,7 +79,7 @@ module Api
         )
 
         if existing_application
-          return render json: { error: 'Application from this email and scholarship already exists' }, status: :conflict
+          return render json: { message: 'Application from this email and scholarship already exists' }, status: :conflict
         end
 
         application = ScholarshipApplication.new(
@@ -104,13 +104,13 @@ module Api
               student_email,
               pdf_attachment
             ).deliver_now
-            render json: { status: 'Application email sent' }, status: :ok
+            render json: { message: 'Application email sent' }, status: :ok
           rescue StandardError => e
             Rails.logger.error("Failed to send email: #{e.message}")
-            render json: { error: 'Failed to send email', message: e.message, backtrace: e.backtrace }, status: :internal_server_error
+            render json: { message: e.message, backtrace: e.backtrace }, status: :internal_server_error
           end
         else
-          render json: { errors: application.errors.full_messages }, status: :unprocessable_entity
+          render json: { message: "Failed to send email", details: application.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
