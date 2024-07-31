@@ -90,9 +90,11 @@ const ProviderProfile: React.FC = () => {
 
         if (subs.data) {
           dispatch(initializeSubscirber(subs.data))
+          setErrorMessage('')
         }
-      } catch (error) {
-        console.log(error)
+      } catch (error: any) {
+        setIsSnackbarOpen(true)
+        setErrorMessage(error.response.data.message)
       }
     }
   }

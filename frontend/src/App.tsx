@@ -87,9 +87,7 @@ const App: React.FC = () => {
       '/provider/survey',
     ]
 
-    if (excludedPaths.includes(location.pathname)) {
-      console.log('included')
-    } else {
+    if (!excludedPaths.includes(location.pathname)) {
       Cookies.set('lastVisited', location.pathname)
     }
   }, [location.pathname])

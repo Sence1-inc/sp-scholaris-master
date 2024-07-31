@@ -40,7 +40,6 @@ instance.interceptors.response.use(
         },
       })
 
-      console.log('Unauthorized, triggering /refresh endpoint')
       lastRefreshTime = currentTime
     }
 
