@@ -41,6 +41,7 @@ type Errors = {
   start_date: string
   due_date: string
   application_link: string
+  application_email: string
   school_year: string
   status: string
   scholarship_type: string
@@ -67,6 +68,9 @@ const ScholarshipEditorPage = () => {
   )
   const [applicationLink, setApplicationLink] = useState<string>(
     scholarshipData?.application_link ?? ''
+  )
+  const [applicationEmail, setApplicationEmail] = useState<string>(
+    scholarshipData?.application_email ?? ''
   )
   const [schoolYear, setSchoolYear] = useState<string>(
     scholarshipData?.school_year ?? ''
@@ -113,6 +117,7 @@ const ScholarshipEditorPage = () => {
     start_date: '',
     due_date: '',
     application_link: '',
+    application_email: '',
     school_year: '',
     status: '',
     scholarship_type: '',
@@ -170,6 +175,7 @@ const ScholarshipEditorPage = () => {
       setStartDate(dayjs(scholarshipData.start_date))
       setDueDate(dayjs(scholarshipData.due_date))
       setApplicationLink(scholarshipData.application_link)
+      setApplicationEmail(scholarshipData.application_email)
       setBenefits(scholarshipData.benefits?.[0]?.benefit_name)
       setCheckedCategories(scholarshipData.benefit_categories)
       setEligibilities(scholarshipData.eligibilities?.[0]?.eligibility_text)
@@ -262,6 +268,11 @@ const ScholarshipEditorPage = () => {
       message: 'Please provide the application link.',
     },
     {
+      condition: !applicationEmail,
+      field: 'application_email',
+      message: 'Please provide the application email.',
+    },
+    {
       condition: !schoolYear,
       field: 'school_year',
       message: 'Please provide the school year.',
@@ -300,6 +311,7 @@ const ScholarshipEditorPage = () => {
         start_date: '',
         due_date: '',
         application_link: '',
+        application_email: '',
         school_year: '',
         status: '',
         scholarship_type: '',
@@ -317,6 +329,7 @@ const ScholarshipEditorPage = () => {
     startDate,
     dueDate,
     applicationLink,
+    applicationEmail,
     schoolYear,
     status,
     scholarshipType,
@@ -379,6 +392,7 @@ const ScholarshipEditorPage = () => {
         benefits: benefits,
         benefit_categories: checkedCategories,
         application_link: applicationLink,
+        application_email: applicationEmail,
         start_date: startDate?.toISOString(),
         due_date: dueDate?.toISOString(),
         school_year: schoolYear,
@@ -434,6 +448,7 @@ const ScholarshipEditorPage = () => {
               start_date: '',
               due_date: '',
               application_link: '',
+              application_email: '',
               school_year: '',
               status: '',
               scholarship_type: '',
@@ -470,6 +485,9 @@ const ScholarshipEditorPage = () => {
               .join(', '),
             application_link: error.response.data.errors
               .filter((str: string) => str.includes('Application link'))
+              .join(', '),
+            application_email: error.response.data.errors
+              .filter((str: string) => str.includes('Application email'))
               .join(', '),
             school_year: error.response.data.errors
               .filter((str: string) => str.includes('School year'))
@@ -685,7 +703,25 @@ const ScholarshipEditorPage = () => {
             <Typography variant="subtitle1">
               {applicationLink
                 ? 'This is the link for students to apply.'
-                : 'Please provide the link or the email address where students can apply for your scholarship.'}
+                : 'Please provide the link where students can apply for your scholarship.'}
+            </Typography>
+          </Box>
+
+          <Box sx={{ width: '100%' }}>
+            <CustomTextfield
+              label="Application Email"
+              multiline={true}
+              error={errors.application_email}
+              value={applicationEmail}
+              handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setApplicationEmail(e.target.value)
+              }
+              placeholder="e.g. excellenceinsciencescholarship@example.com"
+            />
+            <Typography variant="subtitle1">
+              {applicationEmail
+                ? 'This is the email where students will send their application and inquiries.'
+                : 'Please provide the email address where students can apply or send inquiries for your scholarship.'}
             </Typography>
           </Box>
 
