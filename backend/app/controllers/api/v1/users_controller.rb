@@ -6,6 +6,7 @@ module Api
     class UsersController < ApplicationController
     skip_before_action :verify_authenticity_token
     before_action :set_user, only: %i[ show edit update destroy ]
+    before_action :set_headers, only: [:login, :refresh, :register]
 
     # GET /users or /users.json
     def index
@@ -53,169 +54,86 @@ module Api
     end
 
     def register
-      registration_response = authenticate_registration
+    registration_response = authenticate_registration
 
-      if registration_response[:status] == 201
-        @role = Role.find_by(role_name: params.dig(:role))
-        existing_user = User.find_by(email_address: user_params.dig(:email_address))
-        
-        if !@role || existing_user
-          error_message = !@role ? 'Role not found' : 'Please try logging in or reset your password'
-          render json: { error: error_message }, status: :unprocessable_entity
-          return
-        end
+    case registration_response[:status]
+    when 201
+      handle_registration_success(registration_response)
+    when 409
+      render_error("Please try logging in or reset your password", registration_response[:status])
+    else
+      render_error(registration_response[:error], registration_response[:status])
+    end
+  end
 
-        @user = User.new(user_params.merge(uuid: registration_response[:user]['uuid'], role_id: @role.id))
-        @user.verification_token = SecureRandom.hex(10)
-        @user.verification_expires_at = 24.hours.from_now
-        if @user.save
-          if UserMailer.email_verification(@user).deliver_now
-            render json: { user: @user, msg: 'User registered, email sent, and saved successfully' }, status: :created
-          else
-            render json: { msg: 'User registered and saved successfully, but email sending failed' }, status: :created
-          end
-        else
-          render json: { error: 'Failed to save user details', details: @user.errors.full_messages }, status: :unprocessable_entity
-        end
-      elsif registration_response[:status] == 409
-        render json: { error: "Please try logging in or reset your password" }, status: registration_response[:status]
+  def resend_verification
+    user = User.find_by(verification_token: params[:token], id: params[:id])
+
+    if user.nil?
+      render_error("No user found", :not_found)
+    elsif user.verification_expires_at < Time.current
+      render_error("Verification link has expired", :unprocessable_entity)
+    else
+      handle_verification_resend(user)
+    end
+  end
+
+  def verify
+    user = User.find_by(verification_token: params[:token])
+
+    if user.nil?
+      render_error("Invalid link", :ok)
+    elsif Time.current > user.verification_expires_at
+      render_error("Verification link has expired", :not_found)
+    elsif user.update(is_verified: true, verification_token: nil, verification_expires_at: nil)
+      render json: { status: "verified" }, status: :ok
+    else
+      render_error("Verification failed", :unprocessable_entity)
+    end
+  end
+
+  def login
+    req = {
+      email: params.dig(:email_address),
+      password: params.dig(:password),
+      serviceId: params.dig(:service_id),
+      serviceKey: ENV["APP_SERVICE_KEY"],
+      role: params.dig(:role)
+    }
+
+    begin
+      response = RestClient.post(ENV['AUTH_LOGIN'], req.to_json, @headers)
+      parsed_response = JSON.parse(response.body)
+
+      if parsed_response['status'] == 200
+        handle_login_success(parsed_response)
       else
-        render json: { error: registration_response[:error] }, status: registration_response[:status]
+        render_error(parsed_response['message'] || 'Authentication failed', parsed_response['status'])
       end
+    rescue RestClient::ExceptionWithResponse => e
+      handle_rest_client_error(e)
     end
+  end
 
-    def resend_verification
-      user = User.find_by(verification_token: params[:token], id: params[:id])
-      
-      if user.nil?
-        render json: { msg: "No user found" }, status: :not_found
-      elsif user.verification_expires_at > Time.now
-        render json: { msg: "Verification link has expired" }, status: :unprocessable_entity
+  def refresh
+    req = {
+      refreshToken: cookies[:refresh_token],
+      serviceId: 1
+    }
+
+    begin
+      response = RestClient.post(ENV['AUTH_REFRESH'], req.to_json, @headers)
+      parsed_response = JSON.parse(response.body)
+
+      if parsed_response['status'] == 200
+        handle_refresh_success(parsed_response)
       else
-        if user.update(verification_token: SecureRandom.hex(10), verification_expires_at: 24.hours.from_now) && UserMailer.email_verification(user).deliver_now
-          render json: { user: user, msg: 'Verification email has been sent' }, status: :ok
-        else
-          render json: { msg: 'Failed to send verification email' }, status: :unprocessable_entity
-        end
+        render_error(parsed_response['msg'] || 'Refresh failed', parsed_response['status'])
       end
+    rescue RestClient::ExceptionWithResponse => e
+      render_error(e.response.body, e.response.code)
     end
-
-
-    def verify
-      user = User.find_by(verification_token: params[:token])
-      if user && Time.current > user.verification_expires_at
-        render json: { status: "expired", user: user }, status: :not_found
-      elsif user.nil?
-        render json: { status: "invalid link" }, status: :ok
-      elsif user.update(is_verified: true, verification_token: nil, verification_expires_at: nil)
-        render json: { status: "verified" }, status: :ok
-      else
-        render json: { status: "not verified" }, status: :not_found
-      end
-    end
-
-    def login
-      req = {
-        email: params.dig(:email_address),
-        password: params.dig(:password),
-        serviceId: params.dig(:service_id),
-        serviceKey: ENV["APP_SERVICE_KEY"],
-        role: params.dig(:role)
-      }
-
-      headers = {
-        'Content-Type': 'application/json',
-        'Accept': '*/*'
-      }
-
-      begin
-        response = RestClient.post(ENV['AUTH_LOGIN'], req.to_json, headers)
-        parsed_response = JSON.parse(response.body)
-
-        if parsed_response['status'] == 200
-          cookies[:user_email] = {
-            value: params.dig(:email_address),
-            httponly: true
-          }
-          cookies[:access_token] = {
-            value: parsed_response['tokens']['accessToken'],
-            httponly: true
-          }
-          cookies[:refresh_token] = {
-            value: parsed_response['tokens']['refreshToken'],
-            httponly: true
-          }
-          user = User.find_by(email_address: params.dig(:email_address))
-          if !user.is_verified
-            render json: { status: "error", message: "Email must be verified" }, status: :unprocessable_entity
-          else
-            provider = ScholarshipProvider.find_by(user_id: user.id)
-            if provider
-              scholarships = Scholarship.where(scholarship_provider_id: provider.id)
-              profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id)
-            else
-              provider = ScholarshipProvider.new(user_id: user.id)
-              provider.save
-            end
-
-            profile_hash = profile.present? ? profile.as_json : {}
-
-            render json: user.as_json.merge(scholarship_provider: provider).merge(profile: profile_hash), status: parsed_response['status']
-          end
-        else
-          error_message = parsed_response['message'] || 'Authentication failed'
-          render json: { status: "error", message: error_message }, status: parsed_response['status']
-        end
-      rescue RestClient::ExceptionWithResponse => e
-        parsed_error_response = JSON.parse(e.response.body) rescue { 'message' => 'An error occurred' }
-        case e.http_code
-        when 400, 500
-          render json: { status: "error", message: "Incorrect password or email" }, status: :unauthorized
-        when 401
-          render json: { status: "error", message: "Incorrect password or email" }, status: :unauthorized
-        when 404
-          render json: { status: "error", message: "Email not found" }, status: :not_found
-        else
-          error_message = parsed_error_response['message'] || 'An error occurred'
-          render json: { status: "error", message: error_message, meow: e.http_code }, status: e.http_code
-        end
-      end
-    end
-
-
-
-    def refresh
-      req = {
-        refreshToken: cookies[:refresh_token],
-        serviceId: 1,
-      }
-
-      begin
-        response = RestClient.post(ENV['AUTH_REFRESH'], req.to_json, headers)
-        parsed_response = JSON.parse(response.body)
-
-        if parsed_response['status'] == 200
-          cookies[:user_email] = {
-            value: user_params.dig(:email_address),
-            httponly: true
-          }
-          cookies[:access_token] = {
-            value: parsed_response['tokens']['accessToken'],
-            httponly: true
-          }
-          cookies[:refresh_token] = {
-            value: parsed_response['tokens']['refreshToken'],
-            httponly: true
-          }
-          
-          render json: {message: parsed_response['msg']}, status: parsed_response['status']
-        else
-          render json: response, status: parsed_response['status']
-        end
-      rescue RestClient::ExceptionWithResponse => e
-        render json: response, status: e.response.code, error: e.response.body
-      end
-    end
+  end
 
     def check_token
       has_access_token = cookies[:access_token].present?
@@ -280,6 +198,87 @@ module Api
         rescue RestClient::ExceptionWithResponse => e
           { status: e.response.code, error: e.response.body }
         end
+      end
+
+      def handle_registration_success(registration_response)
+        @role = Role.find_by(role_name: params.dig(:role))
+        existing_user = User.find_by(email_address: user_params.dig(:email_address))
+
+        if !@role || existing_user
+          error_message = !@role ? 'Role not found' : 'Please try logging in or reset your password'
+          render_error(error_message, :unprocessable_entity)
+        else
+          @user = User.new(user_params.merge(uuid: registration_response[:user]['uuid'], role_id: @role.id))
+          @user.verification_token = SecureRandom.hex(10)
+          @user.verification_expires_at = 24.hours.from_now
+          if @user.save
+            if UserMailer.email_verification(@user).deliver_now
+              render json: { user: @user, msg: 'User registered, email sent, and saved successfully' }, status: :created
+            else
+              render json: { msg: 'User registered and saved successfully, but email sending failed' }, status: :created
+            end
+          else
+            render_error('Failed to save user details', :unprocessable_entity, @user.errors.full_messages)
+          end
+        end
+      end
+
+      def handle_verification_resend(user)
+        if user.update(verification_token: SecureRandom.hex(10), verification_expires_at: 24.hours.from_now) && UserMailer.email_verification(user).deliver_now
+          render json: { user: user, msg: 'Verification email has been sent' }, status: :ok
+        else
+          render_error('Failed to send verification email', :unprocessable_entity)
+        end
+      end
+
+      def handle_login_success(parsed_response)
+        cookies[:user_email] = { value: params.dig(:email_address), httponly: true }
+        cookies[:access_token] = { value: parsed_response['tokens']['accessToken'], httponly: true }
+        cookies[:refresh_token] = { value: parsed_response['tokens']['refreshToken'], httponly: true }
+
+        user = User.find_by(email_address: params.dig(:email_address))
+        if user && user.is_verified
+          provider = ScholarshipProvider.find_or_create_by(user_id: user.id)
+          scholarships = Scholarship.where(scholarship_provider_id: provider.id)
+          profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id) || {}
+
+          render json: user.as_json.merge(scholarship_provider: provider).merge(profile: profile.as_json), status: :ok
+        else
+          render_error("Email must be verified", :unprocessable_entity) unless user.is_verified
+        end
+      end
+
+      def handle_refresh_success(parsed_response)
+        cookies[:user_email] = { value: user_params.dig(:email_address), httponly: true }
+        cookies[:access_token] = { value: parsed_response['tokens']['accessToken'], httponly: true }
+        cookies[:refresh_token] = { value: parsed_response['tokens']['refreshToken'], httponly: true }
+
+        render json: { message: parsed_response['msg'] }, status: :ok
+      end
+
+      def handle_rest_client_error(exception)
+        parsed_error_response = JSON.parse(exception.response.body) rescue { 'message' => 'An error occurred' }
+        case exception.http_code
+        when 400, 401
+          render_error("Incorrect password or email", :unauthorized)
+        when 404
+          render_error("Please check your email address or try with a different account.", :not_found)
+        else
+          render_error(parsed_error_response['message'] || 'An error occurred', exception.http_code)
+        end
+      end
+
+      def render_error(message, status, details = nil)
+        error_response = { status: "error", message: message }
+        error_response[:details] = details if details
+        render json: error_response, status: status
+      end
+
+      def set_headers
+        @headers = {
+          'Content-Type': 'application/json',
+          'Accept': '*/*'
+        }
       end
     end
   end
