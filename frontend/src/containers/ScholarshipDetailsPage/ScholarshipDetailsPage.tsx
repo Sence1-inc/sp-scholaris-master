@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
@@ -305,14 +305,21 @@ export const ScholarshipDetailsPage: React.FC<
               {scholarshipData.application_link && (
                 <div className="details-section">
                   <h4 className="title4">Application Link</h4>
-                  <Link
+                  <p
+                    style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}
+                    onClick={() => navigate('/sample')}
+                  >
+                    www.sample.com
+                  </p>
+                  {/* THIS WILL BE RE-IMPLEMENTED IN PHASE 4 */}
+                  {/* <Link
                     id="application-link"
                     style={{ wordWrap: 'break-word' }}
                     to={scholarshipData.application_link}
                     target="_blank"
                   >
                     {scholarshipData.application_link}
-                  </Link>
+                  </Link> */}
                 </div>
               )}
               <div className="details-section details-columns">
@@ -363,16 +370,16 @@ export const ScholarshipDetailsPage: React.FC<
                   <Box
                     sx={{
                       width: '80vw',
-                      maxHeight: '90vh',
-                      margin: '30px auto',
+                      maxHeight: '94vh',
+                      margin: '20px auto',
                       backgroundColor: 'background.default',
-                      padding: '40px',
+                      padding: '10px 20px',
                       borderRadius: '24px',
                       overflowY: 'auto',
                       overflowX: 'hidden',
                       display: 'flex',
                       flexDirection: 'column',
-                      gap: '20px',
+                      gap: '10px',
                     }}
                   >
                     <CustomTextfield
@@ -401,7 +408,7 @@ export const ScholarshipDetailsPage: React.FC<
                         setUserMessage(e.target.value)
                       }
                       multiline={true}
-                      rows={6}
+                      rows={4}
                       placeholder="e.g. I am writing to express my sincere interest in the [Scholarship Name] as it aligns perfectly with my academic and career goals. As a dedicated student with a passion for [Your Field or Major], I have consistently demonstrated my commitment through my academic achievements and extracurricular involvement. This scholarship would not only alleviate the financial burden of my education but also empower me to further pursue my ambitions and contribute meaningfully to my community. I am eager to seize this opportunity and make a positive impact through the support of your esteemed scholarship."
                     />
                     <Box>
@@ -413,7 +420,7 @@ export const ScholarshipDetailsPage: React.FC<
                         tabIndex={-1}
                         startIcon={<CloudUpload />}
                       >
-                        {pdfFile ? pdfFile.name : 'Upload file (optional)'}
+                        {pdfFile ? pdfFile.name : 'Upload pdf file (optional)'}
                         <VisuallyHiddenInput
                           type="file"
                           onChange={(
@@ -426,6 +433,12 @@ export const ScholarshipDetailsPage: React.FC<
                           accept=".pdf"
                         />
                       </Button>
+                      <Typography variant="subtitle1" sx={{ fontSize: '10px' }}>
+                        * You can upload your credentials, grades,
+                        recommendation letter, or any relevant pdf file for your
+                        scholarship application. For multiple documents, save it
+                        in a single pdf file.
+                      </Typography>
                       <HelperText error={errors.pdf_file} />
                     </Box>
 
