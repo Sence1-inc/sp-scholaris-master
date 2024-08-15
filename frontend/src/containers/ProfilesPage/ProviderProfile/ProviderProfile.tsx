@@ -249,9 +249,10 @@ const ProviderProfile: React.FC = () => {
                       }
                     />
                   </TabPanel>
-                  <TabPanel sx={{ padding: '20px 0' }} value="account-security">
+                  {/* HIDE FOR NOW, WILL REVIVE ONCE FORGET PASSWORD IS AVAILABLE */}
+                  {/* <TabPanel sx={{ padding: '20px 0' }} value="account-security">
                     <AccountSecurity />
-                  </TabPanel>
+                  </TabPanel> */}
                   <TabPanel sx={{ padding: '20px 0' }} value="account-settings">
                     <AccountSettings
                       handleSetSuccessMessage={(value) =>
@@ -294,9 +295,9 @@ const ProviderProfile: React.FC = () => {
                   handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
                 />
               )}
-              {activeContent && lastRoute === 'account-security' && (
+              {/* {activeContent && lastRoute === 'account-security' && (
                 <AccountSecurity />
-              )}
+              )} */}
               {/* { activeContent && lastRoute === 'account-subscription' && <AccountSubscription />} */}
               {activeContent && lastRoute === 'account-settings' && (
                 <AccountSettings
