@@ -8,11 +8,10 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import axios from 'axios'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../../axiosConfig'
 import AccountProfile from '../../../components/AccountCard/AccountProfile'
-import AccountSecurity from '../../../components/AccountCard/AccountSecurity'
 import AccountSettings from '../../../components/AccountCard/AccountSettings'
 import AccountSideBar, {
   sideItem,
@@ -20,9 +19,9 @@ import AccountSideBar, {
 import AccountViewProfile from '../../../components/AccountCard/AccountViewProfile'
 import PrimaryButton from '../../../components/CustomButton/PrimaryButton'
 import CustomSnackbar from '../../../components/CustomSnackbar/CustomSnackbar'
+import useGetSubscriber from '../../../hooks/useGetSubscriber'
 import ProfileImage from '../../../public/images/profile.png'
 import { initializeIsAuthenticated } from '../../../redux/reducers/IsAuthenticatedReducer'
-import { initializeSubscirber } from '../../../redux/reducers/SubscriberReducer'
 import { initializeUser } from '../../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import { ScholarshipProvider } from '../../../redux/types'
@@ -44,6 +43,7 @@ const ProviderProfile: React.FC = () => {
   const user = useAppSelector((state) => state.persistedReducer.user)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const { getSubscriber, errorMessage: err } = useGetSubscriber()
 
   const isSm = useMediaQuery(() => theme.breakpoints.down('sm'))
 
@@ -81,34 +81,13 @@ const ProviderProfile: React.FC = () => {
     }
   }
 
-  const getSubscriber = async () => {
-    if (user.scholarship_provider.id) {
-      try {
-        const subs = await axiosInstance.get(
-          `api/v1/subscribers/${user.scholarship_provider.id}`
-        )
-
-        if (subs.data) {
-          dispatch(initializeSubscirber(subs.data))
-          setErrorMessage('')
-        }
-      } catch (error: any) {
-        setIsSnackbarOpen(true)
-        setErrorMessage(error.response.data.message)
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (user) {
-      getSubscriber()
-    }
-
-    // eslint-disable-next-line
-  }, [user])
-
   const handleUnsubscribe = async () => {
     getSubscriber()
+    if (err) {
+      setErrorMessage(err)
+    } else {
+      setErrorMessage('')
+    }
     if (!subscr.deleted_at) {
       try {
         const response = await axiosInstance.post(
