@@ -1,6 +1,5 @@
 import HomeIcon from '@mui/icons-material/Home'
 import PersonIcon from '@mui/icons-material/Person'
-import SecurityIcon from '@mui/icons-material/Security'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { Box, Button, Card, List, ListItem, Typography } from '@mui/material'
 import React, { Dispatch, useEffect, useState } from 'react'
@@ -33,7 +32,7 @@ type SideBarObject = {
 export const sideItem: SideBarObject[] = [
   { id: 'view-profile', title: 'View Scholarship Profile', Icon: <HomeIcon /> },
   { id: 'account-profile', title: 'Account Profile', Icon: <PersonIcon /> },
-  { id: 'account-security', title: 'Account Security', Icon: <SecurityIcon /> },
+  // { id: 'account-security', title: 'Account Security', Icon: <SecurityIcon /> },
   { id: 'account-settings', title: 'Settings', Icon: <SettingsIcon /> },
   // { id: 'account-close', title: 'Close Account', Icon: <LockPersonIcon /> },
 ]

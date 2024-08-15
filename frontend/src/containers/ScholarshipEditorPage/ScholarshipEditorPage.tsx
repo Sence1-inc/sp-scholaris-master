@@ -430,6 +430,7 @@ const ScholarshipEditorPage = () => {
             setStartDate(null)
             setDueDate(null)
             setApplicationLink('')
+            setApplicationEmail('')
             setBenefits('')
             setEligibilities('')
             setRequirements('')

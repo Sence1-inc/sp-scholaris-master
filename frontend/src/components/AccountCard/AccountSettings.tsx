@@ -1,7 +1,8 @@
-import { Box, Button, FormGroup, InputLabel, TextField } from '@mui/material'
-import React from 'react'
+import { Box, Button, FormGroup, InputLabel, Typography } from '@mui/material'
+import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import useGetSubscriber from '../../hooks/useGetSubscriber'
 import { initializeSubscirber } from '../../redux/reducers/SubscriberReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
@@ -26,6 +27,21 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   const user = useAppSelector((state) => state.persistedReducer.user)
   const { id } = useParams()
   const dispatch = useAppDispatch()
+  const { getSubscriber, errorMessage } = useGetSubscriber()
+
+  useEffect(() => {
+    if (user) {
+      getSubscriber()
+
+      if (errorMessage) {
+        handleSetErrorMessage(errorMessage)
+      } else {
+        handleSetErrorMessage('')
+      }
+    }
+
+    // eslint-disable-next-line
+  }, [user])
 
   const handleSubscribe: (
     e: React.MouseEvent<HTMLButtonElement>
@@ -115,12 +131,9 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         <InputLabel htmlFor="account-name" sx={profileTheme.form.formLabel}>
           Newsletter Email
         </InputLabel>
-        <TextField
-          disabled
-          id="account-name"
-          value={user.email_address}
-          sx={profileTheme.form.formInput}
-        />
+        <Typography sx={profileTheme.text.textRegular}>
+          {user.email_address}
+        </Typography>
         <Box sx={profileTheme.box.boxBodyStyle2}>
           <Button
             variant="contained"

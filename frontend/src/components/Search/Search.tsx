@@ -47,7 +47,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const [hasScrolled, setHasScrolled] = useState(false)
   const { hash } = useLocation()
   const searchRef = useRef<HTMLElement>(null)
-  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
+  const isInitialLoad = useRef<boolean>(false)
   const { scholarships, total_count } = data.scholarships
   const { benefits, provider, start_date, due_date } = params.params
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -65,7 +65,10 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   }
 
   useEffect(() => {
-    setIsInitialLoad(false)
+    if (!isInitialLoad.current) {
+      isInitialLoad.current = true
+    }
+
     // eslint-disable-next-line
   }, [])
 
@@ -137,7 +140,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
       getScholarships()
     }
     // eslint-disable-next-line
-  }, [nameParam, isInitialLoad])
+  }, [name, isInitialLoad, isSection])
 
   useEffect(() => {
     if (name) {

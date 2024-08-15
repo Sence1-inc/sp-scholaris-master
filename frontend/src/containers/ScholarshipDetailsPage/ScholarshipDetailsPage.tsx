@@ -373,7 +373,7 @@ export const ScholarshipDetailsPage: React.FC<
                       maxHeight: '94vh',
                       margin: '20px auto',
                       backgroundColor: 'background.default',
-                      padding: '10px 20px',
+                      padding: '20px 20px',
                       borderRadius: '24px',
                       overflowY: 'auto',
                       overflowX: 'hidden',
