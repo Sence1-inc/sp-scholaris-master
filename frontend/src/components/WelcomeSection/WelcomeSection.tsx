@@ -24,10 +24,10 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
   )
 
   return (
-    <section className={ usertype == 'provider' ? 'section__welcome section__welcome__provider' : 'section__welcome'}>
+    <section className={ usertype === 'provider' ? 'section__welcome section__welcome__provider' : 'section__welcome section__welcome__student'}>
       <div className="container">
         <Typography variant="h2">
-          {usertype == 'provider' ? <span className="h-subtext-gradient">Bridging Students and Education through </span> : <span className="h-subtext-gradient">Welcome to </span>}
+          {usertype === 'provider' ? <span className="h-subtext-gradient">Bridging Students and Education through </span> : <span className="h-subtext-gradient">Welcome to </span>}
          <span className="color-secondary h-subtext">Scholaris</span>
         </Typography>
         {subheader && <Typography variant="h3">{subheader}</Typography>}
@@ -49,10 +49,10 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
             }
             loading={false}
             styles={{
-              fontSize: '1.1rem',
+              fontSize: {xs: '0.9rem', sm: '1.1rem'},
               fontWeight: 700,
               width: '80%',
-              padding: {xs: '10px 20px', md: '12px 20px'}
+              padding: {xs: '10px 10px', md: '12px 20px'}
             }}
           />
           {location.pathname === '/provider' && !isAuthenticated && (
@@ -62,10 +62,10 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
               label="Have an account?"
               loading={false}
               styles={{
-                fontSize: '1.1rem',
+                fontSize: {xs: '0.9rem', sm: '1.1rem'},
                 fontWeight: 700,
                 width: '80%',
-                padding: {xs: '10px 20px', md: '12px 20px'}
+                padding: {xs: '10px 10px', md: '12px 20px'}
               }}
             />
           )}

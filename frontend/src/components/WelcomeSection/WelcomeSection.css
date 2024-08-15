@@ -6,9 +6,13 @@
   height: 780px;
 }
 
+.section__welcome__student {
+  background-position: center right !important;
+}
+
 .section__welcome__provider {
   background: url('../../public/images/graduation-students.jpg') center no-repeat;
-  background-size: cover !important;
+  background-size: cover;
   padding: 70px 20px !important;
 }
 
@@ -93,6 +97,22 @@
     row-gap: 10px;
   }
 }
+@media screen and (max-width: 767px) {
+  .section__welcome__provider {
+    background: url('../../public/images/graduation-students.jpg');
+    background-position: center center !important;
+    background-size: cover !important;
+    background-repeat: no-repeat !important;
+  }
+}
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .section__welcome__provider {
+    background: url('../../public/images/graduation-students.jpg');
+    background-position: center;
+    background-size: 120% 100% !important;
+    background-repeat: no-repeat !important;
+  }
+}
 
 @media screen and (max-width: 768px) {
   .section__welcome.section__welcome__provider {
@@ -110,13 +130,8 @@
   .section__welcome {
     height: fit-content;
     padding: 100px 20px;
-    background-position: center right !important;
     height: 90vh;
     padding: 95px 20px !important;
-  }
-
-  .section__welcome__provider {
-    background: url('../../public/images/graduation-students.jpg') center bottom no-repeat !important;
   }
 
   .section__welcome h2 {

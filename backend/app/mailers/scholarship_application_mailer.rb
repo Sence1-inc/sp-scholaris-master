@@ -12,7 +12,7 @@ class ScholarshipApplicationMailer < ApplicationMailer
       <p>Scholaris is a centralized platform for scholarship offerings. Our platform enables students to search and choose from a kaleidoscope of scholarships. Through Scholaris, you can seamlessly manage and post your scholarships, increasing the chances of attracting more scholarship applicants.</p>
     PROMOTIONAL_MESSAGE
 
-    mail(to: recipient_email, cc: student_email, subject: "#{student_name} Intent to Apply for #{scholarship_name} through Scholaris App") do |format|
+    mail(to: recipient_email, reply_to: student_email, cc: student_email, subject: "#{student_name} Intent to Apply for #{scholarship_name} through Scholaris App") do |format|
       format.html
       if pdf_attachment.present?
         attachments['application.pdf'] = pdf_attachment.read
