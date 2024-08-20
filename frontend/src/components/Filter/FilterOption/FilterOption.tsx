@@ -16,7 +16,7 @@ interface FilterOptionProps {
   type?: string
   options?: Option[]
   isVisible?: boolean
-  onToggleVisibility?: () => void
+  onToggleVisibility: () => void
   selectedOption?: Option | null | string
   handleOptionClick?: (option: Option) => void
   selectedStartDate?: Dayjs | null
@@ -47,8 +47,8 @@ const FilterOption: React.FC<FilterOptionProps> = ({
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
   const toggleDropdown = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget)
-    onToggleVisibility?.()
+    setAnchorEl(event.currentTarget)
+    onToggleVisibility()
 
     if (type === 'reset') {
       handleReset && handleReset()
