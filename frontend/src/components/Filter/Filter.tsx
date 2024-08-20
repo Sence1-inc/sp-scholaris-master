@@ -80,9 +80,7 @@ const Filter: React.FC<FilterProps> = () => {
   }, [])
 
   const handleDropdownToggle = (dropdownName: string): void => {
-    setActiveDropdown((prev: string | null) =>
-      prev === dropdownName ? null : dropdownName
-    )
+    setActiveDropdown(dropdownName)
   }
 
   useEffect(() => {
