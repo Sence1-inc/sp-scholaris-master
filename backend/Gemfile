@@ -78,6 +78,8 @@ gem 'rest-client'
 
 gem 'jwt'
 
+gem 'bullet'
+
 gem "dockerfile-rails", ">= 1.6", :group => :development
 
 group :development, :test do
