@@ -97,4 +97,11 @@ Rails.application.configure do
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 5001 }
 
+  Bullet.enable = true
+  Bullet.rails_logger = true
+  Bullet.bullet_logger = true
+  Bullet.add_footer = false
+  Bullet.n_plus_one_query_enable = true
+  Bullet.unused_eager_loading_enable = true
+  Bullet.counter_cache_enable = true
 end

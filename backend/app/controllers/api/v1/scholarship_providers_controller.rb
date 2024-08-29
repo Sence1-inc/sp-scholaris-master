@@ -5,7 +5,7 @@ module Api
     
       # GET /scholarship_providers or /scholarship_providers.json
       def index
-        @scholarship_providers = ScholarshipProvider.all
+        @scholarship_providers = ScholarshipProvider.includes(:scholarship_provider_profile, :user).all
 
         render json: @scholarship_providers
       end
