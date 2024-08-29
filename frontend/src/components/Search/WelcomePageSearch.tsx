@@ -254,25 +254,27 @@ const WelcomePageSearch: React.FC = () => {
             </Button>
           </Box>
           <Filter />
-          {Object.keys(restParams).length > 0 && (
-            <Box>
-              <Stack
-                direction="row"
-                sx={{ flexWrap: 'wrap', width: '100%', gap: '8px' }}
-              >
-                {Object.entries(restParams)?.map(([key, value]) => {
-                  return (
-                    <Chip
-                      key={key}
-                      label={`${formatString(key)}: ${value}`}
-                      variant="outlined"
-                      onDelete={() => handleChipDelete(key)}
-                    />
-                  )
-                })}
-              </Stack>
-            </Box>
-          )}
+          {Object.keys(restParams).length > 0 &&
+            !Object.keys(restParams).includes('limit') &&
+            !Object.keys(restParams).includes('page') && (
+              <Box>
+                <Stack
+                  direction="row"
+                  sx={{ flexWrap: 'wrap', width: '100%', gap: '8px' }}
+                >
+                  {Object.entries(restParams)?.map(([key, value]) => {
+                    return (
+                      <Chip
+                        key={key}
+                        label={`${formatString(key)}: ${value}`}
+                        variant="outlined"
+                        onDelete={() => handleChipDelete(key)}
+                      />
+                    )
+                  })}
+                </Stack>
+              </Box>
+            )}
           <DataGrid
             onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}

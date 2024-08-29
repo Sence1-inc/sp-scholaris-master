@@ -38,7 +38,6 @@ const AddScholarshipViaCSVPage: React.FC = () => {
   }
 
   const handleUpload = async () => {
-    setIsSnackbarOpen(true)
     setIsUploading(true)
     setInfoMessage('Saving scholarships. Please wait.')
     if (file && file.size > 1024 * 1024) {
@@ -70,7 +69,6 @@ const AddScholarshipViaCSVPage: React.FC = () => {
         setTotalCount(total_count)
 
         const { errors } = results[0]
-
         if (errors && errors.length > 0 && errorsCount > 0) {
           setSuccessMessage('')
           setErrorMessage(errors.join(', '))

@@ -302,26 +302,19 @@ export const ScholarshipDetailsPage: React.FC<
                     ))}
                   </div>
                 )}
-              {scholarshipData.application_link && (
+              {/* {scholarshipData.application_link && (
                 <div className="details-section">
                   <h4 className="title4">Application Link</h4>
-                  <p
-                    style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}
-                    onClick={() => navigate('/sample')}
-                  >
-                    www.sample.com
-                  </p>
-                  {/* THIS WILL BE RE-IMPLEMENTED IN PHASE 4 */}
-                  {/* <Link
+                  <Link
                     id="application-link"
                     style={{ wordWrap: 'break-word' }}
                     to={scholarshipData.application_link}
                     target="_blank"
                   >
                     {scholarshipData.application_link}
-                  </Link> */}
+                  </Link>
                 </div>
-              )}
+              )} */}
               <div className="details-section details-columns">
                 <div className="details-column">
                   <h5 className="title4">Application Start Date</h5>

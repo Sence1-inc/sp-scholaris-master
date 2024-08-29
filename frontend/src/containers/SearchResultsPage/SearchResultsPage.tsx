@@ -31,7 +31,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 }) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { getScholarships } = useGetScholarships()
+  const { getScholarships, areScholarshipsLoading } = useGetScholarships()
   const [searchParams] = useSearchParams()
   const course = searchParams.get('course')
   const school = searchParams.get('school')
@@ -240,14 +240,23 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           pageSizeOptions={[10]}
           pagination
           paginationMode="server"
-          loading={isLoading}
+          loading={isLoading || areScholarshipsLoading}
           sx={{
-            height: 'auto',
+            height:
+              Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,
             '.MuiDataGrid-root': {
               border: 'none',
             },
+            '.MuiDataGrid-main': {
+              borderTopLeftRadius: '16px',
+              borderTopRightRadius: '16px',
+            },
             '& .MuiDataGrid-columnHeaders': {
               backgroundColor: '#AFC3D9',
+            },
+            '.MuiDataGrid-footerContainer': {
+              borderBottomLeftRadius: '16px',
+              borderBottomRightRadius: '16px',
             },
             '& .MuiDataGrid-footerContainer': {
               backgroundColor: '#AFC3D9', // Change table header color
@@ -263,24 +272,14 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             '& .MuiDataGrid-overlay': {
               zIndex: '20',
             },
-            '.MuiDataGrid-overlayWrapper': {
-              minHeight: '200px',
-              height:
-                rowData.length > 0 ? 'auto !important' : '200px !important',
-            },
-            '.MuiDataGrid-overlayWrapperInner': {
-              minHeight: '200px',
-              height:
-                rowData.length > 0 ? 'auto !important' : '200px !important',
-            },
+            borderRadius: '16px',
             fontFamily: 'Outfit',
             fontSize: {
-              xs: '15px',
+              xs: '12px',
               md: '1rem',
             },
             '& .MuiDataGrid-row:hover': {
               backgroundColor: 'secondary.main',
-              cursor: 'pointer',
             },
           }}
         />

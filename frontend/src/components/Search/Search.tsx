@@ -300,29 +300,31 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
             </Button>
           </Box>
           <Filter />
-          {Object.keys(restParams).length > 0 && (
-            <Box>
-              <Stack
-                direction="row"
-                sx={{ flexWrap: 'wrap', width: '100%', gap: '8px' }}
-              >
-                {Object.entries(restParams).map(([key, value]) => {
-                  return key === 'limit' || key === 'page' ? null : (
-                    <Chip
-                      key={key}
-                      label={
-                        key === 'start_date'
-                          ? `${formatString(key)}: ${dayjs(value).format('MMMM YYYY')}`
-                          : `${formatString(key)}: ${value}`
-                      }
-                      variant="outlined"
-                      onDelete={() => handleChipDelete(key)}
-                    />
-                  )
-                })}
-              </Stack>
-            </Box>
-          )}
+          {Object.keys(restParams).length > 0 &&
+            !Object.keys(restParams).includes('limit') &&
+            !Object.keys(restParams).includes('page') && (
+              <Box>
+                <Stack
+                  direction="row"
+                  sx={{ flexWrap: 'wrap', width: '100%', gap: '8px' }}
+                >
+                  {Object.entries(restParams).map(([key, value]) => {
+                    return (
+                      <Chip
+                        key={key}
+                        label={
+                          key === 'start_date'
+                            ? `${formatString(key)}: ${dayjs(value).format('MMMM YYYY')}`
+                            : `${formatString(key)}: ${value}`
+                        }
+                        variant="outlined"
+                        onDelete={() => handleChipDelete(key)}
+                      />
+                    )
+                  })}
+                </Stack>
+              </Box>
+            )}
 
           <DataGrid
             onRowClick={handleRowClick}

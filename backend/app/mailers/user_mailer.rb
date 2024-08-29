@@ -3,6 +3,7 @@ class UserMailer < ApplicationMailer
 
   def send_to_providers(subject, content, email, subscriber_id)
     @content = content
+    @url = ENV['BACKEND_URL']
     @subscriber_id = subscriber_id
     @email = email
     providers = Subscriber.where(user_type: PROVIDER_TYPE, deleted_at: nil)
@@ -14,6 +15,7 @@ class UserMailer < ApplicationMailer
 
   def send_to_students(subject, content, email, subscriber_id)
     @content = content
+    @url = ENV['BACKEND_URL']
     @subscriber_id = subscriber_id
     students = Subscriber.where(user_type: STUDENT_TYPE, deleted_at: nil)
 
@@ -27,6 +29,7 @@ class UserMailer < ApplicationMailer
     @content = content
     @subscriber_id = subscriber_id
     @email = email
+    @url = ENV['BACKEND_URL']
     user = Subscriber.find_by(email: email, user_type: user_type, deleted_at: nil)
 
     mail(to: email, subject: subject) if user.present?
@@ -34,6 +37,7 @@ class UserMailer < ApplicationMailer
 
   def email_verification(user)
     @user = user
+    @url = ENV['BACKEND_URL']
     mail(to: @user.email_address, subject: 'Verify Your Email for Scholaris')
   end
 end
