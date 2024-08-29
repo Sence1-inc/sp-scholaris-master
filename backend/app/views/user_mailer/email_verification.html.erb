@@ -12,7 +12,7 @@
   <section class='email-section'><p>Thank you for signing up to Scholaris!</p></section>
   <section class='email-section'>
     <p>To complete your registration, please verify your email address by clicking the link below:</p>
-    <p><a href="https://scholaristest.sence1.com/verify-email/<%= @user.verification_token %>">Verify Link</a></p>
+    <p><a href="<%= @url %>/verify-email/<%= @user.verification_token %>">Verify Link</a></p>
   </section>
   <section class='email-section'>
     <p>We are committed to connecting scholarship providers with students effectively and reducing administrative burdens for providers, making the process more efficient. As our service is still in its early stages, we would greatly appreciate your feedback to help us improve. Please reply to this email with your thoughts.</p>
@@ -22,7 +22,6 @@
   </section>
   <section class='email-section'>
     <p>Best regards,<br/>Scholaris team</p>
-    <p></p>
   </section>
 
   <hr>
@@ -32,11 +31,11 @@
   </section>
 
   <section class="email-footer-section">
-    <p>Visit our website: <a href="https://scholaristest.sence1.com">https://scholaristest.sence1.com</a></p>
+    <p>Visit our website: <a href="<%= @url %>"><%= @url %></a></p>
   </section>
 
   <section class="email-footer-section">
-    <p><i>To stay updated with the latest features, subscribe to our newsletter! <a href="https://scholaristest.sence1.com/provider">Subscribe</a></i></p>
+    <p><i>To stay updated with the latest features, subscribe to our newsletter! <a href="<%= @url %>/provider">Subscribe</a></i></p>
   </section>
 
 </body>

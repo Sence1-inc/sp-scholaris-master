@@ -29,6 +29,12 @@
     padding: 20px;
   }
 
+  .footer {
+    text-align: left;
+    background-color: #fff;
+    color: #000;
+  }
+
   .button {
     display: inline-block;
     padding: 10px 20px;
@@ -74,11 +80,18 @@
       <div class="content">
         <p>Hello <%= @email %>!</p>
 
-        <div><%= raw @content %></div>
-      </div>
+        <div>
+          <%= raw @content %>
+          <p>Best regards,<br/>Scholaris team</p>
+        </div>
 
-      <div class="footer">
-        <p>&copy; <%= Time.now.year %> Scholaris. All rights reserved.</p>
+        <hr>
+
+        <div class="footer">
+          <p>For any issues, please contact us at scholaris-support@sence1.com.</p>
+          <p>Visit our website: <a href="<%= @url %>"><%= @url %></a></p>
+          <p><i>To stay updated with the latest features, subscribe to our newsletter! <a href="<%= @url %>/provider">Subscribe</a></i></p>
+        </div>
       </div>
     </div>
   </body>
