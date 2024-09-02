@@ -276,6 +276,16 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             '& .MuiDataGrid-overlay': {
               zIndex: '20',
             },
+            '.MuiDataGrid-overlayWrapper': {
+              minHeight: '200px',
+              height:
+                rowData.length > 0 ? 'auto !important' : '200px !important',
+            },
+            '.MuiDataGrid-overlayWrapperInner': {
+              minHeight: '200px',
+              height:
+                rowData.length > 0 ? 'auto !important' : '200px !important',
+            },
             borderRadius: '16px',
             fontFamily: 'Outfit',
             fontSize: {
