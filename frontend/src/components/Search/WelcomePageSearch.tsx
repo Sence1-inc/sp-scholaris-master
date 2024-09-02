@@ -1,4 +1,5 @@
 import {
+  Alert,
   Box,
   Button,
   Chip,
@@ -275,6 +276,10 @@ const WelcomePageSearch: React.FC = () => {
                 </Stack>
               </Box>
             )}
+          <Alert severity="warning">
+            All scholarship listings are currently test data and not actual
+            listings. We’ll be updating them with real data soon, so stay tuned!
+          </Alert>
           <DataGrid
             onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}
