@@ -1,6 +1,7 @@
 import { CloudUpload } from '@mui/icons-material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
+  Alert,
   Backdrop,
   Box,
   Button,
@@ -252,6 +253,10 @@ export const ScholarshipDetailsPage: React.FC<
               <ArrowBackIosIcon /> Back to Search Results
             </Button>
           </aside>
+          <Alert severity="warning" sx={{ marginBottom: '40px' }}>
+            All scholarship listings are currently test data and not actual
+            listings. We’ll be updating them with real data soon, so stay tuned!
+          </Alert>
           {scholarshipData && (
             <div className="details-card">
               <h3 className="title3">

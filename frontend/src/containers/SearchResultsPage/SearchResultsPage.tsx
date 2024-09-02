@@ -1,7 +1,7 @@
 import { OpenInNew } from '@mui/icons-material'
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import HomeIcon from '@mui/icons-material/Home'
-import { Box, Button, Typography, useMediaQuery } from '@mui/material'
+import { Alert, Box, Button, Typography, useMediaQuery } from '@mui/material'
 import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import Cookies from 'js-cookie'
 import queryString from 'query-string'
@@ -225,6 +225,10 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         </Button>
         <Typography variant="h3">Search Results</Typography>
         <Search isSection={false} />
+        <Alert severity="warning">
+          All scholarship listings are currently test data and not actual
+          listings. We’ll be updating them with real data soon, so stay tuned!
+        </Alert>
         <DataGrid
           onRowClick={handleRowClick}
           localeText={{ noRowsLabel: 'No saved data' }}
