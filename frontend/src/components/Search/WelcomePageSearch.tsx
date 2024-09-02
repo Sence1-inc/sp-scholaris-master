@@ -34,7 +34,7 @@ const WelcomePageSearch: React.FC = () => {
     (state) => state.persistedReducer.scholarships
   )
   const { getScholarships } = useGetScholarships()
-  const { name: nameParam, page, ...restParams } = params.params
+  const { name: nameParam, page, limit, ...restParams } = params.params
   const [name, setName] = useState<string>(nameParam as string)
   const [hasScrolled, setHasScrolled] = useState(false)
   const { hash } = useLocation()
