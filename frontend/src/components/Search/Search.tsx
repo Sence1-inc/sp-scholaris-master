@@ -347,9 +347,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
             loading={isLoading}
             sx={{
               height:
-                Array.isArray(scholarships) && scholarships?.length > 0
-                  ? 'auto'
-                  : 200,
+                Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,
               '.MuiDataGrid-root': {
                 border: 'none',
               },
@@ -371,10 +369,14 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
                 zIndex: '20',
               },
               '.MuiDataGrid-overlayWrapper': {
-                height: 'auto !important',
+                minHeight: '200px',
+                height:
+                  rowData.length > 0 ? 'auto !important' : '200px !important',
               },
               '.MuiDataGrid-overlayWrapperInner': {
-                height: 'auto !important',
+                minHeight: '200px',
+                height:
+                  rowData.length > 0 ? 'auto !important' : '200px !important',
               },
               fontFamily: 'Outfit',
               fontSize: {
