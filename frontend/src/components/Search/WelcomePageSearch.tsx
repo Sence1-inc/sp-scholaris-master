@@ -34,7 +34,7 @@ const WelcomePageSearch: React.FC = () => {
     (state) => state.persistedReducer.scholarships
   )
   const { getScholarships } = useGetScholarships()
-  const { name: nameParam, page, ...restParams } = params.params
+  const { name: nameParam, page, limit, ...restParams } = params.params
   const [name, setName] = useState<string>(nameParam as string)
   const [hasScrolled, setHasScrolled] = useState(false)
   const { hash } = useLocation()
@@ -301,9 +301,7 @@ const WelcomePageSearch: React.FC = () => {
             loading={isLoading}
             sx={{
               height:
-                Array.isArray(scholarships) && scholarships?.length > 0
-                  ? 'auto'
-                  : 200,
+                Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,
               '.MuiDataGrid-root': {
                 border: 'none',
               },
@@ -322,10 +320,14 @@ const WelcomePageSearch: React.FC = () => {
                 },
               },
               '.MuiDataGrid-overlayWrapper': {
-                height: 'auto !important',
+                minHeight: '200px',
+                height:
+                  rowData.length > 0 ? 'auto !important' : '200px !important',
               },
               '.MuiDataGrid-overlayWrapperInner': {
-                height: 'auto !important',
+                minHeight: '200px',
+                height:
+                  rowData.length > 0 ? 'auto !important' : '200px !important',
               },
               fontFamily: 'Outfit',
               fontSize: {
