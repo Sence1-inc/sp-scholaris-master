@@ -1,7 +1,7 @@
 import { Box } from '@mui/material'
 import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
-import { Route, Routes, useLocation, useSearchParams } from 'react-router-dom'
+import { Route, Routes, useLocation } from 'react-router-dom'
 import Disclaimer from './components/Disclaimer/Disclaimer'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 import Footer from './components/Footer/Footer'
@@ -55,17 +55,17 @@ const ProviderRoutes: React.FC = () => (
 const App: React.FC = () => {
   const { getScholarships } = useGetScholarships()
   const params = useAppSelector((state) => state.searchParams)
-  const [searchParams] = useSearchParams()
+  // const [searchParams] = useSearchParams()
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const location = useLocation()
   const { benefits, provider, start_date, due_date } = params.params
 
-  useEffect(() => {
-    if (searchParams.size === 0) {
-      getScholarships(false)
-    }
-    // eslint-disable-next-line
-  }, [searchParams])
+  // useEffect(() => {
+  //   if (searchParams.size === 0) {
+  //     getScholarships(false)
+  //   }
+  //   // eslint-disable-next-line
+  // }, [searchParams])
 
   useEffect(() => {
     if (Object.keys(params.params).length > 0 && isInitialLoad) {
@@ -78,6 +78,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     getScholarships(false)
+    // eslint-disable-next-line
   }, [benefits, provider, start_date, due_date])
 
   useEffect(() => {
