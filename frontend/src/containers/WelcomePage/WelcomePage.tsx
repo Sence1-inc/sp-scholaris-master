@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/material'
+import { Box, Card, CardMedia, Typography } from '@mui/material'
 import React from 'react'
 import WelcomeButton from '../../components/Button/WelcomeButton'
 import WelcomePageSearch from '../../components/Search/WelcomePageSearch'
@@ -14,13 +14,13 @@ const WelcomePage: React.FC = () => {
           display: 'flex',
           flexDirection: { xs: 'column' },
           width: '100vw',
-          padding: {xs: '60px 20px', md: '80px 20px'},
+          padding: { xs: '60px 20px', md: '80px 20px' },
           gap: { xs: '80px' },
         }}
       >
         <Box
           sx={{
-            width: { xs: '100%' }
+            width: { xs: '100%' },
           }}
         >
           <WelcomePageSearch />
@@ -41,18 +41,30 @@ const WelcomePage: React.FC = () => {
             width: { xs: '100%' },
             display: 'flex',
             flexDirection: 'column',
-            rowGap: {xs: '20px', md: '35px'},
+            rowGap: { xs: '20px', md: '35px' },
             alignItems: 'center',
             justifyContent: 'center',
             paddingRight: { md: '10px' },
             padding: { xs: '60px 20px', md: '80px' },
           }}
         >
-          {/* <img
-            src={WelcomeImage}
-            alt=""
-            style={{ maxWidth: '100%', height: 'auto', padding: 0, margin: 0 }}
-          /> */}
+          <Card>
+            <CardMedia
+              sx={{
+                height: { xs: '40vh', md: '70vh' },
+                width: { xs: '90vw', md: '60vw' },
+              }}
+            >
+              <iframe
+                width="100%"
+                height="100%"
+                src="https://www.youtube.com/embed/awOO74QEkUo"
+                title="What is Scholaris"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </CardMedia>
+          </Card>
           <Typography
             variant="h3"
             textAlign="center"
@@ -104,10 +116,14 @@ const WelcomePage: React.FC = () => {
               <span className="color-secondary">Scholaris</span> - Match
               potential <br /> with scholarship opportunities
             </Typography>
-            <Typography variant="body1" textAlign="center" sx={{maxWidth: '650px', margin: '0 auto'}}>
-              Scholaris connects students and scholarship-granting 
-              organizations to discover scholarship opportunities, 
-              ensuring no student is left behind.
+            <Typography
+              variant="body1"
+              textAlign="center"
+              sx={{ maxWidth: '650px', margin: '0 auto' }}
+            >
+              Scholaris connects students and scholarship-granting organizations
+              to discover scholarship opportunities, ensuring no student is left
+              behind.
             </Typography>
             <div className="content__welcome-buttons">
               <WelcomeButton
