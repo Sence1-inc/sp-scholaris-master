@@ -36,7 +36,7 @@ const StudentRoutes: React.FC = () => (
     <Route path="/" element={<TeaserStudent />} />
     <Route path="survey" element={<SurveyPage user_type="student" />} />
     <Route
-      path="/dashboard"
+      path="/account"
       element={<StudentPrivate component={StudentDashboardPage} />}
     />
     <Route path="*" element={<PageNotFoundPage />} />

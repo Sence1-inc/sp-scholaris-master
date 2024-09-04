@@ -34,7 +34,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
 
   const renderItems = () => {
     if (pathname.includes('/student')) {
-      return (
+      return !isAuthenticated ? (
         <List
           sx={{
             display: 'flex',
@@ -84,6 +84,37 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               to="/scholarships"
             >
               Search Scholarships
+            </Button>
+          </ListItem>
+        </List>
+      ) : (
+        <List
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+          }}
+        >
+          {/* <ListItem>
+            <Typography
+              variant="body1"
+              component={Link}
+              to="/provider/dashboard"
+              sx={{ color: 'common.white', textDecoration: 'none' }}
+            >
+              Dashboard
+            </Typography>
+          </ListItem> */}
+          <ListItem disablePadding sx={{ width: 'auto' }}>
+            <Button
+              sx={{
+                ...ctaButtonStyle,
+                whiteSpace: 'nowrap',
+                backgroundColor: 'primary.light',
+              }}
+              component={Link}
+              to={`/student/account`}
+            >
+              Account
             </Button>
           </ListItem>
         </List>
@@ -233,7 +264,11 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               backgroundColor: 'primary.light',
             }}
             component={Link}
-            to={`/provider/account/${user?.scholarship_provider?.id}/view-profile`}
+            to={
+              user.role.id === 4
+                ? `/provider/account/${user?.scholarship_provider?.id}/view-profile`
+                : `/student/account`
+            }
           >
             Account
           </Button>
