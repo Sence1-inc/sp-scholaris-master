@@ -63,7 +63,7 @@ module Api
       end
 
       def scholarships
-        if @scholarship_provider.user.email_address != cookies[:user_email]
+        if @scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email']
           render_unauthorized_response
           return
         end

@@ -73,8 +73,7 @@ class Authenticate
     return false unless access_token
 
     begin
-      decoded_token = JWT.decode(access_token, ENV['JWT_SECRET_KEY'], false)
-      payload = decoded_token.first
+      payload = JwtService.decode(access_token)
       current_time = Time.now.to_i
 
       if payload['exp'] && payload['exp'] < current_time

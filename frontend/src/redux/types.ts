@@ -116,7 +116,7 @@ export type ScholarshipProvider = {
 }
 
 export type Role = {
-  id: number | null
+  id: number
   role_name: string
 }
 

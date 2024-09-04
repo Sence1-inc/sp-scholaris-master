@@ -74,7 +74,7 @@ module Api
             file_params = data
             file_params.each do |file_param|
               begin
-                user = User.find_by(email_address: cookies[:user_email])
+                user = User.find_by(email_address: JwtService.decode(cookies[:user_email]))
                 start_date = DateTime.strptime(file_param['start_date'], '%d-%m-%Y')
                 due_date = DateTime.strptime(file_param['due_date'], '%d-%m-%Y')
 
@@ -178,7 +178,7 @@ module Api
         end
 
         def authorize
-          if @scholarship.scholarship_provider.user.email_address != cookies[:user_email]
+          if @scholarship.scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email']
             render_unauthorized_response
             return
           end

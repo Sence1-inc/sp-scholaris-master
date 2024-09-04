@@ -1,4 +1,4 @@
-import { Button, Container, Typography } from '@mui/material'
+import { Box, Button, Container, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
@@ -25,9 +25,9 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   const [userCredentials, setUserCredentials] = useState({
     email_address: '',
     password: '',
-    service_id: 1,
-    role: 'provider',
+    role: '',
   })
+  const userState = useAppSelector((state) => state.persistedReducer.user)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [infoMessage, setInfoMessage] = useState<string>('')
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
@@ -39,7 +39,17 @@ const SignInPage: React.FC<SignInPageProps> = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/provider/dashboard')
+      switch (userState?.role?.id) {
+        case 3:
+          navigate('/student/dashboard')
+          break
+
+        case 4:
+          navigate('/provider/dashboard')
+          break
+        default:
+          navigate('/')
+      }
     }
     // eslint-disable-next-line
   }, [isAuthenticated])
@@ -58,7 +68,8 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     }))
   }
 
-  const handleSignIn = async () => {
+  const handleSignIn = async (role: string) => {
+    userCredentials.role = role
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const isValidEmail = emailRegex.test(userCredentials.email_address)
 
@@ -159,7 +170,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         Sign-in
       </Typography>
       <CustomTextfield
-        handleOnKeyDonw={handleSignIn}
         label="Email address"
         value={userCredentials.email_address.toLowerCase()}
         handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -169,7 +179,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         error={errors.email_address ?? ''}
       />
       <CustomTextfield
-        handleOnKeyDonw={handleSignIn}
         type="password"
         label="Password"
         value={userCredentials.password}
@@ -234,13 +243,29 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         </Button>
       </Container>
 
-      <CTAButton
-        id="sign-in-from-sigin-page"
-        handleClick={handleSignIn}
-        label="Login"
-        loading={isButtonLoading}
-        styles={{ fontSize: '24px' }}
-      />
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          gap: '30px',
+        }}
+      >
+        <CTAButton
+          id="sign-in-from-sigin-page"
+          handleClick={() => handleSignIn('student')}
+          label="Sign in as student"
+          loading={isButtonLoading}
+          styles={{ fontSize: '24px' }}
+        />
+        <CTAButton
+          id="sign-in-from-sigin-page"
+          handleClick={() => handleSignIn('provider')}
+          label="Sign in as provider"
+          loading={isButtonLoading}
+          styles={{ fontSize: '24px' }}
+        />
+      </Box>
     </Container>
   )
 }
