@@ -34,7 +34,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     middle_name: '',
     birthdate: null,
     is_active: 1,
-    service_id: 1,
     role: 'provider',
   })
   const [successMessage, setSuccessMessage] = useState<string>('')
@@ -129,7 +128,8 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     // eslint-disable-next-line
   }, [userCredentials, isInitialLoad])
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (role: string) => {
+    userCredentials.role = role
     setIsInitialLoad(false)
 
     const errorMessages = validationConditions
@@ -263,7 +263,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           label="Email address"
           error={errors.email_address}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -273,7 +272,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your email"
         />
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           type="password"
           label="Password"
           error={errors.password}
@@ -284,7 +282,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your password"
         />
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           type="password"
           label="Confirm Password"
           error={errors.password2}
@@ -295,7 +292,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Confirm your password"
         />
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           label="First name"
           error={errors.first_name}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -305,7 +301,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your first name"
         />
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           label="Middle name"
           error={errors.middle_name}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -315,7 +310,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your middle name"
         />
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           label="Last name"
           error={errors.last_name}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -370,32 +364,30 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       >
         Already have and account? Sign-in here
       </MuiLink>
-      <CTAButton
-        id="sign-up"
-        label="Sign up"
-        loading={buttonLoading}
-        handleClick={handleSignUp}
-        styles={{ fontSize: '24px' }}
-      />
 
-      {/* <Button
-        onClick={handleSignUp}
-        variant="contained"
-        color="primary"
+      <Box
         sx={{
-          borderRadius: '16px',
-          backgroundColor: '#f36b3b',
-          padding: '20px',
-          margin: '0 auto 60px',
           width: '100%',
-          maxWidth: '320px',
-          '&:hover': { backgroundColor: '#d2522b' },
-          textTransform: 'inherit',
-          fontSize: '24px',
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          gap: '30px',
         }}
       >
-        Sign up
-      </Button> */}
+        <CTAButton
+          id="sign-up"
+          label="Sign up as student"
+          loading={buttonLoading}
+          handleClick={() => handleSignUp('student')}
+          styles={{ fontSize: '24px' }}
+        />
+        <CTAButton
+          id="sign-up"
+          label="Sign up as provider"
+          loading={buttonLoading}
+          handleClick={() => handleSignUp('provider')}
+          styles={{ fontSize: '24px' }}
+        />
+      </Box>
     </Container>
   )
 }
