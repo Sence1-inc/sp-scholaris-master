@@ -10,7 +10,10 @@ const initialState = {
   last_name: '',
   role_id: 0,
   session_token: '',
-  role: {},
+  role: {
+    id: 0,
+    role_name: '',
+  },
   scholarship_provider: {
     id: 0,
     provider_name: '',
@@ -22,7 +25,7 @@ export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    initializeUser: (state, action: PayloadAction<User>) => {
+    initializeUser: (_state, action: PayloadAction<User>) => {
       return action.payload
     },
   },

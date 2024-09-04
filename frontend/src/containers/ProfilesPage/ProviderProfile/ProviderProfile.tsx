@@ -67,7 +67,7 @@ const ProviderProfile: React.FC = () => {
           last_name: '',
           role_id: 0,
           session_token: '',
-          role: { id: null, role_name: '' },
+          role: { id: 0, role_name: '' },
           scholarship_provider: {
             id: 0,
             provider_name: '',

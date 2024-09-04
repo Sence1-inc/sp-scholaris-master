@@ -1,7 +1,18 @@
+import { Circle } from '@mui/icons-material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import { Box, Button, Container, Link, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Container,
+  Link,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
 import PrimaryButton from '../../components/CustomButton/PrimaryButton'
@@ -18,6 +29,14 @@ const AddScholarshipViaCSVPage: React.FC = () => {
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [isUploading, setIsUploading] = useState<boolean>(false)
+
+  const instructions = [
+    'DO NOT remove the first and second row.',
+    'Ensure adherence to the correct format, particularly for the start date and due date.',
+    "Ensure that the status' value is 'active' or 'inactive'.",
+    'Ensure that there are no duplicated scholarship.',
+    'Complete all columns with relevant details.',
+  ]
 
   const handleDownload = () => {
     const fileUrl = `${process.env.PUBLIC_URL}/files/scholarship_data.tsv`
@@ -259,16 +278,24 @@ const AddScholarshipViaCSVPage: React.FC = () => {
           </Box>
           <OpenTsvInstructions />
           <Box>
-            <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+            <Typography variant="body1" color="primary">
               Please ensure the following steps are taken when addressing
-              errors: <br />
-              1. DO NOT remove the second row. <br />
-              2. Ensure adherence to the correct format, particularly for the
-              start date and due date. <br />
-              3. Ensure that the status' value is "active" or "inactive". <br />
-              4. Ensure that there are no duplicated scholarship. <br />
-              5. Complete all columns with relevant details.
+              errors:
             </Typography>
+            <List sx={{ color: 'primary' }}>
+              {instructions.map((instruction) => {
+                return (
+                  <ListItem>
+                    <ListItemIcon>
+                      <Circle fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText sx={{ fontSize: '8px' }}>
+                      {instruction}
+                    </ListItemText>
+                  </ListItem>
+                )
+              })}
+            </List>
           </Box>
         </Box>
       </Box>
