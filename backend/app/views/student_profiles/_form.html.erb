@@ -1,0 +1,17 @@
+<%= form_with(model: student_profile) do |form| %>
+  <% if student_profile.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(student_profile.errors.count, "error") %> prohibited this student_profile from being saved:</h2>
+
+      <ul>
+        <% student_profile.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
