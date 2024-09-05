@@ -7,7 +7,6 @@ interface StudentDashboardCardProps {
   title: string
   icon: React.ReactNode
   handleSave: () => void
-  handleCancel: () => void
 }
 
 const StudentDashboardCard: React.FC<StudentDashboardCardProps> = ({
@@ -15,7 +14,6 @@ const StudentDashboardCard: React.FC<StudentDashboardCardProps> = ({
   title,
   icon,
   handleSave,
-  handleCancel,
 }) => {
   return (
     <Box
@@ -42,13 +40,6 @@ const StudentDashboardCard: React.FC<StudentDashboardCardProps> = ({
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: '20px' }}>
-          <Button
-            onClick={handleCancel}
-            variant="text"
-            sx={{ color: 'common.white' }}
-          >
-            Cancel
-          </Button>
           <PrimaryButton
             handleClick={handleSave}
             label="Save"

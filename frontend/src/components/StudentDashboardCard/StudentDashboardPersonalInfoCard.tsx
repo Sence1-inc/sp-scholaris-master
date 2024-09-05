@@ -1,20 +1,35 @@
 import { Person } from '@mui/icons-material'
 import { Avatar, Box, useMediaQuery } from '@mui/material'
+import { useState } from 'react'
+import { useAppSelector } from '../../redux/store'
+import { StudentProfile } from '../../redux/types'
 import theme from '../../styles/theme'
 import CustomSmallTextField from '../CustomSmallTextField/CustomSmallTextField'
 import StudentDashboardCard from './StudentDashboardCard'
 
-const StudentDashboardPersonalInfoCard = () => {
-  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'))
+interface StudentDashboardPersonalInfoCardProps {
+  profileData: StudentProfile
+  setProfileData: React.Dispatch<React.SetStateAction<StudentProfile>>
+  handleSave: () => void
+}
 
-  const handleSave = () => {}
-  const handleCancel = () => {}
+const StudentDashboardPersonalInfoCard: React.FC<
+  StudentDashboardPersonalInfoCardProps
+> = ({ profileData, setProfileData, handleSave }) => {
+  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'))
+  const user = useAppSelector((state) => state.persistedReducer.user)
+
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    field: string
+  ) => {
+    setProfileData({ ...profileData, [field]: e.target.value })
+  }
 
   return (
     <StudentDashboardCard
       icon={<Person fontSize="small" sx={{ color: 'common.white' }} />}
       title="Personal Information"
-      handleCancel={handleCancel}
       handleSave={handleSave}
     >
       <Box
@@ -36,7 +51,13 @@ const StudentDashboardPersonalInfoCard = () => {
           }}
         >
           <Box sx={{}}>
-            <CustomSmallTextField label="About:" multiline={true} minRows={6} />
+            <CustomSmallTextField
+              value={profileData.about}
+              handleOnInputChange={(e) => handleInputChange(e, 'about')}
+              label="About:"
+              multiline={true}
+              minRows={6}
+            />
           </Box>
           <Box
             sx={{
@@ -45,20 +66,45 @@ const StudentDashboardPersonalInfoCard = () => {
               flexWrap: 'wrap',
             }}
           >
-            <CustomSmallTextField label="Full Name:" fullWidth={isSm} />
             <CustomSmallTextField
+              isDisabled={true}
+              value={`${user.first_name} ${user.last_name}`}
+              handleOnInputChange={(e) => handleInputChange(e, 'fullname')}
+              label="Full Name:"
+              fullWidth={isSm}
+            />
+            <CustomSmallTextField
+              value={profileData.birthdate}
+              handleOnInputChange={(e) => handleInputChange(e, 'birthdate')}
               label="Birthdate:"
               fullWidth={isSm}
               type="date"
             />
             <CustomSmallTextField
+              isDisabled={true}
+              value={user.email_address}
+              handleOnInputChange={(e) => handleInputChange(e, 'email')}
               label="Email:"
               fullWidth={isSm}
               type="email"
             />
-            <CustomSmallTextField label="Age:" fullWidth={isSm} />
-            <CustomSmallTextField label="Nationality:" fullWidth={isSm} />
             <CustomSmallTextField
+              value={profileData.age}
+              handleOnInputChange={(e) => handleInputChange(e, 'age')}
+              label="Age:"
+              fullWidth={isSm}
+            />
+            <CustomSmallTextField
+              value={profileData.nationality}
+              handleOnInputChange={(e) => handleInputChange(e, 'nationality')}
+              label="Nationality:"
+              fullWidth={isSm}
+            />
+            <CustomSmallTextField
+              value={profileData.gender}
+              handleSelect={(e) =>
+                setProfileData({ ...profileData, gender: e.target.value })
+              }
               label="Gender:"
               fullWidth={isSm}
               isSelect={true}
@@ -67,7 +113,12 @@ const StudentDashboardPersonalInfoCard = () => {
                 { value: 'female', label: 'Female' },
               ]}
             />
-            <CustomSmallTextField label="State:" fullWidth={isSm} />
+            <CustomSmallTextField
+              value={profileData.state}
+              handleOnInputChange={(e) => handleInputChange(e, 'state')}
+              label="State:"
+              fullWidth={isSm}
+            />
           </Box>
         </Box>
       </Box>

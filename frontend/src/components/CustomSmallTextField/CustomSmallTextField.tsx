@@ -3,10 +3,14 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  SelectChangeEvent,
   TextField,
   useMediaQuery,
 } from '@mui/material'
-import React from 'react'
+import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { Dayjs } from 'dayjs'
+import React, { ChangeEvent } from 'react'
 import theme from '../../styles/theme'
 
 interface CustomSmallTextFieldProps {
@@ -17,6 +21,11 @@ interface CustomSmallTextFieldProps {
   type?: string
   isSelect?: boolean
   options?: { value: string; label: string }[]
+  value: any
+  isDisabled?: boolean
+  handleOnInputChange?: (e: ChangeEvent<HTMLInputElement>) => void
+  handleDateChange?: (newValue: Dayjs) => void
+  handleSelect?: (e: SelectChangeEvent<string>) => void
 }
 
 const CustomSmallTextField: React.FC<CustomSmallTextFieldProps> = ({
@@ -27,6 +36,11 @@ const CustomSmallTextField: React.FC<CustomSmallTextFieldProps> = ({
   type = 'text',
   isSelect = false,
   options,
+  handleOnInputChange,
+  handleDateChange,
+  handleSelect,
+  value,
+  isDisabled = false,
 }) => {
   const isSm = useMediaQuery(() => theme.breakpoints.down('md'))
 
@@ -50,10 +64,23 @@ const CustomSmallTextField: React.FC<CustomSmallTextFieldProps> = ({
       </InputLabel>
       {isSelect ? (
         <Select
+          value={value}
+          onChange={(e: SelectChangeEvent<string>) =>
+            handleSelect && handleSelect(e)
+          }
           sx={{
             padding: '0',
             borderRadius: '0px',
             backgroundColor: 'background.paper',
+            '& .MuiInputBase-root': {
+              display: 'flex',
+              alignItems: 'center',
+            },
+            '& .MuiInputBase-input': {
+              height: 'auto',
+              fontSize: '15px',
+              padding: '4px 8px',
+            },
           }}
           label={label}
         >
@@ -63,16 +90,53 @@ const CustomSmallTextField: React.FC<CustomSmallTextFieldProps> = ({
             </MenuItem>
           ))}
         </Select>
+      ) : type === 'date' ? (
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DatePicker
+            sx={{
+              padding: '0',
+              borderRadius: '0px',
+              backgroundColor: 'background.paper',
+              '& .MuiInputBase-root': {
+                display: 'flex',
+                alignItems: 'center',
+              },
+              '& .MuiInputBase-input': {
+                height: 'auto',
+                fontSize: '15px',
+                padding: '4px 8px',
+              },
+            }}
+            value={value}
+            onChange={(newValue) =>
+              handleDateChange && handleDateChange(newValue)
+            }
+          />
+        </LocalizationProvider>
       ) : (
         <TextField
+          disabled={isDisabled}
           type={type}
           multiline={multiline}
           minRows={minRows}
           variant="outlined"
+          value={value}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            handleOnInputChange && handleOnInputChange(e)
+          }
           sx={{
             padding: '0',
             borderRadius: '0px',
             backgroundColor: 'background.paper',
+            '& .MuiInputBase-root': {
+              display: 'flex',
+              alignItems: 'center',
+            },
+            '& .MuiInputBase-input': {
+              height: 'auto',
+              fontSize: '15px',
+              padding: '4px 8px',
+            },
           }}
         />
       )}

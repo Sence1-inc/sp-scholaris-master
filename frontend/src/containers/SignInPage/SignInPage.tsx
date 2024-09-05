@@ -41,7 +41,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     if (isAuthenticated) {
       switch (userState?.role?.id) {
         case 3:
-          navigate('/student/dashboard')
+          navigate('/student/account')
           break
 
         case 4:
