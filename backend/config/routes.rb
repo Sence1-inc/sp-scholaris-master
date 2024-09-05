@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       resources :provinces
       resources :cities
       resources :roles
+      resources :student_profiles
     end
   end
 end

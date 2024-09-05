@@ -1,3 +1,5 @@
+import { Dayjs } from 'dayjs'
+
 export type Scholarship = {
   id: number
   listing_id: number
@@ -111,12 +113,12 @@ export type Params = {
 export type ScholarshipProvider = {
   id: number
   provider_name: string
-  provider_link: string
+  provider_link?: string
   user_id: number
 }
 
 export type Role = {
-  id: number | null
+  id: number
   role_name: string
 }
 
@@ -165,6 +167,32 @@ export type ProviderScholarship = {
   scholarship_type: ScholarshipType
 }
 
+export type StudentProfile = {
+  about: string
+  full_name: string
+  birthdate: Dayjs
+  email: string
+  age: number
+  nationality: string
+  gender: string
+  state: string
+  secondary_school_name: string
+  secondary_school_year: string
+  secondary_school_address: string
+  secondary_school_phone_number: string
+  secondary_school_awards: string
+  secondary_school_organizations: string
+  elementary_school_name: string
+  elementary_school_year: string
+  elementary_school_address: string
+  elementary_school_phone_number: string
+  elementary_school_awards: string
+  elementary_school_organizations: string
+  guardian_full_name: string
+  guardian_contact_number: string
+  guardian_relationship: string
+}
+
 export type User = {
   birthdate: string
   email_address: string
@@ -176,5 +204,6 @@ export type User = {
   session_token: string
   role: Role
   scholarship_provider: ScholarshipProvider
+  student_profile: StudentProfile
   scholarships?: ProviderScholarship[]
 }

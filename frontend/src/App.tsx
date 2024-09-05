@@ -7,6 +7,8 @@ import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 import Footer from './components/Footer/Footer'
 import Navbar from './components/Navigation/Navbar'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
+import ProviderPrivate from './components/PrivateRoute/ProviderPrivateRoute'
+import StudentPrivate from './components/PrivateRoute/StudentPrivateRoute'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import AddScholarshipViaCSVPage from './containers/AddScholarshipViaCSVPage/AddScholarshipViaCSVPage'
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
@@ -18,6 +20,7 @@ import ScholarshipEditorPage from './containers/ScholarshipEditorPage/Scholarshi
 import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsPage'
 import SignInPage from './containers/SignInPage/SignInPage'
 import SignUpPage from './containers/SignUpPage/SignUpPage'
+import StudentDashboardPage from './containers/StudentDashboardPage/StudentDashboardPage'
 import SurveyPage from './containers/SurveyPage/SurveyPage'
 import TeaserProvider from './containers/TeaserPage/TeaserProvider'
 import TeaserStudent from './containers/TeaserPage/TeaserStudent'
@@ -32,6 +35,10 @@ const StudentRoutes: React.FC = () => (
   <Routes>
     <Route path="/" element={<TeaserStudent />} />
     <Route path="survey" element={<SurveyPage user_type="student" />} />
+    <Route
+      path="/account"
+      element={<StudentPrivate component={StudentDashboardPage} />}
+    />
     <Route path="*" element={<PageNotFoundPage />} />
   </Routes>
 )
@@ -40,13 +47,13 @@ const ProviderRoutes: React.FC = () => (
   <Routes>
     <Route
       path="/dashboard"
-      element={<PrivateRoute component={ProviderDashboardPage} />}
+      element={<ProviderPrivate component={ProviderDashboardPage} />}
     />
     <Route path="/" element={<TeaserProvider />} />
     <Route path="survey" element={<SurveyPage user_type="provider" />} />
     <Route
       path="account/:id/:lastRoute"
-      element={<PrivateRoute component={ProviderProfile} />}
+      element={<ProviderPrivate component={ProviderProfile} />}
     />
     <Route path="*" element={<PageNotFoundPage />} />
   </Routes>

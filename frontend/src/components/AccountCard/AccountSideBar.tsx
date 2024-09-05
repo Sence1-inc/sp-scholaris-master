@@ -2,6 +2,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import PersonIcon from '@mui/icons-material/Person'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { Box, Button, Card, List, ListItem, Typography } from '@mui/material'
+import dayjs from 'dayjs'
 import React, { Dispatch, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
@@ -69,12 +70,37 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
           last_name: '',
           role_id: 0,
           session_token: '',
-          role: { id: null, role_name: '' },
+          role: { id: 0, role_name: '' },
           scholarship_provider: {
             id: 0,
             provider_name: '',
             user_id: 0,
             provider_link: '',
+          },
+          student_profile: {
+            about: '',
+            full_name: '',
+            birthdate: dayjs(new Date()),
+            email: '',
+            age: 0,
+            nationality: '',
+            gender: '',
+            state: '',
+            secondary_school_name: '',
+            secondary_school_year: '',
+            secondary_school_address: '',
+            secondary_school_phone_number: '',
+            secondary_school_awards: '',
+            secondary_school_organizations: '',
+            elementary_school_name: '',
+            elementary_school_year: '',
+            elementary_school_address: '',
+            elementary_school_phone_number: '',
+            elementary_school_awards: '',
+            elementary_school_organizations: '',
+            guardian_full_name: '',
+            guardian_contact_number: '',
+            guardian_relationship: '',
           },
         })
       )

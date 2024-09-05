@@ -54,94 +54,142 @@ module Api
     end
 
     def register
-    registration_response = authenticate_registration
+      registration_response = authenticate_registration
 
-    case registration_response[:status]
-    when 201
-      handle_registration_success(registration_response)
-    when 409
-      render_error("Please try logging in or reset your password", registration_response[:status])
-    else
-      render_error(registration_response[:error], registration_response[:status])
+      case registration_response[:status]
+      when 201
+        handle_registration_success(registration_response)
+      when 409
+        render_error("Please try logging in or reset your password", registration_response[:status])
+      else
+        render_error(registration_response[:error], registration_response[:status])
+      end
     end
-  end
 
-  def resend_verification
-    user = User.find_by(verification_token: params[:token], id: params[:id])
+    def resend_verification
+      user = User.find_by(verification_token: params[:token], id: params[:id])
 
-    if user.nil?
-      render_error("No user found", :not_found)
-    elsif user.verification_expires_at < Time.current
-      render_error("Verification link has expired", :unprocessable_entity)
-    else
-      handle_verification_resend(user)
+      if user.nil?
+        render_error("No user found", :not_found)
+      elsif user.verification_expires_at < Time.current
+        render_error("Verification link has expired", :unprocessable_entity)
+      else
+        handle_verification_resend(user)
+      end
     end
-  end
 
-  def verify
-    user = User.find_by(verification_token: params[:token])
+    def verify
+      user = User.find_by(verification_token: params[:token])
 
-    if user.nil?
-      render_error("Invalid link", :ok)
-    elsif Time.current > user.verification_expires_at
-      render_error("Verification link has expired", :not_found)
-    elsif user.update(is_verified: true, verification_token: nil, verification_expires_at: nil)
-      render json: { status: "verified" }, status: :ok
-    else
-      render_error("Verification failed", :unprocessable_entity)
+      if user.nil?
+        render_error("Invalid link", :ok)
+      elsif Time.current > user.verification_expires_at
+        render_error("Verification link has expired", :not_found)
+      elsif user.update(is_verified: true, verification_token: nil, verification_expires_at: nil)
+        render json: { status: "verified" }, status: :ok
+      else
+        render_error("Verification failed", :unprocessable_entity)
+      end
     end
-  end
 
-  def login
-    req = {
-      email: params.dig(:email_address),
-      password: params.dig(:password),
-      serviceId: params.dig(:service_id),
-      serviceKey: ENV["APP_SERVICE_KEY"],
-      role: params.dig(:role)
-    }
+    def login
+      req = {
+        email: params.dig(:email_address),
+        password: params.dig(:password),
+        serviceId: ENV["APP_SERVICE_ID"],
+        serviceKey: ENV["APP_SERVICE_KEY"],
+        role: params.dig(:role)
+      }
 
-    begin
-      response = RestClient.post(ENV['AUTH_LOGIN'], req.to_json, @headers)
-      parsed_response = JSON.parse(response.body)
+      begin
+        response = RestClient.post(ENV['AUTH_LOGIN'], req.to_json, @headers)
+        parsed_response = JSON.parse(response.body)
+
+        if parsed_response['status'] == 200
+          handle_login_success(parsed_response)
+        else
+          render_error(parsed_response['message'] || 'Authentication failed', parsed_response['status'])
+        end
+      rescue RestClient::ExceptionWithResponse => e
+        handle_rest_client_error(e)
+      end
+    end
+
+    def refresh
+      req = {
+        refreshToken: cookies[:refresh_token],
+        serviceId: ENV["APP_SERVICE_ID"]
+      }
+
+      parsed_response = handle_refresh(req)
 
       if parsed_response['status'] == 200
-        handle_login_success(parsed_response)
+        return handle_refresh_success(parsed_response)
       else
-        render_error(parsed_response['message'] || 'Authentication failed', parsed_response['status'])
+        return render_error(parsed_response['msg'] || 'Refresh failed', parsed_response['status'])
       end
-    rescue RestClient::ExceptionWithResponse => e
-      handle_rest_client_error(e)
     end
-  end
-
-  def refresh
-    req = {
-      refreshToken: cookies[:refresh_token],
-      serviceId: 1
-    }
-
-    begin
-      response = RestClient.post(ENV['AUTH_REFRESH'], req.to_json, @headers)
-      parsed_response = JSON.parse(response.body)
-
-      if parsed_response['status'] == 200
-        handle_refresh_success(parsed_response)
-      else
-        render_error(parsed_response['msg'] || 'Refresh failed', parsed_response['status'])
-      end
-    rescue RestClient::ExceptionWithResponse => e
-      render_error(e.response.body, e.response.code)
-    end
-  end
 
     def check_token
-      has_access_token = cookies[:access_token].present?
-      render json: { valid: has_access_token }, status: :ok
+      access_token = cookies[:access_token]
+      refresh_token = cookies[:refresh_token]
+      user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+
+      if user
+        @provider = user.role_id === 4 ? ScholarshipProvider.find_or_create_by(user_id: user.id) : {}
+        @scholarships = user.role_id === 4 ? Scholarship.where(scholarship_provider_id: provider.id) : {}
+        @profile = user.role_id === 4 ? ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id) : {}
+        @student_profile = user.role_id === 3 ? StudentProfile.find_by(user_id: user.id) : {}
+      end
+
+      if access_token.present?
+        decoded_access_token = JwtService.decode(cookies[:access_token])
+        if decoded_access_token['email'] === JwtService.decode(cookies[:email])['email']
+          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json)}, status: :ok
+        else
+          render json: { valid: false }, status: 498
+        end
+      elsif refresh_token.present? && !access_token.present?
+        req = {
+          refreshToken: cookies[:refresh_token],
+          serviceId: ENV["APP_SERVICE_ID"]
+        }
+
+        parsed_response = handle_refresh(req)
+
+        if parsed_response['status'] == 200
+          set_cookie(parsed_response)
+          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json) }, status: :ok
+        else
+          render json: { valid: false }, status: 498
+        end
+      elsif refresh_token.present? && access_token.present?
+        decoded_access_token = JwtService.decode(cookies[:access_token])
+        is_authorized = decoded_access_token['email'] === JwtService.decode(cookies[:email])['email']
+        if is_authorized
+          req = {
+            refreshToken: cookies[:refresh_token],
+            serviceId: ENV["APP_SERVICE_ID"]
+          }
+
+          parsed_response = handle_refresh(req)
+
+          if parsed_response['status'] == 200
+            set_cookie(parsed_response)
+            render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json) }, status: :ok
+          else
+            render json: { valid: false }, status: 498
+          end
+        else
+          render json: { valid: false }, status: 498
+        end
+      else
+        render json: { valid: false }, status: 498
+      end
     end
 
     def logout
-      if params[:email] != cookies[:user_email]
+      if params[:email] != JwtService.decode(cookies[:email])['email']
         render_unauthorized_response
         return
       end
@@ -172,7 +220,7 @@ module Api
         req = {
           email: params.dig(:email_address),
           password: params.dig(:password),
-          serviceId: params.dig(:service_id),
+          serviceId: ENV["APP_SERVICE_ID"],
           serviceKey: ENV["APP_SERVICE_KEY"],
           role: params.dig(:role)
         }
@@ -197,6 +245,17 @@ module Api
           end
         rescue RestClient::ExceptionWithResponse => e
           { status: e.response.code, error: e.response.body }
+        end
+      end
+
+      def handle_refresh(request)
+        begin
+          response = RestClient.post(ENV['AUTH_REFRESH'], request.to_json, @headers)
+          parsed_response = JSON.parse(response.body)
+
+          return parsed_response
+        rescue RestClient::ExceptionWithResponse => e
+          return e
         end
       end
 
@@ -232,28 +291,35 @@ module Api
       end
 
       def handle_login_success(parsed_response)
-        cookies[:user_email] = { value: params.dig(:email_address), httponly: true }
-        cookies[:access_token] = { value: parsed_response['tokens']['accessToken'], httponly: true }
-        cookies[:refresh_token] = { value: parsed_response['tokens']['refreshToken'], httponly: true }
+        set_cookie(parsed_response)
 
         user = User.find_by(email_address: params.dig(:email_address))
         if user && user.is_verified
           provider = ScholarshipProvider.find_or_create_by(user_id: user.id)
           scholarships = Scholarship.where(scholarship_provider_id: provider.id)
           profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id) || {}
+          student_profile = StudentProfile.find_by(user_id: user.id) || {}
 
-          render json: user.as_json.merge(scholarship_provider: provider).merge(profile: profile.as_json), status: :ok
+          render json: user.as_json.merge(scholarship_provider: provider, student_profile: student_profile).merge(profile: profile.as_json), status: :ok
         else
           render_error("Email must be verified", :unprocessable_entity) unless user.is_verified
         end
       end
 
       def handle_refresh_success(parsed_response)
-        cookies[:user_email] = { value: user_params.dig(:email_address), httponly: true }
-        cookies[:access_token] = { value: parsed_response['tokens']['accessToken'], httponly: true }
-        cookies[:refresh_token] = { value: parsed_response['tokens']['refreshToken'], httponly: true }
+        set_cookie(parsed_response)
 
         render json: { message: parsed_response['msg'] }, status: :ok
+      end
+
+      def set_cookie(parsed_response)
+        access_token = parsed_response['tokens']['accessToken']
+        decoded_access_token = JwtService.decode(access_token)
+        email = decoded_access_token['email']
+        
+        cookies[:email] = { value: JwtService.encode({email: email}), httponly: true }
+        cookies[:access_token] = { value: parsed_response['tokens']['accessToken'], httponly: true }
+        cookies[:refresh_token] = { value: parsed_response['tokens']['refreshToken'], httponly: true }
       end
 
       def handle_rest_client_error(exception)
