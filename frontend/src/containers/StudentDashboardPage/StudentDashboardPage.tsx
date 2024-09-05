@@ -129,6 +129,7 @@ const StudentDashboardPage = () => {
   }
 
   const handleSave = async () => {
+    setIsSnackbarOpen(true)
     try {
       const { data } = await axiosInstance.post(
         '/api/v1/student_profiles',
