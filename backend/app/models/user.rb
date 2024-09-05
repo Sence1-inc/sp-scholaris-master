@@ -1,6 +1,7 @@
 class User < ApplicationRecord
   belongs_to :role
   has_one :scholarship_provider
+  has_one :student_profile
 
   validates :first_name, presence: true
   validates :last_name, presence: true
@@ -10,7 +11,7 @@ class User < ApplicationRecord
   default_scope -> { where(deleted_at: nil) }
 
   def as_json(options = {})
-    super(options.merge(include: [:role, :scholarship_provider], except: [:created_at, :updated_at, :deleted_at, :password]))
+    super(options.merge(include: [:role, :student_profile, :scholarship_provider], except: [:created_at, :updated_at, :deleted_at, :password]))
   end
 
   def birthdate_is_valid

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_30_060553) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_05_105539) do
   create_table "benefit_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "category_name"
     t.timestamp "deleted_at"
@@ -266,6 +266,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_060553) do
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
+    t.string "secondary_school_name"
+    t.string "secondary_school_year"
+    t.string "secondary_school_address"
+    t.string "secondary_school_phone_number"
+    t.text "secondary_school_awards"
+    t.text "secondary_school_organizations"
+    t.string "elementary_school_name"
+    t.string "elementary_school_year"
+    t.string "elementary_school_address"
+    t.string "elementary_school_phone_number"
+    t.text "elementary_school_awards"
+    t.text "elementary_school_organizations"
+    t.string "guardian_full_name"
+    t.string "guardian_contact_number"
+    t.string "guardian_relationship"
+    t.string "about"
+    t.integer "age"
+    t.string "nationality"
+    t.string "gender"
+    t.string "state"
     t.index ["user_id"], name: "index_student_profiles_on_user_id"
   end
 

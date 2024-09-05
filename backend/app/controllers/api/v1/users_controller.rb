@@ -133,11 +133,19 @@ module Api
     def check_token
       access_token = cookies[:access_token]
       refresh_token = cookies[:refresh_token]
+      user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+
+      if user
+        @provider = user.role_id === 4 ? ScholarshipProvider.find_or_create_by(user_id: user.id) : {}
+        @scholarships = user.role_id === 4 ? Scholarship.where(scholarship_provider_id: provider.id) : {}
+        @profile = user.role_id === 4 ? ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id) : {}
+        @student_profile = user.role_id === 3 ? StudentProfile.find_by(user_id: user.id) : {}
+      end
 
       if access_token.present?
         decoded_access_token = JwtService.decode(cookies[:access_token])
         if decoded_access_token['email'] === JwtService.decode(cookies[:email])['email']
-          render json: { valid: true }, status: :ok
+          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json)}, status: :ok
         else
           render json: { valid: false }, status: 498
         end
@@ -151,7 +159,7 @@ module Api
 
         if parsed_response['status'] == 200
           set_cookie(parsed_response)
-          render json: { valid: true }, status: :ok
+          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json) }, status: :ok
         else
           render json: { valid: false }, status: 498
         end
@@ -168,7 +176,7 @@ module Api
 
           if parsed_response['status'] == 200
             set_cookie(parsed_response)
-            render json: { valid: true }, status: :ok
+            render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json) }, status: :ok
           else
             render json: { valid: false }, status: 498
           end
@@ -284,17 +292,15 @@ module Api
 
       def handle_login_success(parsed_response)
         set_cookie(parsed_response)
-        # cookies[:email] = { value: params.dig(:email_address), httponly: true }
-        # cookies[:access_token] = { value: parsed_response['tokens']['accessToken'], httponly: true }
-        # cookies[:refresh_token] = { value: parsed_response['tokens']['refreshToken'], httponly: true }
 
         user = User.find_by(email_address: params.dig(:email_address))
         if user && user.is_verified
           provider = ScholarshipProvider.find_or_create_by(user_id: user.id)
           scholarships = Scholarship.where(scholarship_provider_id: provider.id)
           profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id) || {}
+          student_profile = StudentProfile.find_by(user_id: user.id) || {}
 
-          render json: user.as_json.merge(scholarship_provider: provider).merge(profile: profile.as_json), status: :ok
+          render json: user.as_json.merge(scholarship_provider: provider, student_profile: student_profile).merge(profile: profile.as_json), status: :ok
         else
           render_error("Email must be verified", :unprocessable_entity) unless user.is_verified
         end
