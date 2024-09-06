@@ -3,6 +3,10 @@ class StudentProfile < ApplicationRecord
 
   default_scope -> { where(deleted_at: nil) }
 
+  before_validation do
+    self.age = ((Time.zone.now - self.user.birthdate.to_time) / 1.year.seconds).floor if age === 0
+  end
+
   def as_json(options = {})
     super(options.merge(except: [:created_at, :updated_at, :deleted_at]))
   end
