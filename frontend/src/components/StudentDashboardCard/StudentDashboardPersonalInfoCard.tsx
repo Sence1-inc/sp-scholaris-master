@@ -78,6 +78,7 @@ const StudentDashboardPersonalInfoCard: React.FC<
               label="Birthdate:"
               fullWidth={isSm}
               type="date"
+              isDisabled={true}
             />
             <CustomSmallTextField
               isDisabled={true}
