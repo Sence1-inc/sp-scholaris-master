@@ -3,7 +3,7 @@ module Api
     class StudentProfilesController < ApplicationController
       skip_before_action :verify_authenticity_token
       rescue_from ActiveRecord::RecordNotFound, with: :skip_record_not_found
-      # before_action :authenticate_user, only: %i[ show create edit update destroy ]
+      before_action :authenticate_user, only: %i[ show create edit update destroy ]
       before_action :set_student_profile, only: %i[ show create edit update destroy ]
       
       
@@ -31,7 +31,9 @@ module Api
       # POST /student_profiles or /student_profiles.json
       def create
         if  @student_profile.present?
+          logger.info "Student profile before: #{@student_profile}"
           if @student_profile.update(student_profile_params)
+            logger.info "Student profile after: #{@student_profile}"
             render json: { message: 'Student profile updated successfully', profile: @student_profile }, status: :ok
           else
             render json: @student_profile.errors, status: :unprocessable_entity
