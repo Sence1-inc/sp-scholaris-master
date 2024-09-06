@@ -119,7 +119,8 @@ module Api
             :guardian_full_name,
             :guardian_contact_number,
             :guardian_relationship,
-            :avatar
+            :avatar,
+            :id
           )
         end
     end
