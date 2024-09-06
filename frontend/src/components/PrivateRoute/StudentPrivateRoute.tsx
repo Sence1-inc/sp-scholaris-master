@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import axiosInstance from '../../axiosConfig'
+import axiosInstance, { initialUserState } from '../../axiosConfig'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -17,19 +17,29 @@ const StudentPrivate: React.FC<StudentPrivateProps> = ({
   const user = useAppSelector((state) => state.persistedReducer.user)
 
   useEffect(() => {
+    const logout = async () => {
+      await axiosInstance.post('/api/v1/logout', {
+        email: user.email_address,
+      })
+    }
+
     const checkAuthentication = async () => {
       try {
         const response = await axiosInstance.get('/api/v1/check_token', {
           withCredentials: true,
         })
         setAuthenticated(response.data.valid)
+
+        if (!response.data.valid) {
+          await logout()
+          dispatch(initializeUser(initialUserState))
+        }
+
         dispatch(initializeIsAuthenticated(response.data.valid))
         dispatch(initializeUser(response.data.user))
       } catch (error) {
-        if (error) {
-          setAuthenticated(false)
-          dispatch(initializeIsAuthenticated(false))
-        }
+        setAuthenticated(false)
+        dispatch(initializeIsAuthenticated(false))
       }
     }
 

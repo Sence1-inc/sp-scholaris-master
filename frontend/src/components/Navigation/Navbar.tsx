@@ -246,16 +246,18 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           flexDirection: { xs: 'column', md: 'row' },
         }}
       >
-        <ListItem>
-          <Typography
-            variant="body1"
-            component={Link}
-            to="/provider/dashboard"
-            sx={{ color: 'common.white', textDecoration: 'none' }}
-          >
-            Dashboard
-          </Typography>
-        </ListItem>
+        {user.role.id === 4 && (
+          <ListItem>
+            <Typography
+              variant="body1"
+              component={Link}
+              to="/provider/dashboard"
+              sx={{ color: 'common.white', textDecoration: 'none' }}
+            >
+              Dashboard
+            </Typography>
+          </ListItem>
+        )}
         <ListItem disablePadding sx={{ width: 'auto' }}>
           <Button
             sx={{
