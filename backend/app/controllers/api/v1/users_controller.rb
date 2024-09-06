@@ -118,7 +118,8 @@ module Api
     def refresh
       req = {
         refreshToken: cookies[:refresh_token],
-        serviceId: ENV["APP_SERVICE_ID"]
+        serviceId: ENV["APP_SERVICE_ID"],
+        email: JwtService.decode(cookies[:email])['email']
       }
 
       parsed_response = handle_refresh(req)
