@@ -1,6 +1,5 @@
 import { Person } from '@mui/icons-material'
 import { Avatar, Box, useMediaQuery } from '@mui/material'
-import { useState } from 'react'
 import { useAppSelector } from '../../redux/store'
 import { StudentProfile } from '../../redux/types'
 import theme from '../../styles/theme'
@@ -93,6 +92,7 @@ const StudentDashboardPersonalInfoCard: React.FC<
               handleOnInputChange={(e) => handleInputChange(e, 'age')}
               label="Age:"
               fullWidth={isSm}
+              isDisabled={true}
             />
             <CustomSmallTextField
               value={profileData.nationality}
