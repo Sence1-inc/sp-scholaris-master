@@ -31,7 +31,10 @@ module Api
       def create
         if  @student_profile.present?
           if @student_profile.update(student_profile_params)
-            render json: { message: 'Student profile updated successfully', profile: @student_profile }, status: :ok
+            if params[:birthdate].present?
+              @user.update(birthdate: params[:birthdate])
+            end
+            render json: { message: 'Student profile updated successfully', profile: @student_profile, birthdate: @user.birthdate }, status: :ok
           else
             render json: @student_profile.errors, status: :unprocessable_entity
           end
@@ -41,9 +44,13 @@ module Api
           student_profile.user = @user
           
           if student_profile.save
-          render json: {
+            if params[:birthdate].present?
+              @user.update(birthdate: params[:birthdate])
+            end
+            render json: {
               message: "Student details successfully saved.",
-              profile: student_profile
+              profile: student_profile,
+              birthdate: @user.birthdate
             }, status: :ok
           else
             render json: student_profile.errors, status: :unprocessable_entity
