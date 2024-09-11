@@ -138,8 +138,8 @@ module Api
 
       if user
         @provider = user.role_id === 4 ? ScholarshipProvider.find_or_create_by(user_id: user.id) : {}
-        @scholarships = user.role_id === 4 ? Scholarship.where(scholarship_provider_id: provider.id) : {}
-        @profile = user.role_id === 4 ? ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id) : {}
+        @scholarships = @provider.present? && user.role_id === 4 ? Scholarship.where(scholarship_provider_id: @provider.id) : {}
+        @profile =  @provider.present? && user.role_id === 4 ? ScholarshipProviderProfile.find_by(scholarship_provider_id: @provider.id) : {}
         @student_profile = user.role_id === 3 ? StudentProfile.find_by(user_id: user.id) : {}
       end
 

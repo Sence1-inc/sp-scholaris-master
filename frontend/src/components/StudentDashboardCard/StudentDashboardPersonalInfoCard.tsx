@@ -1,5 +1,6 @@
 import { Person } from '@mui/icons-material'
 import { Avatar, Box, useMediaQuery } from '@mui/material'
+import dayjs, { Dayjs } from 'dayjs'
 import { useAppSelector } from '../../redux/store'
 import { StudentProfile } from '../../redux/types'
 import theme from '../../styles/theme'
@@ -22,7 +23,14 @@ const StudentDashboardPersonalInfoCard: React.FC<
     e: React.ChangeEvent<HTMLInputElement>,
     field: string
   ) => {
-    setProfileData({ ...profileData, [field]: e.target.value })
+    setProfileData({
+      ...profileData,
+      [field]: e.target.value,
+    })
+  }
+
+  const handleDateChange = (value: Dayjs, field: string) => {
+    setProfileData({ ...profileData, [field]: dayjs.utc(value) })
   }
 
   return (
@@ -74,11 +82,10 @@ const StudentDashboardPersonalInfoCard: React.FC<
             />
             <CustomSmallTextField
               value={profileData.birthdate}
-              handleOnInputChange={(e) => handleInputChange(e, 'birthdate')}
+              handleDateChange={(value) => handleDateChange(value, 'birthdate')}
               label="Birthdate:"
               fullWidth={isSm}
               type="date"
-              isDisabled={true}
             />
             <CustomSmallTextField
               isDisabled={true}

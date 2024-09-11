@@ -4,7 +4,7 @@ class StudentProfile < ApplicationRecord
   default_scope -> { where(deleted_at: nil) }
 
   before_validation do
-    self.age = ((Time.zone.now - self.user.birthdate.to_time) / 1.year.seconds).floor if age === 0
+    self.age = ((Time.zone.now - self.user.birthdate.to_time) / 1.year.seconds).floor
   end
 
   def as_json(options = {})

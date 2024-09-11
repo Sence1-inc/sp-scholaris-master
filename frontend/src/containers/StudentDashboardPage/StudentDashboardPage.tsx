@@ -139,7 +139,13 @@ const StudentDashboardPage = () => {
 
       setSuccessMessage(data.message)
       setErrorMessage('')
-      dispatch(initializeUser({ ...user, student_profile: data.profile }))
+      dispatch(
+        initializeUser({
+          ...user,
+          student_profile: data.profile,
+          birthdate: data.birthdate,
+        })
+      )
     } catch (error: any) {
       setErrorMessage(error.response.data.message)
       setSuccessMessage('')
