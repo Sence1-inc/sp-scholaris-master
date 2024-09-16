@@ -58,11 +58,10 @@ const WelcomePage: React.FC = () => {
               <iframe
                 width="100%"
                 height="100%"
-                src="https://www.youtube.com/embed/awOO74QEkUo"
-                title="What is Scholaris"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
+                src="https://www.youtube.com/embed/vNdnfAeYEhQ?si=92bH3cirhKg69Tlx"
+                title="Introducing Scholaris and It's Future Features"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              ></iframe>
             </CardMedia>
           </Card>
           <Typography
