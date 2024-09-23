@@ -16,7 +16,7 @@ module Api
 
           render json: {
             scholarships: @scholarships.as_json(
-              :only => [:id, :scholarship_name, :start_date, :due_date],
+              :only => [:id, :scholarship_name, :listing_id, :start_date, :due_date],
               :include => {
                 :scholarship_provider => { :only => [:id, :provider_name] }
               }

@@ -21,6 +21,7 @@ export type BenefitCategory = {
 export type ScholarshipData = {
   id: string
   scholarship_name: string
+  listing_id: number
   description: string
   start_date: string
   due_date: string

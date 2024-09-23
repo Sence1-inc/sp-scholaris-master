@@ -305,6 +305,15 @@ export const ScholarshipDetailsPage: React.FC<
               <h3 className="title3">
                 {scholarshipData.scholarship_name || <TextLoading />}
               </h3>
+              <p
+                style={{
+                  whiteSpace: 'pre-wrap',
+                  lineHeight: 1,
+                  marginBottom: '20px',
+                }}
+              >
+                Listing ID: {scholarshipData.listing_id}
+              </p>
               <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}>
                 {scholarshipData.description}
               </p>
