@@ -255,6 +255,15 @@ export const ScholarshipDetailsPage: React.FC<
         setStudentName('')
         setUserMessage('')
         setPdfFile(null)
+        dispatch(
+          initializeScholarshipApplicationForm({
+            provider_id: null,
+            student_email: '',
+            student_name: '',
+            user_message: '',
+            pdf_file: null,
+          })
+        )
         setIsLoading(false)
         setErrors({
           student_email: '',
@@ -420,10 +429,6 @@ export const ScholarshipDetailsPage: React.FC<
                   open={isModalOpen}
                   onClose={() => {
                     setIsModalOpen(false)
-                    // setStudentEmail('')
-                    // setStudentName('')
-                    // setUserMessage('')
-                    // setPdfFile(null)
                     setErrors({
                       student_email: '',
                       student_name: '',
