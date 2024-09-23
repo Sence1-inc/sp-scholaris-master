@@ -4,6 +4,7 @@ import { persistReducer, persistStore } from 'redux-persist'
 import encryptedStorage from '../utils/encryptedStorage'
 import IsAuthenticatedReducer from './reducers/IsAuthenticatedReducer'
 import ProfileReducer from './reducers/ProfileReducer'
+import ScholarshipApplicationFormReducer from './reducers/ScholarshipApplicationFormReducer'
 import ScholarshipDataReducer from './reducers/ScholarshipDataReducer'
 import ScholarshipsReducer from './reducers/ScholarshipsReducer'
 import SearchParamsReducer from './reducers/SearchParamsReducer'
@@ -26,6 +27,7 @@ const persistedReducer = persistReducer(
     profile: ProfileReducer,
     user: UserReducer,
     isAuthenticated: IsAuthenticatedReducer,
+    scholarshipApplicationForm: ScholarshipApplicationFormReducer,
   })
 )
 
