@@ -8,12 +8,24 @@ class ScholarshipApplicationMailer < ApplicationMailer
     @recipient_email = recipient_email
     @student_name = student_name
     @provider_name = provider_name
+    @scholarship_name = scholarship_name
     @promotional_message = <<-PROMOTIONAL_MESSAGE
       <p>Would you like to attract more scholars? Struggling to look for applicants?</p>
       <p>Scholaris will help you to connect to qualified candidates.</p>
     PROMOTIONAL_MESSAGE
 
-    mail(to: recipient_email, reply_to: student_email, cc: student_email, subject: "#{student_name} Intent to Apply for #{scholarship_name} through Scholaris App") do |format|
+    mail(to: recipient_email, reply_to: student_email, subject: "#{student_name} Intent to Apply for #{scholarship_name} through Scholaris App") do |format|
+      format.html
+      if pdf_attachment.present?
+        attachments['application.pdf'] = pdf_attachment.read
+      end
+    end
+
+    mail_to_student(student_email, scholarship_name, pdf_attachment)
+  end
+
+  def mail_to_student(student_email, scholarship_name, pdf_attachment)
+    mail(to: student_email, reply_to: student_email, subject: "You've successfully sent your scholarship application for #{scholarship_name}") do |format|
       format.html
       if pdf_attachment.present?
         attachments['application.pdf'] = pdf_attachment.read
@@ -21,6 +33,3 @@ class ScholarshipApplicationMailer < ApplicationMailer
     end
   end
 end
-
-
-
