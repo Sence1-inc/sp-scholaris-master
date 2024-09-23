@@ -18,6 +18,7 @@ import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import TextLoading from '../../components/Loading/TextLoading'
+import { PROVIDER_TYPE } from '../../constants/constants'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
 import ProviderProfile from '../../public/images/pro-profile.png'
 import { initializeScholarshipApplicationForm } from '../../redux/reducers/ScholarshipApplicationFormReducer'
@@ -59,6 +60,7 @@ export const ScholarshipDetailsPage: React.FC<
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const user = useAppSelector((state) => state.persistedReducer.user)
   const { getScholarshipData } = useGetScholarshipData()
   const applicationDetails = useAppSelector(
     (state) => state.persistedReducer.scholarshipApplicationForm
@@ -419,12 +421,19 @@ export const ScholarshipDetailsPage: React.FC<
                 </div>
               </div>
               <div className="details-section">
-                <CTAButton
-                  handleClick={() => setIsModalOpen(true)}
-                  label="Apply"
-                  loading={false}
-                  styles={{ fontSize: '24px' }}
-                />
+                {!user.email_address ||
+                (user &&
+                  user.email_address &&
+                  user.role.role_name !== PROVIDER_TYPE) ? (
+                  <CTAButton
+                    handleClick={() => setIsModalOpen(true)}
+                    label="Apply"
+                    loading={false}
+                    styles={{ fontSize: '24px' }}
+                  />
+                ) : (
+                  <></>
+                )}
                 <Modal
                   open={isModalOpen}
                   onClose={() => {
