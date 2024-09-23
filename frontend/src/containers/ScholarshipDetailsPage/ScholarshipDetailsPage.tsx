@@ -118,45 +118,8 @@ export const ScholarshipDetailsPage: React.FC<
     if (applicationDetails.pdf_file) {
       setPdfFile(applicationDetails.pdf_file)
     }
+    // eslint-disable-next-line
   }, [])
-
-  // useEffect(() => {
-  //   if (studentEmail) {
-  //     dispatch(
-  //       initializeScholarshipApplicationForm({
-  //         ...applicationDetails,
-  //         student_email: studentEmail,
-  //       })
-  //     )
-  //   }
-
-  //   if (studentName) {
-  //     dispatch(
-  //       initializeScholarshipApplicationForm({
-  //         ...applicationDetails,
-  //         student_name: studentName,
-  //       })
-  //     )
-  //   }
-
-  //   if (userMessage) {
-  //     dispatch(
-  //       initializeScholarshipApplicationForm({
-  //         ...applicationDetails,
-  //         user_message: userMessage,
-  //       })
-  //     )
-  //   }
-
-  //   if (pdfFile) {
-  //     dispatch(
-  //       initializeScholarshipApplicationForm({
-  //         ...applicationDetails,
-  //         pdf_file: pdfFile,
-  //       })
-  //     )
-  //   }
-  // }, [studentEmail, studentName, userMessage, pdfFile])
 
   useEffect(() => {
     setScholarshipData(result.scholarshipData)
@@ -387,19 +350,6 @@ export const ScholarshipDetailsPage: React.FC<
                     ))}
                   </div>
                 )}
-              {/* {scholarshipData.application_link && (
-                <div className="details-section">
-                  <h4 className="title4">Application Link</h4>
-                  <Link
-                    id="application-link"
-                    style={{ wordWrap: 'break-word' }}
-                    to={scholarshipData.application_link}
-                    target="_blank"
-                  >
-                    {scholarshipData.application_link}
-                  </Link>
-                </div>
-              )} */}
               <div className="details-section details-columns">
                 <div className="details-column">
                   <h5 className="title4">Application Start Date</h5>

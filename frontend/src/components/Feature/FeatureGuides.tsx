@@ -1,6 +1,7 @@
 import { Box, Container, Typography } from '@mui/material'
 import { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
+import { PROVIDER_TYPE } from '../../constants/constants'
 import Feature from './Feature'
 import './Feature.css'
 
@@ -32,7 +33,15 @@ const FeatureGuides = ({ features, contentType, usertype }: FeaturesProps) => {
     >
       <Container className="container-1040">
         <Typography variant="h2">Feature Guides</Typography>
-        { usertype == 'provider' ? <Typography>We are planning to implement some functions that will be more convenient for students to use. Please subscribe to our newsletter to receive the latest updates.</Typography> : '' }
+        {usertype === PROVIDER_TYPE ? (
+          <Typography>
+            We are planning to implement some functions that will be more
+            convenient for students to use. Please subscribe to our newsletter
+            to receive the latest updates.
+          </Typography>
+        ) : (
+          ''
+        )}
         {features.map((feature: FeatureProps, index: number) => {
           return (
             <Feature

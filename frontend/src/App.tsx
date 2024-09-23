@@ -65,7 +65,7 @@ const App: React.FC = () => {
   // const [searchParams] = useSearchParams()
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const location = useLocation()
-  const { benefits, provider, start_date, due_date } = params.params
+  const { benefits, provider, start_date, due_date, type } = params.params
 
   // useEffect(() => {
   //   if (searchParams.size === 0) {
@@ -86,7 +86,7 @@ const App: React.FC = () => {
   useEffect(() => {
     getScholarships(false)
     // eslint-disable-next-line
-  }, [benefits, provider, start_date, due_date])
+  }, [benefits, provider, start_date, due_date, type])
 
   useEffect(() => {
     const excludedPaths = [

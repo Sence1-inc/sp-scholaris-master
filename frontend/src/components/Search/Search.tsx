@@ -50,7 +50,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const searchRef = useRef<HTMLElement>(null)
   const isInitialLoad = useRef<boolean>(false)
   const { scholarships, total_count } = data.scholarships
-  const { benefits, provider, start_date, due_date } = params.params
+  const { benefits, provider, start_date, due_date, type } = params.params
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
@@ -121,11 +121,14 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   }
 
   useEffect(() => {
-    if ((benefits || provider || start_date || due_date) && !isSection) {
+    if (
+      (benefits || provider || start_date || due_date || type) &&
+      !isSection
+    ) {
       getScholarships()
     }
     // eslint-disable-next-line
-  }, [benefits, provider, start_date, due_date, isSection])
+  }, [benefits, provider, start_date, due_date, type, isSection])
 
   useEffect(() => {
     if (nameParam) {
