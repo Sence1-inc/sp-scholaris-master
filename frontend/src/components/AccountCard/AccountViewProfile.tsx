@@ -4,6 +4,8 @@ import {
   Button,
   ButtonGroup,
   FormControl,
+  FormGroup,
+  InputLabel,
   TextField,
   Typography,
 } from '@mui/material'
@@ -48,6 +50,8 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
   const [selectedPhAddress, setSelectedPhAddress] = useState<PhAddress | null>(
     null
   )
+  const [details, setDetails] = useState<string>('')
+  const [link, setLink] = useState<string>('')
   const [isEditting, setIsEditting] = useState<boolean>(false)
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
@@ -56,15 +60,18 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
     if (profile) {
       setProviderName(profile.scholarship_provider?.provider_name ?? '')
       setSelectedPhAddress(profile.ph_address)
+      setDetails(profile?.description ?? '')
+      setLink(profile?.scholarship_provider.provider_link ?? '')
     }
   }, [profile])
 
   const handleSave = async () => {
     const data = {
-      provider_link: profile?.scholarship_provider?.provider_link ?? '',
+      provider_link: link,
       provider_name: providerName,
       user_id: user.id,
       ph_address_id: selectedPhAddress?.id,
+      description: details,
     }
 
     try {
@@ -180,6 +187,45 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
           </Box>
         )}
       </Box>
+      <FormGroup sx={profileTheme.form.formStyle}>
+        <InputLabel htmlFor="account-details" sx={profileTheme.form.formLabel}>
+          Provider Details
+        </InputLabel>
+        {isEditting ? (
+          <TextField
+            id="account-details"
+            value={details}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setDetails(e.target.value)
+            }
+            sx={profileTheme.form.formInput}
+            minRows={6}
+            multiline
+          />
+        ) : (
+          <Typography sx={profileTheme.text.textRegular}>{details}</Typography>
+        )}
+      </FormGroup>
+      <FormGroup>
+        <InputLabel htmlFor="account-link">Organization Link</InputLabel>
+        {isEditting ? (
+          <TextField
+            id="account-link"
+            value={link}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setLink(e.target.value)
+            }
+            sx={profileTheme.form.formInput}
+          />
+        ) : (
+          <Typography sx={profileTheme.text.textRegular}>{link}</Typography>
+        )}
+        <Typography variant="subtitle1">
+          {link
+            ? 'This is the link where students can learn more about your organization.'
+            : 'Please provide a link where students can learn more about your organization.'}
+        </Typography>
+      </FormGroup>
       <Box
         sx={{
           display: 'flex',

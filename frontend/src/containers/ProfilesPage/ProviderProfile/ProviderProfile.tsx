@@ -243,17 +243,6 @@ const ProviderProfile: React.FC = () => {
                       }
                     />
                   </TabPanel>
-                  <TabPanel sx={{ padding: '20px 0' }} value="account-profile">
-                    <AccountProfile
-                      handleSetSuccessMessage={(value) =>
-                        setSuccessMessage(value)
-                      }
-                      handleSetErrorMessage={(value) => setErrorMessage(value)}
-                      handleSetIsSnackbarOpen={(value) =>
-                        setIsSnackbarOpen(value)
-                      }
-                    />
-                  </TabPanel>
                   {/* HIDE FOR NOW, WILL REVIVE ONCE FORGET PASSWORD IS AVAILABLE */}
                   {/* <TabPanel sx={{ padding: '20px 0' }} value="account-security">
                     <AccountSecurity />

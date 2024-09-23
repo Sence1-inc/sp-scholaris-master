@@ -1,5 +1,4 @@
 import HomeIcon from '@mui/icons-material/Home'
-import PersonIcon from '@mui/icons-material/Person'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { Box, Button, Card, List, ListItem, Typography } from '@mui/material'
 import dayjs from 'dayjs'
@@ -31,11 +30,8 @@ type SideBarObject = {
 }
 
 export const sideItem: SideBarObject[] = [
-  { id: 'view-profile', title: 'View Scholarship Profile', Icon: <HomeIcon /> },
-  { id: 'account-profile', title: 'Account Profile', Icon: <PersonIcon /> },
-  // { id: 'account-security', title: 'Account Security', Icon: <SecurityIcon /> },
+  { id: 'view-profile', title: 'SGO Profile', Icon: <HomeIcon /> },
   { id: 'account-settings', title: 'Settings', Icon: <SettingsIcon /> },
-  // { id: 'account-close', title: 'Close Account', Icon: <LockPersonIcon /> },
 ]
 
 const AccountSideBar: React.FC<AccountSideBarProps> = ({
