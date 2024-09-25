@@ -15,6 +15,7 @@ module Api
 
     # GET /users/1 or /users/1.json
     def show
+      render json:  @user.children.as_json
     end
 
     # GET /users/new
@@ -28,6 +29,16 @@ module Api
 
     # POST /users or /users.json
     def create
+      registration_response = authenticate_registration
+
+      case registration_response[:status]
+      when 201
+        handle_child_registration_success(registration_response)
+      when 409
+        render_error("Please try logging in or reset your password", registration_response[:status])
+      else
+        render_error(registration_response[:error], registration_response[:status])
+      end
     end
 
     # PATCH/PUT /users/1 or /users/1.json
@@ -214,10 +225,11 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def user_params
-        params.require(:user).permit(:email_address, :password, :first_name, :last_name, :birthdate, :is_active, :role, :session_token, :service_id)
+        params.require(:user).permit(:email_address, :password, :first_name, :last_name, :birthdate, :is_active, :role, :session_token, :service_id, :parent_id)
       end
 
       def authenticate_registration
+        logger.debug "Start of authenticate_registration"
         req = {
           email: params.dig(:email_address),
           password: params.dig(:password),
@@ -225,17 +237,22 @@ module Api
           serviceKey: ENV["APP_SERVICE_KEY"],
           role: params.dig(:role)
         }
-
+        logger.debug "req"
+        logger.debug req
         headers = {
           'Content-Type': 'application/json',
           'Accept': '*/*'
         }
 
         begin
+          logger.debug "before rest client"
           response = RestClient.post(ENV['AUTH_REGISTER'], req.to_json, headers)
+          logger.debug "before parsed_response"
+          logger.debug response.body
           parsed_response = JSON.parse(response.body)
-
+logger.debug parsed_response
           if parsed_response['status'] == 201
+            logger.debug "before inside 201"
             request.headers['email'] = parsed_response['user']['email']
             request.headers['uuid'] = parsed_response['user']['uuid']
             request.headers['role'] = parsed_response['user']['role']
@@ -279,6 +296,49 @@ module Api
             end
           else
             render_error('Failed to save user details', :unprocessable_entity, @user.errors.full_messages)
+          end
+        end
+      end
+
+      def handle_child_registration_success(registration_response)
+        logger.debug "Start of handle_child_registration_success"
+        @role = Role.find_by(role_name: params.dig(:role))
+        existing_user = User.find_by(parent_id: user_params.dig(:parent_id), email_address: user_params.dig(:email_address))
+        logger.debug "before if else"
+        if !@role || existing_user
+          logger.debug "inside if"
+          error_message = !@role ? 'Role not found' : 'Please try logging in or reset your password'
+          render_error(error_message, :unprocessable_entity)
+        else
+          logger.debug "Before user.new"
+          parent = User.find(params[:parent_id])
+          user = parent.children.new(user_params.merge(uuid: registration_response[:user]['uuid'], role_id: @role.id, parent_id: params[:parent_id]), password_digest: params[:password])
+          user.verification_token = SecureRandom.hex(10)
+          user.verification_expires_at = 24.hours.from_now
+          if user.save
+            parent_permission = parent.user_permissions.create!(
+              user_type: UserPermission::PARENT,
+              can_add: true,
+              can_view: true,
+              can_edit: true,
+              can_delete: true,
+              is_enabled: true
+            )
+            child_permission = user.user_permissions.create!(
+              user_type: UserPermission::CHILD,
+              can_add: true,
+              can_view: true,
+              can_edit: true,
+              can_delete: true,
+              is_enabled: true
+            )
+            if UserMailer.email_verification(user).deliver_now
+              render json: { user: user, msg: 'User registered, email sent, and saved successfully' }, status: :created
+            else
+              render json: { msg: 'User registered and saved successfully, but email sending failed' }, status: :created
+            end
+          else
+            render_error('Failed to save user details', :unprocessable_entity, user.errors.full_messages)
           end
         end
       end

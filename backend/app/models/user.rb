@@ -1,7 +1,12 @@
 class User < ApplicationRecord
+  # has_secure_password
+
   belongs_to :role
   has_one :scholarship_provider
   has_one :student_profile
+  has_many :children, class_name: 'User', foreign_key: 'parent_id'
+  belongs_to :parent, class_name: 'User', optional: true
+  has_many :user_permissions, dependent: :destroy
 
   validates :first_name, presence: true
   validates :last_name, presence: true
@@ -11,7 +16,7 @@ class User < ApplicationRecord
   default_scope -> { where(deleted_at: nil) }
 
   def as_json(options = {})
-    super(options.merge(include: [:role, :student_profile, :scholarship_provider], except: [:created_at, :updated_at, :deleted_at, :password]))
+    super(options.merge(include: [:role, :student_profile, :scholarship_provider], except: [:created_at, :updated_at, :deleted_at]))
   end
 
   def birthdate_is_valid
