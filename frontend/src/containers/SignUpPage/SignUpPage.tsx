@@ -13,13 +13,13 @@ import { useAppSelector } from '../../redux/store'
 
 interface SignUpPageProps {}
 
-type Errors = {
+export type Errors = {
   email_address: string
   password: string
-  password2: string
+  password2?: string
   first_name: string
   last_name: string
-  middle_name: string
+  middle_name?: string
   birthdate: string
 }
 

@@ -181,6 +181,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
+            gap: 6,
           }}
         >
           <ListItem>
@@ -201,6 +202,16 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               sx={{ color: 'common.white', textDecoration: 'none' }}
             >
               Dashboard
+            </Typography>
+          </ListItem>
+          <ListItem>
+            <Typography
+              variant="body1"
+              component={Link}
+              to="/provider/accounts"
+              sx={{ color: 'common.white', textDecoration: 'none' }}
+            >
+              Accounts
             </Typography>
           </ListItem>
           <ListItem disablePadding sx={{ width: 'auto' }}>

@@ -197,6 +197,7 @@ export type StudentProfile = {
 export type User = {
   birthdate: string
   email_address: string
+  password_digest?: string
   first_name: string
   id: number
   is_active: number
