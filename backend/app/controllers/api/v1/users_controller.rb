@@ -43,24 +43,20 @@ module Api
 
     # PATCH/PUT /users/1 or /users/1.json
     def update
-      respond_to do |format|
-        if @user.update(user_params)
-          format.html { redirect_to user_url(@user), notice: "User was successfully updated." }
-          format.json { render :show, status: :ok, location: @user }
-        else
-          format.html { render :edit, status: :unprocessable_entity }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
+      if @user.update(user_params.merge(password_digest: params.dig(:password)))
+        render json: {message: 'User updated successfully', user: @user}, status: :ok
+      else
+        render json: {errors: @user.errors.full_messages, message: "Unable to update user"}, status: :unprocessable_entity
       end
     end
 
     # DELETE /users/1 or /users/1.json
     def destroy
-      @user.destroy!
-
-      respond_to do |format|
-        format.html { redirect_to users_url, notice: "User was successfully destroyed." }
-        format.json { head :no_content }
+      if !@user.deleted_at.present?
+        User.soft_delete(@user)
+        render json: {message: "User deleted successfully."}, status: :ok
+      else
+        render json: {message: "Unable to delete"}, status: :unprocessable_entity
       end
     end
 
@@ -229,7 +225,6 @@ module Api
       end
 
       def authenticate_registration
-        logger.debug "Start of authenticate_registration"
         req = {
           email: params.dig(:email_address),
           password: params.dig(:password),
@@ -237,22 +232,17 @@ module Api
           serviceKey: ENV["APP_SERVICE_KEY"],
           role: params.dig(:role)
         }
-        logger.debug "req"
-        logger.debug req
+        puts "THIS"
+        puts req
         headers = {
           'Content-Type': 'application/json',
           'Accept': '*/*'
         }
 
         begin
-          logger.debug "before rest client"
           response = RestClient.post(ENV['AUTH_REGISTER'], req.to_json, headers)
-          logger.debug "before parsed_response"
-          logger.debug response.body
           parsed_response = JSON.parse(response.body)
-logger.debug parsed_response
           if parsed_response['status'] == 201
-            logger.debug "before inside 201"
             request.headers['email'] = parsed_response['user']['email']
             request.headers['uuid'] = parsed_response['user']['uuid']
             request.headers['role'] = parsed_response['user']['role']
@@ -301,18 +291,14 @@ logger.debug parsed_response
       end
 
       def handle_child_registration_success(registration_response)
-        logger.debug "Start of handle_child_registration_success"
         @role = Role.find_by(role_name: params.dig(:role))
         existing_user = User.find_by(parent_id: user_params.dig(:parent_id), email_address: user_params.dig(:email_address))
-        logger.debug "before if else"
         if !@role || existing_user
-          logger.debug "inside if"
           error_message = !@role ? 'Role not found' : 'Please try logging in or reset your password'
           render_error(error_message, :unprocessable_entity)
         else
-          logger.debug "Before user.new"
           parent = User.find(params[:parent_id])
-          user = parent.children.new(user_params.merge(uuid: registration_response[:user]['uuid'], role_id: @role.id, parent_id: params[:parent_id]), password_digest: params[:password])
+          user = parent.children.new(user_params.merge(uuid: registration_response[:user]['uuid'], role_id: @role.id, password_digest: params.dig(:password)))
           user.verification_token = SecureRandom.hex(10)
           user.verification_expires_at = 24.hours.from_now
           if user.save

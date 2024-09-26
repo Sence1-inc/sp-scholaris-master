@@ -1,13 +1,15 @@
-import { Delete, Edit, Visibility } from '@mui/icons-material'
+import { Cancel, Delete, Edit, Save } from '@mui/icons-material'
 import { Box, IconButton, Modal, Tooltip, Typography } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid'
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs, { Dayjs } from 'dayjs'
+import utc from 'dayjs/plugin/utc'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
+import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import { PROVIDER_TYPE } from '../../constants/constants'
@@ -15,12 +17,14 @@ import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import { Errors } from '../SignUpPage/SignUpPage'
 
+dayjs.extend(utc)
+
 interface GridRowDef {
   id: number
-  emailAddress: string
+  email_address: string
   password: string
-  firstName: string
-  lastName: string
+  first_name: string
+  last_name: string
   birthdate: Dayjs | Date | string | null
 }
 
@@ -43,6 +47,7 @@ const AccountManagementPage = () => {
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false)
+  const [isEditable, setIsEditable] = useState<boolean>(false)
   const [selectedRow, setSelectedRow] = useState<number>(0)
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [errorMessage, setErrorMessage] = useState<string>('')
@@ -70,6 +75,8 @@ const AccountManagementPage = () => {
     last_name: '',
     birthdate: '',
   })
+
+  console.log('rowData', rowData)
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   const isValidEmail = emailRegex.test(userCredentials.email_address)
@@ -122,46 +129,91 @@ const AccountManagementPage = () => {
 
   const columns = [
     {
-      field: 'emailAddress',
+      field: 'email_address',
       headerName: 'Email Address',
       type: 'string',
-      editable: true,
-      flex: 1,
+      editable: isEditable,
+      flex: 1.5,
     },
     {
       field: 'password',
       headerName: 'Password',
       type: 'string',
-      editable: true,
+      editable: isEditable,
       flex: 1,
     },
     {
-      field: 'firstName',
+      field: 'first_name',
       headerName: 'First Name',
       type: 'string',
-      editable: true,
-      flex: 1,
+      editable: isEditable,
+      flex: 0.5,
     },
     {
-      field: 'lastName',
+      field: 'last_name',
       headerName: 'Last Name',
       type: 'string',
-      editable: true,
-      flex: 1,
+      editable: isEditable,
+      flex: 0.5,
     },
     {
       field: 'birthdate',
       headerName: 'Birthdate',
       type: 'string',
-      editable: true,
-      flex: 1,
+      editable: isEditable,
+      flex: 0.5,
+      renderCell: (params: GridRenderCellParams) => {
+        return isEditable ? (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              onChange={(date) => {
+                const newRowData = rowData.map((row) => {
+                  if (row.id === params.row.id) {
+                    return {
+                      ...row,
+                      birthdate: dayjs(date).utc().format(),
+                    }
+                  }
+
+                  return row
+                })
+
+                setRowData(newRowData)
+              }}
+              value={
+                params.row.birthdate === null
+                  ? null
+                  : dayjs(params.row.birthdate)
+              }
+              slotProps={{
+                textField: {
+                  variant: 'standard',
+                  sx: {
+                    padding: '0',
+                    height: 'auto',
+                    backgroundColor: 'inherit',
+                    borderRadius: '0',
+                    border: 'none',
+                    boxShadow: 'none',
+                    '& .MuiInputBase-input': {
+                      fontSize: '1rem',
+                    },
+                  },
+                },
+              }}
+            />
+          </LocalizationProvider>
+        ) : (
+          params.row.birthdate
+        )
+      },
     },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
       flex: 1,
-      renderCell: (params: any) => renderActions(params),
+      renderCell: (params: GridRenderCellParams) => renderActions(params),
     },
   ]
 
@@ -204,16 +256,73 @@ const AccountManagementPage = () => {
     } else {
       try {
         setIsLoading(true)
-        const response = await axiosInstance.post(
-          '/api/v1/users',
-          userCredentials
-        )
+        const response = await axiosInstance.post('/api/v1/users', {
+          ...userCredentials,
+          birthdate: dayjs(userCredentials.birthdate).utc().format(),
+        })
         setIsLoading(false)
-        console.log(response)
+        const data = {
+          id: response.data.user.id,
+          email_address: response.data.user.email_address,
+          password: response.data.user.password_digest,
+          first_name: response.data.user.first_name,
+          last_name: response.data.user.last_name,
+          birthdate: new Date(response.data.user.birthdate).toDateString(),
+        }
+
+        setRowData([...rowData, data])
+        setSuccessMessage(response.data.message)
+        setErrorMessage('')
       } catch (error) {
         setIsLoading(false)
         console.log(error)
       }
+    }
+  }
+
+  const handleEditAccount = async (params: GridRenderCellParams) => {
+    const data = params.row
+
+    try {
+      const response = await axiosInstance.put(`/api/v1/users/${data.id}`, data)
+
+      const newRowData = rowData.map((row) => {
+        if (row.id === response.data.user.id) {
+          return {
+            ...row,
+            email_address: response.data.user.email_address,
+            password: response.data.user.password_digest,
+            first_name: response.data.user.first_name,
+            last_name: response.data.user.last_name,
+            birthdate: new Date(response.data.user.birthdate).toDateString(),
+          }
+        }
+
+        return row
+      })
+
+      setRowData(newRowData)
+      setSuccessMessage(response.data.message)
+      setErrorMessage('')
+    } catch (error: any) {
+      setSuccessMessage('')
+      setErrorMessage(error.response.data.message)
+    }
+  }
+
+  const handleDeleteAccount = async () => {
+    try {
+      const response = await axiosInstance.delete(
+        `/api/v1/users/${selectedRow}`
+      )
+      setSuccessMessage(response.data.message)
+      setRowData((prevRowData) =>
+        prevRowData.filter((row) => row.id != selectedRow)
+      )
+      setErrorMessage('')
+    } catch (error: any) {
+      setErrorMessage(error.response.data.message)
+      setSuccessMessage('')
     }
   }
 
@@ -224,10 +333,10 @@ const AccountManagementPage = () => {
         const row = data.map((account: User) => {
           return {
             id: account.id,
-            emailAddress: account.email_address,
+            email_address: account.email_address,
             password: account.password_digest,
-            firstName: account.first_name,
-            lastName: account.last_name,
+            first_name: account.first_name,
+            last_name: account.last_name,
             birthdate: new Date(account.birthdate).toDateString(),
           }
         })
@@ -241,20 +350,37 @@ const AccountManagementPage = () => {
     getChildren()
   }, [])
 
-  const renderActions = (params: any) => {
-    return (
+  const renderActions = (params: GridRenderCellParams) => {
+    const originalData = [...rowData]
+    return isEditable ? (
       <Box>
-        <Tooltip title="View">
+        <Tooltip title="Save">
           <IconButton
-            onClick={() => navigate(`/scholarships/${params.row.id}`)}
+            size="small"
+            onClick={() => handleEditAccount(params)}
             sx={{ color: '#06A5FF' }}
           >
-            <Visibility />
+            <Save />
           </IconButton>
         </Tooltip>
+        <Tooltip title="Cancel">
+          <IconButton
+            size="small"
+            onClick={() => {
+              setIsEditable(false)
+              setRowData(originalData)
+            }}
+            sx={{ color: '#F50F0F' }}
+          >
+            <Cancel />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    ) : (
+      <Box>
         <Tooltip title="Edit">
           <IconButton
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setIsEditable(true)}
             sx={{ color: '#1F4BEA' }}
           >
             <Edit />
@@ -288,6 +414,14 @@ const AccountManagementPage = () => {
         gap: '20px',
       }}
     >
+      <CustomSnackbar
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+        warningMessage={warningMessage}
+        isSnackbarOpen={isSnackbarOpen}
+        handleWarningProceed={handleDeleteAccount}
+        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+      />
       <Box
         sx={{
           display: 'flex',
@@ -467,6 +601,7 @@ const AccountManagementPage = () => {
         pagination
         paginationMode="server"
         loading={isDataLoading}
+        disableRowSelectionOnClick
         sx={{
           height: Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,
           '.MuiDataGrid-root': {
@@ -484,15 +619,29 @@ const AccountManagementPage = () => {
             borderBottomRightRadius: '16px',
           },
           '& .MuiDataGrid-footerContainer': {
-            backgroundColor: '#AFC3D9', // Change table header color
+            backgroundColor: '#AFC3D9',
           },
           '& .MuiDataGrid-row': {
             '&:nth-of-type(odd)': {
-              backgroundColor: '#D8D8D8', // Change background color of odd rows
+              backgroundColor: isEditable ? '#fff' : '#D8D8D8',
             },
             '&:nth-of-type(even)': {
-              backgroundColor: '#F1F1F1', // Change background color of odd rows
+              backgroundColor: isEditable ? '#fff' : '#F1F1F1',
             },
+            '& .MuiDataGrid-cell': {
+              position: 'relative',
+              padding: '10px',
+            },
+            '&.MuiDataGrid-cell--editing': {
+              '&::after': {
+                content: 'none',
+              },
+            },
+          },
+          '@keyframes blink': {
+            '0%': { opacity: 1 },
+            '50%': { opacity: 0 },
+            '100%': { opacity: 1 },
           },
           '& .MuiDataGrid-overlay': {
             zIndex: '20',
@@ -511,9 +660,9 @@ const AccountManagementPage = () => {
             xs: '12px',
             md: '1rem',
           },
-          '& .MuiDataGrid-row:hover': {
-            backgroundColor: 'secondary.main',
-          },
+          // '& .MuiDataGrid-row:hover': {
+          //   backgroundColor: 'secondary.main',
+          // },
         }}
       />
     </Box>
