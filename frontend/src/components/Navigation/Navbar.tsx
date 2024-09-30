@@ -114,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               component={Link}
               to={`/student/account`}
             >
-              Account
+              Profile
             </Button>
           </ListItem>
         </List>
@@ -224,7 +224,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               component={Link}
               to={`/provider/account/${user?.scholarship_provider?.id}/view-profile`}
             >
-              Account
+              Profile
             </Button>
           </ListItem>
         </List>
@@ -283,7 +283,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
                 : `/student/account`
             }
           >
-            Account
+            Profile
           </Button>
         </ListItem>
       </List>

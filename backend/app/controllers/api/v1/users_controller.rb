@@ -157,7 +157,7 @@ module Api
       if access_token.present?
         decoded_access_token = JwtService.decode(cookies[:access_token])
         if decoded_access_token['email'] === JwtService.decode(cookies[:email])['email']
-          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json)}, status: :ok
+          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json)}, status: :ok
         else
           render json: { valid: false }, status: 498
         end
@@ -171,7 +171,7 @@ module Api
 
         if parsed_response['status'] == 200
           set_cookie(parsed_response)
-          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json) }, status: :ok
+          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json) }, status: :ok
         else
           render json: { valid: false }, status: 498
         end
@@ -188,7 +188,7 @@ module Api
 
           if parsed_response['status'] == 200
             set_cookie(parsed_response)
-            render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json) }, status: :ok
+            render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json) }, status: :ok
           else
             render json: { valid: false }, status: 498
           end
@@ -236,8 +236,7 @@ module Api
           serviceKey: ENV["APP_SERVICE_KEY"],
           role: params.dig(:role)
         }
-        puts "THIS"
-        puts req
+
         headers = {
           'Content-Type': 'application/json',
           'Accept': '*/*'
@@ -357,7 +356,7 @@ module Api
           profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id) || {}
           student_profile = StudentProfile.find_by(user_id: user.id) || {}
 
-          render json: user.as_json.merge(scholarship_provider: provider, student_profile: student_profile).merge(profile: profile.as_json), status: :ok
+          render json: user.as_json.merge(scholarship_provider: provider, student_profile: student_profile, profile: profile.as_json), status: :ok
         else
           render_error("Email must be verified", :unprocessable_entity) unless user.is_verified
         end
