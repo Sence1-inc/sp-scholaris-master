@@ -181,7 +181,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
-            gap: 6,
+            gap: 4,
           }}
         >
           <ListItem>
