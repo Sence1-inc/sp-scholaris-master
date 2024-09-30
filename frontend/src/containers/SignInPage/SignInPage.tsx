@@ -116,18 +116,16 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           }
         )
 
-        if (response) {
-          setErrors({
-            email_address: '',
-            password: '',
-          })
-          setIsButtonLoading(false)
-          setIsSnackbarOpen(false)
-          setErrorMessage('')
-          dispatch(initializeUser(response.data))
-          dispatch(initializeProfile(response.data.profile))
-          navigate('/provider/dashboard')
-        }
+        setErrors({
+          email_address: '',
+          password: '',
+        })
+        setIsButtonLoading(false)
+        setIsSnackbarOpen(false)
+        setErrorMessage('')
+        dispatch(initializeUser(response.data))
+        dispatch(initializeProfile(response.data.profile))
+        navigate('/provider/dashboard')
       } catch (error: any) {
         setIsButtonLoading(false)
         if (error) {

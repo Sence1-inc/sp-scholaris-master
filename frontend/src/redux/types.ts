@@ -200,6 +200,7 @@ export type User = {
   password_digest?: string
   first_name: string
   id: number
+  parent_id?: number
   is_active: number
   last_name: string
   role_id: number

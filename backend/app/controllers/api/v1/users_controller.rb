@@ -144,7 +144,11 @@ module Api
       user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
 
       if user
-        @provider = user.role_id === 4 ? ScholarshipProvider.find_or_create_by(user_id: user.id) : {}
+        if user.parent_id
+          @provider = user.role_id === 4 ? ScholarshipProvider.find_by(user_id: user.parent_id) : {}
+        else
+          @provider = user.role_id === 4 ? ScholarshipProvider.find_by(user_id: user.id) : {}
+        end
         @scholarships = @provider.present? && user.role_id === 4 ? Scholarship.where(scholarship_provider_id: @provider.id) : {}
         @profile =  @provider.present? && user.role_id === 4 ? ScholarshipProviderProfile.find_by(scholarship_provider_id: @provider.id) : {}
         @student_profile = user.role_id === 3 ? StudentProfile.find_by(user_id: user.id) : {}
@@ -342,7 +346,13 @@ module Api
 
         user = User.find_by(email_address: params.dig(:email_address))
         if user && user.is_verified
-          provider = ScholarshipProvider.find_or_create_by(user_id: user.id)
+          provider = {}
+          if user.parent_id 
+            provider = ScholarshipProvider.find_or_create_by(user_id: user.parent_id)
+          else
+            provider = ScholarshipProvider.find_or_create_by(user_id: user.id)
+          end
+
           scholarships = Scholarship.where(scholarship_provider_id: provider.id)
           profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id) || {}
           student_profile = StudentProfile.find_by(user_id: user.id) || {}
