@@ -188,7 +188,7 @@ const WelcomePageSearch: React.FC = () => {
           gap: '40px',
           alignItems: 'center',
           justifyContent: 'center',
-          width: { xs: '100%', md: '80%' },
+          width: { xs: '100%', md: '90%' },
           margin: 'auto',
         }}
       >

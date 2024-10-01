@@ -1,3 +1,4 @@
+import { Margin, WidthFull } from '@mui/icons-material'
 import { Button } from '@mui/material'
 import { styled } from '@mui/system'
 
@@ -27,3 +28,12 @@ export const CTAButton = styled(Button)({
   color: '#fff',
   height: '100%',
 })
+
+export const containerStyle = {
+  padding: '50px 20px',
+  Margin: '30px 20px',
+  width: '100%',
+  display: 'flex',
+  flexDirection: { xs: 'column' },
+  gap: { xs: '80px' }
+}
