@@ -18,8 +18,10 @@ import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import TextLoading from '../../components/Loading/TextLoading'
+import { PROVIDER_TYPE } from '../../constants/constants'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
 import ProviderProfile from '../../public/images/pro-profile.png'
+import { initializeScholarshipApplicationForm } from '../../redux/reducers/ScholarshipApplicationFormReducer'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData } from '../../redux/types'
@@ -58,7 +60,11 @@ export const ScholarshipDetailsPage: React.FC<
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const user = useAppSelector((state) => state.persistedReducer.user)
   const { getScholarshipData } = useGetScholarshipData()
+  const applicationDetails = useAppSelector(
+    (state) => state.persistedReducer.scholarshipApplicationForm
+  )
   const result = useAppSelector(
     (state) => state.persistedReducer.scholarshipData
   ) as Results
@@ -83,12 +89,37 @@ export const ScholarshipDetailsPage: React.FC<
   useEffect(() => {
     setIsLoading(true)
     if (id) {
+      dispatch(
+        initializeScholarshipApplicationForm({
+          ...applicationDetails,
+          provider_id: Number(id),
+        })
+      )
       getScholarshipData(id)
       setIsLoading(false)
     }
 
     // eslint-disable-next-line
   }, [id])
+
+  useEffect(() => {
+    if (applicationDetails.student_email) {
+      setStudentEmail(applicationDetails.student_email)
+    }
+
+    if (applicationDetails.student_name) {
+      setStudentName(applicationDetails.student_name)
+    }
+
+    if (applicationDetails.user_message) {
+      setUserMessage(applicationDetails.user_message)
+    }
+
+    if (applicationDetails.pdf_file) {
+      setPdfFile(applicationDetails.pdf_file)
+    }
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     setScholarshipData(result.scholarshipData)
@@ -172,6 +203,7 @@ export const ScholarshipDetailsPage: React.FC<
       }
 
       try {
+        setIsLoading(true)
         const response = await axiosInstance.post(
           '/api/v1/scholarship_applications/send_email',
           formData,
@@ -188,6 +220,16 @@ export const ScholarshipDetailsPage: React.FC<
         setStudentName('')
         setUserMessage('')
         setPdfFile(null)
+        dispatch(
+          initializeScholarshipApplicationForm({
+            provider_id: null,
+            student_email: '',
+            student_name: '',
+            user_message: '',
+            pdf_file: null,
+          })
+        )
+        setIsLoading(false)
         setErrors({
           student_email: '',
           student_name: '',
@@ -197,6 +239,7 @@ export const ScholarshipDetailsPage: React.FC<
       } catch (error: any) {
         setSuccessMessage('')
         setIsSnackbarOpen(true)
+        setIsLoading(false)
         setErrorMessage(error.response?.data?.message ?? 'Email not sent.')
         if (
           error.response &&
@@ -262,6 +305,15 @@ export const ScholarshipDetailsPage: React.FC<
               <h3 className="title3">
                 {scholarshipData.scholarship_name || <TextLoading />}
               </h3>
+              <p
+                style={{
+                  whiteSpace: 'pre-wrap',
+                  lineHeight: 1,
+                  marginBottom: '20px',
+                }}
+              >
+                Listing ID: {scholarshipData.listing_id}
+              </p>
               <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}>
                 {scholarshipData.description}
               </p>
@@ -307,19 +359,6 @@ export const ScholarshipDetailsPage: React.FC<
                     ))}
                   </div>
                 )}
-              {/* {scholarshipData.application_link && (
-                <div className="details-section">
-                  <h4 className="title4">Application Link</h4>
-                  <Link
-                    id="application-link"
-                    style={{ wordWrap: 'break-word' }}
-                    to={scholarshipData.application_link}
-                    target="_blank"
-                  >
-                    {scholarshipData.application_link}
-                  </Link>
-                </div>
-              )} */}
               <div className="details-section details-columns">
                 <div className="details-column">
                   <h5 className="title4">Application Start Date</h5>
@@ -341,20 +380,23 @@ export const ScholarshipDetailsPage: React.FC<
                 </div>
               </div>
               <div className="details-section">
-                <CTAButton
-                  handleClick={() => setIsModalOpen(true)}
-                  label="Apply"
-                  loading={false}
-                  styles={{ fontSize: '24px' }}
-                />
+                {!user.email_address ||
+                (user &&
+                  user.email_address &&
+                  user.role.role_name !== PROVIDER_TYPE) ? (
+                  <CTAButton
+                    handleClick={() => setIsModalOpen(true)}
+                    label="Apply"
+                    loading={false}
+                    styles={{ fontSize: '24px' }}
+                  />
+                ) : (
+                  <></>
+                )}
                 <Modal
                   open={isModalOpen}
                   onClose={() => {
                     setIsModalOpen(false)
-                    setStudentEmail('')
-                    setStudentName('')
-                    setUserMessage('')
-                    setPdfFile(null)
                     setErrors({
                       student_email: '',
                       student_name: '',
@@ -384,27 +426,51 @@ export const ScholarshipDetailsPage: React.FC<
                       label="Student Email"
                       error={errors.student_email}
                       value={studentEmail}
-                      handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => {
                         setStudentEmail(e.target.value)
-                      }
+                        dispatch(
+                          initializeScholarshipApplicationForm({
+                            ...applicationDetails,
+                            student_email: studentEmail,
+                          })
+                        )
+                      }}
                       placeholder="e.g. student@example.com"
                     />
                     <CustomTextfield
                       label="Student Name"
                       error={errors.student_name}
                       value={studentName}
-                      handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => {
                         setStudentName(e.target.value)
-                      }
+                        dispatch(
+                          initializeScholarshipApplicationForm({
+                            ...applicationDetails,
+                            student_name: studentName,
+                          })
+                        )
+                      }}
                       placeholder="e.g. Jane Doe"
                     />
                     <CustomTextfield
                       label="Message to Provider"
                       error={errors.user_message}
                       value={userMessage}
-                      handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => {
                         setUserMessage(e.target.value)
-                      }
+                        dispatch(
+                          initializeScholarshipApplicationForm({
+                            ...applicationDetails,
+                            user_message: userMessage,
+                          })
+                        )
+                      }}
                       multiline={true}
                       rows={4}
                       placeholder="e.g. I am writing to express my sincere interest in the [Scholarship Name] as it aligns perfectly with my academic and career goals. As a dedicated student with a passion for [Your Field or Major], I have consistently demonstrated my commitment through my academic achievements and extracurricular involvement. This scholarship would not only alleviate the financial burden of my education but also empower me to further pursue my ambitions and contribute meaningfully to my community. I am eager to seize this opportunity and make a positive impact through the support of your esteemed scholarship."
@@ -426,6 +492,12 @@ export const ScholarshipDetailsPage: React.FC<
                           ) => {
                             if (event.target.files) {
                               setPdfFile(event.target.files[0])
+                              dispatch(
+                                initializeScholarshipApplicationForm({
+                                  ...applicationDetails,
+                                  pdf_file: event.target.files[0],
+                                })
+                              )
                             }
                           }}
                           accept=".pdf"
@@ -441,9 +513,9 @@ export const ScholarshipDetailsPage: React.FC<
                     </Box>
 
                     <CTAButton
+                      loading={isLoading}
                       handleClick={handleApply}
                       label="Apply"
-                      loading={false}
                       styles={{ fontSize: '24px' }}
                     />
                   </Box>

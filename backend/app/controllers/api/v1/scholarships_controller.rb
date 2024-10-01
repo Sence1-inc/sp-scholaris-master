@@ -16,7 +16,7 @@ module Api
 
           render json: {
             scholarships: @scholarships.as_json(
-              :only => [:id, :scholarship_name, :start_date, :due_date],
+              :only => [:id, :scholarship_name, :listing_id, :start_date, :due_date],
               :include => {
                 :scholarship_provider => { :only => [:id, :provider_name] }
               }
@@ -178,7 +178,15 @@ module Api
         end
 
         def authorize
-          if @scholarship.scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email']
+          user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+          parent = User.find(user.parent_id)
+
+          if user.parent_id && @scholarship.scholarship_provider.user.email_address != parent.email_address
+            render_unauthorized_response
+            return
+          end
+
+          if @scholarship.scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email'] && !user.parent_id
             render_unauthorized_response
             return
           end

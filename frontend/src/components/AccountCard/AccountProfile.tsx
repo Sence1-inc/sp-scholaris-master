@@ -81,7 +81,7 @@ const AccountProfile: React.FC<AccountProfileProps> = ({
     >
       <FormGroup sx={profileTheme.form.formStyle}>
         <InputLabel htmlFor="account-details" sx={profileTheme.form.formLabel}>
-          Account Details
+          Provider Details
         </InputLabel>
         {isEditting ? (
           <TextField
@@ -91,6 +91,8 @@ const AccountProfile: React.FC<AccountProfileProps> = ({
               setDetails(e.target.value)
             }
             sx={profileTheme.form.formInput}
+            minRows={6}
+            multiline
           />
         ) : (
           <Typography sx={profileTheme.text.textRegular}>{details}</Typography>

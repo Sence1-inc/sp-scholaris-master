@@ -1,4 +1,4 @@
-import { Box, Button, Toolbar, Typography } from '@mui/material'
+import { Box, Toolbar, Typography } from '@mui/material'
 import React from 'react'
 import PrimaryButton from '../CustomButton/PrimaryButton'
 

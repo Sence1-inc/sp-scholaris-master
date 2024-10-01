@@ -10,6 +10,7 @@ import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import ProviderPrivate from './components/PrivateRoute/ProviderPrivateRoute'
 import StudentPrivate from './components/PrivateRoute/StudentPrivateRoute'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
+import AccountManagementPage from './containers/AccountManagementPage/AccountManagementPage'
 import AddScholarshipViaCSVPage from './containers/AddScholarshipViaCSVPage/AddScholarshipViaCSVPage'
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage'
@@ -49,6 +50,10 @@ const ProviderRoutes: React.FC = () => (
       path="/dashboard"
       element={<ProviderPrivate component={ProviderDashboardPage} />}
     />
+    <Route
+      path="/accounts"
+      element={<ProviderPrivate component={AccountManagementPage} />}
+    />
     <Route path="/" element={<TeaserProvider />} />
     <Route path="survey" element={<SurveyPage user_type="provider" />} />
     <Route
@@ -62,17 +67,9 @@ const ProviderRoutes: React.FC = () => (
 const App: React.FC = () => {
   const { getScholarships } = useGetScholarships()
   const params = useAppSelector((state) => state.searchParams)
-  // const [searchParams] = useSearchParams()
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const location = useLocation()
-  const { benefits, provider, start_date, due_date } = params.params
-
-  // useEffect(() => {
-  //   if (searchParams.size === 0) {
-  //     getScholarships(false)
-  //   }
-  //   // eslint-disable-next-line
-  // }, [searchParams])
+  const { benefits, provider, start_date, due_date, type } = params.params
 
   useEffect(() => {
     if (Object.keys(params.params).length > 0 && isInitialLoad) {
@@ -86,7 +83,7 @@ const App: React.FC = () => {
   useEffect(() => {
     getScholarships(false)
     // eslint-disable-next-line
-  }, [benefits, provider, start_date, due_date])
+  }, [benefits, provider, start_date, due_date, type])
 
   useEffect(() => {
     const excludedPaths = [
