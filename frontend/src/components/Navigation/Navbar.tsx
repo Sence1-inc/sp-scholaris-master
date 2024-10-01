@@ -243,6 +243,17 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             <Button
               sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
               component={Link}
+              to="/sign-up"
+            >
+              Sign Up
+            </Button>
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton>
+            <Button
+              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
+              component={Link}
               to="/scholarships"
             >
               Search Scholarships
