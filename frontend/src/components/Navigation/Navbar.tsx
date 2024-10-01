@@ -232,9 +232,9 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             <Button
               sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
               component={Link}
-              to="/provider"
+              to="/sign-up"
             >
-              Scholarship Provider
+              Sign Up
             </Button>
           </ListItemButton>
         </ListItem>
