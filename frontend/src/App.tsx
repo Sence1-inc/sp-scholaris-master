@@ -31,6 +31,7 @@ import VerifyEmailPage from './containers/VerifyEmailPage/VerifyEmailPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
 import useGetScholarships from './hooks/useGetScholarships'
 import { useAppSelector } from './redux/store'
+import { User } from './redux/types'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -44,16 +45,24 @@ const StudentRoutes: React.FC = () => (
   </Routes>
 )
 
-const ProviderRoutes: React.FC = () => (
+interface ProviderRoutesProps {
+  isParent?: boolean
+}
+
+const ProviderRoutes: React.FC<ProviderRoutesProps> = ({
+  isParent = false,
+}) => (
   <Routes>
     <Route
       path="/dashboard"
       element={<ProviderPrivate component={ProviderDashboardPage} />}
     />
-    <Route
-      path="/accounts"
-      element={<ProviderPrivate component={AccountManagementPage} />}
-    />
+    {isParent && (
+      <Route
+        path="/accounts"
+        element={<ProviderPrivate component={AccountManagementPage} />}
+      />
+    )}
     <Route path="/" element={<TeaserProvider />} />
     <Route path="survey" element={<SurveyPage user_type="provider" />} />
     <Route
@@ -67,6 +76,7 @@ const ProviderRoutes: React.FC = () => (
 const App: React.FC = () => {
   const { getScholarships } = useGetScholarships()
   const params = useAppSelector((state) => state.searchParams)
+  const user: User = useAppSelector((state) => state.persistedReducer.user)
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const location = useLocation()
   const { benefits, provider, start_date, due_date, type } = params.params
@@ -113,7 +123,10 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<WelcomePage />} />
             <Route path="/student/*" element={<StudentRoutes />} />
-            <Route path="/provider/*" element={<ProviderRoutes />} />
+            <Route
+              path="/provider/*"
+              element={<ProviderRoutes isParent={!user.parent_id} />}
+            />
             <Route
               path="/scholarships"
               element={<SearchResultsPage isASection={false} />}

@@ -64,9 +64,8 @@ module Api
 
       def scholarships
         user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
-        parent = User.find(user.parent_id)
-
-        if user.parent_id && @scholarship_provider.user.email_address != parent.email_address
+        
+        if user.parent_id && @scholarship_provider.user.email_address != User.find(user.parent_id).email_address
           render_unauthorized_response
           return
         end
