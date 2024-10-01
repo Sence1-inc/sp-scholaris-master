@@ -6,14 +6,13 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import { PROVIDER_TYPE } from '../../constants/constants'
-import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import { Errors } from '../SignUpPage/SignUpPage'
 
@@ -40,9 +39,7 @@ interface UserCredentials {
 }
 
 const AccountManagementPage = () => {
-  const navigate = useNavigate()
   const user = useAppSelector((state) => state.persistedReducer.user)
-  const dispatch = useAppDispatch()
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -55,7 +52,6 @@ const AccountManagementPage = () => {
   const [page, setPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
   const [rowCount, setRowCount] = useState<number>(0)
-  const [children, setChildren] = useState<User[] | []>([])
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const [userCredentials, setUserCredentials] = useState<UserCredentials>({
@@ -75,8 +71,6 @@ const AccountManagementPage = () => {
     last_name: '',
     birthdate: '',
   })
-
-  console.log('rowData', rowData)
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
   const isValidEmail = emailRegex.test(userCredentials.email_address)
@@ -317,7 +311,7 @@ const AccountManagementPage = () => {
       )
       setSuccessMessage(response.data.message)
       setRowData((prevRowData) =>
-        prevRowData.filter((row) => row.id != selectedRow)
+        prevRowData.filter((row) => row.id !== selectedRow)
       )
       setErrorMessage('')
     } catch (error: any) {
@@ -329,8 +323,12 @@ const AccountManagementPage = () => {
   useEffect(() => {
     const getChildren = async () => {
       try {
-        const { data } = await axiosInstance.get(`/api/v1/users/${user.id}`)
-        const row = data.map((account: User) => {
+        setIsDataLoading(true)
+        const response = await axiosInstance.get(
+          `/api/v1/users/${user.id}?page=${page + 1}&limit=${pageSize}`
+        )
+
+        const row = response.data.accounts.map((account: User) => {
           return {
             id: account.id,
             email_address: account.email_address,
@@ -341,13 +339,17 @@ const AccountManagementPage = () => {
           }
         })
 
+        setIsDataLoading(false)
+        setRowCount(response.data.total_count)
         setRowData(row)
       } catch (error: any) {
+        setIsDataLoading(false)
         setErrorMessage(error.response.data.message)
       }
     }
 
     getChildren()
+    // eslint-disable-next-line
   }, [])
 
   const renderActions = (params: GridRenderCellParams) => {
@@ -597,7 +599,7 @@ const AccountManagementPage = () => {
             paginationModel: { page: page, pageSize: 10 },
           },
         }}
-        pageSizeOptions={[5, 10]}
+        pageSizeOptions={[10]}
         pagination
         paginationMode="server"
         loading={isDataLoading}

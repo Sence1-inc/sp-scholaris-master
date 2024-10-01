@@ -12,7 +12,7 @@ module Api
     
       # GET /scholarship_providers/1 or /scholarship_providers/1.json
       def show
-        render json: @scholarship_provider.as_json
+        render json: @scholarship_provider.includes([:scholarship_provider_profile]).as_json
       end
     
       # GET /scholarship_providers/new
@@ -64,9 +64,8 @@ module Api
 
       def scholarships
         user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
-        parent = User.find(user.parent_id)
-
-        if user.parent_id && @scholarship_provider.user.email_address != parent.email_address
+        
+        if user.parent_id && @scholarship_provider.user.email_address != User.find(user.parent_id).email_address
           render_unauthorized_response
           return
         end
@@ -78,7 +77,16 @@ module Api
 
         @scholarships = Scholarship.where(scholarship_provider_id: @scholarship_provider.id)
         if @scholarships.exists?
-          @scholarships = @scholarships.page(params[:page] || 1).per(params[:limit] || 10)
+          @scholarships = @scholarships.includes(
+            :eligibilities, 
+            :requirements, 
+            :scholarship_type, 
+            :benefits, 
+            :benefit_categories, 
+            :courses, 
+            :schools, 
+            scholarship_provider: [:scholarship_provider_profile]  # Hash notation for nested includes
+          ).page(params[:page] || 1).per(params[:limit] || 10)
 
           render json: {
             scholarships: @scholarships.as_json,

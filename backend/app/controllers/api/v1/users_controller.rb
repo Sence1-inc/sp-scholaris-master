@@ -15,7 +15,17 @@ module Api
 
     # GET /users/1 or /users/1.json
     def show
-      render json:  @user.children.as_json
+      children = @user.children.includes(:scholarship_provider, :role, :student_profile).page(params[:page]).per(params[:pageSize])
+      render json: {
+        accounts: children.as_json(include: :scholarship_provider),
+        meta: {
+          current_page: children.current_page,
+          next_page: children.next_page,
+          prev_page: children.prev_page,
+          total_pages: children.total_pages,
+          total_count: children.total_count
+        }
+      }
     end
 
     # GET /users/new

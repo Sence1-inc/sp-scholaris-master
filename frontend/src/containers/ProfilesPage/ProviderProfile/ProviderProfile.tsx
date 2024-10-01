@@ -8,7 +8,6 @@ import {
   useMediaQuery,
 } from '@mui/material'
 import axios from 'axios'
-import dayjs from 'dayjs'
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance, { initialUserState } from '../../../axiosConfig'

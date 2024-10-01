@@ -16,6 +16,7 @@ import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Logo from '../../public/images/logo.png'
 import { useAppSelector } from '../../redux/store'
+import { User } from '../../redux/types'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 
 interface NavbarProps {
@@ -27,7 +28,7 @@ const drawerWidth = '90vw'
 const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const location = useLocation()
   const pathname = location.pathname
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.persistedReducer.user)
   const isAuthenticated = useAppSelector(
     (state) => state.persistedReducer.isAuthenticated
   )
@@ -204,16 +205,18 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               Dashboard
             </Typography>
           </ListItem>
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Link}
-              to="/provider/accounts"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
-            >
-              Accounts
-            </Typography>
-          </ListItem>
+          {!user.parent_id && (
+            <ListItem>
+              <Typography
+                variant="body1"
+                component={Link}
+                to="/provider/accounts"
+                sx={{ color: 'common.white', textDecoration: 'none' }}
+              >
+                Accounts
+              </Typography>
+            </ListItem>
+          )}
           <ListItem disablePadding sx={{ width: 'auto' }}>
             <Button
               sx={{
@@ -238,6 +241,17 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           flexDirection: { xs: 'column', md: 'row' },
         }}
       >
+        <ListItem disablePadding>
+          <ListItemButton>
+            <Button
+              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
+              component={Link}
+              to="/sign-up"
+            >
+              Sign Up
+            </Button>
+          </ListItemButton>
+        </ListItem>
         <ListItem disablePadding>
           <ListItemButton>
             <Button
