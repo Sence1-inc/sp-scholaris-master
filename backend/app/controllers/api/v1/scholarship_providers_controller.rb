@@ -12,7 +12,7 @@ module Api
     
       # GET /scholarship_providers/1 or /scholarship_providers/1.json
       def show
-        render json: @scholarship_provider.as_json
+        render json: @scholarship_provider.includes([:scholarship_provider_profile]).as_json
       end
     
       # GET /scholarship_providers/new
@@ -77,7 +77,16 @@ module Api
 
         @scholarships = Scholarship.where(scholarship_provider_id: @scholarship_provider.id)
         if @scholarships.exists?
-          @scholarships = @scholarships.page(params[:page] || 1).per(params[:limit] || 10)
+          @scholarships = @scholarships.includes(
+            :eligibilities, 
+            :requirements, 
+            :scholarship_type, 
+            :benefits, 
+            :benefit_categories, 
+            :courses, 
+            :schools, 
+            scholarship_provider: [:scholarship_provider_profile]  # Hash notation for nested includes
+          ).page(params[:page] || 1).per(params[:limit] || 10)
 
           render json: {
             scholarships: @scholarships.as_json,
