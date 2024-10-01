@@ -5,6 +5,7 @@ import store from './redux/store'
 
 export const initialUserState = {
   birthdate: '',
+  password_digest: '',
   email_address: '',
   first_name: '',
   id: 0,
@@ -56,6 +57,7 @@ export const baseURL =
 const instance: AxiosInstance = axios.create({
   baseURL,
   timeout: 100000,
+  withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*',

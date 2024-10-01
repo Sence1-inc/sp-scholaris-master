@@ -36,7 +36,7 @@ export type ScholarshipData = {
   scholarship_provider: {
     id: number
     provider_name: string
-    provider_link: string
+    provider_link?: string
     scholarship_provider_profile: {
       id: number
       description: string
@@ -197,8 +197,10 @@ export type StudentProfile = {
 export type User = {
   birthdate: string
   email_address: string
+  password_digest?: string
   first_name: string
   id: number
+  parent_id?: number
   is_active: number
   last_name: string
   role_id: number

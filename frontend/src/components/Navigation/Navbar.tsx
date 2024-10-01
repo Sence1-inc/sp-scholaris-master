@@ -114,7 +114,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               component={Link}
               to={`/student/account`}
             >
-              Account
+              Profile
             </Button>
           </ListItem>
         </List>
@@ -181,6 +181,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
+            gap: 4,
           }}
         >
           <ListItem>
@@ -203,6 +204,16 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               Dashboard
             </Typography>
           </ListItem>
+          <ListItem>
+            <Typography
+              variant="body1"
+              component={Link}
+              to="/provider/accounts"
+              sx={{ color: 'common.white', textDecoration: 'none' }}
+            >
+              Accounts
+            </Typography>
+          </ListItem>
           <ListItem disablePadding sx={{ width: 'auto' }}>
             <Button
               sx={{
@@ -213,7 +224,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
               component={Link}
               to={`/provider/account/${user?.scholarship_provider?.id}/view-profile`}
             >
-              Account
+              Profile
             </Button>
           </ListItem>
         </List>
@@ -272,7 +283,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
                 : `/student/account`
             }
           >
-            Account
+            Profile
           </Button>
         </ListItem>
       </List>

@@ -178,7 +178,15 @@ module Api
         end
 
         def authorize
-          if @scholarship.scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email']
+          user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+          parent = User.find(user.parent_id)
+
+          if user.parent_id && @scholarship.scholarship_provider.user.email_address != parent.email_address
+            render_unauthorized_response
+            return
+          end
+
+          if @scholarship.scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email'] && !user.parent_id
             render_unauthorized_response
             return
           end

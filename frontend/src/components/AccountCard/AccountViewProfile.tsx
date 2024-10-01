@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux'
 import axiosInstance from '../../axiosConfig'
 import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { useAppSelector } from '../../redux/store'
-import { Profile } from '../../redux/types'
+import { Profile, User } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
 import CustomSnackbar from '../CustomSnackbar/CustomSnackbar'
 import AccountCard from './AccountCard'
@@ -42,7 +42,7 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
   handleSetErrorMessage,
 }) => {
   const dispatch = useDispatch()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.persistedReducer.user)
   const data = useAppSelector((state) => state.persistedReducer.profile)
   const { profile } = data as ProfileData
   const [providerName, setProviderName] = useState<string>('')
@@ -61,7 +61,7 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
       setProviderName(profile.scholarship_provider?.provider_name ?? '')
       setSelectedPhAddress(profile.ph_address)
       setDetails(profile?.description ?? '')
-      setLink(profile?.scholarship_provider.provider_link ?? '')
+      setLink(profile?.scholarship_provider?.provider_link ?? '')
     }
   }, [profile])
 
@@ -226,43 +226,45 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
             : 'Please provide a link where students can learn more about your organization.'}
         </Typography>
       </FormGroup>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          p: 4,
-        }}
-      >
-        {!isEditting ? (
-          <Button
-            sx={{ borderRadius: '32px' }}
-            variant="contained"
-            onClick={() => setIsEditting(true)}
-          >
-            Edit
-          </Button>
-        ) : (
-          <ButtonGroup>
+      {!user?.parent_id && (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            p: 4,
+          }}
+        >
+          {!isEditting ? (
             <Button
               sx={{ borderRadius: '32px' }}
               variant="contained"
-              onClick={() => setIsEditting(false)}
+              onClick={() => setIsEditting(true)}
             >
-              Cancel
+              Edit
             </Button>
-            <Button
-              sx={{ borderRadius: '32px' }}
-              variant="contained"
-              color="secondary"
-              onClick={handleSave}
-            >
-              Save
-            </Button>
-          </ButtonGroup>
-        )}
-      </Box>
+          ) : (
+            <ButtonGroup>
+              <Button
+                sx={{ borderRadius: '32px' }}
+                variant="contained"
+                onClick={() => setIsEditting(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                sx={{ borderRadius: '32px' }}
+                variant="contained"
+                color="secondary"
+                onClick={handleSave}
+              >
+                Save
+              </Button>
+            </ButtonGroup>
+          )}
+        </Box>
+      )}
     </AccountCard>
   )
 }

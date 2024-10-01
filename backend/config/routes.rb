@@ -7,6 +7,7 @@ Rails.application.routes.draw do
         post 'send_email', on: :collection, to: 'scholarship_applications#send_email', as: 'send_email'
       end
       post 'register', to: 'users#register', as: 'users_register'
+      resources :users
       post 'login', to: 'users#login', as: 'users_login'
       post 'refresh', to: 'users#refresh', as: 'users_refresh'
       get 'verify_email/:token', to: 'users#verify', as: 'users_verify_email'
@@ -38,6 +39,7 @@ Rails.application.routes.draw do
       resources :cities
       resources :roles
       resources :student_profiles
+      resources :user_permissions
     end
   end
 end
