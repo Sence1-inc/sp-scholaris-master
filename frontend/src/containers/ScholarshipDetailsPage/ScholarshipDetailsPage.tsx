@@ -285,7 +285,7 @@ export const ScholarshipDetailsPage: React.FC<
               }}
               sx={{
                 color: 'secondary.main',
-                fontSize: '24px',
+                fontSize: '1.2rem',
                 fontWeight: 700,
                 textDecoration: 'none',
                 '&:hover': {
@@ -516,7 +516,8 @@ export const ScholarshipDetailsPage: React.FC<
                       loading={isLoading}
                       handleClick={handleApply}
                       label="Apply"
-                      styles={{ fontSize: '24px' }}
+                      loading={false}
+                      styles={{ fontSize: '1.20rem' }}
                     />
                   </Box>
                 </Modal>
@@ -545,7 +546,8 @@ export const ScholarshipDetailsPage: React.FC<
                       style={{ color: '#002147', marginTop: '20px' }}
                       href={`https://${scholarshipData.scholarship_provider.provider_link}`}
                     >
-                      Link to Provider Page
+                      More about{' '}
+                      {scholarshipData.scholarship_provider.provider_name}
                     </a>
                   )}
                 </div>

@@ -28,3 +28,9 @@
   font-size: 14px;
   line-height: 1rem;
 }
+
+@media screen and (max-width: 768px) {
+  .section_disclainer-container-text {
+    width: 100%;
+  }
+}
