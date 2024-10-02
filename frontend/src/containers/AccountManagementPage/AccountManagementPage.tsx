@@ -265,8 +265,10 @@ const AccountManagementPage = () => {
           birthdate: new Date(response.data.user.birthdate).toDateString(),
         }
 
+        setIsModalOpen(false)
         setIsLoading(false)
-        setIsSnackbarOpen(false)
+        setIsSnackbarOpen(true)
+        setIsModalOpen(false)
         setRowData([...rowData, data])
         setSuccessMessage(response.data.message)
         setErrorMessage('')
