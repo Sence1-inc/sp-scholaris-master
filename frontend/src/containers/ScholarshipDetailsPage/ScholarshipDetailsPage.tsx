@@ -293,7 +293,7 @@ export const ScholarshipDetailsPage: React.FC<
                 },
               }}
             >
-              <ArrowBackIosIcon /> Back to Search Results
+              <ArrowBackIosIcon sx={{ fontSize: '1.2rem'}} /> Back to Search Results
             </Button>
           </aside>
           <Alert severity="warning" sx={{ marginBottom: '40px' }}>
