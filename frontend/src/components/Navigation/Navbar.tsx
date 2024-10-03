@@ -18,6 +18,7 @@ import Logo from '../../public/images/logo.png'
 import { useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import { ctaButtonStyle } from '../../styles/globalStyles'
+import CTAButton from '../CustomButton/CTAButton'
 
 interface NavbarProps {
   window?: () => Window
@@ -284,7 +285,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           </ListItem>
         )}
         <ListItem disablePadding sx={{ width: 'auto' }}>
-          <Button
+          {/* <Button
             sx={{
               ...ctaButtonStyle,
               whiteSpace: 'nowrap',
@@ -298,7 +299,21 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             }
           >
             Profile
-          </Button>
+          </Button> */}
+          <CTAButton
+              id="have-an-account"
+              handleClick={() => (user.role.id === 4
+                ? `/provider/account/${user?.scholarship_provider?.id}/view-profile`
+                : `/student/account`)}
+              label="Have an account?"
+              loading={false}
+              styles={{
+                fontSize: { xs: '0.9rem', sm: '1.1rem' },
+                fontWeight: 700,
+                width: '80%',
+                padding: { xs: '10px 10px', md: '12px 20px' },
+              }}
+            />
         </ListItem>
       </List>
     )
