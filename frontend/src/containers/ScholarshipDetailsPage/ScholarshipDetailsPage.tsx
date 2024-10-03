@@ -409,7 +409,7 @@ export const ScholarshipDetailsPage: React.FC<
                 >
                   <Box
                     sx={{
-                      width: '80vw',
+                      width: { xs: '90vw', md: '80vw' },
                       maxHeight: '94vh',
                       margin: '20px auto',
                       backgroundColor: 'background.default',
@@ -438,6 +438,9 @@ export const ScholarshipDetailsPage: React.FC<
                         )
                       }}
                       placeholder="e.g. student@example.com"
+                      styles={{
+                        padding: { xs: '12px', md: '17px', marginTop: '10px' },
+                      }}
                     />
                     <CustomTextfield
                       label="Student Name"
@@ -455,6 +458,9 @@ export const ScholarshipDetailsPage: React.FC<
                         )
                       }}
                       placeholder="e.g. Jane Doe"
+                      styles={{
+                        padding: { xs: '12px', md: '17px', marginTop: '10px' },
+                      }}
                     />
                     <CustomTextfield
                       label="Message to Provider"
@@ -474,10 +480,14 @@ export const ScholarshipDetailsPage: React.FC<
                       multiline={true}
                       rows={4}
                       placeholder="e.g. I am writing to express my sincere interest in the [Scholarship Name] as it aligns perfectly with my academic and career goals. As a dedicated student with a passion for [Your Field or Major], I have consistently demonstrated my commitment through my academic achievements and extracurricular involvement. This scholarship would not only alleviate the financial burden of my education but also empower me to further pursue my ambitions and contribute meaningfully to my community. I am eager to seize this opportunity and make a positive impact through the support of your esteemed scholarship."
+                      styles={{
+                        padding: { xs: '5px', md: '16px' },
+                        marginTop: '10px',
+                      }}
                     />
                     <Box>
                       <Button
-                        sx={{ backgroundColor: 'primary' }}
+                        sx={{ backgroundColor: 'primary', fontSize: '0.9rem' }}
                         component="label"
                         role={undefined}
                         variant="contained"
@@ -503,7 +513,10 @@ export const ScholarshipDetailsPage: React.FC<
                           accept=".pdf"
                         />
                       </Button>
-                      <Typography variant="subtitle1" sx={{ fontSize: '10px' }}>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ fontSize: '0.8rem', lineHeight: '1.25', mt: 1 }}
+                      >
                         * You can upload your credentials, grades,
                         recommendation letter, or any relevant pdf file for your
                         scholarship application. For multiple documents, save it
@@ -516,8 +529,10 @@ export const ScholarshipDetailsPage: React.FC<
                       loading={isLoading}
                       handleClick={handleApply}
                       label="Apply"
-                      loading={false}
-                      styles={{ fontSize: '1.20rem' }}
+                      styles={{
+                        fontSize: '1.20rem',
+                        padding: { xs: '14px', md: '20px' },
+                      }}
                     />
                   </Box>
                 </Modal>

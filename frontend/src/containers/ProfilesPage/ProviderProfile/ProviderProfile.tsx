@@ -132,10 +132,10 @@ const ProviderProfile: React.FC = () => {
         isSnackbarOpen={isSnackbarOpen}
         handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
       />
-      <Container>
+      <Container sx={{ p: 0}}>
         <Box sx={profileTheme.container.mainContainer}>
           {isSm ? (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%', padding: '0 10px'}}>
               <Box
                 sx={{
                   ...profileTheme.box.boxSideContentstyle,

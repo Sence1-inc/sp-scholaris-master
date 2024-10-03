@@ -124,12 +124,12 @@ const AccountProfile: React.FC<AccountProfileProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
-          p: 4,
+          p: 4
         }}
       >
         {!isEditting ? (
           <Button
-            sx={{ borderRadius: '32px' }}
+            sx={{ borderRadius: '32px'}}
             variant="contained"
             onClick={() => setIsEditting(true)}
           >

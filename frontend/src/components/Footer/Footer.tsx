@@ -20,7 +20,7 @@ const Footer: React.FC = () => {
                 <Link to="/scholarships">Listings</Link>
               </li>
               <li>
-                <Link to="/terms-and-conditions">Terms and Condition</Link>
+                <Link to="/terms-and-conditions">Terms and Conditions</Link>
               </li>
               <li>
                 <Link to="/privacy-consent">Privacy Policy</Link>

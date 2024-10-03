@@ -331,7 +331,13 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar component="nav" sx={{ position: 'relative', padding: '8px' }}>
-        <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Toolbar style={{ 
+          display: 'flex', 
+          justifyContent: 'space-between',
+          }}
+          sx={{
+            padding: { xs: '0 10px', sm: '0 20px' }
+          }}>
           <Box>
             <Link to="/">
               <img src={Logo} alt="Scholaris Logo" />
@@ -347,7 +353,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}
+            sx={{ display: { md: 'none' } }}
           >
             <MenuIcon />
           </IconButton>
