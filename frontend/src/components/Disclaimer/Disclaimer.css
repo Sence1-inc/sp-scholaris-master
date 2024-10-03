@@ -4,6 +4,7 @@
   color: white;
   padding: 20px;
   display: flex;
+  margin-bottom: -1px;
 }
 
 .section_disclainer-container-text {
