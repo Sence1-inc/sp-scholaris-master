@@ -15,6 +15,17 @@ module Api
 
     # GET /users/1 or /users/1.json
     def show
+      children = @user.children.includes(:scholarship_provider, :role, :student_profile).page(params[:page]).per(params[:pageSize])
+      render json: {
+        accounts: children.as_json(include: :scholarship_provider),
+        meta: {
+          current_page: children.current_page,
+          next_page: children.next_page,
+          prev_page: children.prev_page,
+          total_pages: children.total_pages,
+          total_count: children.total_count
+        }
+      }
     end
 
     # GET /users/new
@@ -28,28 +39,34 @@ module Api
 
     # POST /users or /users.json
     def create
+      registration_response = authenticate_registration
+
+      case registration_response[:status]
+      when 201
+        handle_child_registration_success(registration_response)
+      when 409
+        render_error("Please try logging in or reset your password", registration_response[:status])
+      else
+        render_error(registration_response[:error], registration_response[:status])
+      end
     end
 
     # PATCH/PUT /users/1 or /users/1.json
     def update
-      respond_to do |format|
-        if @user.update(user_params)
-          format.html { redirect_to user_url(@user), notice: "User was successfully updated." }
-          format.json { render :show, status: :ok, location: @user }
-        else
-          format.html { render :edit, status: :unprocessable_entity }
-          format.json { render json: @user.errors, status: :unprocessable_entity }
-        end
+      if @user.update(user_params.merge(password_digest: params.dig(:password)))
+        render json: {message: 'User updated successfully', user: @user}, status: :ok
+      else
+        render json: {errors: @user.errors.full_messages, message: "Unable to update user"}, status: :unprocessable_entity
       end
     end
 
     # DELETE /users/1 or /users/1.json
     def destroy
-      @user.destroy!
-
-      respond_to do |format|
-        format.html { redirect_to users_url, notice: "User was successfully destroyed." }
-        format.json { head :no_content }
+      if !@user.deleted_at.present?
+        User.soft_delete(@user)
+        render json: {message: "User deleted successfully."}, status: :ok
+      else
+        render json: {message: "Unable to delete"}, status: :unprocessable_entity
       end
     end
 
@@ -137,7 +154,11 @@ module Api
       user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
 
       if user
-        @provider = user.role_id === 4 ? ScholarshipProvider.find_or_create_by(user_id: user.id) : {}
+        if user.parent_id
+          @provider = user.role_id === 4 ? ScholarshipProvider.find_by(user_id: user.parent_id) : {}
+        else
+          @provider = user.role_id === 4 ? ScholarshipProvider.find_by(user_id: user.id) : {}
+        end
         @scholarships = @provider.present? && user.role_id === 4 ? Scholarship.where(scholarship_provider_id: @provider.id) : {}
         @profile =  @provider.present? && user.role_id === 4 ? ScholarshipProviderProfile.find_by(scholarship_provider_id: @provider.id) : {}
         @student_profile = user.role_id === 3 ? StudentProfile.find_by(user_id: user.id) : {}
@@ -146,7 +167,7 @@ module Api
       if access_token.present?
         decoded_access_token = JwtService.decode(cookies[:access_token])
         if decoded_access_token['email'] === JwtService.decode(cookies[:email])['email']
-          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json)}, status: :ok
+          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json)}, status: :ok
         else
           render json: { valid: false }, status: 498
         end
@@ -160,7 +181,7 @@ module Api
 
         if parsed_response['status'] == 200
           set_cookie(parsed_response)
-          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json) }, status: :ok
+          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json) }, status: :ok
         else
           render json: { valid: false }, status: 498
         end
@@ -177,7 +198,7 @@ module Api
 
           if parsed_response['status'] == 200
             set_cookie(parsed_response)
-            render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile).merge(profile: @profile.as_json) }, status: :ok
+            render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json) }, status: :ok
           else
             render json: { valid: false }, status: 498
           end
@@ -214,7 +235,7 @@ module Api
 
       # Only allow a list of trusted parameters through.
       def user_params
-        params.require(:user).permit(:email_address, :password, :first_name, :last_name, :birthdate, :is_active, :role, :session_token, :service_id)
+        params.require(:user).permit(:email_address, :password, :first_name, :last_name, :birthdate, :is_active, :role, :session_token, :service_id, :parent_id)
       end
 
       def authenticate_registration
@@ -234,7 +255,6 @@ module Api
         begin
           response = RestClient.post(ENV['AUTH_REGISTER'], req.to_json, headers)
           parsed_response = JSON.parse(response.body)
-
           if parsed_response['status'] == 201
             request.headers['email'] = parsed_response['user']['email']
             request.headers['uuid'] = parsed_response['user']['uuid']
@@ -283,6 +303,45 @@ module Api
         end
       end
 
+      def handle_child_registration_success(registration_response)
+        @role = Role.find_by(role_name: params.dig(:role))
+        existing_user = User.find_by(parent_id: user_params.dig(:parent_id), email_address: user_params.dig(:email_address))
+        if !@role || existing_user
+          error_message = !@role ? 'Role not found' : 'Please try logging in or reset your password'
+          render_error(error_message, :unprocessable_entity)
+        else
+          parent = User.find(params[:parent_id])
+          user = parent.children.new(user_params.merge(uuid: registration_response[:user]['uuid'], role_id: @role.id, password_digest: params.dig(:password)))
+          user.verification_token = SecureRandom.hex(10)
+          user.verification_expires_at = 24.hours.from_now
+          if user.save
+            parent_permission = parent.user_permissions.create!(
+              user_type: UserPermission::PARENT,
+              can_add: true,
+              can_view: true,
+              can_edit: true,
+              can_delete: true,
+              is_enabled: true
+            )
+            child_permission = user.user_permissions.create!(
+              user_type: UserPermission::CHILD,
+              can_add: true,
+              can_view: true,
+              can_edit: true,
+              can_delete: true,
+              is_enabled: true
+            )
+            if UserMailer.email_verification(user).deliver_now
+              render json: { user: user, msg: 'User registered, email sent, and saved successfully' }, status: :created
+            else
+              render json: { msg: 'User registered and saved successfully, but email sending failed' }, status: :created
+            end
+          else
+            render_error('Failed to save user details', :unprocessable_entity, user.errors.full_messages)
+          end
+        end
+      end
+
       def handle_verification_resend(user)
         if user.update(verification_token: SecureRandom.hex(10), verification_expires_at: 24.hours.from_now) && UserMailer.email_verification(user).deliver_now
           render json: { user: user, msg: 'Verification email has been sent' }, status: :ok
@@ -296,12 +355,18 @@ module Api
 
         user = User.find_by(email_address: params.dig(:email_address))
         if user && user.is_verified
-          provider = ScholarshipProvider.find_or_create_by(user_id: user.id)
+          provider = {}
+          if user.parent_id 
+            provider = ScholarshipProvider.find_or_create_by(user_id: user.parent_id)
+          else
+            provider = ScholarshipProvider.find_or_create_by(user_id: user.id)
+          end
+
           scholarships = Scholarship.where(scholarship_provider_id: provider.id)
           profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id) || {}
           student_profile = StudentProfile.find_by(user_id: user.id) || {}
 
-          render json: user.as_json.merge(scholarship_provider: provider, student_profile: student_profile).merge(profile: profile.as_json), status: :ok
+          render json: user.as_json.merge(scholarship_provider: provider, student_profile: student_profile, profile: profile.as_json), status: :ok
         else
           render_error("Email must be verified", :unprocessable_entity) unless user.is_verified
         end

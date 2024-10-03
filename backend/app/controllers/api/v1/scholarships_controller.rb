@@ -10,15 +10,24 @@ module Api
       # GET /api/v1/scholarships or /api/v1/scholarships.json
       def index
         @scholarships = Scholarship.filtered(params)
-    
+        
         if @scholarships.present?
-          @scholarships = @scholarships.page(params[:page]).per(params[:limit])
+          @scholarships = @scholarships.includes(
+            :eligibilities, 
+            :requirements, 
+            :scholarship_type, 
+            :benefits, 
+            :benefit_categories, 
+            :courses, 
+            :schools, 
+            scholarship_provider: [:scholarship_provider_profile]  # Hash notation for nested includes
+          ).page(params[:page]).per(params[:limit])
 
           render json: {
             scholarships: @scholarships.as_json(
-              :only => [:id, :scholarship_name, :listing_id, :start_date, :due_date],
-              :include => {
-                :scholarship_provider => { :only => [:id, :provider_name] }
+              only: [:id, :scholarship_name, :listing_id, :start_date, :due_date],
+              include: {
+                scholarship_provider: { only: [:id, :provider_name] }
               }
             ),
             total_count: @scholarships.total_count,
@@ -30,6 +39,7 @@ module Api
           render json: { message: 'No scholarships found', scholarships: [], total_count: 0 }, status: :not_found
         end
       end
+
     
       # GET /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def show
@@ -178,7 +188,14 @@ module Api
         end
 
         def authorize
-          if @scholarship.scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email']
+          user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+
+          if user.parent_id && @scholarship.scholarship_provider.user.email_address != User.find(user.parent_id).email_address
+            render_unauthorized_response
+            return
+          end
+
+          if @scholarship.scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email'] && !user.parent_id
             render_unauthorized_response
             return
           end
