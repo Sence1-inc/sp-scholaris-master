@@ -125,14 +125,12 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         setErrorMessage('')
         dispatch(initializeUser(response.data))
         dispatch(initializeProfile(response.data.profile))
-        // navigate('/provider/dashboard')
 
-        if (userState.scholarship_provider.provider_name) {
+        if (response.data.scholarship_provider.provider_name) {
           navigate('/provider/dashboard')
         } else {
           navigate(`/provider/account/${userState.id}/view-profile`)
         }
-        
       } catch (error: any) {
         setIsButtonLoading(false)
         if (error) {
