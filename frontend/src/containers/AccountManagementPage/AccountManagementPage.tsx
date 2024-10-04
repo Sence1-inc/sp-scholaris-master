@@ -126,14 +126,14 @@ const AccountManagementPage = () => {
       field: 'email_address',
       headerName: 'Email Address',
       type: 'string',
-      editable: isEditable,
+      editable: false,
       flex: 1.5,
     },
     {
       field: 'password',
       headerName: 'Password',
       type: 'string',
-      editable: isEditable,
+      editable: false,
       flex: 1,
     },
     {
@@ -254,7 +254,7 @@ const AccountManagementPage = () => {
           ...userCredentials,
           birthdate: dayjs(userCredentials.birthdate).utc().format(),
         })
-        setIsLoading(false)
+
         const data = {
           id: response.data.user.id,
           email_address: response.data.user.email_address,
@@ -264,12 +264,18 @@ const AccountManagementPage = () => {
           birthdate: new Date(response.data.user.birthdate).toDateString(),
         }
 
+        setIsModalOpen(false)
+        setIsLoading(false)
+        setIsSnackbarOpen(true)
+        setIsModalOpen(false)
         setRowData([...rowData, data])
         setSuccessMessage(response.data.message)
         setErrorMessage('')
-      } catch (error) {
+      } catch (error: any) {
+        setIsSnackbarOpen(true)
         setIsLoading(false)
-        console.log(error)
+        setSuccessMessage('')
+        setErrorMessage(error.response.data.message)
       }
     }
   }
@@ -294,11 +300,13 @@ const AccountManagementPage = () => {
 
         return row
       })
-
+      setIsEditable(false)
       setRowData(newRowData)
+      setIsSnackbarOpen(true)
       setSuccessMessage(response.data.message)
       setErrorMessage('')
     } catch (error: any) {
+      setIsSnackbarOpen(true)
       setSuccessMessage('')
       setErrorMessage(error.response.data.message)
     }
@@ -313,8 +321,10 @@ const AccountManagementPage = () => {
       setRowData((prevRowData) =>
         prevRowData.filter((row) => row.id !== selectedRow)
       )
+      setIsSnackbarOpen(true)
       setErrorMessage('')
     } catch (error: any) {
+      setIsSnackbarOpen(true)
       setErrorMessage(error.response.data.message)
       setSuccessMessage('')
     }
@@ -344,6 +354,7 @@ const AccountManagementPage = () => {
         setRowData(row)
       } catch (error: any) {
         setIsDataLoading(false)
+        setIsSnackbarOpen(true)
         setErrorMessage(error.response.data.message)
       }
     }
@@ -413,7 +424,7 @@ const AccountManagementPage = () => {
         },
         display: 'flex',
         flexDirection: 'column',
-        gap: '20px',
+        rowGap: '30px',
       }}
     >
       <CustomSnackbar
@@ -422,7 +433,14 @@ const AccountManagementPage = () => {
         warningMessage={warningMessage}
         isSnackbarOpen={isSnackbarOpen}
         handleWarningProceed={handleDeleteAccount}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+        handleSetIsSnackbarOpen={(value) => {
+          setIsSnackbarOpen(value)
+          if (!value) {
+            setSuccessMessage('')
+            setErrorMessage('')
+            setWarningMessage('')
+          }
+        }}
       />
       <Box
         sx={{
@@ -491,14 +509,14 @@ const AccountManagementPage = () => {
             display: 'flex',
             flexDirection: 'column',
             gap: '20px',
-            p: 3, // Padding inside the modal
-            overflowY: 'auto', // Enable vertical scrolling
+            p: 3,
+            overflowY: 'auto',
             position: 'absolute',
             top: '50%',
             left: '50%',
-            transform: 'translate(-50%, -50%)', // Center the modal
+            transform: 'translate(-50%, -50%)',
             boxShadow: 24,
-            borderRadius: 2, // Optional: add rounded corners
+            borderRadius: 2,
           }}
         >
           <CustomTextfield
@@ -605,6 +623,7 @@ const AccountManagementPage = () => {
         loading={isDataLoading}
         disableRowSelectionOnClick
         sx={{
+          width: '100%',
           height: Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,
           '.MuiDataGrid-root': {
             border: 'none',

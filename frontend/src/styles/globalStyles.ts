@@ -27,3 +27,12 @@ export const CTAButton = styled(Button)({
   color: '#fff',
   height: '100%',
 })
+
+export const containerStyle = {
+  padding: '70px 20px 50px',
+  Margin: '30px 20px',
+  MaxWidth: '1040px',
+  display: 'flex',
+  flexDirection: { xs: 'column' },
+  gap: { xs: '80px' },
+}

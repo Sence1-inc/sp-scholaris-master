@@ -12,6 +12,7 @@ import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
+import { containerStyle } from '../../styles/globalStyles'
 import theme from '../../styles/theme'
 import './SearchResultsPage.css'
 
@@ -85,7 +86,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
   const renderActions = (params: any) => {
     return (
-      <Box>
+      <Box sx={containerStyle}>
         <Typography
           color="primary"
           component={Link}
@@ -194,8 +195,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   }
 
   return (
-    <section className="search-results">
-      <div className="container-1040" style={{ width: '100%' }}>
+    <section className="content">
+      <Box sx={containerStyle} style={{ width: '100%' }}>
         <Button
           id="back-from-search-results-page"
           onClick={() => {
@@ -204,7 +205,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           sx={{
             alignSelf: 'flex-start',
             color: 'secondary.main',
-            fontSize: '24px',
+            fontSize: '1.2rem',
             fontWeight: 700,
             textDecoration: 'none',
             '&:hover': {
@@ -219,7 +220,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             </>
           ) : (
             <>
-              <ArrowBackIos /> Back
+              <ArrowBackIos sx={{ fontSize: '1.2rem' }} /> Back
             </>
           )}
         </Button>
@@ -305,7 +306,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           details page link of the relevant scholarship at
           support-scholaris@sence1.com
         </Typography>
-      </div>
+      </Box>
     </section>
   )
 }
