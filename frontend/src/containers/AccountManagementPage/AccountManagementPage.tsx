@@ -250,7 +250,6 @@ const AccountManagementPage = () => {
     } else {
       try {
         setIsLoading(true)
-        setIsSnackbarOpen(true)
         const response = await axiosInstance.post('/api/v1/users', {
           ...userCredentials,
           birthdate: dayjs(userCredentials.birthdate).utc().format(),
@@ -434,7 +433,14 @@ const AccountManagementPage = () => {
         warningMessage={warningMessage}
         isSnackbarOpen={isSnackbarOpen}
         handleWarningProceed={handleDeleteAccount}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
+        handleSetIsSnackbarOpen={(value) => {
+          setIsSnackbarOpen(value)
+          if (!value) {
+            setSuccessMessage('')
+            setErrorMessage('')
+            setWarningMessage('')
+          }
+        }}
       />
       <Box
         sx={{

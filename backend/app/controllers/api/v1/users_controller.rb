@@ -260,9 +260,9 @@ module Api
             request.headers['uuid'] = parsed_response['user']['uuid']
             request.headers['role'] = parsed_response['user']['role']
 
-            { status: parsed_response['status'], user: parsed_response['user'], msg: parsed_response['msg'] }
+            { status: parsed_response['status'], user: parsed_response['user'], message: parsed_response['msg'] }
           else
-            { status: parsed_response['status'], error: parsed_response['msg'] }
+            { status: parsed_response['status'], message: parsed_response['msg'] }
           end
         rescue RestClient::ExceptionWithResponse => e
           { status: e.response.code, error: e.response.body }
@@ -293,9 +293,9 @@ module Api
           @user.verification_expires_at = 24.hours.from_now
           if @user.save
             if UserMailer.email_verification(@user).deliver_now
-              render json: { user: @user, msg: 'User registered, email sent, and saved successfully' }, status: :created
+              render json: { user: @user, message: 'User registered, email sent, and saved successfully' }, status: :created
             else
-              render json: { msg: 'User registered and saved successfully, but email sending failed' }, status: :created
+              render json: { message: 'User registered and saved successfully, but email sending failed' }, status: :created
             end
           else
             render_error('Failed to save user details', :unprocessable_entity, @user.errors.full_messages)
@@ -332,9 +332,9 @@ module Api
               is_enabled: true
             )
             if UserMailer.email_verification(user).deliver_now
-              render json: { user: user, msg: 'User registered, email sent, and saved successfully' }, status: :created
+              render json: { user: user, message: 'User registered, email sent, and saved successfully' }, status: :created
             else
-              render json: { msg: 'User registered and saved successfully, but email sending failed' }, status: :created
+              render json: { message: 'User registered and saved successfully, but email sending failed' }, status: :created
             end
           else
             render_error('Failed to save user details', :unprocessable_entity, user.errors.full_messages)
@@ -344,7 +344,7 @@ module Api
 
       def handle_verification_resend(user)
         if user.update(verification_token: SecureRandom.hex(10), verification_expires_at: 24.hours.from_now) && UserMailer.email_verification(user).deliver_now
-          render json: { user: user, msg: 'Verification email has been sent' }, status: :ok
+          render json: { user: user, message: 'Verification email has been sent' }, status: :ok
         else
           render_error('Failed to send verification email', :unprocessable_entity)
         end
