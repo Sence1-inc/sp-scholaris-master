@@ -1,4 +1,3 @@
-import { Margin, WidthFull } from '@mui/icons-material'
 import { Button } from '@mui/material'
 import { styled } from '@mui/system'
 
@@ -35,5 +34,5 @@ export const containerStyle = {
   MaxWidth: '1040px',
   display: 'flex',
   flexDirection: { xs: 'column' },
-  gap: { xs: '80px' }
+  gap: { xs: '80px' },
 }

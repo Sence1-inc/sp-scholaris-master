@@ -1,7 +1,7 @@
-import { OpenInNew, Padding } from '@mui/icons-material'
+import { OpenInNew } from '@mui/icons-material'
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import HomeIcon from '@mui/icons-material/Home'
-import { Alert, Box, Button, Container, Typography, useMediaQuery } from '@mui/material'
+import { Alert, Box, Button, Typography, useMediaQuery } from '@mui/material'
 import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import Cookies from 'js-cookie'
 import queryString from 'query-string'
@@ -12,9 +12,9 @@ import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
+import { containerStyle } from '../../styles/globalStyles'
 import theme from '../../styles/theme'
 import './SearchResultsPage.css'
-import { containerStyle } from '../../styles/globalStyles'
 
 interface GridRowDef {
   scholarshipName: string
@@ -86,9 +86,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
   const renderActions = (params: any) => {
     return (
-      <Box 
-        sx={containerStyle}
-      >
+      <Box sx={containerStyle}>
         <Typography
           color="primary"
           component={Link}
@@ -197,9 +195,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   }
 
   return (
-    <section className='content'>
+    <section className="content">
       <Box sx={containerStyle} style={{ width: '100%' }}>
-
         <Button
           id="back-from-search-results-page"
           onClick={() => {
@@ -223,7 +220,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             </>
           ) : (
             <>
-              <ArrowBackIos sx={{ fontSize: '1.2rem' }}/> Back
+              <ArrowBackIos sx={{ fontSize: '1.2rem' }} /> Back
             </>
           )}
         </Button>
