@@ -540,6 +540,7 @@ export const ScholarshipDetailsPage: React.FC<
                     }
                   </p>
                   {scholarshipData.scholarship_provider.provider_link && (
+                    // eslint-disable-next-line
                     <a
                       target="_blank"
                       style={{ color: '#002147', marginTop: '20px' }}
