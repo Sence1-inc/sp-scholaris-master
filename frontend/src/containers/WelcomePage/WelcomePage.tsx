@@ -5,18 +5,14 @@ import WelcomePageSearch from '../../components/Search/WelcomePageSearch'
 import SchoolIcon from '../../public/images/school-solid.svg'
 import UserIcon from '../../public/images/users-solid.svg'
 import './WelcomePage.css'
+import { containerStyle } from '../../styles/globalStyles'
 
 const WelcomePage: React.FC = () => {
   return (
     <>
+
       <Box
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column' },
-          width: '100vw',
-          padding: { xs: '60px 20px', md: '80px 20px' },
-          gap: { xs: '80px' },
-        }}
+        sx={containerStyle}
       >
         <Box
           sx={{
@@ -153,6 +149,7 @@ const WelcomePage: React.FC = () => {
           </div>
         </div>
       </div>
+
     </>
   )
 }
