@@ -172,7 +172,7 @@ export default function DataTable() {
     {
       field: 'scholarshipName',
       headerName: 'Scholarship Name',
-      flex: 1.5,
+      flex: 1
     },
     { field: 'startDate', headerName: 'Start Date', type: 'date', flex: 0.5 },
     { field: 'endDate', headerName: 'End Date', type: 'date', flex: 0.5 },
@@ -181,7 +181,7 @@ export default function DataTable() {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
-      flex: 1,
+      flex: 0.5,
       renderCell: (params: any) => renderActions(params),
     },
   ]
@@ -192,7 +192,7 @@ export default function DataTable() {
   }
 
   return (
-    <div style={{ height: 'auto', width: '100%', borderRadius: '16px' }}>
+    <div style={{ height: 'auto', width: '100%', borderRadius: '16px'}}>
       <CustomSnackbar
         successMessage={successMessage}
         errorMessage={errorMessage}
@@ -249,8 +249,7 @@ export default function DataTable() {
           borderRadius: '16px',
           fontFamily: 'Outfit',
           fontSize: {
-            xs: '12px',
-            md: '1rem',
+            xs: '1rem'
           },
           '& .MuiDataGrid-row:hover': {
             backgroundColor: 'secondary.main',

@@ -1,3 +1,7 @@
+h2.content_tc-header {
+  font-size: 1.8rem;
+}
+
 .content_tc-body {
   max-width: 900px;
   margin: 0 auto;
@@ -11,7 +15,7 @@
 
 .content_tc-subheader {
   margin: 24px 0;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
 
 span {

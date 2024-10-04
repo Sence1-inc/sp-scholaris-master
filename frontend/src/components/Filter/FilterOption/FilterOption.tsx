@@ -102,7 +102,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
           '& .MuiList-root': {
             border: '2px rgb(0, 33, 71) solid',
             borderRadius: '16px',
-            maxHeight: '210px',
+            maxHeight: '287px',
             overflowY: 'auto',
           },
         }}
@@ -142,7 +142,7 @@ const FilterOption: React.FC<FilterOptionProps> = ({
                 '&:hover': {
                   cursor: 'pointer',
                   fontWeight: 600,
-                  transition: 'font-weight 0.1s ease-in-out',
+                  transition: 'font-weight 0.1s ease-in-out'
                 },
               }}
               key={option.label + index}

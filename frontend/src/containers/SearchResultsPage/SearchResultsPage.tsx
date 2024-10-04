@@ -208,7 +208,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           sx={{
             alignSelf: 'flex-start',
             color: 'secondary.main',
-            fontSize: '24px',
+            fontSize: '1.2rem',
             fontWeight: 700,
             textDecoration: 'none',
             '&:hover': {
@@ -223,7 +223,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             </>
           ) : (
             <>
-              <ArrowBackIos /> Back
+              <ArrowBackIos sx={{ fontSize: '1.2rem' }}/> Back
             </>
           )}
         </Button>

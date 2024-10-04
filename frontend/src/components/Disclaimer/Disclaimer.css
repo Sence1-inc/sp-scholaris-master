@@ -4,6 +4,7 @@
   color: white;
   padding: 20px;
   display: flex;
+  margin-bottom: -1px;
 }
 
 .section_disclainer-container-text {
@@ -27,4 +28,10 @@
 .section_disclainer-container-text p {
   font-size: 14px;
   line-height: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+  .section_disclainer-container-text {
+    width: 100%;
+  }
 }
