@@ -425,7 +425,7 @@ const AccountManagementPage = () => {
         },
         display: 'flex',
         flexDirection: 'column',
-        gap: '20px',
+        rowGap: '30px',
       }}
     >
       <CustomSnackbar
@@ -617,6 +617,7 @@ const AccountManagementPage = () => {
         loading={isDataLoading}
         disableRowSelectionOnClick
         sx={{
+          width: '100%',
           height: Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,
           '.MuiDataGrid-root': {
             border: 'none',
