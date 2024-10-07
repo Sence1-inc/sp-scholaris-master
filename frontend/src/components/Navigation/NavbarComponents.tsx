@@ -21,7 +21,7 @@ const AuthenticatedProvider: React.FC<AuthenticatedProviderProps> = ({
         gap: 4,
       }}
     >
-      <ListItem>
+      <ListItem sx={{ width: 'auto' }}>
         <Typography
           variant="body1"
           component={Link}
@@ -31,7 +31,7 @@ const AuthenticatedProvider: React.FC<AuthenticatedProviderProps> = ({
           Survey
         </Typography>
       </ListItem>
-      <ListItem>
+      <ListItem sx={{ width: 'auto' }}>
         <Typography
           variant="body1"
           component={Link}
@@ -42,7 +42,7 @@ const AuthenticatedProvider: React.FC<AuthenticatedProviderProps> = ({
         </Typography>
       </ListItem>
       {!user.parent_id && (
-        <ListItem>
+        <ListItem sx={{ width: 'auto' }}>
           <Typography
             variant="body1"
             component={Link}
@@ -122,10 +122,10 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column', md: 'row' },
-        gap: 4,
+        gap: 3,
       }}
     >
-      <ListItem>
+      <ListItem sx={{ width: 'auto' }}>
         <Typography
           variant="body1"
           component={Button}
@@ -146,7 +146,7 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
           Newsletter
         </Typography>
       </ListItem>
-      <ListItem>
+      <ListItem sx={{ width: 'auto' }}>
         <Typography
           variant="body1"
           component={Link}
@@ -156,7 +156,7 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
           Survey
         </Typography>
       </ListItem>
-      <ListItem>
+      <ListItem sx={{ minWidth: 'auto' }}>
         <Typography
           variant="body1"
           component={Link}
