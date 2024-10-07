@@ -2,23 +2,17 @@ import MenuIcon from '@mui/icons-material/Menu'
 import {
   AppBar,
   Box,
-  Button,
   Divider,
   Drawer,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
   Toolbar,
-  Typography,
 } from '@mui/material'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Logo from '../../public/images/logo.png'
 import { useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
-import { ctaButtonStyle } from '../../styles/globalStyles'
-import CTAButton from '../CustomButton/CTAButton'
+import { Authenticated, Unauthenticated } from './NavbarComponents'
 
 interface NavbarProps {
   window?: () => Window
@@ -33,270 +27,17 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const isAuthenticated = useAppSelector(
     (state) => state.persistedReducer.isAuthenticated
   )
+  const [mobileOpen, setMobileOpen] = React.useState(false)
 
   const renderItems = () => {
-    if (pathname.includes('/student')) {
-      return !isAuthenticated ? (
-        <List
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-          }}
-        >
-          {location.pathname !== '/student/survey' && (
-            <>
-              <ListItem>
-                <Typography
-                  variant="body1"
-                  component={Button}
-                  onClick={() => {
-                    const fabButton =
-                      document.getElementById('fab-button-student')
-
-                    if (fabButton) {
-                      fabButton.click()
-                    }
-                  }}
-                  sx={{
-                    color: 'common.white',
-                    textDecoration: 'none',
-                    textTransform: 'capitalize',
-                  }}
-                >
-                  Newsletter
-                </Typography>
-              </ListItem>
-              <ListItem>
-                <Typography
-                  variant="body1"
-                  component={Link}
-                  to="/student/survey"
-                  sx={{ color: 'common.white', textDecoration: 'none' }}
-                >
-                  Survey
-                </Typography>
-              </ListItem>
-            </>
-          )}
-
-          <ListItem disablePadding>
-            <Button
-              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
-              component={Link}
-              to="/scholarships"
-            >
-              Search Scholarships
-            </Button>
-          </ListItem>
-        </List>
-      ) : (
-        <List
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-          }}
-        >
-          <ListItem disablePadding sx={{ width: 'auto' }}>
-            <Button
-              sx={{
-                ...ctaButtonStyle,
-                whiteSpace: 'nowrap',
-                backgroundColor: 'primary.light',
-              }}
-              component={Link}
-              to={`/student/account`}
-            >
-              Profile
-            </Button>
-          </ListItem>
-        </List>
-      )
-    }
-
-    if (pathname.includes('/provider')) {
-      return !isAuthenticated ? (
-        <List
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-          }}
-        >
-          {location.pathname !== '/provider/survey' && (
-            <>
-              <ListItem>
-                <Typography
-                  variant="body1"
-                  component={Button}
-                  onClick={() => {
-                    const fabButton = document.getElementById(
-                      'fab-button-provider'
-                    )
-
-                    if (fabButton) {
-                      fabButton.click()
-                    }
-                  }}
-                  sx={{
-                    color: 'common.white',
-                    textDecoration: 'none',
-                    textTransform: 'capitalize',
-                  }}
-                >
-                  Newsletter
-                </Typography>
-              </ListItem>
-              <ListItem>
-                <Typography
-                  variant="body1"
-                  component={Link}
-                  to="/provider/survey"
-                  sx={{ color: 'common.white', textDecoration: 'none' }}
-                >
-                  Survey
-                </Typography>
-              </ListItem>
-            </>
-          )}
-
-          <ListItem disablePadding sx={{ width: 'auto' }}>
-            <Button
-              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
-              component={Link}
-              to="/scholarships"
-            >
-              Search Scholarships
-            </Button>
-          </ListItem>
-        </List>
-      ) : (
-        <List
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-            gap: 4,
-          }}
-        >
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Link}
-              to="/provider/survey"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
-            >
-              Survey
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Link}
-              to="/provider/dashboard"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
-            >
-              Dashboard
-            </Typography>
-          </ListItem>
-          {!user.parent_id && (
-            <ListItem>
-              <Typography
-                variant="body1"
-                component={Link}
-                to="/provider/accounts"
-                sx={{ color: 'common.white', textDecoration: 'none' }}
-              >
-                Accounts
-              </Typography>
-            </ListItem>
-          )}
-          <ListItem disablePadding sx={{ width: 'auto' }}>
-            <Button
-              sx={{
-                ...ctaButtonStyle,
-                whiteSpace: 'nowrap',
-                backgroundColor: 'primary.light',
-              }}
-              component={Link}
-              to={`/provider/account/${user?.scholarship_provider?.id}/view-profile`}
-            >
-              Profile
-            </Button>
-          </ListItem>
-        </List>
-      )
-    }
-
     return !isAuthenticated ? (
-      <List
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-        }}
-      >
-        <ListItem disablePadding>
-          <ListItemButton>
-            <Button
-              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
-              component={Link}
-              to="/sign-up"
-            >
-              Sign Up
-            </Button>
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
-          <ListItemButton>
-            <Button
-              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
-              component={Link}
-              to="/scholarships"
-            >
-              Search Scholarships
-            </Button>
-          </ListItemButton>
-        </ListItem>
-      </List>
+      <Unauthenticated
+        userType={pathname.includes('/student') ? 'student' : 'provider'}
+      />
     ) : (
-      <List
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-        }}
-      >
-        {user.role.id === 4 && (
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Link}
-              to="/provider/dashboard"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
-            >
-              Dashboard
-            </Typography>
-          </ListItem>
-        )}
-        <ListItem disablePadding sx={{ width: 'auto' }}>
-          <CTAButton
-            id="have-an-account"
-            handleClick={() =>
-              user.role.id === 4
-                ? `/provider/account/${user?.scholarship_provider?.id}/view-profile`
-                : `/student/account`
-            }
-            label="Have an account?"
-            loading={false}
-            styles={{
-              fontSize: { xs: '0.9rem', sm: '1.1rem' },
-              fontWeight: 700,
-              width: '80%',
-              padding: { xs: '10px 10px', md: '12px 20px' },
-            }}
-          />
-        </ListItem>
-      </List>
+      <Authenticated user={user} pathname={pathname} />
     )
   }
-
-  const [mobileOpen, setMobileOpen] = React.useState(false)
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState)
@@ -323,13 +64,15 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar component="nav" sx={{ position: 'relative', padding: '8px' }}>
-        <Toolbar style={{ 
-          display: 'flex', 
-          justifyContent: 'space-between',
+        <Toolbar
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
           }}
           sx={{
-            padding: { xs: '0 10px', sm: '0 20px' }
-          }}>
+            padding: { xs: '0 10px', sm: '0 20px' },
+          }}
+        >
           <Box>
             <Link to="/">
               <img src={Logo} alt="Scholaris Logo" />
