@@ -20,11 +20,11 @@ import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
+import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { BenefitCategory, ScholarshipData } from '../../redux/types'
-import { useSnackbar } from '../../context/SnackBarContext';
 
 export interface ScholarshipType {
   id: number
@@ -48,7 +48,7 @@ type Errors = {
 }
 
 const ScholarshipEditorPage = () => {
-  const { showMessage } = useSnackbar();
+  const { showMessage } = useSnackbar()
   const { id } = useParams<{ id: string }>()
   const { getScholarshipData } = useGetScholarshipsData()
   const dispatch = useAppDispatch()
@@ -102,7 +102,6 @@ const ScholarshipEditorPage = () => {
   )
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const [status, setStatus] = useState<string>(scholarshipData?.status ?? '')
-  const [errorMessage, setErrorMessage] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [scholarshipTypes, setScholarshipTypes] = useState<
     { id: number; scholarship_type_name: string }[] | []
@@ -165,6 +164,7 @@ const ScholarshipEditorPage = () => {
     }
 
     getBenefitCategories()
+    // eslint-disable-next-line
   }, [])
 
   useEffect(() => {
@@ -409,7 +409,7 @@ const ScholarshipEditorPage = () => {
             setIsButtonLoading(false)
             dispatch(initializeScholarshipData(response.data.scholarship))
             setSuccessMessage(response.data.message)
-            showMessage(response.data.message, 'success');
+            showMessage(response.data.message, 'success')
           }
         } else {
           const response = await axiosInstance.post(
@@ -420,7 +420,7 @@ const ScholarshipEditorPage = () => {
           if (response.data) {
             setIsButtonLoading(false)
             setSuccessMessage(response.data.message)
-            showMessage(response.data.message, 'success');
+            showMessage(response.data.message, 'success')
             setScholarshipName('')
             setDescription('')
             setStartDate(null)

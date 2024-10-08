@@ -11,11 +11,10 @@ import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import { PROVIDER_TYPE } from '../../constants/constants'
+import { useSnackbar } from '../../context/SnackBarContext'
 import { useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import { Errors } from '../SignUpPage/SignUpPage'
-import { useSnackbar } from '../../context/SnackBarContext';
-
 
 dayjs.extend(utc)
 
@@ -40,13 +39,12 @@ interface UserCredentials {
 }
 
 const AccountManagementPage = () => {
-  const { showMessage } = useSnackbar();
+  const { showMessage } = useSnackbar()
   const user = useAppSelector((state) => state.persistedReducer.user)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false)
   const [isEditable, setIsEditable] = useState<boolean>(false)
-  const [selectedRow, setSelectedRow] = useState<number>(0)
   const [page, setPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
   const [rowCount, setRowCount] = useState<number>(0)
@@ -298,18 +296,17 @@ const AccountManagementPage = () => {
       showMessage(response.data.message, 'success')
     } catch (error: any) {
       showMessage(error.response.data.message, 'error')
-
     }
   }
 
-  const handleDeleteAccount = async () => {
+  const handleDeleteAccount = async (selectedRowId: number) => {
     try {
       const response = await axiosInstance.delete(
-        `/api/v1/users/${selectedRow}`
+        `/api/v1/users/${selectedRowId}`
       )
       showMessage(response.data.message, 'success')
       setRowData((prevRowData) =>
-        prevRowData.filter((row) => row.id !== selectedRow)
+        prevRowData.filter((row) => row.id !== selectedRowId)
       )
     } catch (error: any) {
       showMessage(error.response.data.message, 'error')
@@ -387,8 +384,12 @@ const AccountManagementPage = () => {
         <Tooltip title="Delete">
           <IconButton
             onClick={() => {
-              setSelectedRow(params.row.id)
-              showMessage('Are you sure you want to delete?', 'warning', 8000, handleDeleteAccount)
+              showMessage(
+                'Are you sure you want to delete?',
+                'warning',
+                8000,
+                () => handleDeleteAccount(params.row.id)
+              )
             }}
             sx={{ color: '#F50F0F' }}
           >
