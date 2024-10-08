@@ -387,8 +387,8 @@ const AccountManagementPage = () => {
         <Tooltip title="Delete">
           <IconButton
             onClick={() => {
-              showMessage('Are you sure you want to delete?', 'warning')
               setSelectedRow(params.row.id)
+              showMessage('Are you sure you want to delete?', 'warning', 8000, handleDeleteAccount)
             }}
             sx={{ color: '#F50F0F' }}
           >

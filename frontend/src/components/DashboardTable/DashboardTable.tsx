@@ -140,7 +140,7 @@ export default function DataTable() {
         <Tooltip title="Delete">
           <IconButton
             onClick={() => {
-              showMessage('Are you sure you want to delete?', 'warning')
+              showMessage('Are you sure you want to delete?', 'warning', 8000, handleDelete)
               setSelectedRow(params.row.id)
             }}
             sx={{ color: '#F50F0F' }}

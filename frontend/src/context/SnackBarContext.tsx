@@ -2,12 +2,10 @@ import React, { createContext, useContext, useState, useEffect, useCallback, Rea
 import SnackbarComponent from '../components/CustomSnackbar/SnackbarComponent';
 import { AlertColor } from '@mui/material';
 
-// Define the context type with better type safety
 interface SnackbarContextType {
-  showMessage: (message: string, severity: AlertColor, duration?: number) => void;
+  showMessage: (message: string, severity: AlertColor, duration?: number, handleWarningProceed?: () => void) => void;
 }
 
-// Provide a default empty function for type safety instead of initializing with null
 const SnackbarContext = createContext<SnackbarContextType>({
   showMessage: () => { throw new Error('SnackbarProvider not found') },
 });
@@ -21,12 +19,15 @@ export const SnackbarProvider: React.FC<SnackbarProviderProps> = ({ children }) 
   const [message, setMessage] = useState('');
   const [severity, setSeverity] = useState<AlertColor>('info');
   const [duration, setDuration] = useState(3000);
+  const [handleWarningProceed, setHandleWarningProceed] = useState<(() => void) | undefined>(undefined);
+
 
   // Memoized showMessage to avoid unnecessary re-creation on each render
-  const showMessage = useCallback((message: string, severity: AlertColor, duration: number = 3000) => {
+  const showMessage = useCallback((message: string, severity: AlertColor, duration: number = 3000, handleWarningProceed?: () => void ) => {
     setMessage(message);
     setSeverity(severity);
-    setDuration(duration);
+    setDuration(severity === 'warning' ? 8000 : duration);
+    setHandleWarningProceed(() => handleWarningProceed || undefined);
     setIsOpen(true);
   }, []);
 
@@ -52,6 +53,7 @@ export const SnackbarProvider: React.FC<SnackbarProviderProps> = ({ children }) 
         message={message}
         severity={severity}
         handleClose={closeMessage}
+        handleWarningProceed={handleWarningProceed}
       />
     </SnackbarContext.Provider>
   );

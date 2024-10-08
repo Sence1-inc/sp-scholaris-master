@@ -126,6 +126,10 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     // eslint-disable-next-line
   }, [userCredentials, isInitialLoad])
 
+  const helloMessage = () => {
+    console.log('hello')
+  }
+
   const handleSignUp = async (role: string) => {
     userCredentials.role = role
     setIsInitialLoad(false)
