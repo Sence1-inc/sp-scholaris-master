@@ -1,0 +1,12 @@
+AllCops:
+  TargetRubyVersion: 3.1
+  NewCops: enable
+
+Rails:
+  Enabled: true
+
+Metrics/LineLength:
+  Max: 120
+
+Style/StringLiterals:
+  EnforcedStyle: single_quotes
