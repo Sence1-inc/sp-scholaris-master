@@ -344,16 +344,17 @@ module Api
 
         @user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
         if @user && @user.is_verified
-          @provider = {}
-          if @user.parent_id 
-            @provider = ScholarshipProvider.find_or_create_by(user_id: @user.parent_id)
+          provider = {}
+          if @user.parent_id
+            provider = ScholarshipProvider.find_or_create_by(user_id: @user.parent_id)
           else
-            @provider = ScholarshipProvider.find_or_create_by(user_id: @user.id)
+            provider = ScholarshipProvider.find_or_create_by(user_id: @user.id)
           end
 
-          @scholarships = Scholarship.where(scholarship_provider_id: @provider.id)
-          @profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: @provider.id) || {}
-          @student_profile = StudentProfile.find_by(user_id: @user.id) || {}
+          @scholarships = provider.scholarships
+          @student_profile = @user.role_id === 3 ? @user.student_profile : {}
+          @profile = provider.scholarship_provider_profile
+          @provider = provider
         end
       end
 

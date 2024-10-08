@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
-import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import TextLoading from '../../components/Loading/TextLoading'
@@ -25,6 +24,7 @@ import { initializeScholarshipApplicationForm } from '../../redux/reducers/Schol
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData } from '../../redux/types'
+import { useSnackbar } from '../../context/SnackBarContext';
 import './ScholarshipDetailsPage.css'
 
 interface Results {
@@ -57,6 +57,7 @@ const VisuallyHiddenInput = styled('input')({
 export const ScholarshipDetailsPage: React.FC<
   ScholarshipDataResultsPageProps
 > = () => {
+  const { showMessage } = useSnackbar();
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -82,9 +83,6 @@ export const ScholarshipDetailsPage: React.FC<
     user_message: '',
     pdf_file: '',
   })
-  const [successMessage, setSuccessMessage] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
 
   useEffect(() => {
     setIsLoading(true)
@@ -187,9 +185,7 @@ export const ScholarshipDetailsPage: React.FC<
     const hasErrors = Object.keys(errorMessages).length > 0
 
     if (hasErrors) {
-      setSuccessMessage('')
-      setIsSnackbarOpen(true)
-      setErrorMessage('Please fill in the required details.')
+      showMessage('Please fill in the required details.', 'error')
       setErrors({ ...errors, ...errorMessages })
     } else {
       const formData = new FormData()
@@ -213,9 +209,7 @@ export const ScholarshipDetailsPage: React.FC<
             },
           }
         )
-        setSuccessMessage(response.data.message)
-        setIsSnackbarOpen(true)
-        setErrorMessage('')
+        showMessage(response.data.message, 'success')
         setStudentEmail('')
         setStudentName('')
         setUserMessage('')
@@ -237,10 +231,7 @@ export const ScholarshipDetailsPage: React.FC<
           pdf_file: '',
         })
       } catch (error: any) {
-        setSuccessMessage('')
-        setIsSnackbarOpen(true)
-        setIsLoading(false)
-        setErrorMessage(error.response?.data?.message ?? 'Email not sent.')
+        showMessage(error.response?.data?.message ?? 'Email not sent.', 'error')
         if (
           error.response &&
           error.response.data &&
@@ -268,12 +259,6 @@ export const ScholarshipDetailsPage: React.FC<
       <Backdrop sx={{ color: '#fff', zIndex: 10 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <CustomSnackbar
-        errorMessage={errorMessage}
-        successMessage={successMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
       <section id="details">
         <div className="container" style={{ padding: '80px 20px' }}>
           <aside id="aside">

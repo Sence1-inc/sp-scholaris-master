@@ -2,6 +2,7 @@ import { Box, Button, FormGroup, InputLabel, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import { useSnackbar } from '../../context/SnackBarContext'
 import useGetSubscriber from '../../hooks/useGetSubscriber'
 import { initializeSubscirber } from '../../redux/reducers/SubscriberReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -10,20 +11,13 @@ import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
 
 interface AccountSettingsProps {
-  handleSetIsSnackbarOpen: (value: boolean) => void
-  handleSetSuccessMessage: (value: string) => void
-  handleSetErrorMessage: (value: string) => void
-  handleSetWarningMessage: (value: string) => void
-  handleSetInfoMessage: (value: string) => void
+  handleUnsubscribe: () => void
 }
 
 const AccountSettings: React.FC<AccountSettingsProps> = ({
-  handleSetIsSnackbarOpen,
-  handleSetSuccessMessage,
-  handleSetWarningMessage,
-  handleSetInfoMessage,
-  handleSetErrorMessage,
+  handleUnsubscribe,
 }) => {
+  const { showMessage } = useSnackbar()
   const user = useAppSelector((state) => state.persistedReducer.user)
   const { id } = useParams()
   const dispatch = useAppDispatch()
@@ -34,9 +28,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       getSubscriber()
 
       if (errorMessage) {
-        handleSetErrorMessage(errorMessage)
-      } else {
-        handleSetErrorMessage('')
+        showMessage(errorMessage, 'error')
       }
     }
 
@@ -58,14 +50,10 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             id: subscriber.data.id,
           }
         )
-        handleSetWarningMessage('')
-        handleSetInfoMessage('')
         if (response.status === 200) {
           const successData = response.data
           dispatch(initializeSubscirber(successData.subscriber))
-          handleSetSuccessMessage(successData.message)
-          handleSetErrorMessage('')
-          handleSetIsSnackbarOpen(true)
+          showMessage(successData.message, 'success')
         } else {
           const errorData = response.data
           dispatch(
@@ -74,33 +62,21 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
               user_type: '',
             })
           )
-          handleSetIsSnackbarOpen(true)
-          handleSetSuccessMessage('')
-          handleSetErrorMessage(errorData.message)
+          showMessage(errorData.message, 'error')
         }
       }
     } catch (error: any) {
-      handleSetWarningMessage('')
-      handleSetIsSnackbarOpen(false)
       if (error.response && error.response.status === 404) {
-        handleSetErrorMessage('')
-        handleSetSuccessMessage('')
-        handleSetInfoMessage('Subscribing, please wait.')
-        handleSetIsSnackbarOpen(true)
+        showMessage('Subscribing, please wait.', 'info')
         const response = await axiosInstance.post(`api/v1/subscribers`, {
           email: user.email_address,
           user_type: 'provider',
         })
         if (response.status === 201) {
-          handleSetIsSnackbarOpen(false)
           const successData = response.data
           dispatch(initializeSubscirber(successData.subscriber))
-          handleSetSuccessMessage(successData.message)
-          handleSetErrorMessage('')
-          handleSetIsSnackbarOpen(true)
-          handleSetInfoMessage('')
+          showMessage(successData.message, 'success')
         } else {
-          handleSetIsSnackbarOpen(false)
           const errorData = response.data
           dispatch(
             initializeSubscirber({
@@ -108,16 +84,10 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
               user_type: '',
             })
           )
-          handleSetIsSnackbarOpen(true)
-          handleSetSuccessMessage('')
-          handleSetErrorMessage(errorData.message)
-          handleSetInfoMessage('')
+          showMessage(errorData.message, 'error')
         }
       } else {
-        handleSetIsSnackbarOpen(true)
-        handleSetSuccessMessage('')
-        handleSetWarningMessage('')
-        handleSetErrorMessage(error.response.data.message)
+        showMessage(error.response.data.message, 'error')
       }
     }
   }
@@ -146,11 +116,12 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             variant="contained"
             sx={ctaButtonStyle}
             onClick={(e: any) => {
-              handleSetSuccessMessage('')
-              handleSetErrorMessage('')
-              handleSetInfoMessage('')
-              handleSetIsSnackbarOpen(true)
-              handleSetWarningMessage('Are you sure you want to unsubscribe?')
+              showMessage(
+                'Are you sure you want to delete?',
+                'warning',
+                8000,
+                handleUnsubscribe
+              )
             }}
           >
             Unsubscribe
