@@ -10,7 +10,8 @@ import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
-import CustomSnackbar from '../CustomSnackbar/CustomSnackbar'
+import { useSnackbar } from '../../context/SnackBarContext';
+
 
 interface GridRowDef {
   id: number
@@ -22,16 +23,13 @@ interface GridRowDef {
 
 export default function DataTable() {
   const navigate = useNavigate()
+  const { showMessage } = useSnackbar();
   const user = useAppSelector((state) => state.persistedReducer.user)
   const dispatch = useAppDispatch()
   const { getScholarshipData } = useGetScholarshipsData()
   const [rowData, setRowData] = useState<GridRowDef[]>([])
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [selectedRow, setSelectedRow] = useState<number>(0)
-  const [successMessage, setSuccessMessage] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [warningMessage, setWarningMessage] = useState<string>('')
   const [page, setPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
   const [rowCount, setRowCount] = useState<number>(0)
@@ -41,12 +39,6 @@ export default function DataTable() {
       setIsLoading(false)
     }
   }, [rowCount])
-
-  useEffect(() => {
-    if (!isSnackbarOpen) {
-      setSuccessMessage('')
-    }
-  }, [isSnackbarOpen])
 
   const handleDelete = async () => {
     setIsLoading(true)
@@ -60,18 +52,13 @@ export default function DataTable() {
       )
       setIsLoading(false)
       if (response.data) {
-        setIsSnackbarOpen(true)
-        setWarningMessage('')
-        setSuccessMessage('Successfully deleted')
+        showMessage('Successfully Deleted', 'success')
         formatScholarships(response.data.scholarships)
       }
     } catch (error) {
       setIsLoading(false)
       if (error) {
-        setIsSnackbarOpen(true)
-        setWarningMessage('')
-        setSuccessMessage('')
-        setErrorMessage('Error deleting scholarship')
+        showMessage('Error deleting scholarship', 'error')
       }
     }
   }
@@ -153,9 +140,8 @@ export default function DataTable() {
         <Tooltip title="Delete">
           <IconButton
             onClick={() => {
-              setWarningMessage('Are you sure you want to delete?')
+              showMessage('Are you sure you want to delete?', 'warning')
               setSelectedRow(params.row.id)
-              setIsSnackbarOpen(true)
             }}
             sx={{ color: '#F50F0F' }}
           >
@@ -193,14 +179,6 @@ export default function DataTable() {
 
   return (
     <div style={{ height: 'auto', width: '100%', borderRadius: '16px'}}>
-      <CustomSnackbar
-        successMessage={successMessage}
-        errorMessage={errorMessage}
-        warningMessage={warningMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-        handleWarningProceed={handleDelete}
-      />
       <DataGrid
         localeText={{ noRowsLabel: 'No saved data' }}
         rows={rowData}

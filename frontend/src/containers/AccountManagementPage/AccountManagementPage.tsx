@@ -8,13 +8,14 @@ import utc from 'dayjs/plugin/utc'
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
-import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import { PROVIDER_TYPE } from '../../constants/constants'
 import { useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import { Errors } from '../SignUpPage/SignUpPage'
+import { useSnackbar } from '../../context/SnackBarContext';
+
 
 dayjs.extend(utc)
 
@@ -39,16 +40,13 @@ interface UserCredentials {
 }
 
 const AccountManagementPage = () => {
+  const { showMessage } = useSnackbar();
   const user = useAppSelector((state) => state.persistedReducer.user)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false)
   const [isEditable, setIsEditable] = useState<boolean>(false)
   const [selectedRow, setSelectedRow] = useState<number>(0)
-  const [successMessage, setSuccessMessage] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [warningMessage, setWarningMessage] = useState<string>('')
   const [page, setPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
   const [rowCount, setRowCount] = useState<number>(0)
@@ -233,9 +231,8 @@ const AccountManagementPage = () => {
     const hasErrors = errorMessages.length > 0
 
     if (hasErrors) {
-      setSuccessMessage('')
-      setIsSnackbarOpen(true)
-      setErrorMessage('Please fill in the required details.')
+      showMessage('Please fill in the required details.', 'error')
+
       const newErrors = validationConditions.reduce<{ [key: string]: string }>(
         (acc, { condition, field, message }) => {
           if (condition) {
@@ -266,16 +263,12 @@ const AccountManagementPage = () => {
 
         setIsModalOpen(false)
         setIsLoading(false)
-        setIsSnackbarOpen(true)
         setIsModalOpen(false)
         setRowData([...rowData, data])
-        setSuccessMessage(response.data.message)
-        setErrorMessage('')
+        showMessage(response.data.message, 'success')
       } catch (error: any) {
-        setIsSnackbarOpen(true)
         setIsLoading(false)
-        setSuccessMessage('')
-        setErrorMessage(error.response.data.message)
+        showMessage(error.response.data.message, 'error')
       }
     }
   }
@@ -302,13 +295,10 @@ const AccountManagementPage = () => {
       })
       setIsEditable(false)
       setRowData(newRowData)
-      setIsSnackbarOpen(true)
-      setSuccessMessage(response.data.message)
-      setErrorMessage('')
+      showMessage(response.data.message, 'success')
     } catch (error: any) {
-      setIsSnackbarOpen(true)
-      setSuccessMessage('')
-      setErrorMessage(error.response.data.message)
+      showMessage(error.response.data.message, 'error')
+
     }
   }
 
@@ -317,16 +307,12 @@ const AccountManagementPage = () => {
       const response = await axiosInstance.delete(
         `/api/v1/users/${selectedRow}`
       )
-      setSuccessMessage(response.data.message)
+      showMessage(response.data.message, 'success')
       setRowData((prevRowData) =>
         prevRowData.filter((row) => row.id !== selectedRow)
       )
-      setIsSnackbarOpen(true)
-      setErrorMessage('')
     } catch (error: any) {
-      setIsSnackbarOpen(true)
-      setErrorMessage(error.response.data.message)
-      setSuccessMessage('')
+      showMessage(error.response.data.message, 'error')
     }
   }
 
@@ -354,8 +340,7 @@ const AccountManagementPage = () => {
         setRowData(row)
       } catch (error: any) {
         setIsDataLoading(false)
-        setIsSnackbarOpen(true)
-        setErrorMessage(error.response.data.message)
+        showMessage(error.response.data.message, 'error')
       }
     }
 
@@ -402,9 +387,8 @@ const AccountManagementPage = () => {
         <Tooltip title="Delete">
           <IconButton
             onClick={() => {
-              setWarningMessage('Are you sure you want to delete?')
+              showMessage('Are you sure you want to delete?', 'warning')
               setSelectedRow(params.row.id)
-              setIsSnackbarOpen(true)
             }}
             sx={{ color: '#F50F0F' }}
           >
@@ -427,21 +411,6 @@ const AccountManagementPage = () => {
         rowGap: '30px',
       }}
     >
-      <CustomSnackbar
-        successMessage={successMessage}
-        errorMessage={errorMessage}
-        warningMessage={warningMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleWarningProceed={handleDeleteAccount}
-        handleSetIsSnackbarOpen={(value) => {
-          setIsSnackbarOpen(value)
-          if (!value) {
-            setSuccessMessage('')
-            setErrorMessage('')
-            setWarningMessage('')
-          }
-        }}
-      />
       <Box
         sx={{
           display: 'flex',

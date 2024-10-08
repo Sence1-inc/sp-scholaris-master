@@ -18,13 +18,13 @@ import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
-import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { BenefitCategory, ScholarshipData } from '../../redux/types'
+import { useSnackbar } from '../../context/SnackBarContext';
 
 export interface ScholarshipType {
   id: number
@@ -48,6 +48,7 @@ type Errors = {
 }
 
 const ScholarshipEditorPage = () => {
+  const { showMessage } = useSnackbar();
   const { id } = useParams<{ id: string }>()
   const { getScholarshipData } = useGetScholarshipsData()
   const dispatch = useAppDispatch()
@@ -101,7 +102,6 @@ const ScholarshipEditorPage = () => {
   )
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const [status, setStatus] = useState<string>(scholarshipData?.status ?? '')
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const [successMessage, setSuccessMessage] = useState<string>('')
   const [scholarshipTypes, setScholarshipTypes] = useState<
@@ -160,8 +160,7 @@ const ScholarshipEditorPage = () => {
           setBenefitCategories(response.data)
         }
       } catch (error: any) {
-        setIsSnackbarOpen(true)
-        setErrorMessage(error.response.data.error)
+        showMessage(error.response.data.error, 'error')
       }
     }
 
@@ -369,8 +368,7 @@ const ScholarshipEditorPage = () => {
     const hasErrors = errorMessages.length > 0
 
     if (hasErrors) {
-      setIsSnackbarOpen(true)
-      setErrorMessage('Please fill in the required details.')
+      showMessage('Please fill in the required details.', 'error')
       const newErrors: any = validationConditions.reduce<{
         [key: string]: string
       }>((acc, { condition, field, message }) => {
@@ -410,9 +408,8 @@ const ScholarshipEditorPage = () => {
           if (response.data) {
             setIsButtonLoading(false)
             dispatch(initializeScholarshipData(response.data.scholarship))
-            setIsSnackbarOpen(true)
             setSuccessMessage(response.data.message)
-            setErrorMessage('')
+            showMessage(response.data.message, 'success');
           }
         } else {
           const response = await axiosInstance.post(
@@ -422,9 +419,8 @@ const ScholarshipEditorPage = () => {
           )
           if (response.data) {
             setIsButtonLoading(false)
-            setIsSnackbarOpen(true)
             setSuccessMessage(response.data.message)
-            setErrorMessage('')
+            showMessage(response.data.message, 'success');
             setScholarshipName('')
             setDescription('')
             setStartDate(null)
@@ -459,9 +455,8 @@ const ScholarshipEditorPage = () => {
       } catch (error: any) {
         setIsButtonLoading(false)
         if (error) {
-          setIsSnackbarOpen(true)
           setSuccessMessage('')
-          setErrorMessage(error.response.data.errors.join(', '))
+          showMessage(error.response.data.errors.join(', '), 'error')
           const errorMessages: { [key: string]: string } = {
             scholarship_name: error.response.data.errors
               .filter((str: string) => str.includes('Scholarship name'))
@@ -518,12 +513,6 @@ const ScholarshipEditorPage = () => {
 
   return (
     <FormGroup>
-      <CustomSnackbar
-        successMessage={successMessage}
-        errorMessage={errorMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
       <Container sx={{ padding: { sm: '60px 100px', lg: '120px' } }}>
         <Box p={'50px 0 0'}>
           <Link
