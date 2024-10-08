@@ -6,7 +6,7 @@ module Api
     class UsersController < ApplicationController
     skip_before_action :verify_authenticity_token
     before_action :set_user, only: %i[ show edit update destroy ]
-    before_action :set_headers, only: [:login, :refresh, :register]
+    before_action :set_headers, only: [ :login, :refresh, :register ]
 
     # GET /users or /users.json
     def index
@@ -151,23 +151,12 @@ module Api
     def check_token
       access_token = cookies[:access_token]
       refresh_token = cookies[:refresh_token]
-      user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
-
-      if user
-        if user.parent_id
-          @provider = user.role_id === 4 ? ScholarshipProvider.find_by(user_id: user.parent_id) : {}
-        else
-          @provider = user.role_id === 4 ? ScholarshipProvider.find_by(user_id: user.id) : {}
-        end
-        @scholarships = @provider.present? && user.role_id === 4 ? Scholarship.where(scholarship_provider_id: @provider.id) : {}
-        @profile =  @provider.present? && user.role_id === 4 ? ScholarshipProviderProfile.find_by(scholarship_provider_id: @provider.id) : {}
-        @student_profile = user.role_id === 3 ? StudentProfile.find_by(user_id: user.id) : {}
-      end
+      set_user_profiles
 
       if access_token.present?
         decoded_access_token = JwtService.decode(cookies[:access_token])
         if decoded_access_token['email'] === JwtService.decode(cookies[:email])['email']
-          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json)}, status: :ok
+          render json: { valid: true, user: @user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json)}, status: :ok
         else
           render json: { valid: false }, status: 498
         end
@@ -181,7 +170,7 @@ module Api
 
         if parsed_response['status'] == 200
           set_cookie(parsed_response)
-          render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json) }, status: :ok
+          render json: { valid: true, user: @user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json) }, status: :ok
         else
           render json: { valid: false }, status: 498
         end
@@ -198,7 +187,7 @@ module Api
 
           if parsed_response['status'] == 200
             set_cookie(parsed_response)
-            render json: { valid: true, user: user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json) }, status: :ok
+            render json: { valid: true, user: @user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json) }, status: :ok
           else
             render json: { valid: false }, status: 498
           end
@@ -349,31 +338,39 @@ module Api
           render_error('Failed to send verification email', :unprocessable_entity)
         end
       end
+      
+      def set_user_profiles
+        return unless cookies[:email]
 
-      def handle_login_success(parsed_response)
-        set_cookie(parsed_response)
-
-        user = User.find_by(email_address: params.dig(:email_address))
-        if user && user.is_verified
-          provider = {}
-          if user.parent_id 
-            provider = ScholarshipProvider.find_or_create_by(user_id: user.parent_id)
+        @user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+        if @user && @user.is_verified
+          @provider = {}
+          if @user.parent_id 
+            @provider = ScholarshipProvider.find_or_create_by(user_id: @user.parent_id)
           else
-            provider = ScholarshipProvider.find_or_create_by(user_id: user.id)
+            @provider = ScholarshipProvider.find_or_create_by(user_id: @user.id)
           end
 
-          scholarships = Scholarship.where(scholarship_provider_id: provider.id)
-          profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: provider.id) || {}
-          student_profile = StudentProfile.find_by(user_id: user.id) || {}
-
-          render json: user.as_json.merge(scholarship_provider: provider, student_profile: student_profile, profile: profile.as_json), status: :ok
-        else
-          render_error("Email must be verified", :unprocessable_entity) unless user.is_verified
+          @scholarships = Scholarship.where(scholarship_provider_id: @provider.id)
+          @profile = ScholarshipProviderProfile.find_by(scholarship_provider_id: @provider.id) || {}
+          @student_profile = StudentProfile.find_by(user_id: @user.id) || {}
         end
       end
 
+      def handle_login_success(parsed_response)
+        set_cookie(parsed_response)
+        set_user_profiles
+
+        if @user && @user.is_verified
+          render json: @user.as_json.merge(scholarship_provider: @provider, student_profile: @student_profile, profile: @profile.as_json), status: :ok
+        else
+          render_error("Email must be verified", :unprocessable_entity) unless @user.is_verified
+        end
+      end
+      
       def handle_refresh_success(parsed_response)
         set_cookie(parsed_response)
+        user = User.find_by(email: JwtService.decode(cookies[:email])['email'])
 
         render json: { message: parsed_response['msg'] }, status: :ok
       end
