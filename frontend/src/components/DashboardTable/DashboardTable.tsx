@@ -168,7 +168,7 @@ export default function DataTable() {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
-      flex: 0.5,
+      flex: 1,
       renderCell: (params: any) => renderActions(params),
     },
   ]
@@ -179,62 +179,60 @@ export default function DataTable() {
   }
 
   return (
-    <div style={{ height: 'auto', width: '100%', borderRadius: '16px' }}>
-      <DataGrid
-        localeText={{ noRowsLabel: 'No saved data' }}
-        rows={rowData}
-        rowCount={rowCount}
-        columns={columns}
-        onPaginationModelChange={handlePageChange}
-        initialState={{
-          pagination: {
-            paginationModel: { page: page, pageSize: 10 },
+    <DataGrid
+      localeText={{ noRowsLabel: 'No saved data' }}
+      rows={rowData}
+      rowCount={rowCount}
+      columns={columns}
+      onPaginationModelChange={handlePageChange}
+      initialState={{
+        pagination: {
+          paginationModel: { page: page, pageSize: 10 },
+        },
+      }}
+      pageSizeOptions={[5, 10]}
+      pagination
+      paginationMode="server"
+      loading={isLoading}
+      sx={{
+        height: rowData?.length > 0 ? 'auto' : 200,
+        '.MuiDataGrid-root': {
+          border: 'none',
+        },
+        '.MuiDataGrid-main': {
+          borderTopLeftRadius: '16px',
+          borderTopRightRadius: '16px',
+        },
+        '& .MuiDataGrid-columnHeaders': {
+          backgroundColor: '#AFC3D9',
+        },
+        '.MuiDataGrid-footerContainer': {
+          borderBottomLeftRadius: '16px',
+          borderBottomRightRadius: '16px',
+        },
+        '& .MuiDataGrid-footerContainer': {
+          backgroundColor: '#AFC3D9',
+        },
+        '& .MuiDataGrid-row': {
+          '&:nth-of-type(odd)': {
+            backgroundColor: '#D8D8D8',
           },
-        }}
-        pageSizeOptions={[5, 10]}
-        pagination
-        paginationMode="server"
-        loading={isLoading}
-        sx={{
-          height: Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,
-          '.MuiDataGrid-root': {
-            border: 'none',
+          '&:nth-of-type(even)': {
+            backgroundColor: '#F1F1F1',
           },
-          '.MuiDataGrid-main': {
-            borderTopLeftRadius: '16px',
-            borderTopRightRadius: '16px',
-          },
-          '& .MuiDataGrid-columnHeaders': {
-            backgroundColor: '#AFC3D9',
-          },
-          '.MuiDataGrid-footerContainer': {
-            borderBottomLeftRadius: '16px',
-            borderBottomRightRadius: '16px',
-          },
-          '& .MuiDataGrid-footerContainer': {
-            backgroundColor: '#AFC3D9',
-          },
-          '& .MuiDataGrid-row': {
-            '&:nth-of-type(odd)': {
-              backgroundColor: '#D8D8D8',
-            },
-            '&:nth-of-type(even)': {
-              backgroundColor: '#F1F1F1',
-            },
-          },
-          '& .MuiDataGrid-overlay': {
-            zIndex: '20',
-          },
-          borderRadius: '16px',
-          fontFamily: 'Outfit',
-          fontSize: {
-            xs: '1rem',
-          },
-          '& .MuiDataGrid-row:hover': {
-            backgroundColor: 'secondary.main',
-          },
-        }}
-      />
-    </div>
+        },
+        '& .MuiDataGrid-overlay': {
+          zIndex: '20',
+        },
+        borderRadius: '16px',
+        fontFamily: 'Outfit',
+        fontSize: {
+          xs: '1rem',
+        },
+        '& .MuiDataGrid-row:hover': {
+          backgroundColor: 'secondary.main',
+        },
+      }}
+    />
   )
 }
