@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
-import { initializeProfile } from '../../redux/reducers/ProfileReducer'
+import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
@@ -58,7 +58,7 @@ const AccountProfile: React.FC<AccountProfileProps> = ({
       handleSetSuccessMessage('Successfully saved!')
       handleSetErrorMessage('')
       handleSetIsSnackbarOpen(true)
-      dispatch(initializeProfile({ ...response.data.profile }))
+      dispatch(initializeUser({ ...user, profile: response.data.profile }))
     } catch (error) {
       if (error) {
         handleSetIsSnackbarOpen(true)
@@ -124,12 +124,12 @@ const AccountProfile: React.FC<AccountProfileProps> = ({
           alignItems: 'center',
           justifyContent: 'center',
           width: '100%',
-          p: 4
+          p: 4,
         }}
       >
         {!isEditting ? (
           <Button
-            sx={{ borderRadius: '32px'}}
+            sx={{ borderRadius: '32px' }}
             variant="contained"
             onClick={() => setIsEditting(true)}
           >

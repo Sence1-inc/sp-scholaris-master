@@ -6,10 +6,10 @@ import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
-import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import { useAppSelector } from '../../redux/store'
+import { useSnackbar } from '../../context/SnackBarContext';
 
 interface SignUpPageProps {}
 
@@ -25,6 +25,7 @@ export type Errors = {
 
 const SignUpPage: React.FC<SignUpPageProps> = () => {
   const navigate = useNavigate()
+  const { showMessage } = useSnackbar();
   const [userCredentials, setUserCredentials] = useState({
     email_address: '',
     password: '',
@@ -36,9 +37,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     is_active: 1,
     role: 'provider',
   })
-  const [successMessage, setSuccessMessage] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const isAuthenticated = useAppSelector(
     (state) => state.persistedReducer.isAuthenticated
   )
@@ -138,9 +136,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     const hasErrors = errorMessages.length > 0
 
     if (hasErrors) {
-      setSuccessMessage('')
-      setIsSnackbarOpen(true)
-      setErrorMessage('Please fill in the required details.')
+      showMessage('Please fill in the required details.', 'error')
       const newErrors = validationConditions.reduce<{ [key: string]: string }>(
         (acc, { condition, field, message }) => {
           if (condition) {
@@ -166,11 +162,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         )
         if (response.data) {
           setButtonLoading(false)
-          setIsSnackbarOpen(true)
-          setErrorMessage('')
-          setSuccessMessage(
-            "We've sent you a verification email. Please confirm your email address before you log in."
-          )
+          showMessage("We've sent you a verification email. Please confirm your email address before you log in.", 'success')
           setErrors({
             email_address: '',
             password: '',
@@ -182,15 +174,10 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           })
         }
       } catch (error: any) {
-        setSuccessMessage('')
         if (error) {
           setButtonLoading(false)
-          setIsSnackbarOpen(true)
-          setErrorMessage(
-            error.response.data.error ??
-              'Registration failed. Please try again.'
-          )
-
+          showMessage(error.response.data.error ??
+            'Registration failed. Please try again.', 'error')
           const errors = {
             email_address: '',
             password: '',
@@ -244,12 +231,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         marginBlock: '40px',
       }}
     >
-      <CustomSnackbar
-        errorMessage={errorMessage}
-        successMessage={successMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
       <Typography
         variant="h2"
         sx={{

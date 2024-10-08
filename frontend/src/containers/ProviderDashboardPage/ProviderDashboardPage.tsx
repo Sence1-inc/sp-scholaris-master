@@ -16,15 +16,22 @@ const ProviderDashboardPage: React.FC = () => {
           xs: '100px 20px',
           md: '100px 74px',
         },
+        display: 'flex',
+        flexDirection: 'column',
+        rowGap: '30px',
       }}
     >
       <Box
-        component="section"
         sx={{
           display: 'flex',
-          flexDirection: 'column',
-          maxWidth: '1200px',
-          rowGap: '30px',
+          flexDirection: {
+            xs: 'column',
+            md: 'row',
+          },
+          justifyContent: 'space-between',
+          width: '100%',
+          alignItems: 'flex-start',
+          rowGap: '20px',
         }}
       >
         <Box
@@ -91,10 +98,8 @@ const ProviderDashboardPage: React.FC = () => {
             </Button>
           </Box>
         </Box>
-        <Box>
-          <DashboardTable />
-        </Box>
       </Box>
+      <DashboardTable />
     </Box>
   )
 }

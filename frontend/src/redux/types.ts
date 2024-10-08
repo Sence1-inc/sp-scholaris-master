@@ -207,6 +207,7 @@ export type User = {
   session_token: string
   role: Role
   scholarship_provider: ScholarshipProvider
+  profile?: Profile
   student_profile: StudentProfile
   scholarships?: ProviderScholarship[]
 }

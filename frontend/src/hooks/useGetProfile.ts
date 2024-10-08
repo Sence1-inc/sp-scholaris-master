@@ -1,7 +1,7 @@
 import { AxiosResponse } from 'axios'
 import axiosInstance from '../axiosConfig'
-import { initializeProfile } from '../redux/reducers/ProfileReducer'
-import { useAppDispatch } from '../redux/store'
+import { initializeUser } from '../redux/reducers/UserReducer'
+import { useAppDispatch, useAppSelector } from '../redux/store'
 import { Profile } from '../redux/types'
 
 interface ErrorResponse {
@@ -11,6 +11,7 @@ interface ErrorResponse {
 
 const useGetProfile = () => {
   const dispatch = useAppDispatch()
+  const user = useAppSelector((state) => state.persistedReducer.user)
   const getProfile = async (id: number | undefined) => {
     try {
       const response: AxiosResponse<Profile | ErrorResponse> =
@@ -19,11 +20,11 @@ const useGetProfile = () => {
         })
 
       if (response.status === 200) {
-        dispatch(initializeProfile(response.data as Profile))
+        dispatch(initializeUser({ ...user, profile: response.data as Profile }))
       }
     } catch (error) {
       if (error) {
-        dispatch(initializeProfile({}))
+        dispatch(initializeUser({ ...user, profile: undefined }))
       }
     }
   }

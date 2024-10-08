@@ -6,7 +6,6 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import PrimaryButton from '../../components/CustomButton/PrimaryButton'
-import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import StudentDashbaordAcademicBackgroundCard from '../../components/StudentDashboardCard/StudentDashbaordAcademicBackgroundCard'
 import StudentDashboardGuardianInfoCard from '../../components/StudentDashboardCard/StudentDashboardGuardianInfoCard'
 import StudentDashboardPersonalInfoCard from '../../components/StudentDashboardCard/StudentDashboardPersonalInfoCard'
@@ -14,15 +13,14 @@ import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedR
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { StudentProfile } from '../../redux/types'
+import { useSnackbar } from '../../context/SnackBarContext';
+
 
 const StudentDashboardPage = () => {
+  const { showMessage } = useSnackbar();
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.persistedReducer.user)
-  const [successMessage, setSuccessMessage] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
-
   dayjs.extend(utc)
   dayjs.extend(timezone)
 
@@ -129,16 +127,13 @@ const StudentDashboardPage = () => {
   }
 
   const handleSave = async () => {
-    setIsSnackbarOpen(true)
     try {
       const { data } = await axiosInstance.post(
         '/api/v1/student_profiles',
         { ...profileData, user_id: user.id },
         { withCredentials: true }
       )
-
-      setSuccessMessage(data.message)
-      setErrorMessage('')
+      showMessage(data.message, 'success')
       dispatch(
         initializeUser({
           ...user,
@@ -147,8 +142,7 @@ const StudentDashboardPage = () => {
         })
       )
     } catch (error: any) {
-      setErrorMessage(error.response.data.message)
-      setSuccessMessage('')
+      showMessage(error.response.data.message, 'error')
     }
   }
 
@@ -161,12 +155,6 @@ const StudentDashboardPage = () => {
         },
       }}
     >
-      <CustomSnackbar
-        errorMessage={errorMessage}
-        successMessage={successMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
       <Typography variant="h6">Student Profile</Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
         <StudentDashboardPersonalInfoCard

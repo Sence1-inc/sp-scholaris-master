@@ -12,11 +12,11 @@ import {
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import axiosInstance from '../../axiosConfig'
-import { initializeProfile } from '../../redux/reducers/ProfileReducer'
+import { useSnackbar } from '../../context/SnackBarContext'
+import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppSelector } from '../../redux/store'
 import { Profile, User } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
-import CustomSnackbar from '../CustomSnackbar/CustomSnackbar'
 import AccountCard from './AccountCard'
 
 export interface ProfileData {
@@ -30,21 +30,10 @@ type PhAddress = {
   region: string
 }
 
-interface AccountViewProfileProps {
-  handleSetIsSnackbarOpen: (value: boolean) => void
-  handleSetSuccessMessage: (value: string) => void
-  handleSetErrorMessage: (value: string) => void
-}
-
-const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
-  handleSetIsSnackbarOpen,
-  handleSetSuccessMessage,
-  handleSetErrorMessage,
-}) => {
+const AccountViewProfile: React.FC = () => {
   const dispatch = useDispatch()
   const user: User = useAppSelector((state) => state.persistedReducer.user)
-  const data = useAppSelector((state) => state.persistedReducer.profile)
-  const { profile } = data as ProfileData
+  const { showMessage } = useSnackbar()
   const [providerName, setProviderName] = useState<string>('')
   const [phAddresses, setPhAddresses] = useState<PhAddress[] | []>([])
   const [selectedPhAddress, setSelectedPhAddress] = useState<PhAddress | null>(
@@ -53,17 +42,16 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
   const [details, setDetails] = useState<string>('')
   const [link, setLink] = useState<string>('')
   const [isEditting, setIsEditting] = useState<boolean>(false)
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
-  const [errorMessage, setErrorMessage] = useState<string>('')
 
   useEffect(() => {
-    if (profile) {
-      setProviderName(profile.scholarship_provider?.provider_name ?? '')
-      setSelectedPhAddress(profile.ph_address)
-      setDetails(profile?.description ?? '')
-      setLink(profile?.scholarship_provider?.provider_link ?? '')
+    if (user) {
+      setProviderName(user.profile?.scholarship_provider?.provider_name ?? '')
+      setSelectedPhAddress(user.profile?.ph_address ?? null)
+      setDetails(user?.profile?.description ?? '')
+      setLink(user?.profile?.scholarship_provider?.provider_link ?? '')
     }
-  }, [profile])
+    // eslint-disable-next-line
+  }, [user])
 
   const handleSave = async () => {
     const data = {
@@ -75,9 +63,9 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
     }
 
     try {
-      const api = profile.id
+      const api = user.profile?.id
         ? await axiosInstance.put(
-            `/api/v1/scholarship_provider_profiles/${profile.id}`,
+            `/api/v1/scholarship_provider_profiles/${user.profile?.id}`,
             data,
             { withCredentials: true }
           )
@@ -87,15 +75,11 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
             { withCredentials: true }
           )
       const response = api
-      handleSetSuccessMessage('Successfully saved!')
-      handleSetErrorMessage('')
-      handleSetIsSnackbarOpen(true)
-      dispatch(initializeProfile({ ...response.data.profile }))
-    } catch (error) {
+      showMessage('Successfully saved!', 'success')
+      dispatch(initializeUser({ ...user, profile: response.data.profile }))
+    } catch (error: any) {
       if (error) {
-        handleSetIsSnackbarOpen(true)
-        handleSetSuccessMessage('')
-        handleSetErrorMessage('Error saving details')
+        showMessage(error.response.data.message, 'success')
       }
     }
   }
@@ -110,12 +94,12 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
           setPhAddresses(response.data)
         }
       } catch (error: any) {
-        setIsSnackbarOpen(true)
-        setErrorMessage(error.response.data.error)
+        showMessage(error.response.data.error, 'error')
       }
     }
 
     getPhAddresses()
+    // eslint-disable-next-line
   }, [])
 
   const handleAddressChange = (e: any, value: any) => {
@@ -127,11 +111,6 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
       heading="Account View Profile"
       subHeading="Check and edit your organization account information"
     >
-      <CustomSnackbar
-        errorMessage={errorMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
       <Box sx={profileTheme.box.boxContentStyle}>
         <Typography sx={profileTheme.heading.titleHeading2}>
           Account Name:

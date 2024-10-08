@@ -3,11 +3,10 @@ import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
-import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
-import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { useSnackbar } from '../../context/SnackBarContext'
 
 interface SignInPageProps {}
 
@@ -19,6 +18,7 @@ type Errors = {
 const SignInPage: React.FC<SignInPageProps> = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const { showMessage } = useSnackbar()
   const isAuthenticated = useAppSelector(
     (state) => state.persistedReducer.isAuthenticated
   )
@@ -28,9 +28,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     role: '',
   })
   const userState = useAppSelector((state) => state.persistedReducer.user)
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [infoMessage, setInfoMessage] = useState<string>('')
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [errors, setErrors] = useState<Errors>({
     email_address: '',
     password: '',
@@ -92,8 +89,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     const hasErrors = errorMessages.length > 0
 
     if (hasErrors) {
-      setIsSnackbarOpen(true)
-      setErrorMessage('Please fill in the required details.')
+      showMessage('Please fill in the required details.', 'error')
       const newErrors = validationConditions.reduce<{ [key: string]: string }>(
         (acc, { condition, field, message }) => {
           if (condition) {
@@ -121,10 +117,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           password: '',
         })
         setIsButtonLoading(false)
-        setIsSnackbarOpen(false)
-        setErrorMessage('')
         dispatch(initializeUser(response.data))
-        dispatch(initializeProfile(response.data.profile))
 
         if (response.data.scholarship_provider.provider_name) {
           navigate('/provider/dashboard')
@@ -134,8 +127,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       } catch (error: any) {
         setIsButtonLoading(false)
         if (error) {
-          setIsSnackbarOpen(true)
-          setErrorMessage(error.response.data.message ?? 'Login failed.')
+          showMessage(error.response.data.message ?? 'Login failed.', 'error')
           setErrors({
             email_address: '',
             password: '',
@@ -155,12 +147,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         marginBlock: '40px',
       }}
     >
-      <CustomSnackbar
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-        errorMessage={errorMessage}
-        infoMessage={infoMessage}
-      />
       <Typography
         variant="h2"
         sx={{
@@ -216,8 +202,10 @@ const SignInPage: React.FC<SignInPageProps> = () => {
             },
           }}
           onClick={() => {
-            setIsSnackbarOpen(true)
-            setInfoMessage('Contact scholaris@sence1.com to change password.')
+            showMessage(
+              'Contact scholaris@sence1.com to change password.',
+              'info'
+            )
           }}
         >
           Forgot password?
