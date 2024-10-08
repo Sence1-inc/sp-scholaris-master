@@ -4,10 +4,9 @@ import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
-import { initializeProfile } from '../../redux/reducers/ProfileReducer'
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { useSnackbar } from '../../context/SnackBarContext';
+import { useSnackbar } from '../../context/SnackBarContext'
 
 interface SignInPageProps {}
 
@@ -19,7 +18,7 @@ type Errors = {
 const SignInPage: React.FC<SignInPageProps> = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const { showMessage } = useSnackbar();
+  const { showMessage } = useSnackbar()
   const isAuthenticated = useAppSelector(
     (state) => state.persistedReducer.isAuthenticated
   )
@@ -119,7 +118,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         })
         setIsButtonLoading(false)
         dispatch(initializeUser(response.data))
-        dispatch(initializeProfile(response.data.profile))
 
         if (response.data.scholarship_provider.provider_name) {
           navigate('/provider/dashboard')
@@ -204,7 +202,10 @@ const SignInPage: React.FC<SignInPageProps> = () => {
             },
           }}
           onClick={() => {
-            showMessage('Contact scholaris@sence1.com to change password.', 'info')
+            showMessage(
+              'Contact scholaris@sence1.com to change password.',
+              'info'
+            )
           }}
         >
           Forgot password?

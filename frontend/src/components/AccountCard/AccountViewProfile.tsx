@@ -13,7 +13,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import axiosInstance from '../../axiosConfig'
 import { useSnackbar } from '../../context/SnackBarContext'
-import { initializeProfile } from '../../redux/reducers/ProfileReducer'
+import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppSelector } from '../../redux/store'
 import { Profile, User } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
@@ -33,9 +33,7 @@ type PhAddress = {
 const AccountViewProfile: React.FC = () => {
   const dispatch = useDispatch()
   const user: User = useAppSelector((state) => state.persistedReducer.user)
-  const data = useAppSelector((state) => state.persistedReducer.profile)
   const { showMessage } = useSnackbar()
-  const { profile } = data as ProfileData
   const [providerName, setProviderName] = useState<string>('')
   const [phAddresses, setPhAddresses] = useState<PhAddress[] | []>([])
   const [selectedPhAddress, setSelectedPhAddress] = useState<PhAddress | null>(
@@ -46,14 +44,14 @@ const AccountViewProfile: React.FC = () => {
   const [isEditting, setIsEditting] = useState<boolean>(false)
 
   useEffect(() => {
-    if (profile) {
-      setProviderName(profile.scholarship_provider?.provider_name ?? '')
-      setSelectedPhAddress(profile.ph_address)
-      setDetails(profile?.description ?? '')
-      setLink(profile?.scholarship_provider?.provider_link ?? '')
+    if (user) {
+      setProviderName(user.profile?.scholarship_provider?.provider_name ?? '')
+      setSelectedPhAddress(user.profile?.ph_address ?? null)
+      setDetails(user?.profile?.description ?? '')
+      setLink(user?.profile?.scholarship_provider?.provider_link ?? '')
     }
     // eslint-disable-next-line
-  }, [profile])
+  }, [user])
 
   const handleSave = async () => {
     const data = {
@@ -65,9 +63,9 @@ const AccountViewProfile: React.FC = () => {
     }
 
     try {
-      const api = profile.id
+      const api = user.profile?.id
         ? await axiosInstance.put(
-            `/api/v1/scholarship_provider_profiles/${profile.id}`,
+            `/api/v1/scholarship_provider_profiles/${user.profile?.id}`,
             data,
             { withCredentials: true }
           )
@@ -78,7 +76,7 @@ const AccountViewProfile: React.FC = () => {
           )
       const response = api
       showMessage('Successfully saved!', 'success')
-      dispatch(initializeProfile({ ...response.data.profile }))
+      dispatch(initializeUser({ ...user, profile: response.data.profile }))
     } catch (error: any) {
       if (error) {
         showMessage(error.response.data.message, 'success')

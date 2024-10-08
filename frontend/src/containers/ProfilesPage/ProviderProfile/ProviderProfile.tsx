@@ -34,7 +34,6 @@ const ProviderProfile: React.FC = () => {
   const subscr: any = useAppSelector(
     (state) => state.persistedReducer.subscriber
   )
-  const data: any = useAppSelector((state) => state.persistedReducer.profile)
   const user = useAppSelector((state) => state.persistedReducer.user)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -133,7 +132,7 @@ const ProviderProfile: React.FC = () => {
               >
                 <img src={ProfileImage} alt="" />
                 <Typography sx={profileTheme.text.textRegularSide}>
-                  {data.profile.scholarship_provider?.provider_name}
+                  {user.scholarship_provider?.provider_name}
                 </Typography>
                 <PrimaryButton
                   id="logout-from-provide-profile"
@@ -195,9 +194,7 @@ const ProviderProfile: React.FC = () => {
                 activeContent={activeContent}
                 setActiveContent={setActiveContent}
                 id={user.scholarship_provider.id.toString()}
-                provider={
-                  data.profile.scholarship_provider as ScholarshipProvider
-                }
+                provider={user.scholarship_provider as ScholarshipProvider}
               />
               {activeContent && lastRoute === 'view-profile' && (
                 <AccountViewProfile />
