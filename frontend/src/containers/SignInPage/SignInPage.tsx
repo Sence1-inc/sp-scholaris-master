@@ -7,10 +7,17 @@ import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { useSnackbar } from '../../context/SnackBarContext'
+import { User } from '../../redux/types'
+import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
 
 interface SignInPageProps {}
 
 type Errors = {
+  email_address: string
+  password: string
+}
+
+type UserCredentials = {
   email_address: string
   password: string
 }
@@ -22,12 +29,11 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   const isAuthenticated = useAppSelector(
     (state) => state.persistedReducer.isAuthenticated
   )
-  const [userCredentials, setUserCredentials] = useState({
+  const [userCredentials, setUserCredentials] = useState<UserCredentials>({
     email_address: '',
     password: '',
-    role: '',
   })
-  const userState = useAppSelector((state) => state.persistedReducer.user)
+  const userState: User = useAppSelector((state) => state.persistedReducer.user)
   const [errors, setErrors] = useState<Errors>({
     email_address: '',
     password: '',
@@ -42,7 +48,11 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           break
 
         case 4:
-          navigate('/provider/dashboard')
+          if (userState.scholarship_provider.provider_name) {
+            navigate('/provider/dashboard')
+          } else {
+            navigate(`/provider/account/${userState.id}/view-profile`)
+          }
           break
         default:
           navigate('/')
@@ -65,8 +75,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     }))
   }
 
-  const handleSignIn = async (role: string) => {
-    userCredentials.role = role
+  const handleSignIn = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const isValidEmail = emailRegex.test(userCredentials.email_address)
 
@@ -118,12 +127,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         })
         setIsButtonLoading(false)
         dispatch(initializeUser(response.data))
-
-        if (response.data.scholarship_provider.provider_name) {
-          navigate('/provider/dashboard')
-        } else {
-          navigate(`/provider/account/${userState.id}/view-profile`)
-        }
+        dispatch(initializeIsAuthenticated(true))
       } catch (error: any) {
         setIsButtonLoading(false)
         if (error) {
@@ -132,6 +136,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
             email_address: '',
             password: '',
           })
+          dispatch(initializeIsAuthenticated(false))
         }
       }
     }
@@ -244,15 +249,8 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       >
         <CTAButton
           id="sign-in-from-sigin-page"
-          handleClick={() => handleSignIn('student')}
-          label="Sign in as student"
-          loading={isButtonLoading}
-          styles={{ fontSize: '24px' }}
-        />
-        <CTAButton
-          id="sign-in-from-sigin-page"
-          handleClick={() => handleSignIn('provider')}
-          label="Sign in as provider"
+          handleClick={handleSignIn}
+          label="Sign in"
           loading={isButtonLoading}
           styles={{ fontSize: '24px' }}
         />

@@ -110,12 +110,13 @@ module Api
     end
 
     def login
+      user = User.find_by(email_address: params.dig(:email_address))
       req = {
         email: params.dig(:email_address),
         password: params.dig(:password),
         serviceId: ENV["APP_SERVICE_ID"],
         serviceKey: ENV["APP_SERVICE_KEY"],
-        role: params.dig(:role)
+        role: user.role.role_name
       }
 
       begin
