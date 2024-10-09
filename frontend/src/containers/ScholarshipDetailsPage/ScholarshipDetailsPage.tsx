@@ -18,13 +18,13 @@ import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import TextLoading from '../../components/Loading/TextLoading'
 import { PROVIDER_TYPE } from '../../constants/constants'
+import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
 import ProviderProfile from '../../public/images/pro-profile.png'
 import { initializeScholarshipApplicationForm } from '../../redux/reducers/ScholarshipApplicationFormReducer'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData } from '../../redux/types'
-import { useSnackbar } from '../../context/SnackBarContext';
 import './ScholarshipDetailsPage.css'
 
 interface Results {
@@ -57,7 +57,7 @@ const VisuallyHiddenInput = styled('input')({
 export const ScholarshipDetailsPage: React.FC<
   ScholarshipDataResultsPageProps
 > = () => {
-  const { showMessage } = useSnackbar();
+  const { showMessage } = useSnackbar()
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -278,7 +278,8 @@ export const ScholarshipDetailsPage: React.FC<
                 },
               }}
             >
-              <ArrowBackIosIcon sx={{ fontSize: '1.2rem'}} /> Back to Search Results
+              <ArrowBackIosIcon sx={{ fontSize: '1.2rem' }} /> Back to Search
+              Results
             </Button>
           </aside>
           <Alert severity="warning" sx={{ marginBottom: '40px' }}>
@@ -472,14 +473,27 @@ export const ScholarshipDetailsPage: React.FC<
                     />
                     <Box>
                       <Button
-                        sx={{ backgroundColor: 'primary', fontSize: '0.9rem' }}
+                        sx={{
+                          backgroundColor: 'primary',
+                          fontSize: '0.9rem',
+                          width: '100%',
+                        }}
                         component="label"
                         role={undefined}
                         variant="contained"
                         tabIndex={-1}
                         startIcon={<CloudUpload />}
                       >
-                        {pdfFile ? pdfFile.name : 'Upload pdf file (optional)'}
+                        <span
+                          style={{
+                            inlineSize: '95%',
+                            overflowWrap: 'break-word',
+                          }}
+                        >
+                          {pdfFile
+                            ? pdfFile.name
+                            : 'Upload pdf file (optional)'}
+                        </span>
                         <VisuallyHiddenInput
                           type="file"
                           onChange={(
