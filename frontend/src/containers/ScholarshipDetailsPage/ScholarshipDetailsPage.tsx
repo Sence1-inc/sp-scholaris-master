@@ -265,9 +265,6 @@ export const ScholarshipDetailsPage: React.FC<
 
   return (
     <>
-      <Backdrop sx={{ color: '#fff', zIndex: 10 }} open={isLoading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
       <CustomSnackbar
         errorMessage={errorMessage}
         successMessage={successMessage}
@@ -300,23 +297,31 @@ export const ScholarshipDetailsPage: React.FC<
             All scholarship listings are currently test data and not actual
             listings. We’ll be updating them with real data soon, so stay tuned!
           </Alert>
-          {scholarshipData && (
+             
+            {
+              isLoading && (
+                <div className="details-card">
+                <CircularProgress color="inherit" />
+                </div>
+              )
+            }
+
+            {scholarshipData && !(isLoading) && (
             <div className="details-card">
-              <h3 className="title3">
-                {scholarshipData.scholarship_name || <TextLoading />}
-              </h3>
-              <p
+            
+                <h3 className="title3"> 
+                  {scholarshipData.scholarship_name }
+                </h3><p
                 style={{
                   whiteSpace: 'pre-wrap',
                   lineHeight: 1,
                   marginBottom: '20px',
                 }}
               >
-                Listing ID: {scholarshipData.listing_id}
-              </p>
-              <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}>
-                {scholarshipData.description}
-              </p>
+                  Listing ID: {scholarshipData.listing_id}
+                </p><p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}>
+                  {scholarshipData.description}
+                </p>
               {scholarshipData.benefits &&
                 scholarshipData.benefits.length > 0 && (
                   <div className="details-section">
@@ -536,9 +541,9 @@ export const ScholarshipDetailsPage: React.FC<
                     />
                   </Box>
                 </Modal>
-              </div>
+              </div> 
             </div>
-          )}
+            )}
           {scholarshipData && scholarshipData.scholarship_provider && (
             <div className="profiles-card">
               <div className="profiles-column">
