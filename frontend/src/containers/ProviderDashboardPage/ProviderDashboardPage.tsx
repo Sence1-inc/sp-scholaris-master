@@ -89,13 +89,13 @@ const ProviderDashboardPage: React.FC = () => {
             >
               Add Scholarship
             </Button>
-            <Button
+            {/* <Button
               variant="contained"
               sx={ctaButtonStyle}
               onClick={() => navigate('/scholarships/create/upload')}
             >
               Add Scholarship via TSV
-            </Button>
+            </Button> */}
           </Box>
         </Box>
       </Box>

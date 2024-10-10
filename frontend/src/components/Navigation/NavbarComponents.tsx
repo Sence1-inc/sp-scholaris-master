@@ -1,6 +1,6 @@
 import { Button, List, ListItem, Typography } from '@mui/material'
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { STUDENT_ROLE_ID } from '../../constants/constants'
 import { User } from '../../redux/types'
 import CTAButton from '../CustomButton/CTAButton'
@@ -117,6 +117,8 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
   userType,
 }) => {
   const navigate = useNavigate()
+  const { pathname } = useLocation()
+
   return (
     <List
       sx={{
@@ -125,27 +127,31 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
         gap: 3,
       }}
     >
-      <ListItem sx={{ width: 'auto' }}>
-        <Typography
-          variant="body1"
-          component={Button}
-          onClick={() => {
-            const fabButton = document.getElementById(`fab-button-${userType}`)
+      {(pathname === '/provider' || pathname === 'student') && (
+        <ListItem sx={{ width: 'auto' }}>
+          <Typography
+            variant="body1"
+            component={Button}
+            onClick={() => {
+              const fabButton = document.getElementById(
+                `fab-button-${userType}`
+              )
 
-            if (fabButton) {
-              fabButton.click()
-            }
-          }}
-          sx={{
-            padding: 0,
-            color: 'common.white',
-            textDecoration: 'none',
-            textTransform: 'capitalize',
-          }}
-        >
-          Newsletter
-        </Typography>
-      </ListItem>
+              if (fabButton) {
+                fabButton.click()
+              }
+            }}
+            sx={{
+              padding: 0,
+              color: 'common.white',
+              textDecoration: 'none',
+              textTransform: 'capitalize',
+            }}
+          >
+            Newsletter
+          </Typography>
+        </ListItem>
+      )}
       <ListItem sx={{ width: 'auto' }}>
         <Typography
           variant="body1"
