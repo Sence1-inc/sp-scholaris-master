@@ -1,6 +1,5 @@
 import { OpenInNew, Visibility } from '@mui/icons-material'
 import {
-  Alert,
   Box,
   Button,
   Chip,
@@ -282,7 +281,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               sx={{
                 width: {
                   xs: 'calc(95% - 20px)',
-                  md: 'calc(80% - 20px)'
+                  md: 'calc(80% - 20px)',
                 },
                 padding: { sm: '16px' },
                 fontSize: { xs: '14px', sm: '17px' },
@@ -328,10 +327,10 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
                 </Stack>
               </Box>
             )}
-          <Alert severity="warning">
+          {/* <Alert severity="warning">
             All scholarship listings are currently test data and not actual
             listings. We’ll be updating them with real data soon, so stay tuned!
-          </Alert>
+          </Alert> */}
           <DataGrid
             onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}
@@ -399,7 +398,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: { xs: '7px', sm: '10px'},
+              gap: { xs: '7px', sm: '10px' },
             }}
           >
             <TextField
@@ -419,8 +418,8 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
                 ...ctaButtonStyle,
                 flexGrow: 1,
                 padding: '16px',
-                fontSize: { xs: '14px', sm: '17px'},
-                height: { xs: '58px !important', md: '63px' }
+                fontSize: { xs: '14px', sm: '17px' },
+                height: { xs: '58px !important', md: '63px' },
               }}
               onClick={handleSearch}
             >

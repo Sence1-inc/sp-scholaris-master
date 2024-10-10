@@ -65,7 +65,7 @@ module Api
       def scholarships
         user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
         
-        if user.parent_id && @scholarship_provider.user.email_address != User.find(user.parent_id).email_address
+        if (user.parent_id && @scholarship_provider.user.email_address != User.find(user.parent_id).email_address) && (user.parent_id != ENV['PARENT_ID'].to_i)
           render_unauthorized_response
           return
         end
@@ -75,7 +75,21 @@ module Api
           return
         end
 
-        @scholarships = Scholarship.where(scholarship_provider_id: @scholarship_provider.id)
+        if user.id == ENV['PARENT_ID'].to_i
+          all_scholarships = Scholarship.none
+
+          user.children.each do |child|
+            if child.scholarship_provider.present?
+              scholarships = child.scholarship_provider.scholarships
+              all_scholarships = all_scholarships.or(scholarships)
+            end
+          end
+
+          @scholarships = all_scholarships
+        else
+          @scholarships = Scholarship.where(scholarship_provider_id: @scholarship_provider.id)
+        end
+
         if @scholarships.exists?
           @scholarships = @scholarships.includes(
             :eligibilities, 
@@ -85,7 +99,7 @@ module Api
             :benefit_categories, 
             :courses, 
             :schools, 
-            scholarship_provider: [:scholarship_provider_profile]  # Hash notation for nested includes
+            scholarship_provider: [:scholarship_provider_profile]
           ).page(params[:page] || 1).per(params[:limit] || 10)
 
           render json: {

@@ -151,7 +151,7 @@ const ProviderProfile: React.FC = () => {
                   <Tabs
                     value={activeContent}
                     onChange={(
-                      event: React.SyntheticEvent,
+                      _event: React.SyntheticEvent,
                       newValue: string
                     ) => {
                       setActiveContent(newValue)

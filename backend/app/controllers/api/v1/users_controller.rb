@@ -346,7 +346,7 @@ module Api
         @user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
         if @user && @user.is_verified
           provider = {}
-          if @user.parent_id
+          if @user.parent_id && @user.parent_id != ENV['PARENT_ID'].to_i
             provider = ScholarshipProvider.find_or_create_by(user_id: @user.parent_id)
           else
             provider = ScholarshipProvider.find_or_create_by(user_id: @user.id)
