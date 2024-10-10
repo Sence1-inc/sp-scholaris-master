@@ -10,6 +10,7 @@ import {
   styled,
   Typography,
 } from '@mui/material'
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
@@ -25,6 +26,7 @@ import { initializeScholarshipApplicationForm } from '../../redux/reducers/Schol
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData } from '../../redux/types'
+import { formattedDate } from '../StudentDashboardPage/StudentDashboardPage'
 import './ScholarshipDetailsPage.css'
 
 interface Results {
@@ -282,12 +284,17 @@ export const ScholarshipDetailsPage: React.FC<
               Results
             </Button>
           </aside>
-          <Alert severity="warning" sx={{ marginBottom: '40px' }}>
+          {/* <Alert severity="warning" sx={{ marginBottom: '40px' }}>
             All scholarship listings are currently test data and not actual
             listings. We’ll be updating them with real data soon, so stay tuned!
-          </Alert>
+          </Alert> */}
           {scholarshipData && (
             <div className="details-card">
+              {formattedDate(scholarshipData.due_date).isBefore(dayjs()) && (
+                <Alert severity="error" sx={{ marginBottom: '20px' }}>
+                  Application is now closed
+                </Alert>
+              )}
               <h3 className="title3">
                 {scholarshipData.scholarship_name || <TextLoading />}
               </h3>

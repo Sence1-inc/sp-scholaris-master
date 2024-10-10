@@ -13,22 +13,22 @@ import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedR
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { StudentProfile } from '../../redux/types'
-import { useSnackbar } from '../../context/SnackBarContext';
+import { useSnackbar } from '../../context/SnackBarContext'
 
+dayjs.extend(utc)
+dayjs.extend(timezone)
+
+export const formattedDate = (date: string): Dayjs => {
+  const timeZone = 'Asia/Manila'
+  const dayjsDate = dayjs(date).tz(timeZone)
+  return dayjsDate
+}
 
 const StudentDashboardPage = () => {
-  const { showMessage } = useSnackbar();
+  const { showMessage } = useSnackbar()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const user = useAppSelector((state) => state.persistedReducer.user)
-  dayjs.extend(utc)
-  dayjs.extend(timezone)
-
-  const formattedDate = (date: string): Dayjs => {
-    const timeZone = 'Asia/Manila'
-    const dayjsDate = dayjs(date).tz(timeZone)
-    return dayjsDate
-  }
 
   const [profileData, setProfileData] = useState<StudentProfile>({
     about: '',

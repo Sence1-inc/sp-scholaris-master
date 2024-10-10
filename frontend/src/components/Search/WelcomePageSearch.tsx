@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   Button,
   Chip,
@@ -247,8 +246,8 @@ const WelcomePageSearch: React.FC = () => {
                 ...ctaButtonStyle,
                 flexGrow: 1,
                 padding: { xs: '16px' },
-                fontSize: { xs: '14px', sm: '17px'},
-                height: { xs: '58px', md: '63px' }
+                fontSize: { xs: '14px', sm: '17px' },
+                height: { xs: '58px', md: '63px' },
               }}
               onClick={handleSearch}
             >
@@ -277,10 +276,10 @@ const WelcomePageSearch: React.FC = () => {
                 </Stack>
               </Box>
             )}
-          <Alert severity="warning">
+          {/* <Alert severity="warning">
             All scholarship listings are currently test data and not actual
             listings. We’ll be updating them with real data soon, so stay tuned!
-          </Alert>
+          </Alert> */}
           <DataGrid
             onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}

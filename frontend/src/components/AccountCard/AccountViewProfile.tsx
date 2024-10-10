@@ -205,7 +205,9 @@ const AccountViewProfile: React.FC = () => {
             : 'Please provide a link where students can learn more about your organization.'}
         </Typography>
       </FormGroup>
-      {!user?.parent_id && (
+      {(!user?.parent_id ||
+        (user?.parent_id &&
+          user?.parent_id !== Number(process.env.REACT_PARENT_ID))) && (
         <Box
           sx={{
             display: 'flex',
