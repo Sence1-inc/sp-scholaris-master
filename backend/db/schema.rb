@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_07_30_060553) do
+ActiveRecord::Schema[7.1].define(version: 2024_09_25_040506) do
   create_table "benefit_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "category_name"
     t.timestamp "deleted_at"
@@ -228,6 +228,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_060553) do
     t.string "status"
     t.integer "listing_id", null: false
     t.string "application_email", null: false
+    t.integer "permission_system_type", limit: 2
     t.index ["application_email"], name: "index_scholarships_on_application_email"
     t.index ["eligibility_id"], name: "index_scholarships_on_eligibility_id"
     t.index ["listing_id"], name: "index_scholarships_on_listing_id"
@@ -266,6 +267,26 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_060553) do
     t.timestamp "created_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "updated_at", default: -> { "CURRENT_TIMESTAMP" }
     t.timestamp "deleted_at"
+    t.string "secondary_school_name"
+    t.string "secondary_school_year"
+    t.string "secondary_school_address"
+    t.string "secondary_school_phone_number"
+    t.text "secondary_school_awards"
+    t.text "secondary_school_organizations"
+    t.string "elementary_school_name"
+    t.string "elementary_school_year"
+    t.string "elementary_school_address"
+    t.string "elementary_school_phone_number"
+    t.text "elementary_school_awards"
+    t.text "elementary_school_organizations"
+    t.string "guardian_full_name"
+    t.string "guardian_contact_number"
+    t.string "guardian_relationship"
+    t.string "about"
+    t.integer "age"
+    t.string "nationality"
+    t.string "gender"
+    t.string "state"
     t.index ["user_id"], name: "index_student_profiles_on_user_id"
   end
 
@@ -303,6 +324,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_060553) do
     t.index ["user_id"], name: "fk_survey_responses_users"
   end
 
+  create_table "user_permissions", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.integer "user_type", limit: 2, null: false
+    t.boolean "can_add", default: true
+    t.boolean "can_view", default: true
+    t.boolean "can_edit", default: true
+    t.boolean "can_delete", default: true
+    t.boolean "is_enabled", default: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.timestamp "deleted_at"
+    t.index ["user_id"], name: "index_user_permissions_on_user_id"
+  end
+
   create_table "user_scholarships", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "scholarship_id"
     t.bigint "user_id", null: false
@@ -329,7 +364,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_060553) do
     t.string "verification_token"
     t.boolean "is_verified"
     t.datetime "verification_expires_at"
+    t.bigint "parent_id"
+    t.string "password_digest"
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
+    t.index ["parent_id"], name: "index_users_on_parent_id"
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
@@ -355,7 +393,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_07_30_060553) do
   add_foreign_key "sessions", "users", name: "fk_sessions_users"
   add_foreign_key "student_profiles", "users", name: "fk_student_profiles_users"
   add_foreign_key "survey_responses", "users", name: "fk_survey_responses_users"
+  add_foreign_key "user_permissions", "users"
   add_foreign_key "user_scholarships", "scholarships", name: "fk_user_scholarships_scholarships"
   add_foreign_key "user_scholarships", "users", name: "fk_user_scholarships_users"
   add_foreign_key "users", "roles", name: "fk_users_roles"
+  add_foreign_key "users", "users", column: "parent_id"
 end

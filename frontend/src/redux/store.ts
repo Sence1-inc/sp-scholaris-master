@@ -1,19 +1,20 @@
-import { configureStore, combineReducers } from '@reduxjs/toolkit'
-import { persistStore, persistReducer } from 'redux-persist'
-import storage from 'redux-persist/lib/storage'
+import { combineReducers, configureStore } from '@reduxjs/toolkit'
+import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
+import { persistReducer, persistStore } from 'redux-persist'
+import encryptedStorage from '../utils/encryptedStorage'
+import IsAuthenticatedReducer from './reducers/IsAuthenticatedReducer'
+import ProfileReducer from './reducers/ProfileReducer'
+import ScholarshipApplicationFormReducer from './reducers/ScholarshipApplicationFormReducer'
+import ScholarshipDataReducer from './reducers/ScholarshipDataReducer'
 import ScholarshipsReducer from './reducers/ScholarshipsReducer'
 import SearchParamsReducer from './reducers/SearchParamsReducer'
 import SubscriberReducer from './reducers/SubscriberReducer'
-import ScholarshipDataReducer from './reducers/ScholarshipDataReducer'
-import ProfileReducer from './reducers/ProfileReducer'
 import UserReducer from './reducers/UserReducer'
 import reduxPersistMiddleware from './reduxPersistMiddleware'
-import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
-import IsAuthenticatedReducer from './reducers/IsAuthenticatedReducer'
 
 const persistConfig = {
   key: 'root',
-  storage,
+  storage: encryptedStorage,
   // whitelist: ['user', 'otherReducer'],
 }
 
@@ -26,6 +27,7 @@ const persistedReducer = persistReducer(
     profile: ProfileReducer,
     user: UserReducer,
     isAuthenticated: IsAuthenticatedReducer,
+    scholarshipApplicationForm: ScholarshipApplicationFormReducer,
   })
 )
 

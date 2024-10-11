@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { ScholarshipProvider } from '../../redux/types'
 import './Filter.css'
 import FilterOption from './FilterOption/FilterOption'
 
@@ -28,12 +29,10 @@ const Filter: React.FC<FilterProps> = () => {
   const params = useAppSelector((state) => state.searchParams)
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
   const [benefits, setBenefits] = useState<Option[] | []>([])
-  // const [courses, setCourses] = useState<Option[] | []>([])
-  // const [schools, setSchools] = useState<Option[] | []>([])
   const [providers, setProviders] = useState<Option[] | []>([])
+  const [types, setTypes] = useState<Option[] | []>([])
   const [selectedParams, setSelectedParams] = useState<Params>({})
   const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null)
-  // const [selectedDueDate, setSelectedDueDate] = useState<Dayjs | null>(null)
 
   const dropdownRef = useRef<HTMLDivElement | null>(null)
 
@@ -63,17 +62,25 @@ const Filter: React.FC<FilterProps> = () => {
   useEffect(() => {
     const getData = async () => {
       const benefits = await axiosInstance.get(`api/v1/benefit_categories`)
-      // const courses = await axiosInstance.get(`api/v1/courses`)
-      // const schools = await axiosInstance.get(`api/v1/schools`)
       const providers = await axiosInstance.get(
         `api/v1/scholarship_providers`,
         { withCredentials: true }
       )
+      const types = await axiosInstance.get(`api/v1/scholarship_types`, {
+        withCredentials: true,
+      })
 
       setBenefits(mapToOptions(benefits.data, 'category_name'))
-      // setCourses(mapToOptions(courses.data, 'course_name'))
-      // setSchools(mapToOptions(schools.data, 'school_name'))
-      setProviders(mapToOptions(providers.data, 'provider_name'))
+      setProviders(
+        mapToOptions(
+          providers.data.filter(
+            (item: ScholarshipProvider) =>
+              item.provider_name !== 'Scholaris Admin'
+          ),
+          'provider_name'
+        )
+      )
+      setTypes(mapToOptions(types.data, 'scholarship_type_name'))
     }
 
     getData()
@@ -105,16 +112,6 @@ const Filter: React.FC<FilterProps> = () => {
       >
         Application Start Date
       </FilterOption>
-      {/* <FilterOption
-        selectedDueDate={selectedDueDate}
-        setSelectedDueDate={setSelectedDueDate}
-        setSelectedParams={setSelectedParams}
-        type="dueDate"
-        isVisible={activeDropdown === 'dueDate'}
-        onToggleVisibility={() => handleDropdownToggle('dueDate')}
-      >
-        Application Due Date
-      </FilterOption> */}
       <FilterOption
         handleOptionClick={handleOptionClick}
         options={benefits}
@@ -123,23 +120,6 @@ const Filter: React.FC<FilterProps> = () => {
       >
         Benefits
       </FilterOption>
-      {/* <FilterOption
-        handleOptionClick={handleOptionClick}
-        options={courses}
-        isVisible={activeDropdown === 'course'}
-        onToggleVisibility={() => handleDropdownToggle('course')}
-      >
-        Course
-      </FilterOption> */}
-      {/* <FilterOption
-        handleOptionClick={handleOptionClick}
-        options={schools}
-        type="search"
-        isVisible={activeDropdown === 'school'}
-        onToggleVisibility={() => handleDropdownToggle('school')}
-      >
-        School
-      </FilterOption> */}
       <FilterOption
         handleOptionClick={handleOptionClick}
         options={providers}
@@ -147,6 +127,14 @@ const Filter: React.FC<FilterProps> = () => {
         onToggleVisibility={() => handleDropdownToggle('provider')}
       >
         Provider
+      </FilterOption>
+      <FilterOption
+        handleOptionClick={handleOptionClick}
+        options={types}
+        isVisible={activeDropdown === 'type'}
+        onToggleVisibility={() => handleDropdownToggle('type')}
+      >
+        Type
       </FilterOption>
     </div>
   )

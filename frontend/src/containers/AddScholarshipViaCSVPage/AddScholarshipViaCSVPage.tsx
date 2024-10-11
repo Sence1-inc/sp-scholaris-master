@@ -1,23 +1,39 @@
+import { Circle } from '@mui/icons-material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import FileDownloadIcon from '@mui/icons-material/FileDownload'
 import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile'
-import { Box, Button, Container, Link, Typography } from '@mui/material'
+import {
+  Box,
+  Button,
+  Container,
+  Link,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Typography,
+} from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
 import PrimaryButton from '../../components/CustomButton/PrimaryButton'
-import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import OpenTsvInstructions from '../../components/Instructions/OpenTsvInstructions'
+import { useSnackbar } from '../../context/SnackBarContext';
 
 const AddScholarshipViaCSVPage: React.FC = () => {
+  const { showMessage } = useSnackbar();
   const [file, setFile] = useState<File | null>(null)
   const [successCount, setSuccessCount] = useState<number>(0)
   const [errorsCount, setErrorsCount] = useState<number>(0)
   const [totalCount, setTotalCount] = useState<number>(0)
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
-  const [infoMessage, setInfoMessage] = useState<string>('')
-  const [successMessage, setSuccessMessage] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
   const [isUploading, setIsUploading] = useState<boolean>(false)
+
+  const instructions = [
+    'DO NOT remove the first and second row.',
+    'Ensure adherence to the correct format, particularly for the start date and due date.',
+    "Ensure that the status' value is 'active' or 'inactive'.",
+    'Ensure that there are no duplicated scholarship.',
+    'Complete all columns with relevant details.',
+  ]
 
   const handleDownload = () => {
     const fileUrl = `${process.env.PUBLIC_URL}/files/scholarship_data.tsv`
@@ -38,12 +54,10 @@ const AddScholarshipViaCSVPage: React.FC = () => {
   }
 
   const handleUpload = async () => {
-    setIsUploading(true)
-    setInfoMessage('Saving scholarships. Please wait.')
+    showMessage('Saving scholarships. Please wait.', 'info')
     if (file && file.size > 1024 * 1024) {
       setIsUploading(false)
-      setIsSnackbarOpen(true)
-      setErrorMessage('The selected file must be 1MB or less')
+      showMessage('The selected file must be 1MB or less', 'error')
     } else if (file && file.size < 1024 * 1024) {
       try {
         const formData = new FormData()
@@ -59,7 +73,6 @@ const AddScholarshipViaCSVPage: React.FC = () => {
             },
           }
         )
-        setIsSnackbarOpen(true)
         const { success_count, errors_count, total_count, results } =
           response.data
 
@@ -70,34 +83,26 @@ const AddScholarshipViaCSVPage: React.FC = () => {
 
         const { errors } = results[0]
         if (errors && errors.length > 0 && errorsCount > 0) {
-          setSuccessMessage('')
-          setErrorMessage(errors.join(', '))
+          showMessage(errors.join(', '), 'error')
         } else {
           setIsUploading(false)
-          setSuccessMessage('File successfully uploaded')
-          setErrorMessage('')
+          showMessage('File successfully uploaded', 'success')
         }
       } catch (error) {
         if (error) {
           setIsUploading(false)
-          setIsSnackbarOpen(true)
-          setSuccessMessage('')
-          setErrorMessage('Error uploading file')
+          showMessage('Error uploading file', 'error')
         }
       }
     } else {
       setIsUploading(false)
-      setIsSnackbarOpen(true)
-      setErrorMessage('No file uploaded')
+      showMessage('No file uploaded', 'error')
     }
   }
 
   useEffect(() => {
     if (errorsCount > 0) {
-      setSuccessMessage('')
-      setErrorMessage(
-        `File uploaded successfully but there are ${errorsCount} row/s not saved due to incomplete details`
-      )
+      showMessage(`File uploaded successfully but there are ${errorsCount} row/s not saved due to incomplete details`, 'error')
     }
     // eslint-disable-next-line
   }, [errorsCount])
@@ -109,13 +114,6 @@ const AddScholarshipViaCSVPage: React.FC = () => {
         padding: '20px 10px 50px',
       }}
     >
-      <CustomSnackbar
-        infoMessage={infoMessage}
-        successMessage={successMessage}
-        errorMessage={errorMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
       <Box p={'20px 0 40px'}>
         <Link
           href="/provider/dashboard"
@@ -259,16 +257,24 @@ const AddScholarshipViaCSVPage: React.FC = () => {
           </Box>
           <OpenTsvInstructions />
           <Box>
-            <Typography variant="subtitle1" sx={{ color: '#686868' }}>
+            <Typography variant="body1" color="primary">
               Please ensure the following steps are taken when addressing
-              errors: <br />
-              1. DO NOT remove the second row. <br />
-              2. Ensure adherence to the correct format, particularly for the
-              start date and due date. <br />
-              3. Ensure that the status' value is "active" or "inactive". <br />
-              4. Ensure that there are no duplicated scholarship. <br />
-              5. Complete all columns with relevant details.
+              errors:
             </Typography>
+            <List sx={{ color: 'primary' }}>
+              {instructions.map((instruction) => {
+                return (
+                  <ListItem>
+                    <ListItemIcon>
+                      <Circle fontSize="small" />
+                    </ListItemIcon>
+                    <ListItemText sx={{ fontSize: '8px' }}>
+                      {instruction}
+                    </ListItemText>
+                  </ListItem>
+                )
+              })}
+            </List>
           </Box>
         </Box>
       </Box>

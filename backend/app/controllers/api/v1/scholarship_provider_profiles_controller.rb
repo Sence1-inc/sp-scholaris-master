@@ -29,6 +29,7 @@ module Api
         @scholarship_provider = ScholarshipProvider.find_by(user_id: params[:user_id])
         @scholarship_provider.user_id = params[:user_id]
         @scholarship_provider.provider_name = params[:provider_name]
+        @scholarship_provider.provider_link = params[:provider_link]
 
         if @scholarship_provider.save
           @scholarship_provider_profile.scholarship_provider = @scholarship_provider

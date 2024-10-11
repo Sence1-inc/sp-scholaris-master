@@ -10,15 +10,14 @@ import {
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import axiosInstance from '../../../axiosConfig'
-import AccountProfile from '../../../components/AccountCard/AccountProfile'
+import axiosInstance, { initialUserState } from '../../../axiosConfig'
 import AccountSettings from '../../../components/AccountCard/AccountSettings'
 import AccountSideBar, {
   sideItem,
 } from '../../../components/AccountCard/AccountSideBar'
 import AccountViewProfile from '../../../components/AccountCard/AccountViewProfile'
 import PrimaryButton from '../../../components/CustomButton/PrimaryButton'
-import CustomSnackbar from '../../../components/CustomSnackbar/CustomSnackbar'
+import { useSnackbar } from '../../../context/SnackBarContext'
 import useGetSubscriber from '../../../hooks/useGetSubscriber'
 import ProfileImage from '../../../public/images/profile.png'
 import { initializeIsAuthenticated } from '../../../redux/reducers/IsAuthenticatedReducer'
@@ -31,15 +30,10 @@ import theme from '../../../styles/theme'
 const ProviderProfile: React.FC = () => {
   const [activeContent, setActiveContent] = useState<string>('view-profile')
   const { lastRoute } = useParams()
+  const { showMessage } = useSnackbar()
   const subscr: any = useAppSelector(
     (state) => state.persistedReducer.subscriber
   )
-  const data: any = useAppSelector((state) => state.persistedReducer.profile)
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
-  const [successMessage, setSuccessMessage] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [warningMessage, setWarningMessage] = useState<string>('')
-  const [infoMessage, setInfoMessage] = useState<string>('')
   const user = useAppSelector((state) => state.persistedReducer.user)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
@@ -57,25 +51,7 @@ const ProviderProfile: React.FC = () => {
     })
 
     if (response.data.deleted) {
-      dispatch(
-        initializeUser({
-          birthdate: '',
-          email_address: '',
-          first_name: '',
-          id: 0,
-          is_active: 0,
-          last_name: '',
-          role_id: 0,
-          session_token: '',
-          role: { id: null, role_name: '' },
-          scholarship_provider: {
-            id: 0,
-            provider_name: '',
-            user_id: 0,
-            provider_link: '',
-          },
-        })
-      )
+      dispatch(initializeUser(initialUserState))
       dispatch(initializeIsAuthenticated(false))
       navigate('/sign-in')
     }
@@ -84,9 +60,7 @@ const ProviderProfile: React.FC = () => {
   const handleUnsubscribe = async () => {
     getSubscriber()
     if (err) {
-      setErrorMessage(err)
-    } else {
-      setErrorMessage('')
+      showMessage(err, 'error')
     }
     if (!subscr.deleted_at) {
       try {
@@ -97,63 +71,58 @@ const ProviderProfile: React.FC = () => {
         )
 
         if (response.status === 200) {
-          setSuccessMessage(response.data.message)
-          setErrorMessage('')
-          setIsSnackbarOpen(true)
+          showMessage(response.data.message, 'success')
         } else {
-          setIsSnackbarOpen(true)
-          setSuccessMessage('')
-          setErrorMessage(
-            `Error: ${response.data.error}. ${response.data.details.join(' ')}`
+          showMessage(
+            `Error: ${response.data.error}. ${response.data.details.join(' ')}`,
+            'error'
           )
         }
       } catch (error: any) {
         if (error) {
-          setIsSnackbarOpen(true)
-          setSuccessMessage('')
           if (axios.isAxiosError(error)) {
             if (error.response) {
               if (error.response.status === 404) {
-                setErrorMessage('Email already unsubscribed.')
+                showMessage('Email already unsubscribed.', 'error')
               } else {
                 const errorDetails = error.response.data?.details
                   ? error.response.data.details.join(' ')
                   : ''
                 const errorMessage = `${error.response.data?.message || 'Unsubscribing failed'}. ${errorDetails}`
-                setErrorMessage(errorMessage)
+                showMessage(errorMessage, 'error')
               }
             } else if (error.request) {
-              setErrorMessage(
-                'No response from server. Please check your network connection.'
+              showMessage(
+                'No response from server. Please check your network connection.',
+                'error'
               )
             } else {
-              setErrorMessage('Error setting up unsubscribe request.')
+              showMessage('Error setting up unsubscribe request.', 'error')
             }
           } else {
-            setErrorMessage('Error Unsubscribing. Please try again.')
+            showMessage('Error Unsubscribing. Please try again.', 'error')
           }
         }
       }
     } else {
-      setErrorMessage('Not yet a subscriber, please subscribe.')
+      showMessage('Not yet a subscriber, please subscribe.', 'error')
     }
   }
 
   return (
     <Box sx={profileTheme.container.rootContainer}>
-      <CustomSnackbar
-        successMessage={successMessage}
-        errorMessage={errorMessage}
-        warningMessage={warningMessage}
-        infoMessage={infoMessage}
-        handleWarningProceed={handleUnsubscribe}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
-      <Container>
+      <Container sx={{ p: 0 }}>
         <Box sx={profileTheme.container.mainContainer}>
           {isSm ? (
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
+                width: '100%',
+                padding: '0 10px',
+              }}
+            >
               <Box
                 sx={{
                   ...profileTheme.box.boxSideContentstyle,
@@ -163,7 +132,7 @@ const ProviderProfile: React.FC = () => {
               >
                 <img src={ProfileImage} alt="" />
                 <Typography sx={profileTheme.text.textRegularSide}>
-                  {data.profile.scholarship_provider?.provider_name}
+                  {user.scholarship_provider?.provider_name}
                 </Typography>
                 <PrimaryButton
                   id="logout-from-provide-profile"
@@ -182,7 +151,7 @@ const ProviderProfile: React.FC = () => {
                   <Tabs
                     value={activeContent}
                     onChange={(
-                      event: React.SyntheticEvent,
+                      _event: React.SyntheticEvent,
                       newValue: string
                     ) => {
                       setActiveContent(newValue)
@@ -207,45 +176,14 @@ const ProviderProfile: React.FC = () => {
                     )}
                   </Tabs>
                   <TabPanel sx={{ padding: '20px 0' }} value="view-profile">
-                    <AccountViewProfile
-                      handleSetSuccessMessage={(value) =>
-                        setSuccessMessage(value)
-                      }
-                      handleSetErrorMessage={(value) => setErrorMessage(value)}
-                      handleSetIsSnackbarOpen={(value) =>
-                        setIsSnackbarOpen(value)
-                      }
-                    />
-                  </TabPanel>
-                  <TabPanel sx={{ padding: '20px 0' }} value="account-profile">
-                    <AccountProfile
-                      handleSetSuccessMessage={(value) =>
-                        setSuccessMessage(value)
-                      }
-                      handleSetErrorMessage={(value) => setErrorMessage(value)}
-                      handleSetIsSnackbarOpen={(value) =>
-                        setIsSnackbarOpen(value)
-                      }
-                    />
+                    <AccountViewProfile />
                   </TabPanel>
                   {/* HIDE FOR NOW, WILL REVIVE ONCE FORGET PASSWORD IS AVAILABLE */}
                   {/* <TabPanel sx={{ padding: '20px 0' }} value="account-security">
                     <AccountSecurity />
                   </TabPanel> */}
                   <TabPanel sx={{ padding: '20px 0' }} value="account-settings">
-                    <AccountSettings
-                      handleSetSuccessMessage={(value) =>
-                        setSuccessMessage(value)
-                      }
-                      handleSetErrorMessage={(value) => setErrorMessage(value)}
-                      handleSetWarningMessage={(value) =>
-                        setWarningMessage(value)
-                      }
-                      handleSetInfoMessage={(value) => setInfoMessage(value)}
-                      handleSetIsSnackbarOpen={(value) =>
-                        setIsSnackbarOpen(value)
-                      }
-                    />
+                    <AccountSettings handleUnsubscribe={handleUnsubscribe} />
                   </TabPanel>
                 </Box>
               </TabContext>
@@ -256,36 +194,17 @@ const ProviderProfile: React.FC = () => {
                 activeContent={activeContent}
                 setActiveContent={setActiveContent}
                 id={user.scholarship_provider.id.toString()}
-                provider={
-                  data.profile.scholarship_provider as ScholarshipProvider
-                }
+                provider={user.scholarship_provider as ScholarshipProvider}
               />
               {activeContent && lastRoute === 'view-profile' && (
-                <AccountViewProfile
-                  handleSetSuccessMessage={(value) => setSuccessMessage(value)}
-                  handleSetErrorMessage={(value) => setErrorMessage(value)}
-                  handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-                />
-              )}
-              {activeContent && lastRoute === 'account-profile' && (
-                <AccountProfile
-                  handleSetSuccessMessage={(value) => setSuccessMessage(value)}
-                  handleSetErrorMessage={(value) => setErrorMessage(value)}
-                  handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-                />
+                <AccountViewProfile />
               )}
               {/* {activeContent && lastRoute === 'account-security' && (
                 <AccountSecurity />
               )} */}
               {/* { activeContent && lastRoute === 'account-subscription' && <AccountSubscription />} */}
               {activeContent && lastRoute === 'account-settings' && (
-                <AccountSettings
-                  handleSetSuccessMessage={(value) => setSuccessMessage(value)}
-                  handleSetErrorMessage={(value) => setErrorMessage(value)}
-                  handleSetWarningMessage={(value) => setWarningMessage(value)}
-                  handleSetInfoMessage={(value) => setInfoMessage(value)}
-                  handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-                />
+                <AccountSettings handleUnsubscribe={handleUnsubscribe} />
               )}
               {/* {activeContent && lastRoute === 'close-account' && (
                 <AccountClose />

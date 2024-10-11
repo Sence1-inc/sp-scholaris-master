@@ -7,7 +7,10 @@ import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 import Footer from './components/Footer/Footer'
 import Navbar from './components/Navigation/Navbar'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
+import ProviderPrivate from './components/PrivateRoute/ProviderPrivateRoute'
+import StudentPrivate from './components/PrivateRoute/StudentPrivateRoute'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
+import AccountManagementPage from './containers/AccountManagementPage/AccountManagementPage'
 import AddScholarshipViaCSVPage from './containers/AddScholarshipViaCSVPage/AddScholarshipViaCSVPage'
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage'
@@ -18,6 +21,7 @@ import ScholarshipEditorPage from './containers/ScholarshipEditorPage/Scholarshi
 import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsPage'
 import SignInPage from './containers/SignInPage/SignInPage'
 import SignUpPage from './containers/SignUpPage/SignUpPage'
+import StudentDashboardPage from './containers/StudentDashboardPage/StudentDashboardPage'
 import SurveyPage from './containers/SurveyPage/SurveyPage'
 import TeaserProvider from './containers/TeaserPage/TeaserProvider'
 import TeaserStudent from './containers/TeaserPage/TeaserStudent'
@@ -27,26 +31,44 @@ import VerifyEmailPage from './containers/VerifyEmailPage/VerifyEmailPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
 import useGetScholarships from './hooks/useGetScholarships'
 import { useAppSelector } from './redux/store'
+import { User } from './redux/types'
+import { SnackbarProvider } from './context/SnackBarContext';
 
 const StudentRoutes: React.FC = () => (
   <Routes>
     <Route path="/" element={<TeaserStudent />} />
     <Route path="survey" element={<SurveyPage user_type="student" />} />
+    <Route
+      path="/account"
+      element={<StudentPrivate component={StudentDashboardPage} />}
+    />
     <Route path="*" element={<PageNotFoundPage />} />
   </Routes>
 )
 
-const ProviderRoutes: React.FC = () => (
+interface ProviderRoutesProps {
+  isParent?: boolean
+}
+
+const ProviderRoutes: React.FC<ProviderRoutesProps> = ({
+  isParent = false,
+}) => (
   <Routes>
     <Route
       path="/dashboard"
-      element={<PrivateRoute component={ProviderDashboardPage} />}
+      element={<ProviderPrivate component={ProviderDashboardPage} />}
     />
+    {isParent && (
+      <Route
+        path="/accounts"
+        element={<ProviderPrivate component={AccountManagementPage} />}
+      />
+    )}
     <Route path="/" element={<TeaserProvider />} />
     <Route path="survey" element={<SurveyPage user_type="provider" />} />
     <Route
       path="account/:id/:lastRoute"
-      element={<PrivateRoute component={ProviderProfile} />}
+      element={<ProviderPrivate component={ProviderProfile} />}
     />
     <Route path="*" element={<PageNotFoundPage />} />
   </Routes>
@@ -55,17 +77,10 @@ const ProviderRoutes: React.FC = () => (
 const App: React.FC = () => {
   const { getScholarships } = useGetScholarships()
   const params = useAppSelector((state) => state.searchParams)
-  // const [searchParams] = useSearchParams()
+  const user: User = useAppSelector((state) => state.persistedReducer.user)
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const location = useLocation()
-  const { benefits, provider, start_date, due_date } = params.params
-
-  // useEffect(() => {
-  //   if (searchParams.size === 0) {
-  //     getScholarships(false)
-  //   }
-  //   // eslint-disable-next-line
-  // }, [searchParams])
+  const { benefits, provider, start_date, due_date, type } = params.params
 
   useEffect(() => {
     if (Object.keys(params.params).length > 0 && isInitialLoad) {
@@ -79,7 +94,7 @@ const App: React.FC = () => {
   useEffect(() => {
     getScholarships(false)
     // eslint-disable-next-line
-  }, [benefits, provider, start_date, due_date])
+  }, [benefits, provider, start_date, due_date, type])
 
   useEffect(() => {
     const excludedPaths = [
@@ -94,58 +109,63 @@ const App: React.FC = () => {
   }, [location.pathname])
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-        position: 'relative',
-      }}
-    >
-      <ScrollToTop />
-      <Navbar />
-      <ErrorBoundary>
-        <Box sx={{ flexGrow: 1, postion: 'absolute' }}>
-          <Routes>
-            <Route path="/" element={<WelcomePage />} />
-            <Route path="/student/*" element={<StudentRoutes />} />
-            <Route path="/provider/*" element={<ProviderRoutes />} />
-            <Route
-              path="/scholarships"
-              element={<SearchResultsPage isASection={false} />}
-            />
-            <Route
-              path="/scholarships/:id"
-              element={<ScholarshipDetailsPage isASection={false} />}
-            />
-            <Route
-              path="/scholarships/:id/update"
-              element={<PrivateRoute component={ScholarshipEditorPage} />}
-            />
-            <Route
-              path="/scholarships/create"
-              element={<PrivateRoute component={ScholarshipEditorPage} />}
-            />
-            <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
-            <Route
-              path="/terms-and-conditions"
-              element={<TermsAndConditionsPage />}
-            />
-            <Route path="/thank-you" element={<ThankYouPage />} />
-            <Route path="/sign-in" element={<SignInPage />} />
-            <Route path="/sign-up" element={<SignUpPage />} />
-            <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
-            <Route path="*" element={<PageNotFoundPage />} />
-            <Route
-              path="/scholarships/create/upload"
-              element={<PrivateRoute component={AddScholarshipViaCSVPage} />}
-            />
-          </Routes>
-        </Box>
-      </ErrorBoundary>
-      <Disclaimer />
-      <Footer />
-    </Box>
+    <SnackbarProvider>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          minHeight: '100vh',
+          position: 'relative',
+        }}
+      >
+        <ScrollToTop />
+        <Navbar />
+        <ErrorBoundary>
+          <Box sx={{ flexGrow: 1, postion: 'absolute' }}>
+            <Routes>
+              <Route path="/" element={<WelcomePage />} />
+              <Route path="/student/*" element={<StudentRoutes />} />
+              <Route
+                path="/provider/*"
+                element={<ProviderRoutes isParent={!user.parent_id} />}
+              />
+              <Route
+                path="/scholarships"
+                element={<SearchResultsPage isASection={false} />}
+              />
+              <Route
+                path="/scholarships/:id"
+                element={<ScholarshipDetailsPage isASection={false} />}
+              />
+              <Route
+                path="/scholarships/:id/update"
+                element={<PrivateRoute component={ScholarshipEditorPage} />}
+              />
+              <Route
+                path="/scholarships/create"
+                element={<PrivateRoute component={ScholarshipEditorPage} />}
+              />
+              <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
+              <Route
+                path="/terms-and-conditions"
+                element={<TermsAndConditionsPage />}
+              />
+              <Route path="/thank-you" element={<ThankYouPage />} />
+              <Route path="/sign-in" element={<SignInPage />} />
+              <Route path="/sign-up" element={<SignUpPage />} />
+              <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+              <Route path="*" element={<PageNotFoundPage />} />
+              <Route
+                path="/scholarships/create/upload"
+                element={<PrivateRoute component={AddScholarshipViaCSVPage} />}
+              />
+            </Routes>
+          </Box>
+        </ErrorBoundary>
+        <Disclaimer />
+        <Footer />
+      </Box>
+    </SnackbarProvider>
   )
 }
 

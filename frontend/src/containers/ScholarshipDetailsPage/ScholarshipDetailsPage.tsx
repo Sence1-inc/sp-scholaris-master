@@ -10,19 +10,23 @@ import {
   styled,
   Typography,
 } from '@mui/material'
+import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
-import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import TextLoading from '../../components/Loading/TextLoading'
+import { PROVIDER_TYPE } from '../../constants/constants'
+import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
 import ProviderProfile from '../../public/images/pro-profile.png'
+import { initializeScholarshipApplicationForm } from '../../redux/reducers/ScholarshipApplicationFormReducer'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData } from '../../redux/types'
+import { formattedDate } from '../StudentDashboardPage/StudentDashboardPage'
 import './ScholarshipDetailsPage.css'
 
 interface Results {
@@ -55,10 +59,15 @@ const VisuallyHiddenInput = styled('input')({
 export const ScholarshipDetailsPage: React.FC<
   ScholarshipDataResultsPageProps
 > = () => {
+  const { showMessage } = useSnackbar()
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const user = useAppSelector((state) => state.persistedReducer.user)
   const { getScholarshipData } = useGetScholarshipData()
+  const applicationDetails = useAppSelector(
+    (state) => state.persistedReducer.scholarshipApplicationForm
+  )
   const result = useAppSelector(
     (state) => state.persistedReducer.scholarshipData
   ) as Results
@@ -76,19 +85,41 @@ export const ScholarshipDetailsPage: React.FC<
     user_message: '',
     pdf_file: '',
   })
-  const [successMessage, setSuccessMessage] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
 
   useEffect(() => {
     setIsLoading(true)
     if (id) {
+      dispatch(
+        initializeScholarshipApplicationForm({
+          ...applicationDetails,
+          provider_id: Number(id),
+        })
+      )
       getScholarshipData(id)
       setIsLoading(false)
     }
 
     // eslint-disable-next-line
   }, [id])
+
+  useEffect(() => {
+    if (applicationDetails.student_email) {
+      setStudentEmail(applicationDetails.student_email)
+    }
+
+    if (applicationDetails.student_name) {
+      setStudentName(applicationDetails.student_name)
+    }
+
+    if (applicationDetails.user_message) {
+      setUserMessage(applicationDetails.user_message)
+    }
+
+    if (applicationDetails.pdf_file) {
+      setPdfFile(applicationDetails.pdf_file)
+    }
+    // eslint-disable-next-line
+  }, [])
 
   useEffect(() => {
     setScholarshipData(result.scholarshipData)
@@ -156,9 +187,7 @@ export const ScholarshipDetailsPage: React.FC<
     const hasErrors = Object.keys(errorMessages).length > 0
 
     if (hasErrors) {
-      setSuccessMessage('')
-      setIsSnackbarOpen(true)
-      setErrorMessage('Please fill in the required details.')
+      showMessage('Please fill in the required details.', 'error')
       setErrors({ ...errors, ...errorMessages })
     } else {
       const formData = new FormData()
@@ -172,6 +201,7 @@ export const ScholarshipDetailsPage: React.FC<
       }
 
       try {
+        setIsLoading(true)
         const response = await axiosInstance.post(
           '/api/v1/scholarship_applications/send_email',
           formData,
@@ -181,13 +211,21 @@ export const ScholarshipDetailsPage: React.FC<
             },
           }
         )
-        setSuccessMessage(response.data.message)
-        setIsSnackbarOpen(true)
-        setErrorMessage('')
+        showMessage(response.data.message, 'success')
         setStudentEmail('')
         setStudentName('')
         setUserMessage('')
         setPdfFile(null)
+        dispatch(
+          initializeScholarshipApplicationForm({
+            provider_id: null,
+            student_email: '',
+            student_name: '',
+            user_message: '',
+            pdf_file: null,
+          })
+        )
+        setIsLoading(false)
         setErrors({
           student_email: '',
           student_name: '',
@@ -195,9 +233,7 @@ export const ScholarshipDetailsPage: React.FC<
           pdf_file: '',
         })
       } catch (error: any) {
-        setSuccessMessage('')
-        setIsSnackbarOpen(true)
-        setErrorMessage(error.response?.data?.message ?? 'Email not sent.')
+        showMessage(error.response?.data?.message ?? 'Email not sent.', 'error')
         if (
           error.response &&
           error.response.data &&
@@ -225,12 +261,6 @@ export const ScholarshipDetailsPage: React.FC<
       <Backdrop sx={{ color: '#fff', zIndex: 10 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <CustomSnackbar
-        errorMessage={errorMessage}
-        successMessage={successMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
       <section id="details">
         <div className="container" style={{ padding: '80px 20px' }}>
           <aside id="aside">
@@ -242,7 +272,7 @@ export const ScholarshipDetailsPage: React.FC<
               }}
               sx={{
                 color: 'secondary.main',
-                fontSize: '24px',
+                fontSize: '1.2rem',
                 fontWeight: 700,
                 textDecoration: 'none',
                 '&:hover': {
@@ -250,18 +280,33 @@ export const ScholarshipDetailsPage: React.FC<
                 },
               }}
             >
-              <ArrowBackIosIcon /> Back to Search Results
+              <ArrowBackIosIcon sx={{ fontSize: '1.2rem' }} /> Back to Search
+              Results
             </Button>
           </aside>
-          <Alert severity="warning" sx={{ marginBottom: '40px' }}>
+          {/* <Alert severity="warning" sx={{ marginBottom: '40px' }}>
             All scholarship listings are currently test data and not actual
             listings. We’ll be updating them with real data soon, so stay tuned!
-          </Alert>
+          </Alert> */}
           {scholarshipData && (
             <div className="details-card">
+              {formattedDate(scholarshipData.due_date).isBefore(dayjs()) && (
+                <Alert severity="error" sx={{ marginBottom: '20px' }}>
+                  Application is now closed
+                </Alert>
+              )}
               <h3 className="title3">
                 {scholarshipData.scholarship_name || <TextLoading />}
               </h3>
+              <p
+                style={{
+                  whiteSpace: 'pre-wrap',
+                  lineHeight: 1,
+                  marginBottom: '20px',
+                }}
+              >
+                Listing ID: {scholarshipData.listing_id}
+              </p>
               <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}>
                 {scholarshipData.description}
               </p>
@@ -307,19 +352,6 @@ export const ScholarshipDetailsPage: React.FC<
                     ))}
                   </div>
                 )}
-              {/* {scholarshipData.application_link && (
-                <div className="details-section">
-                  <h4 className="title4">Application Link</h4>
-                  <Link
-                    id="application-link"
-                    style={{ wordWrap: 'break-word' }}
-                    to={scholarshipData.application_link}
-                    target="_blank"
-                  >
-                    {scholarshipData.application_link}
-                  </Link>
-                </div>
-              )} */}
               <div className="details-section details-columns">
                 <div className="details-column">
                   <h5 className="title4">Application Start Date</h5>
@@ -341,20 +373,23 @@ export const ScholarshipDetailsPage: React.FC<
                 </div>
               </div>
               <div className="details-section">
-                <CTAButton
-                  handleClick={() => setIsModalOpen(true)}
-                  label="Apply"
-                  loading={false}
-                  styles={{ fontSize: '24px' }}
-                />
+                {!user.email_address ||
+                (user &&
+                  user.email_address &&
+                  user.role.role_name !== PROVIDER_TYPE) ? (
+                  <CTAButton
+                    handleClick={() => setIsModalOpen(true)}
+                    label="Apply"
+                    loading={false}
+                    styles={{ fontSize: '24px' }}
+                  />
+                ) : (
+                  <></>
+                )}
                 <Modal
                   open={isModalOpen}
                   onClose={() => {
                     setIsModalOpen(false)
-                    setStudentEmail('')
-                    setStudentName('')
-                    setUserMessage('')
-                    setPdfFile(null)
                     setErrors({
                       student_email: '',
                       student_name: '',
@@ -367,7 +402,7 @@ export const ScholarshipDetailsPage: React.FC<
                 >
                   <Box
                     sx={{
-                      width: '80vw',
+                      width: { xs: '90vw', md: '80vw' },
                       maxHeight: '94vh',
                       margin: '20px auto',
                       backgroundColor: 'background.default',
@@ -384,41 +419,88 @@ export const ScholarshipDetailsPage: React.FC<
                       label="Student Email"
                       error={errors.student_email}
                       value={studentEmail}
-                      handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => {
                         setStudentEmail(e.target.value)
-                      }
+                        dispatch(
+                          initializeScholarshipApplicationForm({
+                            ...applicationDetails,
+                            student_email: studentEmail,
+                          })
+                        )
+                      }}
                       placeholder="e.g. student@example.com"
+                      styles={{
+                        padding: { xs: '12px', md: '17px', marginTop: '10px' },
+                      }}
                     />
                     <CustomTextfield
                       label="Student Name"
                       error={errors.student_name}
                       value={studentName}
-                      handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => {
                         setStudentName(e.target.value)
-                      }
+                        dispatch(
+                          initializeScholarshipApplicationForm({
+                            ...applicationDetails,
+                            student_name: studentName,
+                          })
+                        )
+                      }}
                       placeholder="e.g. Jane Doe"
+                      styles={{
+                        padding: { xs: '12px', md: '17px', marginTop: '10px' },
+                      }}
                     />
                     <CustomTextfield
                       label="Message to Provider"
                       error={errors.user_message}
                       value={userMessage}
-                      handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                      handleChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => {
                         setUserMessage(e.target.value)
-                      }
+                        dispatch(
+                          initializeScholarshipApplicationForm({
+                            ...applicationDetails,
+                            user_message: userMessage,
+                          })
+                        )
+                      }}
                       multiline={true}
                       rows={4}
                       placeholder="e.g. I am writing to express my sincere interest in the [Scholarship Name] as it aligns perfectly with my academic and career goals. As a dedicated student with a passion for [Your Field or Major], I have consistently demonstrated my commitment through my academic achievements and extracurricular involvement. This scholarship would not only alleviate the financial burden of my education but also empower me to further pursue my ambitions and contribute meaningfully to my community. I am eager to seize this opportunity and make a positive impact through the support of your esteemed scholarship."
+                      styles={{
+                        padding: { xs: '5px', md: '16px' },
+                        marginTop: '10px',
+                      }}
                     />
                     <Box>
                       <Button
-                        sx={{ backgroundColor: 'primary' }}
+                        sx={{
+                          backgroundColor: 'primary',
+                          fontSize: '0.9rem',
+                          width: '100%',
+                        }}
                         component="label"
                         role={undefined}
                         variant="contained"
                         tabIndex={-1}
                         startIcon={<CloudUpload />}
                       >
-                        {pdfFile ? pdfFile.name : 'Upload pdf file (optional)'}
+                        <span
+                          style={{
+                            inlineSize: '95%',
+                            overflowWrap: 'break-word',
+                          }}
+                        >
+                          {pdfFile
+                            ? pdfFile.name
+                            : 'Upload pdf file (optional)'}
+                        </span>
                         <VisuallyHiddenInput
                           type="file"
                           onChange={(
@@ -426,12 +508,21 @@ export const ScholarshipDetailsPage: React.FC<
                           ) => {
                             if (event.target.files) {
                               setPdfFile(event.target.files[0])
+                              dispatch(
+                                initializeScholarshipApplicationForm({
+                                  ...applicationDetails,
+                                  pdf_file: event.target.files[0],
+                                })
+                              )
                             }
                           }}
                           accept=".pdf"
                         />
                       </Button>
-                      <Typography variant="subtitle1" sx={{ fontSize: '10px' }}>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ fontSize: '0.8rem', lineHeight: '1.25', mt: 1 }}
+                      >
                         * You can upload your credentials, grades,
                         recommendation letter, or any relevant pdf file for your
                         scholarship application. For multiple documents, save it
@@ -441,10 +532,13 @@ export const ScholarshipDetailsPage: React.FC<
                     </Box>
 
                     <CTAButton
+                      loading={isLoading}
                       handleClick={handleApply}
                       label="Apply"
-                      loading={false}
-                      styles={{ fontSize: '24px' }}
+                      styles={{
+                        fontSize: '1.20rem',
+                        padding: { xs: '14px', md: '20px' },
+                      }}
                     />
                   </Box>
                 </Modal>
@@ -468,12 +562,14 @@ export const ScholarshipDetailsPage: React.FC<
                     }
                   </p>
                   {scholarshipData.scholarship_provider.provider_link && (
+                    // eslint-disable-next-line
                     <a
                       target="_blank"
                       style={{ color: '#002147', marginTop: '20px' }}
                       href={`https://${scholarshipData.scholarship_provider.provider_link}`}
                     >
-                      Link to Provider Page
+                      More about{' '}
+                      {scholarshipData.scholarship_provider.provider_name}
                     </a>
                   )}
                 </div>

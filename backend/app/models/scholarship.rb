@@ -27,10 +27,11 @@ class Scholarship < ApplicationRecord
 
   scope :filtered, ->(params) {
     results = all.where(deleted_at: nil, status: 'active')
-             .where("DATE(CONVERT_TZ(due_date, '+00:00', ?)) > ?", params[:timezone], DateTime.current.to_date)
+            #  .where("DATE(CONVERT_TZ(due_date, '+00:00', ?)) > ?", params[:timezone], DateTime.current.to_date)
     results = results.includes(:courses, :schools, :scholarship_provider, :benefits, :benefit_categories)
     results = results.joins(:courses).where("courses.course_name = ?", params[:course]) if params[:course].present?
     results = results.joins(:schools).where("schools.school_name = ?", params[:school]) if params[:school].present?
+    results = results.joins(:scholarship_type).where("scholarship_types.scholarship_type_name = ?", params[:type]) if params[:type].present?
     results = results.joins(:benefit_categories).where("LOWER(TRIM(benefit_categories.category_name)) = ?", params[:benefits].strip.downcase) if params[:benefits].present?
     results = results.joins(schools: :city).joins(schools: :province).joins(schools: :region)
                   .where("cities.city_name = ? OR provinces.province_name = ? OR regions.region_name = ?",

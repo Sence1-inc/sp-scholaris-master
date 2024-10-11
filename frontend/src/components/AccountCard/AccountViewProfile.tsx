@@ -4,17 +4,19 @@ import {
   Button,
   ButtonGroup,
   FormControl,
+  FormGroup,
+  InputLabel,
   TextField,
   Typography,
 } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import axiosInstance from '../../axiosConfig'
-import { initializeProfile } from '../../redux/reducers/ProfileReducer'
+import { useSnackbar } from '../../context/SnackBarContext'
+import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppSelector } from '../../redux/store'
-import { Profile } from '../../redux/types'
+import { Profile, User } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
-import CustomSnackbar from '../CustomSnackbar/CustomSnackbar'
 import AccountCard from './AccountCard'
 
 export interface ProfileData {
@@ -28,49 +30,42 @@ type PhAddress = {
   region: string
 }
 
-interface AccountViewProfileProps {
-  handleSetIsSnackbarOpen: (value: boolean) => void
-  handleSetSuccessMessage: (value: string) => void
-  handleSetErrorMessage: (value: string) => void
-}
-
-const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
-  handleSetIsSnackbarOpen,
-  handleSetSuccessMessage,
-  handleSetErrorMessage,
-}) => {
+const AccountViewProfile: React.FC = () => {
   const dispatch = useDispatch()
-  const user = useAppSelector((state) => state.persistedReducer.user)
-  const data = useAppSelector((state) => state.persistedReducer.profile)
-  const { profile } = data as ProfileData
+  const user: User = useAppSelector((state) => state.persistedReducer.user)
+  const { showMessage } = useSnackbar()
   const [providerName, setProviderName] = useState<string>('')
   const [phAddresses, setPhAddresses] = useState<PhAddress[] | []>([])
   const [selectedPhAddress, setSelectedPhAddress] = useState<PhAddress | null>(
     null
   )
+  const [details, setDetails] = useState<string>('')
+  const [link, setLink] = useState<string>('')
   const [isEditting, setIsEditting] = useState<boolean>(false)
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
-  const [errorMessage, setErrorMessage] = useState<string>('')
 
   useEffect(() => {
-    if (profile) {
-      setProviderName(profile.scholarship_provider?.provider_name ?? '')
-      setSelectedPhAddress(profile.ph_address)
+    if (user) {
+      setProviderName(user.profile?.scholarship_provider?.provider_name ?? '')
+      setSelectedPhAddress(user.profile?.ph_address ?? null)
+      setDetails(user?.profile?.description ?? '')
+      setLink(user?.profile?.scholarship_provider?.provider_link ?? '')
     }
-  }, [profile])
+    // eslint-disable-next-line
+  }, [user])
 
   const handleSave = async () => {
     const data = {
-      provider_link: profile?.scholarship_provider?.provider_link ?? '',
+      provider_link: link,
       provider_name: providerName,
       user_id: user.id,
       ph_address_id: selectedPhAddress?.id,
+      description: details,
     }
 
     try {
-      const api = profile.id
+      const api = user.profile?.id
         ? await axiosInstance.put(
-            `/api/v1/scholarship_provider_profiles/${profile.id}`,
+            `/api/v1/scholarship_provider_profiles/${user.profile?.id}`,
             data,
             { withCredentials: true }
           )
@@ -80,15 +75,11 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
             { withCredentials: true }
           )
       const response = api
-      handleSetSuccessMessage('Successfully saved!')
-      handleSetErrorMessage('')
-      handleSetIsSnackbarOpen(true)
-      dispatch(initializeProfile({ ...response.data.profile }))
-    } catch (error) {
+      showMessage('Successfully saved!', 'success')
+      dispatch(initializeUser({ ...user, profile: response.data.profile }))
+    } catch (error: any) {
       if (error) {
-        handleSetIsSnackbarOpen(true)
-        handleSetSuccessMessage('')
-        handleSetErrorMessage('Error saving details')
+        showMessage(error.response.data.message, 'success')
       }
     }
   }
@@ -103,12 +94,12 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
           setPhAddresses(response.data)
         }
       } catch (error: any) {
-        setIsSnackbarOpen(true)
-        setErrorMessage(error.response.data.error)
+        showMessage(error.response.data.error, 'error')
       }
     }
 
     getPhAddresses()
+    // eslint-disable-next-line
   }, [])
 
   const handleAddressChange = (e: any, value: any) => {
@@ -120,11 +111,6 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
       heading="Account View Profile"
       subHeading="Check and edit your organization account information"
     >
-      <CustomSnackbar
-        errorMessage={errorMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
       <Box sx={profileTheme.box.boxContentStyle}>
         <Typography sx={profileTheme.heading.titleHeading2}>
           Account Name:
@@ -180,43 +166,86 @@ const AccountViewProfile: React.FC<AccountViewProfileProps> = ({
           </Box>
         )}
       </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '100%',
-          p: 4,
-        }}
-      >
-        {!isEditting ? (
-          <Button
-            sx={{ borderRadius: '32px' }}
-            variant="contained"
-            onClick={() => setIsEditting(true)}
-          >
-            Edit
-          </Button>
+      <FormGroup sx={profileTheme.form.formStyle}>
+        <InputLabel htmlFor="account-details" sx={profileTheme.form.formLabel}>
+          Provider Details
+        </InputLabel>
+        {isEditting ? (
+          <TextField
+            id="account-details"
+            value={details}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setDetails(e.target.value)
+            }
+            sx={profileTheme.form.formInput}
+            minRows={6}
+            multiline
+          />
         ) : (
-          <ButtonGroup>
-            <Button
-              sx={{ borderRadius: '32px' }}
-              variant="contained"
-              onClick={() => setIsEditting(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              sx={{ borderRadius: '32px' }}
-              variant="contained"
-              color="secondary"
-              onClick={handleSave}
-            >
-              Save
-            </Button>
-          </ButtonGroup>
+          <Typography sx={profileTheme.text.textRegular}>{details}</Typography>
         )}
-      </Box>
+      </FormGroup>
+      <FormGroup>
+        <InputLabel htmlFor="account-link">Organization Link</InputLabel>
+        {isEditting ? (
+          <TextField
+            id="account-link"
+            value={link}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              setLink(e.target.value)
+            }
+            sx={profileTheme.form.formInput}
+          />
+        ) : (
+          <Typography sx={profileTheme.text.textRegular}>{link}</Typography>
+        )}
+        <Typography variant="subtitle1">
+          {link
+            ? 'This is the link where students can learn more about your organization.'
+            : 'Please provide a link where students can learn more about your organization.'}
+        </Typography>
+      </FormGroup>
+      {(!user?.parent_id ||
+        (user?.parent_id &&
+          user?.parent_id !== Number(process.env.REACT_PARENT_ID))) && (
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '100%',
+            p: 4,
+          }}
+        >
+          {!isEditting ? (
+            <Button
+              sx={{ borderRadius: '32px' }}
+              variant="contained"
+              onClick={() => setIsEditting(true)}
+            >
+              Edit
+            </Button>
+          ) : (
+            <ButtonGroup>
+              <Button
+                sx={{ borderRadius: '32px' }}
+                variant="contained"
+                onClick={() => setIsEditting(false)}
+              >
+                Cancel
+              </Button>
+              <Button
+                sx={{ borderRadius: '32px' }}
+                variant="contained"
+                color="secondary"
+                onClick={handleSave}
+              >
+                Save
+              </Button>
+            </ButtonGroup>
+          )}
+        </Box>
+      )}
     </AccountCard>
   )
 }

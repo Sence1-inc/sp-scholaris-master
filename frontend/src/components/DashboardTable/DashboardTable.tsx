@@ -6,11 +6,11 @@ import { DataGrid } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
-import CustomSnackbar from '../CustomSnackbar/CustomSnackbar'
 
 interface GridRowDef {
   id: number
@@ -22,16 +22,12 @@ interface GridRowDef {
 
 export default function DataTable() {
   const navigate = useNavigate()
+  const { showMessage } = useSnackbar()
   const user = useAppSelector((state) => state.persistedReducer.user)
   const dispatch = useAppDispatch()
   const { getScholarshipData } = useGetScholarshipsData()
   const [rowData, setRowData] = useState<GridRowDef[]>([])
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [selectedRow, setSelectedRow] = useState<number>(0)
-  const [successMessage, setSuccessMessage] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [warningMessage, setWarningMessage] = useState<string>('')
   const [page, setPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
   const [rowCount, setRowCount] = useState<number>(0)
@@ -42,17 +38,11 @@ export default function DataTable() {
     }
   }, [rowCount])
 
-  useEffect(() => {
-    if (!isSnackbarOpen) {
-      setSuccessMessage('')
-    }
-  }, [isSnackbarOpen])
-
-  const handleDelete = async () => {
+  const handleDelete = async (selectedRowId: number) => {
     setIsLoading(true)
     try {
       const response = await axiosInstance.delete(
-        `/api/v1/scholarships/${selectedRow}?page=${page + 1}&limit=${pageSize}`,
+        `/api/v1/scholarships/${selectedRowId}?page=${page + 1}&limit=${pageSize}`,
         {
           timeout: 100000,
           withCredentials: true,
@@ -60,18 +50,13 @@ export default function DataTable() {
       )
       setIsLoading(false)
       if (response.data) {
-        setIsSnackbarOpen(true)
-        setWarningMessage('')
-        setSuccessMessage('Successfully deleted')
+        showMessage('Successfully Deleted', 'success')
         formatScholarships(response.data.scholarships)
       }
     } catch (error) {
       setIsLoading(false)
       if (error) {
-        setIsSnackbarOpen(true)
-        setWarningMessage('')
-        setSuccessMessage('')
-        setErrorMessage('Error deleting scholarship')
+        showMessage('Error deleting scholarship', 'error')
       }
     }
   }
@@ -153,9 +138,12 @@ export default function DataTable() {
         <Tooltip title="Delete">
           <IconButton
             onClick={() => {
-              setWarningMessage('Are you sure you want to delete?')
-              setSelectedRow(params.row.id)
-              setIsSnackbarOpen(true)
+              showMessage(
+                'Are you sure you want to delete?',
+                'warning',
+                8000,
+                () => handleDelete(params.row.id)
+              )
             }}
             sx={{ color: '#F50F0F' }}
           >
@@ -167,12 +155,11 @@ export default function DataTable() {
   }
 
   const columns = [
-    // { field: 'id', headerName: 'ID', flex: 0.3 },
     { field: 'listing_id', headerName: 'Listing ID', flex: 0.5 },
     {
       field: 'scholarshipName',
       headerName: 'Scholarship Name',
-      flex: 1.5,
+      flex: 1,
     },
     { field: 'startDate', headerName: 'Start Date', type: 'date', flex: 0.5 },
     { field: 'endDate', headerName: 'End Date', type: 'date', flex: 0.5 },
@@ -192,71 +179,60 @@ export default function DataTable() {
   }
 
   return (
-    <div style={{ height: 'auto', width: '100%', borderRadius: '16px' }}>
-      <CustomSnackbar
-        successMessage={successMessage}
-        errorMessage={errorMessage}
-        warningMessage={warningMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-        handleWarningProceed={handleDelete}
-      />
-      <DataGrid
-        localeText={{ noRowsLabel: 'No saved data' }}
-        rows={rowData}
-        rowCount={rowCount}
-        columns={columns}
-        onPaginationModelChange={handlePageChange}
-        initialState={{
-          pagination: {
-            paginationModel: { page: page, pageSize: 10 },
+    <DataGrid
+      localeText={{ noRowsLabel: 'No saved data' }}
+      rows={rowData}
+      rowCount={rowCount}
+      columns={columns}
+      onPaginationModelChange={handlePageChange}
+      initialState={{
+        pagination: {
+          paginationModel: { page: page, pageSize: 10 },
+        },
+      }}
+      pageSizeOptions={[5, 10]}
+      pagination
+      paginationMode="server"
+      loading={isLoading}
+      sx={{
+        height: rowData?.length > 0 ? 'auto' : 200,
+        '.MuiDataGrid-root': {
+          border: 'none',
+        },
+        '.MuiDataGrid-main': {
+          borderTopLeftRadius: '16px',
+          borderTopRightRadius: '16px',
+        },
+        '& .MuiDataGrid-columnHeaders': {
+          backgroundColor: '#AFC3D9',
+        },
+        '.MuiDataGrid-footerContainer': {
+          borderBottomLeftRadius: '16px',
+          borderBottomRightRadius: '16px',
+        },
+        '& .MuiDataGrid-footerContainer': {
+          backgroundColor: '#AFC3D9',
+        },
+        '& .MuiDataGrid-row': {
+          '&:nth-of-type(odd)': {
+            backgroundColor: '#D8D8D8',
           },
-        }}
-        pageSizeOptions={[5, 10]}
-        pagination
-        paginationMode="server"
-        loading={isLoading}
-        sx={{
-          height: Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,
-          '.MuiDataGrid-root': {
-            border: 'none',
+          '&:nth-of-type(even)': {
+            backgroundColor: '#F1F1F1',
           },
-          '.MuiDataGrid-main': {
-            borderTopLeftRadius: '16px',
-            borderTopRightRadius: '16px',
-          },
-          '& .MuiDataGrid-columnHeaders': {
-            backgroundColor: '#AFC3D9',
-          },
-          '.MuiDataGrid-footerContainer': {
-            borderBottomLeftRadius: '16px',
-            borderBottomRightRadius: '16px',
-          },
-          '& .MuiDataGrid-footerContainer': {
-            backgroundColor: '#AFC3D9', // Change table header color
-          },
-          '& .MuiDataGrid-row': {
-            '&:nth-of-type(odd)': {
-              backgroundColor: '#D8D8D8', // Change background color of odd rows
-            },
-            '&:nth-of-type(even)': {
-              backgroundColor: '#F1F1F1', // Change background color of odd rows
-            },
-          },
-          '& .MuiDataGrid-overlay': {
-            zIndex: '20',
-          },
-          borderRadius: '16px',
-          fontFamily: 'Outfit',
-          fontSize: {
-            xs: '12px',
-            md: '1rem',
-          },
-          '& .MuiDataGrid-row:hover': {
-            backgroundColor: 'secondary.main',
-          },
-        }}
-      />
-    </div>
+        },
+        '& .MuiDataGrid-overlay': {
+          zIndex: '20',
+        },
+        borderRadius: '16px',
+        fontFamily: 'Outfit',
+        fontSize: {
+          xs: '1rem',
+        },
+        '& .MuiDataGrid-row:hover': {
+          backgroundColor: 'secondary.main',
+        },
+      }}
+    />
   )
 }

@@ -6,25 +6,26 @@ import React, { useEffect, useState } from 'react'
 import { Link as RouterLink, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
-import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import { useAppSelector } from '../../redux/store'
+import { useSnackbar } from '../../context/SnackBarContext';
 
 interface SignUpPageProps {}
 
-type Errors = {
+export type Errors = {
   email_address: string
   password: string
-  password2: string
+  password2?: string
   first_name: string
   last_name: string
-  middle_name: string
+  middle_name?: string
   birthdate: string
 }
 
 const SignUpPage: React.FC<SignUpPageProps> = () => {
   const navigate = useNavigate()
+  const { showMessage } = useSnackbar();
   const [userCredentials, setUserCredentials] = useState({
     email_address: '',
     password: '',
@@ -34,12 +35,8 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     middle_name: '',
     birthdate: null,
     is_active: 1,
-    service_id: 1,
     role: 'provider',
   })
-  const [successMessage, setSuccessMessage] = useState<string>('')
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const isAuthenticated = useAppSelector(
     (state) => state.persistedReducer.isAuthenticated
   )
@@ -129,7 +126,8 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     // eslint-disable-next-line
   }, [userCredentials, isInitialLoad])
 
-  const handleSignUp = async () => {
+  const handleSignUp = async (role: string) => {
+    userCredentials.role = role
     setIsInitialLoad(false)
 
     const errorMessages = validationConditions
@@ -138,9 +136,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     const hasErrors = errorMessages.length > 0
 
     if (hasErrors) {
-      setSuccessMessage('')
-      setIsSnackbarOpen(true)
-      setErrorMessage('Please fill in the required details.')
+      showMessage('Please fill in the required details.', 'error')
       const newErrors = validationConditions.reduce<{ [key: string]: string }>(
         (acc, { condition, field, message }) => {
           if (condition) {
@@ -166,11 +162,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         )
         if (response.data) {
           setButtonLoading(false)
-          setIsSnackbarOpen(true)
-          setErrorMessage('')
-          setSuccessMessage(
-            "We've sent you a verification email. Please confirm your email address before you log in."
-          )
+          showMessage("We've sent you a verification email. Please confirm your email address before you log in.", 'success')
           setErrors({
             email_address: '',
             password: '',
@@ -182,15 +174,10 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           })
         }
       } catch (error: any) {
-        setSuccessMessage('')
         if (error) {
           setButtonLoading(false)
-          setIsSnackbarOpen(true)
-          setErrorMessage(
-            error.response.data.error ??
-              'Registration failed. Please try again.'
-          )
-
+          showMessage(error.response.data.error ??
+            'Registration failed. Please try again.', 'error')
           const errors = {
             email_address: '',
             password: '',
@@ -244,12 +231,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         marginBlock: '40px',
       }}
     >
-      <CustomSnackbar
-        errorMessage={errorMessage}
-        successMessage={successMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
       <Typography
         variant="h2"
         sx={{
@@ -263,7 +244,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           label="Email address"
           error={errors.email_address}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -273,7 +253,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your email"
         />
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           type="password"
           label="Password"
           error={errors.password}
@@ -284,7 +263,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your password"
         />
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           type="password"
           label="Confirm Password"
           error={errors.password2}
@@ -295,7 +273,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Confirm your password"
         />
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           label="First name"
           error={errors.first_name}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -305,7 +282,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your first name"
         />
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           label="Middle name"
           error={errors.middle_name}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -315,7 +291,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           placeholder="Input your middle name"
         />
         <CustomTextfield
-          handleOnKeyDonw={handleSignUp}
           label="Last name"
           error={errors.last_name}
           handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
@@ -370,32 +345,30 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       >
         Already have and account? Sign-in here
       </MuiLink>
-      <CTAButton
-        id="sign-up"
-        label="Sign up"
-        loading={buttonLoading}
-        handleClick={handleSignUp}
-        styles={{ fontSize: '24px' }}
-      />
 
-      {/* <Button
-        onClick={handleSignUp}
-        variant="contained"
-        color="primary"
+      <Box
         sx={{
-          borderRadius: '16px',
-          backgroundColor: '#f36b3b',
-          padding: '20px',
-          margin: '0 auto 60px',
           width: '100%',
-          maxWidth: '320px',
-          '&:hover': { backgroundColor: '#d2522b' },
-          textTransform: 'inherit',
-          fontSize: '24px',
+          display: 'flex',
+          flexDirection: { xs: 'column', md: 'row' },
+          gap: '30px',
         }}
       >
-        Sign up
-      </Button> */}
+        <CTAButton
+          id="sign-up"
+          label="Sign up as student"
+          loading={buttonLoading}
+          handleClick={() => handleSignUp('student')}
+          styles={{ fontSize: '24px' }}
+        />
+        <CTAButton
+          id="sign-up"
+          label="Sign up as provider"
+          loading={buttonLoading}
+          handleClick={() => handleSignUp('provider')}
+          styles={{ fontSize: '24px' }}
+        />
+      </Box>
     </Container>
   )
 }

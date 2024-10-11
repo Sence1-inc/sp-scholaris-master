@@ -13,7 +13,6 @@ import Cookies from 'js-cookie'
 import React, { useEffect, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
-import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import {
   ErrorResponse,
   SubscriberData,
@@ -24,6 +23,7 @@ import { PROVIDER_TYPE, STUDENT_TYPE } from '../../constants/constants'
 import { initializeSubscirber } from '../../redux/reducers/SubscriberReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
+import { useSnackbar } from '../../context/SnackBarContext';
 
 export interface SurveyQuestion {
   id: number
@@ -57,6 +57,7 @@ const initialSurveyResponses = {
 }
 
 const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
+  const { showMessage } = useSnackbar();
   const location = useLocation()
   const { pathname } = location
   const navigate = useNavigate()
@@ -73,8 +74,6 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
   const [surveyResponses, setSurveyResponses] = useState<SurveyResponse>(
     initialSurveyResponses
   )
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
 
   useEffect(() => {
     if (surveyQuestions) {
@@ -155,7 +154,7 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
       })
       .catch((error) => {
         if (error) {
-          setErrorMessage(error.response.data.error)
+          showMessage(error.response.data.error, 'error')
         }
       })
   }
@@ -225,27 +224,16 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
             user_type: successData.user_type,
           })
         )
-        setErrorMessage('')
       } else {
         const errorData = response.data as ErrorResponse
-        setErrorMessage(
-          `Error: ${errorData.error}. ${errorData.details.join(' ')}`
-        )
+        showMessage(`Error: ${errorData.error}. ${errorData.details.join(' ')}`, 'error')
       }
     } catch (error) {
       if (error) {
-        setErrorMessage('Error creating new subscriber. Please try again.')
+        showMessage('Error creating new subscriber. Please try again.', 'error')
       }
     }
   }
-
-  useEffect(() => {
-    if (errorMessage) {
-      setIsSnackbarOpen(true)
-    } else {
-      setIsSnackbarOpen(false)
-    }
-  }, [errorMessage])
 
   return (
     <Container
@@ -285,11 +273,6 @@ const SurveyPage: React.FC<SurveyPageProps> = ({ user_type }) => {
           </>
         )}
       </Button>
-      <CustomSnackbar
-        errorMessage={errorMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
       {!isASubscriber && (
         <Typography
           variant="h5"

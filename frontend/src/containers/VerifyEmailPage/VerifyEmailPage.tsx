@@ -2,17 +2,16 @@ import { Button, Container, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
-import CustomSnackbar from '../../components/CustomSnackbar/CustomSnackbar'
 import { User } from '../../redux/types'
+import { useSnackbar } from '../../context/SnackBarContext';
+
 
 interface VerifyEmailProps {}
 
 const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
+  const { showMessage } = useSnackbar();
   const { token } = useParams()
   const navigate = useNavigate()
-  const [errorMessage, setErrorMessage] = useState<string>('')
-  const [successMessage, setSuccessMessage] = useState<string>('')
-  const [isSnackbarOpen, setIsSnackbarOpen] = useState<boolean>(false)
   const [isExpired, setIsExpired] = useState<boolean>(false)
   const [isAlreadyVerified, setIsAlreadyVerified] = useState<boolean>(false)
   const [user, setUser] = useState<User | null>(null)
@@ -20,33 +19,28 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
   const handleVerifyEmail = async () => {
     try {
       const response = await axiosInstance.get(`/api/v1/verify_email/${token}`)
-      setSuccessMessage('')
       if (response.data.status === 'verified') {
         navigate('/sign-in')
       } else if (response.data.status === 'invalid link') {
-        setIsSnackbarOpen(true)
         setIsExpired(false)
-        setErrorMessage('Invalid link. Your account may already be verified.')
+        showMessage('Invalid link. Your account may already be verified.', 'error')
         setIsAlreadyVerified(true)
       } else {
-        setIsSnackbarOpen(true)
-        setErrorMessage('Failed verifying account')
+        showMessage('Failed verifying account', 'error')
         setIsExpired(false)
         setIsAlreadyVerified(false)
       }
     } catch (error: any) {
-      setSuccessMessage('')
-      setIsSnackbarOpen(true)
       if (error) {
         if (error?.response?.data?.status === 'expired') {
           setIsExpired(true)
           setUser(error?.response?.data?.user)
           setIsAlreadyVerified(false)
-          setErrorMessage(error?.response?.data?.msg)
+          showMessage(error?.response?.data?.msg, 'error')
         } else {
           setIsExpired(false)
           setIsAlreadyVerified(false)
-          setErrorMessage('Failed verifying account')
+          showMessage('Failed verifying account', 'error')
         }
       }
     }
@@ -64,14 +58,10 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
       )
 
       if (response.status === 200) {
-        setErrorMessage('')
-        setIsSnackbarOpen(true)
-        setSuccessMessage(response.data.msg)
+        showMessage(response.data.msg, 'success')
       }
     } catch (error: any) {
-      setIsSnackbarOpen(true)
-      setSuccessMessage('')
-      setErrorMessage(error?.response?.data?.msg)
+      showMessage(error?.response?.data?.msg, 'error')
     }
   }
 
@@ -86,12 +76,6 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
         paddingBlock: '120px',
       }}
     >
-      <CustomSnackbar
-        successMessage={successMessage}
-        errorMessage={errorMessage}
-        isSnackbarOpen={isSnackbarOpen}
-        handleSetIsSnackbarOpen={(value) => setIsSnackbarOpen(value)}
-      />
       <>
         <Typography
           variant="h2"

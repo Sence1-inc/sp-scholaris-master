@@ -1,10 +1,9 @@
 import HomeIcon from '@mui/icons-material/Home'
-import PersonIcon from '@mui/icons-material/Person'
 import SettingsIcon from '@mui/icons-material/Settings'
 import { Box, Button, Card, List, ListItem, Typography } from '@mui/material'
 import React, { Dispatch, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import axiosInstance from '../../axiosConfig'
+import axiosInstance, { initialUserState } from '../../axiosConfig'
 import ProfileImage from '../../public/images/profile.png'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
 import { initializeUser } from '../../redux/reducers/UserReducer'
@@ -30,11 +29,8 @@ type SideBarObject = {
 }
 
 export const sideItem: SideBarObject[] = [
-  { id: 'view-profile', title: 'View Scholarship Profile', Icon: <HomeIcon /> },
-  { id: 'account-profile', title: 'Account Profile', Icon: <PersonIcon /> },
-  // { id: 'account-security', title: 'Account Security', Icon: <SecurityIcon /> },
+  { id: 'view-profile', title: 'SGO Profile', Icon: <HomeIcon /> },
   { id: 'account-settings', title: 'Settings', Icon: <SettingsIcon /> },
-  // { id: 'account-close', title: 'Close Account', Icon: <LockPersonIcon /> },
 ]
 
 const AccountSideBar: React.FC<AccountSideBarProps> = ({
@@ -59,25 +55,7 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
     })
 
     if (response.data.deleted) {
-      dispatch(
-        initializeUser({
-          birthdate: '',
-          email_address: '',
-          first_name: '',
-          id: 0,
-          is_active: 0,
-          last_name: '',
-          role_id: 0,
-          session_token: '',
-          role: { id: null, role_name: '' },
-          scholarship_provider: {
-            id: 0,
-            provider_name: '',
-            user_id: 0,
-            provider_link: '',
-          },
-        })
-      )
+      dispatch(initializeUser(initialUserState))
       dispatch(initializeIsAuthenticated(false))
       navigate('/sign-in')
     }

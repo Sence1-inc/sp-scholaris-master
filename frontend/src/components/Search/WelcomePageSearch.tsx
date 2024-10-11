@@ -1,5 +1,4 @@
 import {
-  Alert,
   Box,
   Button,
   Chip,
@@ -188,7 +187,7 @@ const WelcomePageSearch: React.FC = () => {
           gap: '40px',
           alignItems: 'center',
           justifyContent: 'center',
-          width: { xs: '100%', md: '80%' },
+          width: { xs: '100%', md: '90%' },
           margin: 'auto',
         }}
       >
@@ -227,7 +226,7 @@ const WelcomePageSearch: React.FC = () => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: { xs: '7px', sm: '20px', md: '40px' },
+              gap: { xs: '7px', md: '10px' },
             }}
           >
             <TextField
@@ -237,7 +236,7 @@ const WelcomePageSearch: React.FC = () => {
               value={name}
               placeholder="e.g. CHED Merit Scholarship"
               sx={{
-                width: { xs: 'calc(95% - 20px)', sm: 'calc(66.666% - 20px)' },
+                width: { xs: 'calc(95% - 20px)', sm: 'calc(80% - 20px)' },
                 padding: { xs: '16px' },
               }}
             />
@@ -247,7 +246,8 @@ const WelcomePageSearch: React.FC = () => {
                 ...ctaButtonStyle,
                 flexGrow: 1,
                 padding: { xs: '16px' },
-                fontSize: { xs: '14px' },
+                fontSize: { xs: '14px', sm: '17px' },
+                height: { xs: '58px', md: '63px' },
               }}
               onClick={handleSearch}
             >
@@ -276,10 +276,10 @@ const WelcomePageSearch: React.FC = () => {
                 </Stack>
               </Box>
             )}
-          <Alert severity="warning">
+          {/* <Alert severity="warning">
             All scholarship listings are currently test data and not actual
             listings. We’ll be updating them with real data soon, so stay tuned!
-          </Alert>
+          </Alert> */}
           <DataGrid
             onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}

@@ -2,21 +2,17 @@ import MenuIcon from '@mui/icons-material/Menu'
 import {
   AppBar,
   Box,
-  Button,
   Divider,
   Drawer,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
   Toolbar,
-  Typography,
 } from '@mui/material'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Logo from '../../public/images/logo.png'
 import { useAppSelector } from '../../redux/store'
-import { ctaButtonStyle } from '../../styles/globalStyles'
+import { User } from '../../redux/types'
+import { Authenticated, Unauthenticated } from './NavbarComponents'
 
 interface NavbarProps {
   window?: () => Window
@@ -27,222 +23,21 @@ const drawerWidth = '90vw'
 const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const location = useLocation()
   const pathname = location.pathname
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.persistedReducer.user)
   const isAuthenticated = useAppSelector(
     (state) => state.persistedReducer.isAuthenticated
   )
+  const [mobileOpen, setMobileOpen] = React.useState(false)
 
   const renderItems = () => {
-    if (pathname.includes('/student')) {
-      return (
-        <List
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-          }}
-        >
-          {location.pathname !== '/student/survey' && (
-            <>
-              <ListItem>
-                <Typography
-                  variant="body1"
-                  component={Button}
-                  onClick={() => {
-                    const fabButton =
-                      document.getElementById('fab-button-student')
-
-                    if (fabButton) {
-                      fabButton.click()
-                    }
-                  }}
-                  sx={{
-                    color: 'common.white',
-                    textDecoration: 'none',
-                    textTransform: 'capitalize',
-                  }}
-                >
-                  Newsletter
-                </Typography>
-              </ListItem>
-              <ListItem>
-                <Typography
-                  variant="body1"
-                  component={Link}
-                  to="/student/survey"
-                  sx={{ color: 'common.white', textDecoration: 'none' }}
-                >
-                  Survey
-                </Typography>
-              </ListItem>
-            </>
-          )}
-
-          <ListItem disablePadding>
-            <Button
-              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
-              component={Link}
-              to="/scholarships"
-            >
-              Search Scholarships
-            </Button>
-          </ListItem>
-        </List>
-      )
-    }
-
-    if (pathname.includes('/provider')) {
-      return !isAuthenticated ? (
-        <List
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-          }}
-        >
-          {location.pathname !== '/provider/survey' && (
-            <>
-              <ListItem>
-                <Typography
-                  variant="body1"
-                  component={Button}
-                  onClick={() => {
-                    const fabButton = document.getElementById(
-                      'fab-button-provider'
-                    )
-
-                    if (fabButton) {
-                      fabButton.click()
-                    }
-                  }}
-                  sx={{
-                    color: 'common.white',
-                    textDecoration: 'none',
-                    textTransform: 'capitalize',
-                  }}
-                >
-                  Newsletter
-                </Typography>
-              </ListItem>
-              <ListItem>
-                <Typography
-                  variant="body1"
-                  component={Link}
-                  to="/provider/survey"
-                  sx={{ color: 'common.white', textDecoration: 'none' }}
-                >
-                  Survey
-                </Typography>
-              </ListItem>
-            </>
-          )}
-
-          <ListItem disablePadding sx={{ width: 'auto' }}>
-            <Button
-              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
-              component={Link}
-              to="/scholarships"
-            >
-              Search Scholarships
-            </Button>
-          </ListItem>
-        </List>
-      ) : (
-        <List
-          sx={{
-            display: 'flex',
-            flexDirection: { xs: 'column', md: 'row' },
-          }}
-        >
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Link}
-              to="/provider/survey"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
-            >
-              Survey
-            </Typography>
-          </ListItem>
-          <ListItem>
-            <Typography
-              variant="body1"
-              component={Link}
-              to="/provider/dashboard"
-              sx={{ color: 'common.white', textDecoration: 'none' }}
-            >
-              Dashboard
-            </Typography>
-          </ListItem>
-          <ListItem disablePadding sx={{ width: 'auto' }}>
-            <Button
-              sx={{
-                ...ctaButtonStyle,
-                whiteSpace: 'nowrap',
-                backgroundColor: 'primary.light',
-              }}
-              component={Link}
-              to={`/provider/account/${user?.scholarship_provider?.id}/view-profile`}
-            >
-              Account
-            </Button>
-          </ListItem>
-        </List>
-      )
-    }
-
     return !isAuthenticated ? (
-      <List
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-        }}
-      >
-        <ListItem disablePadding>
-          <ListItemButton>
-            <Button
-              sx={{ ...ctaButtonStyle, whiteSpace: 'nowrap' }}
-              component={Link}
-              to="/scholarships"
-            >
-              Search Scholarships
-            </Button>
-          </ListItemButton>
-        </ListItem>
-      </List>
+      <Unauthenticated
+        userType={pathname.includes('/student') ? 'student' : 'provider'}
+      />
     ) : (
-      <List
-        sx={{
-          display: 'flex',
-          flexDirection: { xs: 'column', md: 'row' },
-        }}
-      >
-        <ListItem>
-          <Typography
-            variant="body1"
-            component={Link}
-            to="/provider/dashboard"
-            sx={{ color: 'common.white', textDecoration: 'none' }}
-          >
-            Dashboard
-          </Typography>
-        </ListItem>
-        <ListItem disablePadding sx={{ width: 'auto' }}>
-          <Button
-            sx={{
-              ...ctaButtonStyle,
-              whiteSpace: 'nowrap',
-              backgroundColor: 'primary.light',
-            }}
-            component={Link}
-            to={`/provider/account/${user?.scholarship_provider?.id}/view-profile`}
-          >
-            Account
-          </Button>
-        </ListItem>
-      </List>
+      <Authenticated user={user} pathname={pathname} />
     )
   }
-
-  const [mobileOpen, setMobileOpen] = React.useState(false)
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState)
@@ -269,7 +64,15 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   return (
     <Box sx={{ display: 'flex' }}>
       <AppBar component="nav" sx={{ position: 'relative', padding: '8px' }}>
-        <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
+        <Toolbar
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+          }}
+          sx={{
+            padding: { xs: '0 10px', sm: '0 20px' },
+          }}
+        >
           <Box>
             <Link to="/">
               <img src={Logo} alt="Scholaris Logo" />
@@ -285,7 +88,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
             aria-label="open drawer"
             edge="start"
             onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}
+            sx={{ display: { md: 'none' } }}
           >
             <MenuIcon />
           </IconButton>

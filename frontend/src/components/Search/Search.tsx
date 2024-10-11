@@ -1,6 +1,5 @@
 import { OpenInNew, Visibility } from '@mui/icons-material'
 import {
-  Alert,
   Box,
   Button,
   Chip,
@@ -50,7 +49,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const searchRef = useRef<HTMLElement>(null)
   const isInitialLoad = useRef<boolean>(false)
   const { scholarships, total_count } = data.scholarships
-  const { benefits, provider, start_date, due_date } = params.params
+  const { benefits, provider, start_date, due_date, type } = params.params
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
@@ -121,11 +120,14 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   }
 
   useEffect(() => {
-    if ((benefits || provider || start_date || due_date) && !isSection) {
+    if (
+      (benefits || provider || start_date || due_date || type) &&
+      !isSection
+    ) {
       getScholarships()
     }
     // eslint-disable-next-line
-  }, [benefits, provider, start_date, due_date, isSection])
+  }, [benefits, provider, start_date, due_date, type, isSection])
 
   useEffect(() => {
     if (nameParam) {
@@ -279,7 +281,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               sx={{
                 width: {
                   xs: 'calc(95% - 20px)',
-                  sm: 'calc(66.666% - 20px)',
                   md: 'calc(80% - 20px)',
                 },
                 padding: { sm: '16px' },
@@ -326,10 +327,10 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
                 </Stack>
               </Box>
             )}
-          <Alert severity="warning">
+          {/* <Alert severity="warning">
             All scholarship listings are currently test data and not actual
             listings. We’ll be updating them with real data soon, so stay tuned!
-          </Alert>
+          </Alert> */}
           <DataGrid
             onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}
@@ -397,7 +398,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: { xs: '7px', sm: '10px', md: '40px' },
+              gap: { xs: '7px', sm: '10px' },
             }}
           >
             <TextField
@@ -416,9 +417,9 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               sx={{
                 ...ctaButtonStyle,
                 flexGrow: 1,
-                padding: { sm: '16px' },
-                fontSize: { xs: '14px', sm: '17px', maxHeight: '58px' },
-                height: { xs: '58px', md: '63px' },
+                padding: '16px',
+                fontSize: { xs: '14px', sm: '17px' },
+                height: { xs: '58px !important', md: '63px' },
               }}
               onClick={handleSearch}
             >

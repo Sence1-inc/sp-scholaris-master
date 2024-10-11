@@ -1,0 +1,10 @@
+<h1>Editing student profile</h1>
+
+<%= render "form", student_profile: @student_profile %>
+
+<br>
+
+<div>
+  <%= link_to "Show this student profile", @student_profile %> |
+  <%= link_to "Back to student profiles", student_profiles_path %>
+</div>

@@ -12,7 +12,7 @@ module Api
     
       # GET /scholarship_providers/1 or /scholarship_providers/1.json
       def show
-        render json: @scholarship_provider.as_json
+        render json: @scholarship_provider.includes([:scholarship_provider_profile]).as_json
       end
     
       # GET /scholarship_providers/new
@@ -63,14 +63,44 @@ module Api
       end
 
       def scholarships
-        if @scholarship_provider.user.email_address != cookies[:user_email]
+        user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+        
+        if (user.parent_id && @scholarship_provider.user.email_address != User.find(user.parent_id).email_address) && (user.parent_id != ENV['PARENT_ID'].to_i)
           render_unauthorized_response
           return
         end
 
-        @scholarships = Scholarship.where(scholarship_provider_id: @scholarship_provider.id)
+        if @scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email'] && !user.parent_id
+          render_unauthorized_response
+          return
+        end
+
+        if user.id == ENV['PARENT_ID'].to_i
+          all_scholarships = Scholarship.none
+
+          user.children.each do |child|
+            if child.scholarship_provider.present?
+              scholarships = child.scholarship_provider.scholarships
+              all_scholarships = all_scholarships.or(scholarships)
+            end
+          end
+
+          @scholarships = all_scholarships
+        else
+          @scholarships = Scholarship.where(scholarship_provider_id: @scholarship_provider.id)
+        end
+
         if @scholarships.exists?
-          @scholarships = @scholarships.page(params[:page] || 1).per(params[:limit] || 10)
+          @scholarships = @scholarships.includes(
+            :eligibilities, 
+            :requirements, 
+            :scholarship_type, 
+            :benefits, 
+            :benefit_categories, 
+            :courses, 
+            :schools, 
+            scholarship_provider: [:scholarship_provider_profile]
+          ).page(params[:page] || 1).per(params[:limit] || 10)
 
           render json: {
             scholarships: @scholarships.as_json,
