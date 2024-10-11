@@ -4,6 +4,7 @@ import React, { useEffect, useRef, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { ScholarshipProvider } from '../../redux/types'
 import './Filter.css'
 import FilterOption from './FilterOption/FilterOption'
 
@@ -70,7 +71,15 @@ const Filter: React.FC<FilterProps> = () => {
       })
 
       setBenefits(mapToOptions(benefits.data, 'category_name'))
-      setProviders(mapToOptions(providers.data, 'provider_name'))
+      setProviders(
+        mapToOptions(
+          providers.data.filter(
+            (item: ScholarshipProvider) =>
+              item.provider_name !== 'Scholaris Admin'
+          ),
+          'provider_name'
+        )
+      )
       setTypes(mapToOptions(types.data, 'scholarship_type_name'))
     }
 
