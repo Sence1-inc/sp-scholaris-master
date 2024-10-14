@@ -7,6 +7,7 @@ class User < ApplicationRecord
   has_many :children, class_name: 'User', foreign_key: 'parent_id'
   belongs_to :parent, class_name: 'User', optional: true
   has_many :user_permissions, dependent: :destroy
+  has_many :scholarship_applications
   has_many :scholarship_providers, through: :children
   has_many :scholarships, through: :scholarship_provider
 

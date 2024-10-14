@@ -82,11 +82,19 @@ module Api
           return render json: { message: 'Application from this email and scholarship already exists' }, status: :conflict
         end
 
+        if cookies[:access_token] && cookies[:email]
+          user = User::find_by(email_address: JwtService.decode(cookies[:email])['email'])
+        else
+          user = nil
+        end
+
         application = ScholarshipApplication.new(
           recipient_email: recipient_email,
           user_message: user_message,
           scholarship_id: scholarship.id,
-          student_email: student_email
+          student_email: student_email,
+          user_id: user.id,
+
         )
 
         provider_name = scholarship.scholarship_provider.provider_name
