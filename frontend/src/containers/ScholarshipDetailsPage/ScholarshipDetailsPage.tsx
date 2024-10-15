@@ -125,12 +125,16 @@ export const ScholarshipDetailsPage: React.FC<
     setScholarshipData(result.scholarshipData)
     if (
       Object.keys(result.scholarshipData).length > 0 &&
-      !result.scholarshipData.scholarship_name
+      result.scholarshipData.scholarship_name
     ) {
-      setIsLoading(true)
-    } else {
       setIsLoading(false)
+    } else if (
+      Object.keys(result.scholarshipData).length == 0 &&
+      !result.scholarshipData.scholarship_name
+    ){
+      setIsLoading(true)
     }
+    console.log('isLoading:' + isLoading);
     // eslint-disable-next-line
   }, [result.scholarshipData])
 
@@ -298,28 +302,28 @@ export const ScholarshipDetailsPage: React.FC<
             listings. We’ll be updating them with real data soon, so stay tuned!
           </Alert>
              
-            {
-              isLoading && (
-                <div className="details-card">
-                <CircularProgress color="inherit" />
-                </div>
-              )
-            }
-
-            {scholarshipData && !(isLoading) && (
+            { scholarshipData && (
             <div className="details-card">
-            
+              {isLoading && (
+                <CircularProgress color="inherit" sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  width: "100% !important"
+                }}/>
+              )}
                 <h3 className="title3"> 
                   {scholarshipData.scholarship_name }
-                </h3><p
+                </h3>
+                { !isLoading && (
+                <p
                 style={{
                   whiteSpace: 'pre-wrap',
                   lineHeight: 1,
                   marginBottom: '20px',
                 }}
-              >
-                  Listing ID: {scholarshipData.listing_id}
-                </p><p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}>
+                  >Listing ID: {scholarshipData.listing_id} </p>         
+                )}
+                <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}>
                   {scholarshipData.description}
                 </p>
               {scholarshipData.benefits &&
@@ -364,6 +368,7 @@ export const ScholarshipDetailsPage: React.FC<
                     ))}
                   </div>
                 )}
+              { !isLoading && (    
               <div className="details-section details-columns">
                 <div className="details-column">
                   <h5 className="title4">Application Start Date</h5>
@@ -384,6 +389,8 @@ export const ScholarshipDetailsPage: React.FC<
                   </p>
                 </div>
               </div>
+              )}
+              { !isLoading && (
               <div className="details-section">
                 {!user.email_address ||
                 (user &&
@@ -542,6 +549,7 @@ export const ScholarshipDetailsPage: React.FC<
                   </Box>
                 </Modal>
               </div> 
+              )}
             </div>
             )}
           {scholarshipData && scholarshipData.scholarship_provider && (
