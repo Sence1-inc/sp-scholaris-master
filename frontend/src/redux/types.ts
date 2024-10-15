@@ -111,11 +111,28 @@ export type Params = {
   [key: string]: string | null | Date | number
 }
 
+export type ScholarshipApplication = {
+  id: number
+  scholarship_name: string
+  student_name: string
+  application_date: string
+  recipient_email: string
+  user_message: String
+  updated_at: string
+  scholarship_id: number
+  student_email: string
+  user_id: number | null
+  status: number
+  notes: string
+}
+
 export type ScholarshipProvider = {
   id: number
   provider_name: string
   provider_link?: string
   user_id: number
+  scholarship_provider_profile?: Profile
+  scholarship_applications?: ScholarshipApplication[]
 }
 
 export type Role = {

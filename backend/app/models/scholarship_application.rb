@@ -1,5 +1,5 @@
 class ScholarshipApplication < ApplicationRecord
-  has_many :scholarships
+  belongs_to :scholarship
   belongs_to :user
 
   SUBMITTED = 1
@@ -33,4 +33,8 @@ class ScholarshipApplication < ApplicationRecord
   }.freeze
 
   default_scope -> { where(deleted_at: nil) }
+
+  def as_json(options = {})
+    super(options.merge(include: [:scholarship], except: [:created_at, :deleted_at]))
+  end
 end

@@ -5,7 +5,7 @@ module Api
     
       # GET /scholarship_providers or /scholarship_providers.json
       def index
-        @scholarship_providers = ScholarshipProvider.includes(:scholarship_provider_profile, :user).all
+        @scholarship_providers = ScholarshipProvider.includes(:scholarship_provider_profile, :user, :scholarship_applications).all
 
         render json: @scholarship_providers
       end
@@ -111,6 +111,28 @@ module Api
           }, status: :ok
         else
           render json: {message: "No scholarships found.", scholarships: [], total_count: 0}, status: :ok
+        end
+      end
+
+      def scholarship_applications
+        user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+        
+        if (user.parent_id && @scholarship_provider.user.email_address != User.find(user.parent_id).email_address) && (user.parent_id != ENV['PARENT_ID'].to_i)
+          render_unauthorized_response
+          return
+        end
+
+        scholarship_applications = user.scholarship_provider.scholarship_applications.includes(:scholarship).page(params[:page] || 1).per(params[:limit] || 10)
+        if scholarship_applications.exists?
+          render json: {
+            scholarship_applications:scholarship_applications.as_json,
+            total_count: scholarship_applications.total_count,
+            total_pages: scholarship_applications.total_pages,
+            current_page: scholarship_applications.current_page,
+            limit: params[:limit] || 10
+          }, status: :ok
+        else
+          render json: {message: "No applications found.", scholarship_applications: [], total_count: 0}, status: :ok
         end
       end
     
