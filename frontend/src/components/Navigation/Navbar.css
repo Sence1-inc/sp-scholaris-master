@@ -79,6 +79,11 @@
   display: none;
 }
 
+img.scholaris_nav_logo {
+  max-width: 254px !important;
+  max-height: 58px !important;
+}
+
 @media screen and (max-width: 768px) {
   #navbar .navbar__menu-hamburger {
     display: flex;
