@@ -50,7 +50,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
     >
       <Box sx={{ padding: '40px 0' }}>
         <Link to="/">
-          <img src={Logo} alt="Scholaris Logo" />
+          <img width="254px" className="scholaris_nav_logo" src={Logo} alt="Scholaris Logo" />
         </Link>
       </Box>
       <Divider />
@@ -75,7 +75,7 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
         >
           <Box>
             <Link to="/">
-              <img src={Logo} alt="Scholaris Logo" />
+              <img width="254px" src={Logo} alt="Scholaris Logo" />
             </Link>
           </Box>
           <Box
