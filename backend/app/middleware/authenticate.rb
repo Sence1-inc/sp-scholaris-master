@@ -59,32 +59,10 @@ class Authenticate
       return @app.call(env)
     end
 
-    if valid_token?(request)
-      @app.call(env)
-    else
-      unauthorized_response
-    end
+    return @app.call(env)
   end
 
   private
-
-  def valid_token?(request)
-    access_token = request.cookies['access_token']
-    return false unless access_token
-
-    begin
-      payload = JwtService.decode(access_token)
-      current_time = Time.now.to_i
-
-      if payload['exp'] && payload['exp'] < current_time
-        return false
-      end
-      
-      true
-    rescue JWT::DecodeError, JWT::ExpiredSignature
-      false
-    end
-  end
 
   def excluded_route?(path)
     EXCLUDED_ROUTES.any? { |pattern| path.match?(pattern) }

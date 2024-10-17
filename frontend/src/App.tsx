@@ -32,7 +32,8 @@ import WelcomePage from './containers/WelcomePage/WelcomePage'
 import useGetScholarships from './hooks/useGetScholarships'
 import { useAppSelector } from './redux/store'
 import { User } from './redux/types'
-import { SnackbarProvider } from './context/SnackBarContext';
+import { SnackbarProvider } from './context/SnackBarContext'
+import ApplicationsManagementPage from './containers/ApplicationsManagementPage/ApplicationsManagementPage'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -64,6 +65,10 @@ const ProviderRoutes: React.FC<ProviderRoutesProps> = ({
         element={<ProviderPrivate component={AccountManagementPage} />}
       />
     )}
+    <Route
+      path="/applications"
+      element={<ProviderPrivate component={ApplicationsManagementPage} />}
+    />
     <Route path="/" element={<TeaserProvider />} />
     <Route path="survey" element={<SurveyPage user_type="provider" />} />
     <Route
@@ -153,7 +158,10 @@ const App: React.FC = () => {
               <Route path="/thank-you" element={<ThankYouPage />} />
               <Route path="/sign-in" element={<SignInPage />} />
               <Route path="/sign-up" element={<SignUpPage />} />
-              <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+              <Route
+                path="/verify-email/:token"
+                element={<VerifyEmailPage />}
+              />
               <Route path="*" element={<PageNotFoundPage />} />
               <Route
                 path="/scholarships/create/upload"
