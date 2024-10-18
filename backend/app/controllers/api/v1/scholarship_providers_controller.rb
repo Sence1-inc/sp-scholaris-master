@@ -135,16 +135,34 @@ module Api
           render json: {message: "No applications found.", scholarship_applications: [], total_count: 0}, status: :ok
         end
       end
+
+      def update_scholarship_application
+        user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+        
+        if (user.parent_id && @scholarship_provider.user.email_address != User.find(user.parent_id).email_address) && (user.parent_id != ENV['PARENT_ID'].to_i)
+          render_unauthorized_response
+          return
+        end
+
+        scholarship_application = user.scholarship_provider.scholarship_applications.find(params[:id])
+        if scholarship_applications.find(params[:id]).update(notes: params[:notes], status: [:status])
+          render json: {
+            scholarship_application: scholarship_application
+          }, status: :ok
+        else
+          render json: {message: "No applications found.", errors: scholarship_application.errors}, status: :unprocessable_entity
+        end
+      end
     
       private
         # Use callbacks to share common setup or constraints between actions.
         def set_scholarship_provider
-          @scholarship_provider = ScholarshipProvider.find(params[:id])
+          @scholarship_provider = ScholarshipProvider.find(params[:scholarship_provider_id])
         end
     
         # Only allow a list of trusted parameters through.
         def scholarship_provider_params
-          params.require(:scholarship_provider).permit(:provider_name, :user_id)
+          params.require(:scholarship_provider).permit(:provider_name, :user_id).merge(notes: params[:notes]).merge(status: [:status])
         end
     end
   end

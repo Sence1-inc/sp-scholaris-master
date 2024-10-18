@@ -115,7 +115,7 @@ export type ScholarshipApplication = {
   id: number
   scholarship_name: string
   student_name: string
-  application_date: string
+  created_at: string
   recipient_email: string
   user_message: String
   updated_at: string
@@ -124,6 +124,8 @@ export type ScholarshipApplication = {
   user_id: number | null
   status: number
   notes: string
+  scholarship: Scholarship
+  user?: User
 }
 
 export type ScholarshipProvider = {

@@ -1,20 +1,22 @@
-import { Cancel, Delete, Edit, Save } from '@mui/icons-material'
-import { Box, IconButton, Modal, Tooltip, Typography } from '@mui/material'
+import { Cancel, Edit, Save } from '@mui/icons-material'
+import {
+  Box,
+  Button,
+  IconButton,
+  Menu,
+  MenuItem,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid'
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
-import CTAButton from '../../components/CustomButton/CTAButton'
-import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
-import HelperText from '../../components/HelperText/HelperText'
-import { PROVIDER_TYPE } from '../../constants/constants'
+import { APPLICATION_STATUSES } from '../../constants/constants'
 import { useSnackbar } from '../../context/SnackBarContext'
 import { useAppSelector } from '../../redux/store'
-import { ScholarshipApplication, User } from '../../redux/types'
-import { Errors } from '../SignUpPage/SignUpPage'
+import { ScholarshipApplication } from '../../redux/types'
 
 dayjs.extend(utc)
 
@@ -30,21 +32,13 @@ interface GridRowDef {
   notes: string
 }
 
-// interface UserCredentials {
-//   email_address: string
-//   password: string
-//   first_name: string
-//   last_name: string
-//   birthdate: Dayjs | Date | string | null
-//   is_active: number
-//   parent_id: number | null
-//   role: string
-// }
-
 const ApplicationsManagementPage = () => {
   const { showMessage } = useSnackbar()
   const user = useAppSelector((state) => state.persistedReducer.user)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [selectedStatus, setSelectedStatus] = useState<{
+    [key: number]: number
+  } | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false)
   const [isEditable, setIsEditable] = useState<boolean>(false)
@@ -53,72 +47,20 @@ const ApplicationsManagementPage = () => {
   const [rowCount, setRowCount] = useState<number>(0)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
-  // const [userCredentials, setUserCredentials] = useState<UserCredentials>({
-  //   email_address: '',
-  //   password: '',
-  //   first_name: '',
-  //   last_name: '',
-  //   birthdate: null,
-  //   is_active: 1,
-  //   parent_id: null,
-  //   role: PROVIDER_TYPE,
-  // })
-  // const [errors, setErrors] = useState<Errors>({
-  //   email_address: '',
-  //   password: '',
-  //   first_name: '',
-  //   last_name: '',
-  //   birthdate: '',
-  // })
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
+  const [menuButtonId, setMenuButtonId] = useState<number | null>(null)
 
-  // const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  // const isValidEmail = emailRegex.test(userCredentials.email_address)
-  // const isPasswordValid = userCredentials.password.length > 6
+  const open = Boolean(anchorEl)
 
-  // const validationConditions = [
-  //   {
-  //     condition: !isValidEmail || !userCredentials.email_address,
-  //     field: 'email_address',
-  //     message: 'Please provide a valid email address.',
-  //   },
-  //   {
-  //     condition: !isPasswordValid || !userCredentials.password,
-  //     field: 'password',
-  //     message: 'Password must be at least 6 characters.',
-  //   },
-  //   {
-  //     condition: !userCredentials.first_name,
-  //     field: 'first_name',
-  //     message: 'Please provide your first name.',
-  //   },
-  //   {
-  //     condition: !userCredentials.last_name,
-  //     field: 'last_name',
-  //     message: 'Please provide your last name.',
-  //   },
-  //   {
-  //     condition:
-  //       !userCredentials.birthdate ||
-  //       isNaN(new Date(userCredentials.birthdate as string).getTime()) ||
-  //       new Date(userCredentials.birthdate as string) > new Date() ||
-  //       new Date(userCredentials.birthdate as string) < new Date('1920-01-01'),
-  //     field: 'birthdate',
-  //     message: 'Please provide your valid birthday.',
-  //   },
-  // ]
+  const handleClick = (event: React.MouseEvent<HTMLElement>, id: number) => {
+    setAnchorEl(event.currentTarget)
+    setMenuButtonId(id)
+  }
 
-  // useEffect(() => {
-  //   if (!isInitialLoad) {
-  //     const errorMessages: any = validationConditions
-  //       .filter(({ condition }) => condition)
-  //       .reduce((acc: any, item) => {
-  //         acc[item.field] = item.message
-  //         return acc
-  //       }, {})
-  //     setErrors(errorMessages)
-  //   }
-  //   // eslint-disable-next-line
-  // }, [userCredentials, isInitialLoad])
+  const handleClose = () => {
+    setAnchorEl(null)
+    setMenuButtonId(null)
+  }
 
   const columns = [
     {
@@ -143,7 +85,7 @@ const ApplicationsManagementPage = () => {
       flex: 1.5,
     },
     {
-      field: 'application_date',
+      field: 'created_at',
       headerName: 'Application Date',
       type: 'string',
       editable: false,
@@ -161,7 +103,8 @@ const ApplicationsManagementPage = () => {
       headerName: 'Status',
       type: 'string',
       editable: isEditable,
-      flex: 0.5,
+      flex: 1,
+      renderCell: (params: GridRenderCellParams) => renderStatus(params),
     },
     {
       field: 'updated_at',
@@ -191,132 +134,132 @@ const ApplicationsManagementPage = () => {
     setPageSize(params.pageSize)
   }
 
-  // const handleUserCredentials = (inputValue: string, key: string) => {
-  //   setUserCredentials((prevUserCredentials) => ({
-  //     ...prevUserCredentials,
-  //     [key]: inputValue,
-  //   }))
-  // }
+  const formatStatus = (status: string) => {
+    return status
+      .split('_')
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ')
+  }
 
-  // const handleAddAccount = async () => {
-  //   userCredentials.parent_id = user.id as number
-  //   setIsInitialLoad(false)
+  const renderStatus = (params: GridRenderCellParams) => {
+    return (
+      <Box>
+        <Button
+          variant="text"
+          id="demo-positioned-button"
+          aria-controls={open ? 'demo-positioned-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={(event) => handleClick(event, params.id as number)}
+        >
+          {formatStatus(
+            APPLICATION_STATUSES[selectedStatus?.[Number(params.id)] as number]
+          )}
+        </Button>
+        <Menu
+          id="demo-positioned-menu"
+          aria-labelledby="demo-positioned-button"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          {Object.entries(APPLICATION_STATUSES).map(([id, status]) => {
+            return (
+              <MenuItem
+                key={id}
+                onClick={() => {
+                  setSelectedStatus((prev) => ({
+                    ...prev,
+                    [menuButtonId as number]: Number(id),
+                  }))
+                  handleClose()
+                }}
+              >
+                {formatStatus(status)}
+              </MenuItem>
+            )
+          })}
+        </Menu>
+      </Box>
+    )
+  }
 
-  //   const errorMessages = validationConditions
-  //     .filter(({ condition }) => condition)
-  //     .map(({ message }) => message)
-  //   const hasErrors = errorMessages.length > 0
+  const handleEditAccount = async (params: GridRenderCellParams) => {
+    const data = params.row
 
-  //   if (hasErrors) {
-  //     showMessage('Please fill in the required details.', 'error')
+    try {
+      const response = await axiosInstance.put(
+        `/api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarship_applications/${data.id}`,
+        { notes: data.notes, status: selectedStatus?.[params.row.id] },
+        { withCredentials: true }
+      )
 
-  //     const newErrors = validationConditions.reduce<{ [key: string]: string }>(
-  //       (acc, { condition, field, message }) => {
-  //         if (condition) {
-  //           acc[field] = message
-  //         }
-  //         return acc
-  //       },
-  //       {}
-  //     )
+      const newRowData = rowData.map((row) => {
+        if (row.id === response.data.user.id) {
+          return {
+            ...row,
+            id: response.data.id,
+            scholarship_id: response.data.scholarship_id,
+            scholarship_name: response.data.scholarship.scholarship_name,
+            student_name: `${response.data.user?.first_name} ${response.data.user?.last_name}`,
+            created_at: new Date(response.data.created_at).toDateString(),
+            student_email: response.data.student_email,
+            status: response.data.status,
+            updated_at: new Date(response.data.updated_at).toDateString(),
+            notes: response.data.notes,
+          }
+        }
 
-  //     setErrors({ ...errors, ...newErrors })
-  //   } else {
-  //     try {
-  //       setIsLoading(true)
-  //       const response = await axiosInstance.post('/api/v1/users', {
-  //         ...userCredentials,
-  //         birthdate: dayjs(userCredentials.birthdate).utc().format(),
-  //       })
+        return row
+      })
 
-  //       const data = {
-  //         // id: response.data.user.id,
-  //         // email_address: response.data.user.email_address,
-  //         // password: response.data.user.password_digest,
-  //         // first_name: response.data.user.first_name,
-  //         // last_name: response.data.user.last_name,
-  //         // birthdate: new Date(response.data.user.birthdate).toDateString(),
-  //         scholarship_id: response.data.scholarship_id
-  // scholarship_name: string
-  // student_name: string
-  // application_date: Dayjs | Date | string | null
-  // email_address: string
-  // status: string
-  // updated_at: Dayjs | Date | string | null
-  // notes: string
-  //       }
+      const statuses = response.data.scholarship_applications.reduce(
+        (
+          acc: { [key: number]: number },
+          scholarship_application: ScholarshipApplication
+        ) => {
+          acc[Number(scholarship_application.id)] =
+            scholarship_application.status
+          return acc
+        },
+        {}
+      )
 
-  //       setIsModalOpen(false)
-  //       setIsLoading(false)
-  //       setIsModalOpen(false)
-  //       setRowData([...rowData, data])
-  //       showMessage(response.data.message, 'success')
-  //     } catch (error: any) {
-  //       setIsLoading(false)
-  //       showMessage(error.response.data.message, 'error')
-  //     }
-  //   }
-  // }
-
-  // const handleEditAccount = async (params: GridRenderCellParams) => {
-  //   const data = params.row
-
-  //   try {
-  //     const response = await axiosInstance.put(`/api/v1/users/${data.id}`, data)
-
-  //     const newRowData = rowData.map((row) => {
-  //       if (row.id === response.data.user.id) {
-  //         return {
-  //           ...row,
-  //           email_address: response.data.user.email_address,
-  //           password: response.data.user.password_digest,
-  //           first_name: response.data.user.first_name,
-  //           last_name: response.data.user.last_name,
-  //           birthdate: new Date(response.data.user.birthdate).toDateString(),
-  //         }
-  //       }
-
-  //       return row
-  //     })
-  //     setIsEditable(false)
-  //     setRowData(newRowData)
-  //     showMessage(response.data.message, 'success')
-  //   } catch (error: any) {
-  //     showMessage(error.response.data.message, 'error')
-  //   }
-  // }
-
-  // const handleDeleteAccount = async (selectedRowId: number) => {
-  //   try {
-  //     const response = await axiosInstance.delete(
-  //       `/api/v1/users/${selectedRowId}`
-  //     )
-  //     showMessage(response.data.message, 'success')
-  //     setRowData((prevRowData) =>
-  //       prevRowData.filter((row) => row.id !== selectedRowId)
-  //     )
-  //   } catch (error: any) {
-  //     showMessage(error.response.data.message, 'error')
-  //   }
-  // }
+      setSelectedStatus(statuses)
+      setIsEditable(false)
+      setRowData(newRowData)
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.message, 'error')
+    }
+  }
 
   useEffect(() => {
-    const getChildren = async () => {
+    const getApplications = async () => {
       try {
         setIsDataLoading(true)
         const response = await axiosInstance.get(
           `/api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarship_applications?page=${page + 1}&limit=${pageSize}`
         )
-
+        console.log(response.data)
         const row = response.data.scholarship_applications.map(
           (scholarship_application: ScholarshipApplication) => {
             return {
               id: scholarship_application.id,
               scholarship_id: scholarship_application.scholarship_id,
-              scholarship_name: scholarship_application.scholarship_name,
-              student_name: scholarship_application.student_name,
-              application_date: new Date(
-                scholarship_application.application_date
+              scholarship_name:
+                scholarship_application.scholarship.scholarship_name,
+              student_name: `${scholarship_application.user?.first_name} ${scholarship_application.user?.last_name}`,
+              created_at: new Date(
+                scholarship_application.created_at
               ).toDateString(),
               student_email: scholarship_application.student_email,
               status: scholarship_application.status,
@@ -328,6 +271,19 @@ const ApplicationsManagementPage = () => {
           }
         )
 
+        const statuses = response.data.scholarship_applications.reduce(
+          (
+            acc: { [key: number]: number },
+            scholarship_application: ScholarshipApplication
+          ) => {
+            acc[Number(scholarship_application.id)] =
+              scholarship_application.status
+            return acc
+          },
+          {}
+        )
+
+        setSelectedStatus(statuses)
         setIsDataLoading(false)
         setRowCount(response.data.total_count)
         setRowData(row)
@@ -337,7 +293,7 @@ const ApplicationsManagementPage = () => {
       }
     }
 
-    getChildren()
+    getApplications()
     // eslint-disable-next-line
   }, [])
 
@@ -348,7 +304,7 @@ const ApplicationsManagementPage = () => {
         <Tooltip title="Save">
           <IconButton
             size="small"
-            // onClick={() => handleEditAccount(params)}
+            onClick={() => handleEditAccount(params)}
             sx={{ color: '#06A5FF' }}
           >
             <Save />
@@ -375,21 +331,6 @@ const ApplicationsManagementPage = () => {
             sx={{ color: '#1F4BEA' }}
           >
             <Edit />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete">
-          <IconButton
-            onClick={() => {
-              showMessage(
-                'Are you sure you want to delete?',
-                'warning',
-                8000
-                // () => handleDeleteAccount(params.row.id)
-              )
-            }}
-            sx={{ color: '#F50F0F' }}
-          >
-            <Delete />
           </IconButton>
         </Tooltip>
       </Box>

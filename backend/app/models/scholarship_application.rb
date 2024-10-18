@@ -35,6 +35,6 @@ class ScholarshipApplication < ApplicationRecord
   default_scope -> { where(deleted_at: nil) }
 
   def as_json(options = {})
-    super(options.merge(include: [:scholarship], except: [:created_at, :deleted_at]))
+    super(options.merge(include: [:scholarship, :user], except: [:deleted_at]))
   end
 end
