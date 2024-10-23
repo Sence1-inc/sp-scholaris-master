@@ -1,6 +1,8 @@
 class ScholarshipApplication < ApplicationRecord
   belongs_to :scholarship
-  belongs_to :user
+  belongs_to :user, optional: true
+
+  validates :user, presence: false
 
   SUBMITTED = 1
   UNDER_REVIEW = 2

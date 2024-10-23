@@ -1,6 +1,7 @@
 module Api
   module V1
     class ScholarshipProvidersController < ApplicationController
+      skip_before_action :verify_authenticity_token
       before_action :set_scholarship_provider, only: %i[ show edit update destroy scholarships ]
     
       # GET /scholarship_providers or /scholarship_providers.json
@@ -137,16 +138,18 @@ module Api
       end
 
       def update_scholarship_application
+        puts "WAW"
         user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
-        
+        puts "WEW"
         if (user.parent_id && @scholarship_provider.user.email_address != User.find(user.parent_id).email_address) && (user.parent_id != ENV['PARENT_ID'].to_i)
           render_unauthorized_response
           return
         end
-
-        scholarship_application = user.scholarship_provider.scholarship_applications.find(params[:id])
-        if scholarship_applications.find(params[:id]).update(notes: params[:notes], status: [:status])
+        puts "WIW"
+        scholarship_application = user.scholarship_provider.scholarship_applications.find(params[:scholarship_application_id])
+        if scholarship_application.update(notes: params[:notes], status: params[:status])
           render json: {
+            message: "Application successfully updated",
             scholarship_application: scholarship_application
           }, status: :ok
         else
@@ -157,7 +160,7 @@ module Api
       private
         # Use callbacks to share common setup or constraints between actions.
         def set_scholarship_provider
-          @scholarship_provider = ScholarshipProvider.find(params[:scholarship_provider_id])
+          @scholarship_provider = ScholarshipProvider.find(params[:id])
         end
     
         # Only allow a list of trusted parameters through.

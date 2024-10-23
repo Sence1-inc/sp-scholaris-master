@@ -39,14 +39,11 @@ const ApplicationsManagementPage = () => {
   const [selectedStatus, setSelectedStatus] = useState<{
     [key: number]: number
   } | null>(null)
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false)
   const [isEditable, setIsEditable] = useState<boolean>(false)
   const [page, setPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
   const [rowCount, setRowCount] = useState<number>(0)
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
   const [menuButtonId, setMenuButtonId] = useState<number | null>(null)
 
@@ -203,37 +200,44 @@ const ApplicationsManagementPage = () => {
       )
 
       const newRowData = rowData.map((row) => {
-        if (row.id === response.data.user.id) {
+        if (row.id === response.data.scholarship_application.id) {
           return {
             ...row,
-            id: response.data.id,
-            scholarship_id: response.data.scholarship_id,
-            scholarship_name: response.data.scholarship.scholarship_name,
-            student_name: `${response.data.user?.first_name} ${response.data.user?.last_name}`,
-            created_at: new Date(response.data.created_at).toDateString(),
-            student_email: response.data.student_email,
-            status: response.data.status,
-            updated_at: new Date(response.data.updated_at).toDateString(),
-            notes: response.data.notes,
+            id: response.data.scholarship_application.id,
+            scholarship_id:
+              response.data.scholarship_application.scholarship_id,
+            scholarship_name:
+              response.data.scholarship_application.scholarship
+                .scholarship_name,
+            student_name: `${response.data.scholarship_application.user ? response.data.scholarship_application.user?.first_name : 'No student account'} ${response.data.scholarship_application.user ? response.data.scholarship_application.user?.last_name : ''}`,
+            created_at: new Date(
+              response.data.scholarship_application.created_at
+            ).toDateString(),
+            student_email: response.data.scholarship_application.student_email,
+            status: response.data.scholarship_application.status,
+            updated_at: new Date(
+              response.data.scholarship_application.updated_at
+            ).toDateString(),
+            notes: response.data.scholarship_application.notes,
           }
         }
 
         return row
       })
 
-      const statuses = response.data.scholarship_applications.reduce(
-        (
-          acc: { [key: number]: number },
-          scholarship_application: ScholarshipApplication
-        ) => {
-          acc[Number(scholarship_application.id)] =
-            scholarship_application.status
-          return acc
-        },
-        {}
-      )
+      // const statuses = response.data.scholarship_application.reduce(
+      //   (
+      //     acc: { [key: number]: number },
+      //     scholarship_application: ScholarshipApplication
+      //   ) => {
+      //     acc[Number(scholarship_application.id)] =
+      //       scholarship_application.status
+      //     return acc
+      //   },
+      //   {}
+      // )
 
-      setSelectedStatus(statuses)
+      // setSelectedStatus(statuses)
       setIsEditable(false)
       setRowData(newRowData)
       showMessage(response.data.message, 'success')
@@ -257,7 +261,7 @@ const ApplicationsManagementPage = () => {
               scholarship_id: scholarship_application.scholarship_id,
               scholarship_name:
                 scholarship_application.scholarship.scholarship_name,
-              student_name: `${scholarship_application.user?.first_name} ${scholarship_application.user?.last_name}`,
+              student_name: `${scholarship_application.user ? scholarship_application.user?.first_name : 'No student account'} ${scholarship_application.user ? scholarship_application.user?.last_name : ''}`,
               created_at: new Date(
                 scholarship_application.created_at
               ).toDateString(),

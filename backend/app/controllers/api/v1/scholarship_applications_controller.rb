@@ -82,8 +82,10 @@ module Api
           return render json: { message: 'Application from this email and scholarship already exists' }, status: :conflict
         end
 
+        user_id = nil
         if cookies[:access_token] && cookies[:email]
           user = User::find_by(email_address: JwtService.decode(cookies[:email])['email'])
+          user_id = user.id
         else
           user = nil
         end
@@ -93,7 +95,7 @@ module Api
           user_message: user_message,
           scholarship_id: scholarship.id,
           student_email: student_email,
-          user_id: user.id,
+          user_id: user_id,
 
         )
 
@@ -115,7 +117,6 @@ module Api
             render json: { message: 'Application email sent' }, status: :ok
           rescue StandardError => e
             Rails.logger.error("Failed to send email: #{e.message}")
-            render json: { message: e.message, backtrace: e.backtrace }, status: :internal_server_error
           end
         else
           render json: { message: "Failed to send email", details: application.errors.full_messages }, status: :unprocessable_entity
