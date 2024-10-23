@@ -90,6 +90,16 @@ const AuthenticatedStudent = () => {
         gap: 4,
       }}
     >
+      <ListItem sx={{ width: 'auto' }}>
+        <Typography
+          variant="body1"
+          component={Link}
+          to="/student/applications"
+          sx={{ color: 'common.white', textDecoration: 'none' }}
+        >
+          Applications
+        </Typography>
+      </ListItem>
       <ListItem disablePadding sx={{ width: 'auto' }}>
         <CTAButton
           loading={false}

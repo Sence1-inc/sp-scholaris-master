@@ -138,14 +138,13 @@ module Api
       end
 
       def update_scholarship_application
-        puts "WAW"
         user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
-        puts "WEW"
+
         if (user.parent_id && @scholarship_provider.user.email_address != User.find(user.parent_id).email_address) && (user.parent_id != ENV['PARENT_ID'].to_i)
           render_unauthorized_response
           return
         end
-        puts "WIW"
+
         scholarship_application = user.scholarship_provider.scholarship_applications.find(params[:scholarship_application_id])
         if scholarship_application.update(notes: params[:notes], status: params[:status])
           render json: {

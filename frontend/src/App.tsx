@@ -34,11 +34,16 @@ import { useAppSelector } from './redux/store'
 import { User } from './redux/types'
 import { SnackbarProvider } from './context/SnackBarContext'
 import ApplicationsManagementPage from './containers/ApplicationsManagementPage/ApplicationsManagementPage'
+import StudentApplicationsManagementPage from './containers/ApplicationsManagementPage/StudentApplicationsManagementPage'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
     <Route path="/" element={<TeaserStudent />} />
     <Route path="survey" element={<SurveyPage user_type="student" />} />
+    <Route
+      path="/applications"
+      element={<StudentPrivate component={StudentApplicationsManagementPage} />}
+    />
     <Route
       path="/account"
       element={<StudentPrivate component={StudentDashboardPage} />}
