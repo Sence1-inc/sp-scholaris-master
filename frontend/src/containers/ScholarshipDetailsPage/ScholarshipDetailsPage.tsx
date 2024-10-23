@@ -233,6 +233,7 @@ export const ScholarshipDetailsPage: React.FC<
           pdf_file: '',
         })
       } catch (error: any) {
+        setIsLoading(false)
         showMessage(error.response?.data?.message ?? 'Email not sent.', 'error')
         if (
           error.response &&

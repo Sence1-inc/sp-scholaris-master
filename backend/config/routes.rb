@@ -7,7 +7,9 @@ Rails.application.routes.draw do
         post 'send_email', on: :collection, to: 'scholarship_applications#send_email', as: 'send_email'
       end
       post 'register', to: 'users#register', as: 'users_register'
-      resources :users
+      resources :users do
+        get 'scholarship_applications', on: :member, to: 'users#scholarship_applications'
+      end
       post 'login', to: 'users#login', as: 'users_login'
       post 'refresh', to: 'users#refresh', as: 'users_refresh'
       get 'verify_email/:token', to: 'users#verify', as: 'users_verify_email'
@@ -32,6 +34,8 @@ Rails.application.routes.draw do
       resources :schools
       resources :scholarship_providers do
         get 'scholarships', on: :member, to: 'scholarship_providers#scholarships', as: 'scholarship_providers_scholarships'
+        get 'scholarship_applications', on: :member, to: 'scholarship_providers#scholarship_applications'
+        put 'scholarship_applications/:scholarship_application_id', on: :member, to: 'scholarship_providers#update_scholarship_application', as: 'scholarship_providers_update_scholarship_applications'
       end
       resources :scholarship_provider_profiles
       resources :regions

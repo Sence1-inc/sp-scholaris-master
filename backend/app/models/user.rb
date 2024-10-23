@@ -7,11 +7,10 @@ class User < ApplicationRecord
   has_many :children, class_name: 'User', foreign_key: 'parent_id'
   belongs_to :parent, class_name: 'User', optional: true
   has_many :user_permissions, dependent: :destroy
+  has_many :scholarship_applications
   has_many :scholarship_providers, through: :children
   has_many :scholarships, through: :scholarship_provider
 
-  validates :first_name, presence: true
-  validates :last_name, presence: true
   validates :email_address, presence: true
   validate :birthdate_is_valid
 
@@ -31,8 +30,6 @@ class User < ApplicationRecord
       elsif parsed_birthdate < Date.new(1920, 1, 1)
         errors.add(:birthdate, "must be valid.")
       end
-    else
-      errors.add(:birthdate, "can't be blank.")
     end
   end
 end
