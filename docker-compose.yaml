@@ -59,8 +59,73 @@ services:
       - "8025:8025"
     networks:
       - mynetwork
+  cms:
+    image: strapi:latest
+    build:
+      context: ./cms
+    restart: unless-stopped
+    # env_file: .env
+    environment:
+      DATABASE_CLIENT: mysql
+      DATABASE_HOST: strapidb
+      DATABASE_PORT: 3308
+      DATABASE_NAME: strapi
+      DATABASE_USERNAME: user
+      DATABASE_PASSWORD: password
+      JWT_SECRET: f08253f0265878a3e476787bffb4fbf1a0666c623593a3842cb8e70acd402f8094c24a0a7e8aa3c023d4dcb3e01bbeb3c085eaa81b54beb06003a0f2d5a8502f
+      ADMIN_JWT_SECRET: c5b036a319070a4004239850c625f9cfa343571d71d319329889f5d3bea5a5c454451c226925da5ecbca0508b861431ef4d36fa33b6855891fd2bd26e90a4b1f
+      APP_KEYS: ehlVrO9CCGnJXUGzsOGZWb6Taz8UfR5v
+      NODE_ENV: development
+    volumes:
+      - ./cms/config:/opt/app/config
+      - ./cms/src:/opt/app/src
+      - ./cms/package.json:/opt/package.json
+      - ./cms/yarn.lock:/opt/yarn.lock
+      - ./cms/.env:/opt/app/.env
+      - ./cms/public/uploads:/opt/app/public/uploads
+      - strapi_node_modules:/opt/node_modules
+    ports:
+      - "1337:1337"
+    networks:
+      - mynetwork
+    depends_on:
+      - strapidb
+
+  strapidb:
+    container_name: strapidb
+    platform: linux/amd64 #for platform error on Apple M1 chips
+    restart: unless-stopped
+    # env_file: .env
+    image: mysql:5.7
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_USER: user
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: strapi
+    # volumes:
+    #   - ./data:/var/lib/mysql # if you want to use a bind folder
+    ports:
+      - "3308:3306"
+    networks:
+      - mynetwork
+
+    # image: strapi/strapi
+    # container_name: cms_container
+    # volumes:
+    #   - ./cms:/srv/app
+    #   - ./cms/tmp:/srv/app/tmp
+    # ports:
+    #   - "1337:1337"
+    # environment:
+    #   DATABASE_CLIENT: sqlite
+    #   DATABASE_FILENAME: /srv/app/tmp/data.db
+    #   NODE_ENV: development
+    # networks:
+    #   - mynetwork
 volumes:
   node_modules:
+  strapi_node_modules:
 networks:
   mynetwork:
     name: mynetwork
