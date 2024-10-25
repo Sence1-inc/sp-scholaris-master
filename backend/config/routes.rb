@@ -34,7 +34,7 @@ Rails.application.routes.draw do
       resources :schools
       resources :scholarship_providers do
         get 'scholarships', on: :member, to: 'scholarship_providers#scholarships', as: 'scholarship_providers_scholarships'
-        get 'scholarship_applications', on: :member, to: 'scholarship_providers#scholarship_applications'
+        get 'scholarship_applications', on: :member, to: 'scholarship_providers#show_scholarship_applications', as: 'scholarship_providers_show_scholarship_applications'
         put 'scholarship_applications/:scholarship_application_id', on: :member, to: 'scholarship_providers#update_scholarship_application', as: 'scholarship_providers_update_scholarship_applications'
       end
       resources :scholarship_provider_profiles

@@ -2,7 +2,7 @@ module Api
   module V1
     class ScholarshipProvidersController < ApplicationController
       skip_before_action :verify_authenticity_token
-      before_action :set_scholarship_provider, only: %i[ show edit update destroy scholarships ]
+      before_action :set_scholarship_provider, only: %i[ show edit update destroy scholarships show_scholarship_applications update_scholarship_application]
     
       # GET /scholarship_providers or /scholarship_providers.json
       def index
@@ -115,15 +115,16 @@ module Api
         end
       end
 
-      def scholarship_applications
+      def show_scholarship_applications
         user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
-        
+
         if (user.parent_id && @scholarship_provider.user.email_address != User.find(user.parent_id).email_address) && (user.parent_id != ENV['PARENT_ID'].to_i)
           render_unauthorized_response
           return
         end
 
-        scholarship_applications = user.scholarship_provider.scholarship_applications.includes(:scholarship).page(params[:page] || 1).per(params[:limit] || 10)
+        parent = user.parent_id != nil ? user.parent : user
+        scholarship_applications =  parent.scholarship_provider.scholarship_applications.includes(:scholarship).page(params[:page] || 1).per(params[:limit] || 10)
         if scholarship_applications.exists?
           render json: {
             scholarship_applications:scholarship_applications.as_json,
@@ -145,7 +146,8 @@ module Api
           return
         end
 
-        scholarship_application = user.scholarship_provider.scholarship_applications.find(params[:scholarship_application_id])
+        parent = user.parent_id != nil ? user.parent : user
+        scholarship_application = parent.scholarship_provider.scholarship_applications.find(params[:scholarship_application_id])
         if scholarship_application.update(notes: params[:notes], status: params[:status])
           render json: {
             message: "Application successfully updated",
