@@ -299,7 +299,7 @@ const ApplicationsManagementPage = () => {
 
     getApplications()
     // eslint-disable-next-line
-  }, [])
+  }, [page])
 
   const renderActions = (params: GridRenderCellParams) => {
     const originalData = [...rowData]
@@ -444,14 +444,14 @@ const ApplicationsManagementPage = () => {
           '& .MuiDataGrid-overlay': {
             zIndex: '20',
           },
-          '.MuiDataGrid-overlayWrapper': {
-            minHeight: '200px',
-            height: rowData.length > 0 ? 'auto !important' : '200px !important',
-          },
-          '.MuiDataGrid-overlayWrapperInner': {
-            minHeight: '200px',
-            height: rowData.length > 0 ? 'auto !important' : '200px !important',
-          },
+          // '.MuiDataGrid-overlayWrapper': {
+          //   minHeight: '200px',
+          //   height: rowData.length > 0 ? 'auto !important' : '200px !important',
+          // },
+          // '.MuiDataGrid-overlayWrapperInner': {
+          //   minHeight: '200px',
+          //   height: rowData.length > 0 ? 'auto !important' : '200px !important',
+          // },
           borderRadius: '16px',
           fontFamily: 'Outfit',
           fontSize: {
