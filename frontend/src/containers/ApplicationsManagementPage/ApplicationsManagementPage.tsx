@@ -191,10 +191,17 @@ const ApplicationsManagementPage = () => {
               <MenuItem
                 key={id}
                 onClick={() => {
-                  setSelectedStatus((prev) => ({
-                    ...prev,
-                    [menuButtonId as number]: Number(id),
-                  }))
+                  showMessage(
+                    'Are you sure of this update? It will be displayed to the student.',
+                    'warning',
+                    8000,
+                    () =>
+                      setSelectedStatus((prev) => ({
+                        ...prev,
+                        [menuButtonId as number]: Number(id),
+                      }))
+                  )
+
                   handleClose()
                 }}
               >
