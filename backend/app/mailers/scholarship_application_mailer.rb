@@ -18,17 +18,5 @@ class ScholarshipApplicationMailer < ApplicationMailer
       format.html
       attachments['application.pdf'] = pdf_attachment.read if pdf_attachment.present?
     end
-
-    mail(to: student_email, subject: "You've successfully sent your scholarship application for #{scholarship_name}") do |format|
-      format.html
-      attachments['application.pdf'] = pdf_attachment.read if pdf_attachment.present?
-    end
   end
-
-  # def mail_to_student(student_email, scholarship_name, pdf_attachment)
-  #   mail(to: student_email, subject: "You've successfully sent your scholarship application for #{scholarship_name}") do |format|
-  #     format.html
-  #     attachments['application.pdf'] = pdf_attachment.read if pdf_attachment.present?
-  #   end
-  # end
 end

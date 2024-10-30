@@ -114,6 +114,10 @@ module Api
             pdf_attachment
           ).deliver_now
 
+          ScholarshipApplicationStudentMailer.mail_to_student(
+            student_email, scholarship_name, pdf_attachment, provider_name
+          ).deliver_now
+
           if application.save
             render json: { message: 'Application email sent' }, status: :ok
           else
