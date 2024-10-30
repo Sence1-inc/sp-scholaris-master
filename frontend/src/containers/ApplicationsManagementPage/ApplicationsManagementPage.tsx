@@ -101,6 +101,13 @@ const ApplicationsManagementPage = () => {
       type: 'string',
       editable: isEditable,
       flex: 1,
+      renderHeader: () => {
+        return isEditable ? (
+          <span style={{ backgroundColor: '#f36b3b' }}>Update the Status</span>
+        ) : (
+          <span>Status</span>
+        )
+      },
       renderCell: (params: GridRenderCellParams) => renderStatus(params),
     },
     {
@@ -116,6 +123,17 @@ const ApplicationsManagementPage = () => {
       type: 'string',
       editable: isEditable,
       flex: 1,
+      renderHeader: () => {
+        return isEditable ? (
+          <span style={{ backgroundColor: '#f36b3b' }}>Edit your Notes</span>
+        ) : (
+          <span>Notes</span>
+        )
+      },
+      renderCell: (params: GridRenderCellParams) =>
+        params.value ?? (
+          <span style={{ color: 'lightgray' }}>Add your notes here</span>
+        ),
     },
     {
       field: 'actions',
@@ -173,10 +191,17 @@ const ApplicationsManagementPage = () => {
               <MenuItem
                 key={id}
                 onClick={() => {
-                  setSelectedStatus((prev) => ({
-                    ...prev,
-                    [menuButtonId as number]: Number(id),
-                  }))
+                  showMessage(
+                    'Are you sure of this update? It will be displayed to the student.',
+                    'warning',
+                    8000,
+                    () =>
+                      setSelectedStatus((prev) => ({
+                        ...prev,
+                        [menuButtonId as number]: Number(id),
+                      }))
+                  )
+
                   handleClose()
                 }}
               >
