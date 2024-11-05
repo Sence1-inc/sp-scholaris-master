@@ -230,3 +230,79 @@ export type User = {
   student_profile: StudentProfile
   scholarships?: ProviderScholarship[]
 }
+
+export type Article = {
+  id: number
+  documentId: string
+  excerpt: string
+  cover: Cover
+  author: string
+  content: string
+  title: string
+  description: string
+  slug: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+}
+
+export type Cover = {
+  id: number
+  documentId: string
+  name: string
+  alternativeText: string | null
+  caption: string | null
+  ext: string
+  mime: string
+  size: number
+  width: number
+  height: number
+  url: string
+  hash: string
+  previewUrl: string | null
+  provider: string
+  provider_metadata: Record<string, unknown> | null
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  formats: Formats
+}
+
+type ImageFormat = {
+  ext: string
+  url: string
+  hash?: string
+  mime?: string
+  name?: string
+  path?: string
+  size?: number
+  width?: number
+  height?: number
+}
+
+type Formats = {
+  large?: ImageFormat
+  medium?: ImageFormat
+  small?: ImageFormat
+  thumbnail?: ImageFormat
+}
+
+// export type Description = {
+//   type: string
+//   children: {
+//     type: string
+//     text: string
+//   }[]
+// }
+
+// export type Article = {
+//   id: number
+//   documentId: string
+//   excerpt: string
+//   Name: string
+//   Description: Description[]
+//   createdAt: string
+//   updatedAt: string
+//   publishedAt: string
+//   locale: string
+// }
