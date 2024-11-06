@@ -64,6 +64,8 @@ services:
     build: .
     image: strapi:latest
     restart: unless-stopped
+    env_file:
+      - ./cms/.env
     environment:
       DATABASE_CLIENT: mysql
       DATABASE_HOST: strapidb
@@ -71,10 +73,6 @@ services:
       DATABASE_NAME: strapidb
       DATABASE_USERNAME: root
       DATABASE_PASSWORD: password
-      JWT_SECRET: ${JWT_SECRET}
-      ADMIN_JWT_SECRET: HGw+TikDVKcwLBV++7BDwQ==
-      APP_KEYS: 32PODKBW2ZqUM4ZbAyrQZQ==,SbLNWa8h0oNVYiNopqm9Hw==,kB/A73IN8tpak1scrCzVZg==,kGWAHpm9y2pHEiCjVVXX8w==
-      NODE_ENV: development
     volumes:
       - ./cms/config:/opt/app/config
       - ./cms/src:/opt/app/src
@@ -90,7 +88,7 @@ services:
       - strapidb
   strapidb:
     container_name: strapidb
-    platform: linux/amd64 #for platform error on Apple M1 chips
+    platform: linux/amd64
     restart: unless-stopped
     image: mysql:5.7
     command: --default-authentication-plugin=mysql_native_password
