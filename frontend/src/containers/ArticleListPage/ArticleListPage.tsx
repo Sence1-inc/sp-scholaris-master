@@ -52,7 +52,12 @@ const ArticleListPage: React.FC = () => {
           <Grid item xs={12} sm={6} md={4} key={article.id}>
             <Card
               onClick={() => navigate(`/articles/${article.documentId}`)}
-              sx={{ cursor: 'pointer' }}
+              sx={{
+                cursor: 'pointer',
+                display: 'flex',
+                flexDirection: 'column',
+                height: '100%',
+              }}
             >
               {article.cover && (
                 <CardMedia
