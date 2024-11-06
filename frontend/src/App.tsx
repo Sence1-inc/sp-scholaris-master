@@ -12,6 +12,10 @@ import StudentPrivate from './components/PrivateRoute/StudentPrivateRoute'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import AccountManagementPage from './containers/AccountManagementPage/AccountManagementPage'
 import AddScholarshipViaCSVPage from './containers/AddScholarshipViaCSVPage/AddScholarshipViaCSVPage'
+import ApplicationsManagementPage from './containers/ApplicationsManagementPage/ApplicationsManagementPage'
+import StudentApplicationsManagementPage from './containers/ApplicationsManagementPage/StudentApplicationsManagementPage'
+import ArticleDetailPage from './containers/ArticleDetailPage/ArticleDetailPage'
+import ArticleListPage from './containers/ArticleListPage/ArticleListPage'
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage'
 import ProviderProfile from './containers/ProfilesPage/ProviderProfile/ProviderProfile'
@@ -29,12 +33,10 @@ import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAnd
 import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
 import VerifyEmailPage from './containers/VerifyEmailPage/VerifyEmailPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
+import { SnackbarProvider } from './context/SnackBarContext'
 import useGetScholarships from './hooks/useGetScholarships'
 import { useAppSelector } from './redux/store'
 import { User } from './redux/types'
-import { SnackbarProvider } from './context/SnackBarContext'
-import ApplicationsManagementPage from './containers/ApplicationsManagementPage/ApplicationsManagementPage'
-import StudentApplicationsManagementPage from './containers/ApplicationsManagementPage/StudentApplicationsManagementPage'
 
 const StudentRoutes: React.FC = () => (
   <Routes>
@@ -167,6 +169,8 @@ const App: React.FC = () => {
                 path="/verify-email/:token"
                 element={<VerifyEmailPage />}
               />
+              <Route path="/articles" element={<ArticleListPage />} />
+              <Route path="/articles/:id" element={<ArticleDetailPage />} />
               <Route path="*" element={<PageNotFoundPage />} />
               <Route
                 path="/scholarships/create/upload"
