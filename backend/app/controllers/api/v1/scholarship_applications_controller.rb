@@ -103,28 +103,32 @@ module Api
         scholarship_name = scholarship.scholarship_name
         pdf_attachment = params[:pdf_file].tempfile if params[:pdf_file].present?
 
-        begin
-          ScholarshipApplicationMailer.application_email(
-            recipient_email, 
-            user_message,
-            provider_name,
-            scholarship_name,
-            student_name, 
-            student_email,
-            pdf_attachment
-          ).deliver_now
-
-          # ScholarshipApplicationStudentMailer.mail_to_student(
-          #   student_email, scholarship_name, pdf_attachment, provider_name
-          # ).deliver_now
-
-          if application.save
-            render json: { message: 'Application email sent' }, status: :ok
-          else
-            render json: { message: "Failed to send email", details: application.errors.full_messages }, status: :unprocessable_entity
+        if application.save
+          begin
+            ScholarshipApplicationMailer.application_email(
+              recipient_email, 
+              user_message,
+              provider_name,
+              scholarship_name,
+              student_name, 
+              student_email,
+              pdf_attachment
+            ).deliver_now
+          rescue StandardError => e
+            Rails.logger.error("Failed to send email: #{e.message}")
           end
-        rescue StandardError => e
-          Rails.logger.error("Failed to send email: #{e.message}")
+
+          begin
+            ScholarshipApplicationStudentMailer.mail_to_student(
+              student_email, scholarship_name, pdf_attachment, provider_name, user_message, student_name
+            ).deliver_now
+          rescue StandardError => e
+            Rails.logger.error("Failed to send email: #{e.message}")
+          end
+
+          render json: { message: 'Application email sent' }, status: :ok
+        else
+          render json: { message: "Failed to send email", details: application.errors.full_messages }, status: :unprocessable_entity
         end
       end
 

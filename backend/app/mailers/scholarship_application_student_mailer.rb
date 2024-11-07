@@ -1,7 +1,7 @@
 class ScholarshipApplicationStudentMailer < ApplicationMailer
   default from: 'scholaris-support@sence1.com'
 
-  def mail_to_student(student_email, scholarship_name, pdf_attachment, provider_name)
+  def mail_to_student(student_email, scholarship_name, pdf_attachment, provider_name, user_message, student_name)
     @user_message = user_message
     @student_email = student_email
     @student_name = student_name
