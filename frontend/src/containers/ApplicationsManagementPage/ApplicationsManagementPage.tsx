@@ -421,7 +421,6 @@ const ApplicationsManagementPage = () => {
         }}
         pageSizeOptions={[10]}
         pagination
-        paginationMode="server"
         loading={isDataLoading}
         disableRowSelectionOnClick
         sx={{
