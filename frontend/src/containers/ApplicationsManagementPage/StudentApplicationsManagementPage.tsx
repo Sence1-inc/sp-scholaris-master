@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material'
 import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid'
 import dayjs, { Dayjs } from 'dayjs'
 import utc from 'dayjs/plugin/utc'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
 import { APPLICATION_STATUSES } from '../../constants/constants'
 import { useSnackbar } from '../../context/SnackBarContext'
@@ -30,7 +30,7 @@ const StudentApplicationsManagementPage = () => {
     [key: number]: number
   } | null>(null)
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false)
-  const [isEditable, setIsEditable] = useState<boolean>(false)
+  // const [isEditable, setIsEditable] = useState<boolean>(false)
   const [page, setPage] = useState<number>(0)
   const [pageSize, setPageSize] = useState<number>(10)
   const [rowCount, setRowCount] = useState<number>(0)
@@ -241,10 +241,10 @@ const StudentApplicationsManagementPage = () => {
           },
           '& .MuiDataGrid-row': {
             '&:nth-of-type(odd)': {
-              backgroundColor: isEditable ? '#fff' : '#D8D8D8',
+              backgroundColor: '#D8D8D8',
             },
             '&:nth-of-type(even)': {
-              backgroundColor: isEditable ? '#fff' : '#F1F1F1',
+              backgroundColor: '#F1F1F1',
             },
             '& .MuiDataGrid-cell': {
               position: 'relative',

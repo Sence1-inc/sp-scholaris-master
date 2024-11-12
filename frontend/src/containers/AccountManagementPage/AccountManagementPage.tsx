@@ -1,15 +1,12 @@
 import { Cancel, Delete, Edit, Save } from '@mui/icons-material'
 import { Box, IconButton, Modal, Tooltip, Typography } from '@mui/material'
 import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid'
-import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers'
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
-import dayjs, { Dayjs } from 'dayjs'
+import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
 import React, { useEffect, useState } from 'react'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
-import HelperText from '../../components/HelperText/HelperText'
 import { PROVIDER_TYPE } from '../../constants/constants'
 import { useSnackbar } from '../../context/SnackBarContext'
 import { useAppSelector } from '../../redux/store'
@@ -22,17 +19,11 @@ interface GridRowDef {
   id: number
   email_address: string
   password: string
-  first_name: string
-  last_name: string
-  birthdate: Dayjs | Date | string | null
 }
 
 interface UserCredentials {
   email_address: string
   password: string
-  first_name: string
-  last_name: string
-  birthdate: Dayjs | Date | string | null
   is_active: number
   parent_id: number | null
   role: string
@@ -53,9 +44,6 @@ const AccountManagementPage = () => {
   const [userCredentials, setUserCredentials] = useState<UserCredentials>({
     email_address: '',
     password: '',
-    first_name: '',
-    last_name: '',
-    birthdate: null,
     is_active: 1,
     parent_id: null,
     role: PROVIDER_TYPE,
@@ -63,9 +51,6 @@ const AccountManagementPage = () => {
   const [errors, setErrors] = useState<Errors>({
     email_address: '',
     password: '',
-    first_name: '',
-    last_name: '',
-    birthdate: '',
   })
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -82,25 +67,6 @@ const AccountManagementPage = () => {
       condition: !isPasswordValid || !userCredentials.password,
       field: 'password',
       message: 'Password must be at least 6 characters.',
-    },
-    {
-      condition: !userCredentials.first_name,
-      field: 'first_name',
-      message: 'Please provide your first name.',
-    },
-    {
-      condition: !userCredentials.last_name,
-      field: 'last_name',
-      message: 'Please provide your last name.',
-    },
-    {
-      condition:
-        !userCredentials.birthdate ||
-        isNaN(new Date(userCredentials.birthdate as string).getTime()) ||
-        new Date(userCredentials.birthdate as string) > new Date() ||
-        new Date(userCredentials.birthdate as string) < new Date('1920-01-01'),
-      field: 'birthdate',
-      message: 'Please provide your valid birthday.',
     },
   ]
 
@@ -131,72 +97,6 @@ const AccountManagementPage = () => {
       type: 'string',
       editable: false,
       flex: 1,
-    },
-    {
-      field: 'first_name',
-      headerName: 'First Name',
-      type: 'string',
-      editable: isEditable,
-      flex: 0.5,
-    },
-    {
-      field: 'last_name',
-      headerName: 'Last Name',
-      type: 'string',
-      editable: isEditable,
-      flex: 0.5,
-    },
-    {
-      field: 'birthdate',
-      headerName: 'Birthdate',
-      type: 'string',
-      editable: isEditable,
-      flex: 0.5,
-      renderCell: (params: GridRenderCellParams) => {
-        return isEditable ? (
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              onChange={(date) => {
-                const newRowData = rowData.map((row) => {
-                  if (row.id === params.row.id) {
-                    return {
-                      ...row,
-                      birthdate: dayjs(date).utc().format(),
-                    }
-                  }
-
-                  return row
-                })
-
-                setRowData(newRowData)
-              }}
-              value={
-                params.row.birthdate === null
-                  ? null
-                  : dayjs(params.row.birthdate)
-              }
-              slotProps={{
-                textField: {
-                  variant: 'standard',
-                  sx: {
-                    padding: '0',
-                    height: 'auto',
-                    backgroundColor: 'inherit',
-                    borderRadius: '0',
-                    border: 'none',
-                    boxShadow: 'none',
-                    '& .MuiInputBase-input': {
-                      fontSize: '1rem',
-                    },
-                  },
-                },
-              }}
-            />
-          </LocalizationProvider>
-        ) : (
-          params.row.birthdate
-        )
-      },
     },
     {
       field: 'actions',
@@ -247,16 +147,12 @@ const AccountManagementPage = () => {
         setIsLoading(true)
         const response = await axiosInstance.post('/api/v1/users', {
           ...userCredentials,
-          birthdate: dayjs(userCredentials.birthdate).utc().format(),
         })
 
         const data = {
           id: response.data.user.id,
           email_address: response.data.user.email_address,
           password: response.data.user.password_digest,
-          first_name: response.data.user.first_name,
-          last_name: response.data.user.last_name,
-          birthdate: new Date(response.data.user.birthdate).toDateString(),
         }
 
         setIsModalOpen(false)
@@ -326,14 +222,11 @@ const AccountManagementPage = () => {
             id: account.id,
             email_address: account.email_address,
             password: account.password_digest,
-            first_name: account.first_name,
-            last_name: account.last_name,
-            birthdate: new Date(account.birthdate).toDateString(),
           }
         })
 
         setIsDataLoading(false)
-        setRowCount(response.data.total_count)
+        setRowCount(response.data.meta.total_count)
         setRowData(row)
       } catch (error: any) {
         setIsDataLoading(false)
@@ -343,7 +236,7 @@ const AccountManagementPage = () => {
 
     getChildren()
     // eslint-disable-next-line
-  }, [])
+  }, [page])
 
   const renderActions = (params: GridRenderCellParams) => {
     const originalData = [...rowData]
@@ -513,61 +406,6 @@ const AccountManagementPage = () => {
             value={userCredentials.password}
             placeholder="Input your password"
           />
-          <CustomTextfield
-            styles={{ padding: '4px', borderRadius: '4px' }}
-            label="First name"
-            error={errors.first_name}
-            handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleUserCredentials(e.target.value, 'first_name')
-            }
-            value={userCredentials.first_name}
-            placeholder="Input your first name"
-          />
-          <CustomTextfield
-            styles={{ padding: '4px', borderRadius: '4px' }}
-            label="Last name"
-            error={errors.last_name}
-            handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleUserCredentials(e.target.value, 'last_name')
-            }
-            value={userCredentials.last_name}
-            placeholder="Input your last name"
-          />
-          <Box>
-            <Typography
-              sx={{
-                fontFamily: 'Roboto',
-                fontSize: '24px',
-                fontWeight: '700',
-                color: '#002147',
-              }}
-            >
-              Birthdate
-            </Typography>
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-              <DatePicker
-                onChange={(date) =>
-                  handleUserCredentials(date?.toString() as string, 'birthdate')
-                }
-                value={
-                  userCredentials.birthdate === null
-                    ? null
-                    : dayjs(userCredentials.birthdate)
-                }
-                slotProps={{
-                  textField: {
-                    variant: 'outlined',
-                    sx: {
-                      borderColor: errors.birthdate ? 'red' : '',
-                      padding: '4px',
-                      borderRadius: '4px',
-                    },
-                  },
-                }}
-              />
-              <HelperText error={errors.birthdate ? errors.birthdate : ''} />
-            </LocalizationProvider>
-          </Box>
           <CTAButton
             handleClick={handleAddAccount}
             label="Save"
@@ -589,7 +427,6 @@ const AccountManagementPage = () => {
         }}
         pageSizeOptions={[10]}
         pagination
-        paginationMode="server"
         loading={isDataLoading}
         disableRowSelectionOnClick
         sx={{
@@ -637,14 +474,14 @@ const AccountManagementPage = () => {
           '& .MuiDataGrid-overlay': {
             zIndex: '20',
           },
-          '.MuiDataGrid-overlayWrapper': {
-            minHeight: '200px',
-            height: rowData.length > 0 ? 'auto !important' : '200px !important',
-          },
-          '.MuiDataGrid-overlayWrapperInner': {
-            minHeight: '200px',
-            height: rowData.length > 0 ? 'auto !important' : '200px !important',
-          },
+          // '.MuiDataGrid-overlayWrapper': {
+          //   minHeight: '200px',
+          //   height: rowData.length > 0 ? 'auto !important' : '200px !important',
+          // },
+          // '.MuiDataGrid-overlayWrapperInner': {
+          //   minHeight: '200px',
+          //   height: rowData.length > 0 ? 'auto !important' : '200px !important',
+          // },
           borderRadius: '16px',
           fontFamily: 'Outfit',
           fontSize: {

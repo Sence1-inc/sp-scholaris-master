@@ -8,8 +8,8 @@ import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
+import { useSnackbar } from '../../context/SnackBarContext'
 import { useAppSelector } from '../../redux/store'
-import { useSnackbar } from '../../context/SnackBarContext';
 
 interface SignUpPageProps {}
 
@@ -17,15 +17,15 @@ export type Errors = {
   email_address: string
   password: string
   password2?: string
-  first_name: string
-  last_name: string
+  first_name?: string
+  last_name?: string
   middle_name?: string
-  birthdate: string
+  birthdate?: string
 }
 
 const SignUpPage: React.FC<SignUpPageProps> = () => {
   const navigate = useNavigate()
-  const { showMessage } = useSnackbar();
+  const { showMessage } = useSnackbar()
   const [userCredentials, setUserCredentials] = useState({
     email_address: '',
     password: '',
@@ -162,7 +162,10 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         )
         if (response.data) {
           setButtonLoading(false)
-          showMessage("We've sent you a verification email. Please confirm your email address before you log in.", 'success')
+          showMessage(
+            "We've sent you a verification email. Please confirm your email address before you log in.",
+            'success'
+          )
           setErrors({
             email_address: '',
             password: '',
@@ -176,8 +179,11 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       } catch (error: any) {
         if (error) {
           setButtonLoading(false)
-          showMessage(error.response.data.error ??
-            'Registration failed. Please try again.', 'error')
+          showMessage(
+            error.response.data.error ??
+              'Registration failed. Please try again.',
+            'error'
+          )
           const errors = {
             email_address: '',
             password: '',

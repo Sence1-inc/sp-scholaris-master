@@ -15,7 +15,7 @@ module Api
 
     # GET /users/1 or /users/1.json
     def show
-      children = @user.children.includes(:scholarship_provider, :role, :student_profile).page(params[:page]).per(params[:pageSize])
+      children = @user.children.includes(:scholarship_provider, :role, :student_profile).page(params[:page] || 1).per(params[:limit] || 10)
       render json: {
         accounts: children.as_json(include: :scholarship_provider),
         meta: {
@@ -25,7 +25,7 @@ module Api
           total_pages: children.total_pages,
           total_count: children.total_count
         }
-      }
+      }, status: :ok
     end
 
     # GET /users/new
@@ -218,7 +218,7 @@ module Api
     end
 
     def scholarship_applications
-      if @user.email_address != JwtService.decode(cookies[:email])['email']
+      if @user.email_address != JwtService.decode(cookies[:email])['email'] && (@user.parent_id && @user.parent_id != ENV['PARENT_ID'].to_i)
         render_unauthorized_response
         return
       end
