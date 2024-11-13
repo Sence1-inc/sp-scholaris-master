@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_10_23_095312) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_13_090704) do
   create_table "benefit_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "category_name"
     t.timestamp "deleted_at"
@@ -355,9 +355,9 @@ ActiveRecord::Schema[7.1].define(version: 2024_10_23_095312) do
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "email_address", null: false
-    t.string "first_name", null: false
-    t.string "last_name", null: false
-    t.string "birthdate", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "birthdate"
     t.boolean "is_active", default: true, null: false
     t.bigint "role_id", null: false
     t.string "session_token"
