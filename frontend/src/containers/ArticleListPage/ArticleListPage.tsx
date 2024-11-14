@@ -62,7 +62,7 @@ const ArticleListPage: React.FC = () => {
                 <CardMedia
                   component="img"
                   height="140"
-                  image={`${APP_URL}/${article.cover.formats.small?.url}`}
+                  image={`${article.cover.formats.small?.url}`}
                   alt={article.title}
                 />
               )}
