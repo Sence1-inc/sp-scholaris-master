@@ -16,20 +16,7 @@ class ScholarshipApplicationMailer < ApplicationMailer
 
     mail(to: recipient_email, reply_to: student_email, subject: "#{student_name} Intent to Apply for #{scholarship_name} through Scholaris App") do |format|
       format.html
-      if pdf_attachment.present?
-        attachments['application.pdf'] = pdf_attachment.read
-      end
-    end
-
-    mail_to_student(student_email, scholarship_name, pdf_attachment)
-  end
-
-  def mail_to_student(student_email, scholarship_name, pdf_attachment)
-    mail(to: student_email, reply_to: student_email, subject: "You've successfully sent your scholarship application for #{scholarship_name}") do |format|
-      format.html
-      if pdf_attachment.present?
-        attachments['application.pdf'] = pdf_attachment.read
-      end
+      attachments['application.pdf'] = pdf_attachment.read if pdf_attachment.present?
     end
   end
 end

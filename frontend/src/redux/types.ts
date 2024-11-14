@@ -111,11 +111,30 @@ export type Params = {
   [key: string]: string | null | Date | number
 }
 
+export type ScholarshipApplication = {
+  id: number
+  scholarship_name: string
+  student_name: string
+  created_at: string
+  recipient_email: string
+  user_message: String
+  updated_at: string
+  scholarship_id: number
+  student_email: string
+  user_id: number | null
+  status: number
+  notes: string
+  scholarship: Scholarship
+  user?: User
+}
+
 export type ScholarshipProvider = {
   id: number
   provider_name: string
   provider_link?: string
   user_id: number
+  scholarship_provider_profile?: Profile
+  scholarship_applications?: ScholarshipApplication[]
 }
 
 export type Role = {
@@ -211,3 +230,79 @@ export type User = {
   student_profile: StudentProfile
   scholarships?: ProviderScholarship[]
 }
+
+export type Article = {
+  id: number
+  documentId: string
+  excerpt: string
+  cover: Cover
+  author: string
+  content: string
+  title: string
+  description: string
+  slug: string
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+}
+
+export type Cover = {
+  id: number
+  documentId: string
+  name: string
+  alternativeText: string | null
+  caption: string | null
+  ext: string
+  mime: string
+  size: number
+  width: number
+  height: number
+  url: string
+  hash: string
+  previewUrl: string | null
+  provider: string
+  provider_metadata: Record<string, unknown> | null
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  formats: Formats
+}
+
+type ImageFormat = {
+  ext: string
+  url: string
+  hash?: string
+  mime?: string
+  name?: string
+  path?: string
+  size?: number
+  width?: number
+  height?: number
+}
+
+type Formats = {
+  large?: ImageFormat
+  medium?: ImageFormat
+  small?: ImageFormat
+  thumbnail?: ImageFormat
+}
+
+// export type Description = {
+//   type: string
+//   children: {
+//     type: string
+//     text: string
+//   }[]
+// }
+
+// export type Article = {
+//   id: number
+//   documentId: string
+//   excerpt: string
+//   Name: string
+//   Description: Description[]
+//   createdAt: string
+//   updatedAt: string
+//   publishedAt: string
+//   locale: string
+// }

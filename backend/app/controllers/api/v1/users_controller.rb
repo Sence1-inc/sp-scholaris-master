@@ -5,7 +5,7 @@ module Api
   module V1
     class UsersController < ApplicationController
     skip_before_action :verify_authenticity_token
-    before_action :set_user, only: %i[ show edit update destroy ]
+    before_action :set_user, only: %i[ show edit update destroy scholarship_applications ]
     before_action :set_headers, only: [ :login, :refresh, :register ]
 
     # GET /users or /users.json
@@ -15,7 +15,7 @@ module Api
 
     # GET /users/1 or /users/1.json
     def show
-      children = @user.children.includes(:scholarship_provider, :role, :student_profile).page(params[:page]).per(params[:pageSize])
+      children = @user.children.includes(:scholarship_provider, :role, :student_profile).page(params[:page] || 1).per(params[:limit] || 10)
       render json: {
         accounts: children.as_json(include: :scholarship_provider),
         meta: {
@@ -25,7 +25,7 @@ module Api
           total_pages: children.total_pages,
           total_count: children.total_count
         }
-      }
+      }, status: :ok
     end
 
     # GET /users/new
@@ -215,6 +215,26 @@ module Api
       response.headers["Expires"] = "Wed, 31 Dec 1980 05:00:00 GMT"
 
       render json: { deleted: cookies[:access_token].nil? }, status: :ok
+    end
+
+    def scholarship_applications
+      if @user.email_address != JwtService.decode(cookies[:email])['email'] && (@user.parent_id && @user.parent_id != ENV['PARENT_ID'].to_i)
+        render_unauthorized_response
+        return
+      end
+
+      scholarship_applications = @user.scholarship_applications.includes(:scholarship).page(params[:page] || 1).per(params[:limit] || 10)
+      if scholarship_applications.exists?
+        render json: {
+          scholarship_applications:scholarship_applications.as_json,
+          total_count: scholarship_applications.total_count,
+          total_pages: scholarship_applications.total_pages,
+          current_page: scholarship_applications.current_page,
+          limit: params[:limit] || 10
+        }, status: :ok
+      else
+        render json: {message: "No applications found.", scholarship_applications: [], total_count: 0}, status: :ok
+      end
     end
 
     private

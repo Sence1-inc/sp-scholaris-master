@@ -4,6 +4,7 @@ class Scholarship < ApplicationRecord
 
   belongs_to :scholarship_provider
   belongs_to :scholarship_type
+  has_many :scholarship_applications
   has_and_belongs_to_many :courses, join_table: "course_scholarship_schools"
   has_and_belongs_to_many :schools, join_table: "course_scholarship_schools"
   has_and_belongs_to_many :benefits, join_table: "scholarship_benefits"

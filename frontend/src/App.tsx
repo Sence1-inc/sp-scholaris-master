@@ -12,6 +12,10 @@ import StudentPrivate from './components/PrivateRoute/StudentPrivateRoute'
 import ScrollToTop from './components/ScrollToTop/ScrollToTop'
 import AccountManagementPage from './containers/AccountManagementPage/AccountManagementPage'
 import AddScholarshipViaCSVPage from './containers/AddScholarshipViaCSVPage/AddScholarshipViaCSVPage'
+import ApplicationsManagementPage from './containers/ApplicationsManagementPage/ApplicationsManagementPage'
+import StudentApplicationsManagementPage from './containers/ApplicationsManagementPage/StudentApplicationsManagementPage'
+import ArticleDetailPage from './containers/ArticleDetailPage/ArticleDetailPage'
+import ArticleListPage from './containers/ArticleListPage/ArticleListPage'
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage'
 import ProviderProfile from './containers/ProfilesPage/ProviderProfile/ProviderProfile'
@@ -29,15 +33,19 @@ import TermsAndConditionsPage from './containers/TermsAndConditionsPage/TermsAnd
 import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
 import VerifyEmailPage from './containers/VerifyEmailPage/VerifyEmailPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
+import { SnackbarProvider } from './context/SnackBarContext'
 import useGetScholarships from './hooks/useGetScholarships'
 import { useAppSelector } from './redux/store'
 import { User } from './redux/types'
-import { SnackbarProvider } from './context/SnackBarContext';
 
 const StudentRoutes: React.FC = () => (
   <Routes>
     <Route path="/" element={<TeaserStudent />} />
     <Route path="survey" element={<SurveyPage user_type="student" />} />
+    <Route
+      path="/applications"
+      element={<StudentPrivate component={StudentApplicationsManagementPage} />}
+    />
     <Route
       path="/account"
       element={<StudentPrivate component={StudentDashboardPage} />}
@@ -64,6 +72,10 @@ const ProviderRoutes: React.FC<ProviderRoutesProps> = ({
         element={<ProviderPrivate component={AccountManagementPage} />}
       />
     )}
+    <Route
+      path="/applications"
+      element={<ProviderPrivate component={ApplicationsManagementPage} />}
+    />
     <Route path="/" element={<TeaserProvider />} />
     <Route path="survey" element={<SurveyPage user_type="provider" />} />
     <Route
@@ -153,7 +165,12 @@ const App: React.FC = () => {
               <Route path="/thank-you" element={<ThankYouPage />} />
               <Route path="/sign-in" element={<SignInPage />} />
               <Route path="/sign-up" element={<SignUpPage />} />
-              <Route path="/verify-email/:token" element={<VerifyEmailPage />} />
+              <Route
+                path="/verify-email/:token"
+                element={<VerifyEmailPage />}
+              />
+              <Route path="/articles" element={<ArticleListPage />} />
+              <Route path="/articles/:id" element={<ArticleDetailPage />} />
               <Route path="*" element={<PageNotFoundPage />} />
               <Route
                 path="/scholarships/create/upload"

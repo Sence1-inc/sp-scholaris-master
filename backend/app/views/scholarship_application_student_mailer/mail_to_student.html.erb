@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Scholarship Application Submitted</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    section {
+      margin: 16px
+    }
+  </style>
+</head>
+<body>
+  <section class="container">Here is your message</section>
+  <section class="container">
+    <p>Dear <%= @provider_name %>,</p>
+    <p><%= @user_message %></p>
+    <p>Best regards,<br>
+       <%= @student_name %><br>
+       <%= @student_email %>
+    </p>
+  </section>
+</body>
+</html>

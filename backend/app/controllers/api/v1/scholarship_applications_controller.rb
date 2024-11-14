@@ -82,17 +82,27 @@ module Api
           return render json: { message: 'Application from this email and scholarship already exists' }, status: :conflict
         end
 
+        user_id = nil
+        if cookies[:access_token] && cookies[:email]
+          user = User::find_by(email_address: JwtService.decode(cookies[:email])['email'])
+          user_id = user.id
+        else
+          user = nil
+        end
+
         application = ScholarshipApplication.new(
           recipient_email: recipient_email,
           user_message: user_message,
           scholarship_id: scholarship.id,
-          student_email: student_email
+          student_email: student_email,
+          user_id: user_id,
+
         )
 
         provider_name = scholarship.scholarship_provider.provider_name
         scholarship_name = scholarship.scholarship_name
         pdf_attachment = params[:pdf_file].tempfile if params[:pdf_file].present?
-        
+
         if application.save
           begin
             ScholarshipApplicationMailer.application_email(
@@ -104,11 +114,19 @@ module Api
               student_email,
               pdf_attachment
             ).deliver_now
-            render json: { message: 'Application email sent' }, status: :ok
           rescue StandardError => e
             Rails.logger.error("Failed to send email: #{e.message}")
-            render json: { message: e.message, backtrace: e.backtrace }, status: :internal_server_error
           end
+
+          begin
+            ScholarshipApplicationStudentMailer.mail_to_student(
+              student_email, scholarship_name, pdf_attachment, provider_name, user_message, student_name
+            ).deliver_now
+          rescue StandardError => e
+            Rails.logger.error("Failed to send email: #{e.message}")
+          end
+
+          render json: { message: 'Application email sent' }, status: :ok
         else
           render json: { message: "Failed to send email", details: application.errors.full_messages }, status: :unprocessable_entity
         end
