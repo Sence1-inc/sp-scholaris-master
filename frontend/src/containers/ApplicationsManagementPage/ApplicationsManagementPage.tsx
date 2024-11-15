@@ -419,6 +419,7 @@ const ApplicationsManagementPage = () => {
             paginationModel: { page: page, pageSize: 10 },
           },
         }}
+        paginationMode="server"
         pageSizeOptions={[10]}
         pagination
         loading={isDataLoading}
