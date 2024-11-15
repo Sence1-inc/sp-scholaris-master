@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import axiosInstance, { initialUserState } from '../../axiosConfig'
+import { STUDENT_ROLE_ID } from '../../constants/constants'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -52,7 +53,7 @@ const StudentPrivate: React.FC<StudentPrivateProps> = ({
     return null
   }
 
-  return authenticated && user.role.id === 3 ? (
+  return authenticated && user.role.id === STUDENT_ROLE_ID ? (
     <Component />
   ) : (
     <Navigate to="/sign-in" />

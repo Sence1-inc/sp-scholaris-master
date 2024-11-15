@@ -3,7 +3,13 @@ export const STUDENT_TYPE: string = 'student'
 export const ADMIN_TYPE: string = 'admin'
 export const STUDENT_ROLE_ID: number = 3
 export const PROVIDER_ROLE_ID: number = 4
-export const ADMIN_ROLE_ID: number = 5
+export const ADMIN_ROLE_ID: number = 2
+
+export const USER_TYPES: { [key: string]: string } = {
+  student: 'student',
+  provider: 'provider',
+  admin: 'admin',
+}
 
 // FOR NEW STATUSES, MAKE SURE TO UPDATE BACKEND CONSTANT VALUES AS WELL
 export const APPLICATION_STATUSES: { [key: number]: string } = {

@@ -18,7 +18,7 @@ import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import TextLoading from '../../components/Loading/TextLoading'
-import { PROVIDER_TYPE } from '../../constants/constants'
+import { ADMIN_ROLE_ID, PROVIDER_ROLE_ID } from '../../constants/constants'
 import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
 import ProviderProfile from '../../public/images/pro-profile.png'
@@ -75,9 +75,12 @@ export const ScholarshipDetailsPage: React.FC<
     useState<ScholarshipData | null>(null)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isSendEmailModalOpen, setIsSendEmailModalOpen] =
+    useState<boolean>(false)
   const [studentEmail, setStudentEmail] = useState<string>('')
   const [studentName, setStudentName] = useState<string>('')
   const [userMessage, setUserMessage] = useState<string>('')
+  const [emailMessage, setEmailMessage] = useState<string>('')
   const [pdfFile, setPdfFile] = useState<File | null>(null)
   const [errors, setErrors] = useState<Errors>({
     student_email: '',
@@ -257,11 +260,63 @@ export const ScholarshipDetailsPage: React.FC<
     }
   }
 
+  const handleSendEmail = async () => {}
+
   return (
     <>
       <Backdrop sx={{ color: '#fff', zIndex: 10 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      {user.role_id === ADMIN_ROLE_ID && (
+        <Modal
+          open={isSendEmailModalOpen}
+          onClose={() => setIsSendEmailModalOpen(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            sx={{
+              width: '80vw',
+              height: 'auto',
+              bgcolor: 'background.paper',
+              margin: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '20px',
+              p: 3,
+              overflowY: 'auto',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              boxShadow: 24,
+              borderRadius: 2,
+            }}
+          >
+            <CustomTextfield
+              label="Message to Provider"
+              // error={errors.user_message}
+              value={emailMessage}
+              handleChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setEmailMessage(e.target.value)
+              }}
+              multiline={true}
+              rows={4}
+              placeholder="e.g. I am writing to express my sincere interest in the [Scholarship Name] as it aligns perfectly with my academic and career goals. As a dedicated student with a passion for [Your Field or Major], I have consistently demonstrated my commitment through my academic achievements and extracurricular involvement. This scholarship would not only alleviate the financial burden of my education but also empower me to further pursue my ambitions and contribute meaningfully to my community. I am eager to seize this opportunity and make a positive impact through the support of your esteemed scholarship."
+              styles={{
+                padding: { xs: '5px', md: '16px' },
+                marginTop: '10px',
+              }}
+            />
+            <CTAButton
+              handleClick={handleSendEmail}
+              label="Send Email"
+              loading={isLoading}
+              styles={{ padding: '10px', height: 'auto' }}
+            />
+          </Box>
+        </Modal>
+      )}
       <section id="details">
         <div className="container" style={{ padding: '80px 20px' }}>
           <aside id="aside">
@@ -375,17 +430,27 @@ export const ScholarshipDetailsPage: React.FC<
               </div>
               <div className="details-section">
                 {!user.email_address ||
-                (user &&
-                  user.email_address &&
-                  user.role.role_name !== PROVIDER_TYPE) ? (
+                  (user &&
+                    user.email_address &&
+                    user.role_id !== PROVIDER_ROLE_ID &&
+                    user.role_id !== ADMIN_ROLE_ID && (
+                      <CTAButton
+                        handleClick={() => setIsModalOpen(true)}
+                        label="Apply"
+                        loading={false}
+                        styles={{ fontSize: '24px' }}
+                      />
+                    ))}
+                {user.role_id === ADMIN_ROLE_ID && (
                   <CTAButton
-                    handleClick={() => setIsModalOpen(true)}
-                    label="Apply"
-                    loading={false}
-                    styles={{ fontSize: '24px' }}
+                    loading={isLoading}
+                    handleClick={() => setIsSendEmailModalOpen(true)}
+                    label="Ask Provider to Edit"
+                    styles={{
+                      fontSize: '1.20rem',
+                      padding: { xs: '14px', md: '20px' },
+                    }}
                   />
-                ) : (
-                  <></>
                 )}
                 <Modal
                   open={isModalOpen}

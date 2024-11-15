@@ -11,6 +11,7 @@ export type Scholarship = {
     provider_name: string
   }
   status: string
+  content_status: string
 }
 
 export type BenefitCategory = {
