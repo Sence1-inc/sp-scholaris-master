@@ -1,4 +1,4 @@
-import { CloudUpload } from '@mui/icons-material'
+import { CloudUpload, Save } from '@mui/icons-material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
   Alert,
@@ -6,16 +6,18 @@ import {
   Box,
   Button,
   CircularProgress,
+  IconButton,
   Modal,
   styled,
+  Tooltip,
   Typography,
 } from '@mui/material'
+import { DataGrid, GridRowModel } from '@mui/x-data-grid'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
-import CustomeTimeline from '../../components/CustomTimeline/CustomTimeline'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import TextLoading from '../../components/Loading/TextLoading'
@@ -26,7 +28,7 @@ import ProviderProfile from '../../public/images/pro-profile.png'
 import { initializeScholarshipApplicationForm } from '../../redux/reducers/ScholarshipApplicationFormReducer'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { ScholarshipData } from '../../redux/types'
+import { ScholarshipData, ScholarshipFeedback } from '../../redux/types'
 import { formattedDate } from '../StudentDashboardPage/StudentDashboardPage'
 import './ScholarshipDetailsPage.css'
 
@@ -58,6 +60,14 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 })
 
+interface GridRowDef {
+  id: number
+  scholarshipName: string
+  startDate: Date
+  endDate: Date
+  status: string
+}
+
 export const ScholarshipDetailsPage: React.FC<
   ScholarshipDataResultsPageProps
 > = () => {
@@ -73,8 +83,7 @@ export const ScholarshipDetailsPage: React.FC<
   const result = useAppSelector(
     (state) => state.persistedReducer.scholarshipData
   ) as Results
-  const [scholarshipData, setScholarshipData] =
-    useState<ScholarshipData | null>(null)
+  const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isSendEmailModalOpen, setIsSendEmailModalOpen] =
@@ -84,12 +93,150 @@ export const ScholarshipDetailsPage: React.FC<
   const [userMessage, setUserMessage] = useState<string>('')
   const [emailMessage, setEmailMessage] = useState<string>('')
   const [pdfFile, setPdfFile] = useState<File | null>(null)
+  const [scholarshipFeedbacks, setScholarshipFeedbacks] = useState<
+    ScholarshipFeedback[] | []
+  >([])
+  const [totalCount, setTotalCount] = useState<number>(10)
+  const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [page, setPage] = useState<number>(0)
   const [errors, setErrors] = useState<Errors>({
     student_email: '',
     student_name: '',
     user_message: '',
     pdf_file: '',
   })
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 90 },
+    {
+      field: 'providerName',
+      headerName: 'Provider',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'feedback',
+      headerName: 'Feedback',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Created at',
+      width: 110,
+      editable: false,
+    },
+    {
+      field: 'updatedAt',
+      headerName: 'Updated at',
+      width: 110,
+      editable: false,
+    },
+    {
+      field: 'notes',
+      headerName: 'Notes',
+      width: 110,
+      editable: true,
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      flex: 1,
+      renderCell: (params: any) => renderActions(params),
+    },
+  ]
+
+  const handleProcessRowUpdate = (newRow: GridRowModel) => {
+    setRowData((prevRows) =>
+      prevRows.map((row) =>
+        row.id === newRow.id ? { ...row, ...newRow } : row
+      )
+    )
+    return newRow
+  }
+
+  const handleSaveNotes = async (selectedRow: GridRowModel) => {
+    try {
+      const response = await axiosInstance.put(
+        `/api/v1/scholarship_feedbacks/${selectedRow.id}`,
+        { notes: selectedRow.notes }
+      )
+
+      const rows = response.data.scholarship_feedbacks.map(
+        (scholarshipFeedback: ScholarshipFeedback) => {
+          return {
+            id: scholarshipFeedback.id,
+            feedback: scholarshipFeedback.feedback,
+            notes: scholarshipFeedback.notes,
+            createdAt: new Date(scholarshipFeedback.created_at).toDateString(),
+            updatedAt: new Date(scholarshipFeedback.updated_at).toDateString(),
+            providerName:
+              scholarshipFeedback.scholarship_provider.provider_name,
+          }
+        }
+      )
+
+      getFeedbacks()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const renderActions = (params: any) => {
+    return (
+      <Box>
+        <Tooltip title="Save">
+          <IconButton
+            onClick={() =>
+              showMessage(
+                'Are you sure you want to save your notes?',
+                'warning',
+                8000,
+                () => handleSaveNotes(params.row)
+              )
+            }
+            sx={{ color: '#06A5FF' }}
+          >
+            <Save />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    )
+  }
+
+  const getFeedbacks = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/v1/scholarships/${scholarshipData?.id}/scholarship_feedbacks?page=${page + 1}`
+      )
+
+      const rows = response.data.scholarship_feedbacks.map(
+        (scholarshipFeedback: ScholarshipFeedback) => {
+          return {
+            id: scholarshipFeedback.id,
+            feedback: scholarshipFeedback.feedback,
+            notes: scholarshipFeedback.notes,
+            createdAt: new Date(scholarshipFeedback.created_at).toDateString(),
+            updatedAt: new Date(scholarshipFeedback.updated_at).toDateString(),
+            providerName:
+              scholarshipFeedback.scholarship_provider.provider_name,
+          }
+        }
+      )
+
+      setRowData(rows)
+      setTotalCount(response.data.total_count)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (user.role_id === ADMIN_ROLE_ID && scholarshipData) {
+      getFeedbacks()
+    }
+  }, [user.role_id, scholarshipData])
 
   useEffect(() => {
     setIsLoading(true)
@@ -289,10 +436,9 @@ export const ScholarshipDetailsPage: React.FC<
           scholarship_id: scholarshipData?.id,
           feedback: emailMessage,
         }
-        const response = await axiosInstance.post(
-          '/api/v1/scholarship_feedbacks',
-          data
-        )
+        await axiosInstance.post('/api/v1/scholarship_feedbacks', data)
+
+        getFeedbacks()
       } catch (error: any) {
         setIsLoading(false)
         showMessage(error.response?.data?.message ?? 'Email not sent.', 'error')
@@ -396,6 +542,12 @@ export const ScholarshipDetailsPage: React.FC<
           </Alert> */}
           {scholarshipData && (
             <div className="details-card">
+              {(user.role_id === ADMIN_ROLE_ID ||
+                user.role_id === PROVIDER_ROLE_ID) && (
+                <Alert severity="warning" sx={{ marginBottom: '20px' }}>
+                  {scholarshipData.content_status}
+                </Alert>
+              )}
               {formattedDate(scholarshipData.due_date).isBefore(dayjs()) && (
                 <Alert severity="error" sx={{ marginBottom: '20px' }}>
                   Application is now closed
@@ -694,7 +846,28 @@ export const ScholarshipDetailsPage: React.FC<
             </div>
           )}
 
-          {user.role_id === ADMIN_ROLE_ID && <CustomeTimeline />}
+          {user.role_id === ADMIN_ROLE_ID && (
+            <Box sx={{ margin: '30px 0' }}>
+              <Typography sx={{ marginBottom: '10px' }}>
+                Request History
+              </Typography>
+              <DataGrid
+                rows={rowData}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 5,
+                    },
+                  },
+                }}
+                processRowUpdate={handleProcessRowUpdate}
+                pageSizeOptions={[5]}
+                checkboxSelection
+                disableRowSelectionOnClick
+              />
+            </Box>
+          )}
 
           <Typography variant="subtitle1" sx={{ margin: '30px 0' }}>
             For Scholarship Granting Organizations:
