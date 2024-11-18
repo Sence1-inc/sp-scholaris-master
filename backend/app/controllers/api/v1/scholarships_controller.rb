@@ -4,7 +4,7 @@ module Api
   module V1
     class ScholarshipsController < ApplicationController
       skip_before_action :verify_authenticity_token
-      before_action :set_scholarship, only: %i[show edit update destroy]
+      before_action :set_scholarship, only: %i[show edit update destroy show_scholarship_feedbacks]
       before_action :authorize, only: %i[edit update destroy]
 
       # GET /api/v1/scholarships or /api/v1/scholarships.json
@@ -20,7 +20,7 @@ module Api
             :benefit_categories, 
             :courses, 
             :schools, 
-            scholarship_provider: [:scholarship_provider_profile]  # Hash notation for nested includes
+            scholarship_provider: [:scholarship_provider_profile]
           ).page(params[:page]).per(params[:limit])
 
           render json: {
@@ -168,6 +168,28 @@ module Api
           render json: {message: "Scholarship deleted.", scholarships: scholarships.page(params[:page]).per(params[:limit]), status: :ok}
         else
           render json: {message: "Unable to delete scholarship", status: :unprocessable_entity}, status: 422
+        end
+      end
+
+      def show_scholarship_feedbacks
+        user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+
+        if (user.role_id != User::ROLES[:admin])
+          render_unauthorized_response
+          return
+        end
+
+        scholarship_feedbacks =  @scholarship.scholarship_feedbacks.includes(:scholarship_provider).page(params[:page] || 1).per(params[:limit] || 10)
+        if scholarship_feedbacks.exists?
+          render json: {
+            scholarship_feedbacks:scholarship_feedbacks.as_json,
+            total_count: scholarship_feedbacks.total_count,
+            total_pages: scholarship_feedbacks.total_pages,
+            current_page: scholarship_feedbacks.current_page,
+            limit: params[:limit] || 10
+          }, status: :ok
+        else
+          render json: {message: "No feedbacks found.", scholarship_feedbacks: [], total_count: 0}, status: :ok
         end
       end
     

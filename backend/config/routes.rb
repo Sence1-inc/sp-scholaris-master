@@ -16,8 +16,9 @@ Rails.application.routes.draw do
       post 'resend_verification', to: 'users#resend_verification', as: 'users_resend_verification'
       get 'check_token', to: 'users#check_token', as: 'users_check_token'
       post 'logout', to: 'users#logout', as: 'users_logout'
-      resources :scholarships, only: [:index, :create, :show, :edit, :update, :destroy] do
+      resources :scholarships do
         post 'upload', on: :collection
+        get 'scholarship_feedbacks', on: :member, to: 'scholarships#show_scholarship_feedbacks', as: 'scholarships_show_scholarship_feedbacks'
       end
       resources :survey_questions
       resources :subscribers do

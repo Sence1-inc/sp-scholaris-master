@@ -24,6 +24,12 @@ module Api
 
       # POST /scholarship_feedbacks or /scholarship_feedbacks.json
       def create
+        user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+        if (user.role_id != User::ROLES[:admin])
+          render_unauthorized_response
+          return
+        end
+
         @scholarship_feedback = ScholarshipFeedback.new(scholarship_feedback_params)
         scholarship = Scholarship.find(scholarship_feedback_params[:scholarship_id])
         provider = scholarship.scholarship_provider
@@ -49,14 +55,16 @@ module Api
 
       # PATCH/PUT /scholarship_feedbacks/1 or /scholarship_feedbacks/1.json
       def update
-        respond_to do |format|
-          if @scholarship_feedback.update(scholarship_feedback_params)
-            format.html { redirect_to scholarship_feedback_url(@scholarship_feedback), notice: "Scholarship feedback was successfully updated." }
-            format.json { render :show, status: :ok, location: @scholarship_feedback }
-          else
-            format.html { render :edit, status: :unprocessable_entity }
-            format.json { render json: @scholarship_feedback.errors, status: :unprocessable_entity }
-          end
+        user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+        if (user.role_id != User::ROLES[:admin])
+          render_unauthorized_response
+          return
+        end
+
+        if @scholarship_feedback.update!(notes: params[:notes])
+          render json: { message: 'Scholarship feedback was successfully updated.' }, status: :ok
+        else
+          render json: { message: 'Scholarship feedback was not updated.', errors: @scholarship_feedback.errors.full_messages }, status: :unprocessable_entity
         end
       end
 
