@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Scholarship feedbacks</h1>
+
+<div id="scholarship_feedbacks">
+  <% @scholarship_feedbacks.each do |scholarship_feedback| %>
+    <%= render scholarship_feedback %>
+    <p>
+      <%= link_to "Show this scholarship feedback", scholarship_feedback %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New scholarship feedback", new_scholarship_feedback_path %>

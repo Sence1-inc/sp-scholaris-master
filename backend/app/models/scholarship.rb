@@ -26,6 +26,11 @@ class Scholarship < ApplicationRecord
 
   default_scope -> { where(deleted_at: nil) }
 
+  CONTENT_STATUSES = {
+    unpublished: 'unpublished',
+    for_modification: 'for modification'
+  }.freeze
+
   scope :filtered, ->(params) {
     results = all.where(deleted_at: nil, status: 'active')
             #  .where("DATE(CONVERT_TZ(due_date, '+00:00', ?)) > ?", params[:timezone], DateTime.current.to_date)

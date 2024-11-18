@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_11_14_070230) do
+ActiveRecord::Schema[7.1].define(version: 2024_11_18_051225) do
   create_table "benefit_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "category_name"
     t.timestamp "deleted_at"
@@ -174,6 +174,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_14_070230) do
     t.timestamp "deleted_at"
     t.index ["eligibility_id"], name: "index_scholarship_eligibilities_on_eligibility_id"
     t.index ["scholarship_id"], name: "index_scholarship_eligibilities_on_scholarship_id"
+  end
+
+  create_table "scholarship_feedbacks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "scholarship_provider_id", null: false
+    t.text "feedback"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.timestamp "deleted_at"
+    t.bigint "scholarship_id", null: false
+    t.index ["scholarship_id"], name: "index_scholarship_feedbacks_on_scholarship_id"
+    t.index ["scholarship_provider_id"], name: "index_scholarship_feedbacks_on_scholarship_provider_id"
   end
 
   create_table "scholarship_provider_profiles", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -387,6 +398,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_14_070230) do
   add_foreign_key "scholarship_benefits", "benefits", name: "fk_scholarship_benefits_benefits"
   add_foreign_key "scholarship_benefits", "benefits", name: "fk_scholarships_benefits"
   add_foreign_key "scholarship_benefits", "scholarships", name: "fk_scholarship_benefits_scholarships"
+  add_foreign_key "scholarship_feedbacks", "scholarship_providers"
+  add_foreign_key "scholarship_feedbacks", "scholarships"
   add_foreign_key "scholarship_provider_profiles", "ph_addresses"
   add_foreign_key "scholarship_provider_profiles", "scholarship_providers", name: "fk_scholarship_provider_profiles_scholarship_providers"
   add_foreign_key "scholarship_providers", "users", name: "fk_scholarship_providers_users"

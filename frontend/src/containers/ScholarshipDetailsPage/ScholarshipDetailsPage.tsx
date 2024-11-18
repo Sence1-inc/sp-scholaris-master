@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
+import CustomeTimeline from '../../components/CustomTimeline/CustomTimeline'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import TextLoading from '../../components/Loading/TextLoading'
@@ -39,6 +40,7 @@ interface ScholarshipDataResultsPageProps {
 
 type Errors = {
   student_email: string
+  email_message?: string
   student_name: string
   user_message: string
   pdf_file: string
@@ -260,7 +262,55 @@ export const ScholarshipDetailsPage: React.FC<
     }
   }
 
-  const handleSendEmail = async () => {}
+  const handleSendEmail = async () => {
+    const validationConditions = [
+      {
+        condition: user.role_id === ADMIN_ROLE_ID && !emailMessage,
+        field: 'email_message',
+        message: 'Please provide your feedback.',
+      },
+    ]
+
+    const errorMessages = validationConditions
+      .filter(({ condition }) => condition)
+      .reduce((acc: any, item) => {
+        acc[item.field] = item.message
+        return acc
+      }, {})
+
+    const hasErrors = Object.keys(errorMessages).length > 0
+
+    if (hasErrors) {
+      showMessage('Please fill in the required details.', 'error')
+      setErrors({ ...errors, ...errorMessages })
+    } else {
+      try {
+        const data = {
+          scholarship_id: scholarshipData?.id,
+          feedback: emailMessage,
+        }
+        const response = await axiosInstance.post(
+          '/api/v1/scholarship_feedbacks',
+          data
+        )
+      } catch (error: any) {
+        setIsLoading(false)
+        showMessage(error.response?.data?.message ?? 'Email not sent.', 'error')
+        if (
+          error.response &&
+          error.response.data &&
+          Array.isArray(error.response.data.details)
+        ) {
+          error.response.data.details.forEach((errorMessage: string) => {
+            if (errorMessage.includes('Feedback')) {
+              errors.email_message = errorMessage
+            }
+          })
+          setErrors(errors)
+        }
+      }
+    }
+  }
 
   return (
     <>
@@ -295,7 +345,7 @@ export const ScholarshipDetailsPage: React.FC<
           >
             <CustomTextfield
               label="Message to Provider"
-              // error={errors.user_message}
+              error={errors.email_message}
               value={emailMessage}
               handleChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                 setEmailMessage(e.target.value)
@@ -611,6 +661,7 @@ export const ScholarshipDetailsPage: React.FC<
               </div>
             </div>
           )}
+
           {scholarshipData && scholarshipData.scholarship_provider && (
             <div className="profiles-card">
               <div className="profiles-column">
@@ -642,6 +693,9 @@ export const ScholarshipDetailsPage: React.FC<
               </div>
             </div>
           )}
+
+          {user.role_id === ADMIN_ROLE_ID && <CustomeTimeline />}
+
           <Typography variant="subtitle1" sx={{ margin: '30px 0' }}>
             For Scholarship Granting Organizations:
             <br />

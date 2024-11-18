@@ -44,6 +44,7 @@ Rails.application.routes.draw do
       resources :roles
       resources :student_profiles
       resources :user_permissions
+      resources :scholarship_feedbacks
     end
   end
 end
