@@ -1,0 +1,32 @@
+<%= form_with(model: scholarship_feedback) do |form| %>
+  <% if scholarship_feedback.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(scholarship_feedback.errors.count, "error") %> prohibited this scholarship_feedback from being saved:</h2>
+
+      <ul>
+        <% scholarship_feedback.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :scholarship_provider_id, style: "display: block" %>
+    <%= form.text_field :scholarship_provider_id %>
+  </div>
+
+  <div>
+    <%= form.label :feedback, style: "display: block" %>
+    <%= form.text_area :feedback %>
+  </div>
+
+  <div>
+    <%= form.label :created_by_id, style: "display: block" %>
+    <%= form.text_field :created_by_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

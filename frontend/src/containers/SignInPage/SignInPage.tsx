@@ -54,6 +54,9 @@ const SignInPage: React.FC<SignInPageProps> = () => {
             navigate(`/provider/account/${userState.id}/view-profile`)
           }
           break
+        case 5:
+          navigate('/admin/scholarships')
+          break
         default:
           navigate('/')
       }

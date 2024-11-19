@@ -1,4 +1,4 @@
-import { CloudUpload } from '@mui/icons-material'
+import { CloudUpload, Save } from '@mui/icons-material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
   Alert,
@@ -6,10 +6,13 @@ import {
   Box,
   Button,
   CircularProgress,
+  IconButton,
   Modal,
   styled,
+  Tooltip,
   Typography,
 } from '@mui/material'
+import { DataGrid, GridRowModel } from '@mui/x-data-grid'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -18,14 +21,14 @@ import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import TextLoading from '../../components/Loading/TextLoading'
-import { PROVIDER_TYPE } from '../../constants/constants'
+import { ADMIN_ROLE_ID, PROVIDER_ROLE_ID } from '../../constants/constants'
 import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
 import ProviderProfile from '../../public/images/pro-profile.png'
 import { initializeScholarshipApplicationForm } from '../../redux/reducers/ScholarshipApplicationFormReducer'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { ScholarshipData } from '../../redux/types'
+import { ScholarshipData, ScholarshipFeedback } from '../../redux/types'
 import { formattedDate } from '../StudentDashboardPage/StudentDashboardPage'
 import './ScholarshipDetailsPage.css'
 
@@ -39,6 +42,7 @@ interface ScholarshipDataResultsPageProps {
 
 type Errors = {
   student_email: string
+  email_message?: string
   student_name: string
   user_message: string
   pdf_file: string
@@ -56,6 +60,14 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 })
 
+interface GridRowDef {
+  id: number
+  scholarshipName: string
+  startDate: Date
+  endDate: Date
+  status: string
+}
+
 export const ScholarshipDetailsPage: React.FC<
   ScholarshipDataResultsPageProps
 > = () => {
@@ -71,20 +83,160 @@ export const ScholarshipDetailsPage: React.FC<
   const result = useAppSelector(
     (state) => state.persistedReducer.scholarshipData
   ) as Results
-  const [scholarshipData, setScholarshipData] =
-    useState<ScholarshipData | null>(null)
+  const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isSendEmailModalOpen, setIsSendEmailModalOpen] =
+    useState<boolean>(false)
   const [studentEmail, setStudentEmail] = useState<string>('')
   const [studentName, setStudentName] = useState<string>('')
   const [userMessage, setUserMessage] = useState<string>('')
+  const [emailMessage, setEmailMessage] = useState<string>('')
   const [pdfFile, setPdfFile] = useState<File | null>(null)
+  const [scholarshipFeedbacks, setScholarshipFeedbacks] = useState<
+    ScholarshipFeedback[] | []
+  >([])
+  const [totalCount, setTotalCount] = useState<number>(10)
+  const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [page, setPage] = useState<number>(0)
   const [errors, setErrors] = useState<Errors>({
     student_email: '',
     student_name: '',
     user_message: '',
     pdf_file: '',
   })
+
+  const columns = [
+    { field: 'id', headerName: 'ID', width: 90 },
+    {
+      field: 'providerName',
+      headerName: 'Provider',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'feedback',
+      headerName: 'Feedback',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'createdAt',
+      headerName: 'Created at',
+      width: 110,
+      editable: false,
+    },
+    {
+      field: 'updatedAt',
+      headerName: 'Updated at',
+      width: 110,
+      editable: false,
+    },
+    {
+      field: 'notes',
+      headerName: 'Notes',
+      width: 110,
+      editable: true,
+    },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      flex: 1,
+      renderCell: (params: any) => renderActions(params),
+    },
+  ]
+
+  const handleProcessRowUpdate = (newRow: GridRowModel) => {
+    setRowData((prevRows) =>
+      prevRows.map((row) =>
+        row.id === newRow.id ? { ...row, ...newRow } : row
+      )
+    )
+    return newRow
+  }
+
+  const handleSaveNotes = async (selectedRow: GridRowModel) => {
+    try {
+      const response = await axiosInstance.put(
+        `/api/v1/scholarship_feedbacks/${selectedRow.id}`,
+        { notes: selectedRow.notes }
+      )
+
+      const rows = response.data.scholarship_feedbacks.map(
+        (scholarshipFeedback: ScholarshipFeedback) => {
+          return {
+            id: scholarshipFeedback.id,
+            feedback: scholarshipFeedback.feedback,
+            notes: scholarshipFeedback.notes,
+            createdAt: new Date(scholarshipFeedback.created_at).toDateString(),
+            updatedAt: new Date(scholarshipFeedback.updated_at).toDateString(),
+            providerName:
+              scholarshipFeedback.scholarship_provider.provider_name,
+          }
+        }
+      )
+
+      getFeedbacks()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const renderActions = (params: any) => {
+    return (
+      <Box>
+        <Tooltip title="Save">
+          <IconButton
+            onClick={() =>
+              showMessage(
+                'Are you sure you want to save your notes?',
+                'warning',
+                8000,
+                () => handleSaveNotes(params.row)
+              )
+            }
+            sx={{ color: '#06A5FF' }}
+          >
+            <Save />
+          </IconButton>
+        </Tooltip>
+      </Box>
+    )
+  }
+
+  const getFeedbacks = async () => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/v1/scholarships/${scholarshipData?.id}/scholarship_feedbacks?page=${page + 1}`
+      )
+
+      const rows = response.data.scholarship_feedbacks.map(
+        (scholarshipFeedback: ScholarshipFeedback) => {
+          return {
+            id: scholarshipFeedback.id,
+            feedback: scholarshipFeedback.feedback,
+            notes: scholarshipFeedback.notes,
+            createdAt: new Date(scholarshipFeedback.created_at).toDateString(),
+            updatedAt: new Date(scholarshipFeedback.updated_at).toDateString(),
+            providerName:
+              scholarshipFeedback.scholarship_provider.provider_name,
+          }
+        }
+      )
+
+      setRowData(rows)
+      setTotalCount(response.data.total_count)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    if (user.role_id === ADMIN_ROLE_ID && scholarshipData) {
+      getFeedbacks()
+    }
+  }, [user.role_id, scholarshipData])
 
   useEffect(() => {
     setIsLoading(true)
@@ -257,11 +409,110 @@ export const ScholarshipDetailsPage: React.FC<
     }
   }
 
+  const handleSendEmail = async () => {
+    const validationConditions = [
+      {
+        condition: user.role_id === ADMIN_ROLE_ID && !emailMessage,
+        field: 'email_message',
+        message: 'Please provide your feedback.',
+      },
+    ]
+
+    const errorMessages = validationConditions
+      .filter(({ condition }) => condition)
+      .reduce((acc: any, item) => {
+        acc[item.field] = item.message
+        return acc
+      }, {})
+
+    const hasErrors = Object.keys(errorMessages).length > 0
+
+    if (hasErrors) {
+      showMessage('Please fill in the required details.', 'error')
+      setErrors({ ...errors, ...errorMessages })
+    } else {
+      try {
+        const data = {
+          scholarship_id: scholarshipData?.id,
+          feedback: emailMessage,
+        }
+        await axiosInstance.post('/api/v1/scholarship_feedbacks', data)
+
+        getFeedbacks()
+      } catch (error: any) {
+        setIsLoading(false)
+        showMessage(error.response?.data?.message ?? 'Email not sent.', 'error')
+        if (
+          error.response &&
+          error.response.data &&
+          Array.isArray(error.response.data.details)
+        ) {
+          error.response.data.details.forEach((errorMessage: string) => {
+            if (errorMessage.includes('Feedback')) {
+              errors.email_message = errorMessage
+            }
+          })
+          setErrors(errors)
+        }
+      }
+    }
+  }
+
   return (
     <>
       <Backdrop sx={{ color: '#fff', zIndex: 10 }} open={isLoading}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      {user.role_id === ADMIN_ROLE_ID && (
+        <Modal
+          open={isSendEmailModalOpen}
+          onClose={() => setIsSendEmailModalOpen(false)}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box
+            sx={{
+              width: '80vw',
+              height: 'auto',
+              bgcolor: 'background.paper',
+              margin: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '20px',
+              p: 3,
+              overflowY: 'auto',
+              position: 'absolute',
+              top: '50%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              boxShadow: 24,
+              borderRadius: 2,
+            }}
+          >
+            <CustomTextfield
+              label="Message to Provider"
+              error={errors.email_message}
+              value={emailMessage}
+              handleChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setEmailMessage(e.target.value)
+              }}
+              multiline={true}
+              rows={4}
+              placeholder="e.g. I am writing to express my sincere interest in the [Scholarship Name] as it aligns perfectly with my academic and career goals. As a dedicated student with a passion for [Your Field or Major], I have consistently demonstrated my commitment through my academic achievements and extracurricular involvement. This scholarship would not only alleviate the financial burden of my education but also empower me to further pursue my ambitions and contribute meaningfully to my community. I am eager to seize this opportunity and make a positive impact through the support of your esteemed scholarship."
+              styles={{
+                padding: { xs: '5px', md: '16px' },
+                marginTop: '10px',
+              }}
+            />
+            <CTAButton
+              handleClick={handleSendEmail}
+              label="Send Email"
+              loading={isLoading}
+              styles={{ padding: '10px', height: 'auto' }}
+            />
+          </Box>
+        </Modal>
+      )}
       <section id="details">
         <div className="container" style={{ padding: '80px 20px' }}>
           <aside id="aside">
@@ -291,6 +542,14 @@ export const ScholarshipDetailsPage: React.FC<
           </Alert> */}
           {scholarshipData && (
             <div className="details-card">
+              {(user.role_id === ADMIN_ROLE_ID ||
+                user.role_id === PROVIDER_ROLE_ID) &&
+                scholarshipData.content_status &&
+                scholarshipData.content_status !== 'revised' && (
+                  <Alert severity="warning" sx={{ marginBottom: '20px' }}>
+                    {scholarshipData.content_status}
+                  </Alert>
+                )}
               {formattedDate(scholarshipData.due_date).isBefore(dayjs()) && (
                 <Alert severity="error" sx={{ marginBottom: '20px' }}>
                   Application is now closed
@@ -375,17 +634,27 @@ export const ScholarshipDetailsPage: React.FC<
               </div>
               <div className="details-section">
                 {!user.email_address ||
-                (user &&
-                  user.email_address &&
-                  user.role.role_name !== PROVIDER_TYPE) ? (
+                  (user &&
+                    user.email_address &&
+                    user.role_id !== PROVIDER_ROLE_ID &&
+                    user.role_id !== ADMIN_ROLE_ID && (
+                      <CTAButton
+                        handleClick={() => setIsModalOpen(true)}
+                        label="Apply"
+                        loading={false}
+                        styles={{ fontSize: '24px' }}
+                      />
+                    ))}
+                {user.role_id === ADMIN_ROLE_ID && (
                   <CTAButton
-                    handleClick={() => setIsModalOpen(true)}
-                    label="Apply"
-                    loading={false}
-                    styles={{ fontSize: '24px' }}
+                    loading={isLoading}
+                    handleClick={() => setIsSendEmailModalOpen(true)}
+                    label="Ask Provider to Edit"
+                    styles={{
+                      fontSize: '1.20rem',
+                      padding: { xs: '14px', md: '20px' },
+                    }}
                   />
-                ) : (
-                  <></>
                 )}
                 <Modal
                   open={isModalOpen}
@@ -546,6 +815,7 @@ export const ScholarshipDetailsPage: React.FC<
               </div>
             </div>
           )}
+
           {scholarshipData && scholarshipData.scholarship_provider && (
             <div className="profiles-card">
               <div className="profiles-column">
@@ -577,6 +847,30 @@ export const ScholarshipDetailsPage: React.FC<
               </div>
             </div>
           )}
+
+          {user.role_id === ADMIN_ROLE_ID && (
+            <Box sx={{ margin: '30px 0' }}>
+              <Typography sx={{ marginBottom: '10px' }}>
+                Request History
+              </Typography>
+              <DataGrid
+                rows={rowData}
+                columns={columns}
+                initialState={{
+                  pagination: {
+                    paginationModel: {
+                      pageSize: 5,
+                    },
+                  },
+                }}
+                processRowUpdate={handleProcessRowUpdate}
+                pageSizeOptions={[5]}
+                checkboxSelection
+                disableRowSelectionOnClick
+              />
+            </Box>
+          )}
+
           <Typography variant="subtitle1" sx={{ margin: '30px 0' }}>
             For Scholarship Granting Organizations:
             <br />

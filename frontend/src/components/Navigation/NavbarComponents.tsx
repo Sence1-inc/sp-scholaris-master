@@ -1,7 +1,15 @@
 import { Button, List, ListItem, Typography } from '@mui/material'
-import React from 'react'
+import React, { ReactElement } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { STUDENT_ROLE_ID } from '../../constants/constants'
+import instance from '../../axiosConfig'
+import {
+  ADMIN_ROLE_ID,
+  PROVIDER_ROLE_ID,
+  STUDENT_ROLE_ID,
+  USER_TYPES,
+} from '../../constants/constants'
+import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import CTAButton from '../CustomButton/CTAButton'
 
@@ -113,24 +121,71 @@ const AuthenticatedStudent = () => {
   )
 }
 
+const AuthnticatedAdmin = () => {
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  const logout = async () => {
+    await instance.post('/api/v1/logout', {
+      email: user.email_address,
+    })
+    dispatch(initializeIsAuthenticated(false))
+    navigate('/sign-in')
+  }
+
+  return (
+    <List
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        gap: 4,
+      }}
+    >
+      <ListItem sx={{ width: 'auto' }}>
+        <Typography
+          variant="body1"
+          component={Link}
+          to="/admin/scholarships"
+          sx={{ color: 'common.white', textDecoration: 'none' }}
+        >
+          Scholarships
+        </Typography>
+      </ListItem>
+      <ListItem disablePadding sx={{ width: 'auto' }}>
+        <CTAButton
+          loading={false}
+          handleClick={logout}
+          label="Logout"
+          styles={{ whiteSpace: 'nowrap', backgroundColor: 'primary.light' }}
+          id="student-profile"
+        />
+      </ListItem>
+    </List>
+  )
+}
+
 interface AuthenticatedProps {
   user: User
-  pathname: string
 }
 
 export const Authenticated: React.FC<AuthenticatedProps> = ({
   user,
-  pathname,
-}) => {
-  return pathname.includes('/student') || user.role_id === STUDENT_ROLE_ID ? (
-    <AuthenticatedStudent />
-  ) : (
-    <AuthenticatedProvider user={user} />
-  )
+}): ReactElement<any, any> | null => {
+  switch (user.role_id) {
+    case STUDENT_ROLE_ID:
+      return <AuthenticatedStudent />
+    case PROVIDER_ROLE_ID:
+      return <AuthenticatedProvider user={user} />
+    case ADMIN_ROLE_ID:
+      return <AuthnticatedAdmin />
+    default:
+      return null
+  }
 }
 
 interface UnauthenticatedProps {
-  userType: string
+  userType: keyof typeof USER_TYPES
 }
 
 export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
