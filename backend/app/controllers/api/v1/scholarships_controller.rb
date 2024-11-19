@@ -32,12 +32,7 @@ module Api
           ).page(params[:page]).per(params[:limit])
 
           render json: {
-            scholarships: @scholarships.as_json(
-              only: [:id, :scholarship_name, :listing_id, :start_date, :due_date],
-              include: {
-                scholarship_provider: { only: [:id, :provider_name] }
-              }
-            ),
+            scholarships: @scholarships.as_json,
             total_count: @scholarships.total_count,
             total_pages: @scholarships.total_pages,
             current_page: @scholarships.current_page,
