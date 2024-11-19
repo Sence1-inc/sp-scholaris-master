@@ -151,6 +151,11 @@ module Api
 
         result = scholarship_service.update_scholarship(@scholarship.id)
 
+        if params[:content_status].present? && params[:content_status] == Scholarship::CONTENT_STATUSES[:suspend]
+          feedback = "We regret to inform you that your scholarship has been suspended due to concerning details we discovered. If you have any questions or would like to discuss this matter, please contact us at your earliest convenience."
+          ContentFeedbackMailer.feedback_email(result[:scholarship].scholarship_provider.user.email_address, result[:scholarship].scholarship_provider.provider_name, result[:scholarship].scholarship_name, feedback).deliver_now
+        end
+
         if result[:errors].present?
           render json: result[:errors], status: :unprocessable_entity
         else

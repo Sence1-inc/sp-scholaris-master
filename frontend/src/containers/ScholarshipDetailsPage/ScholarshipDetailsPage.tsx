@@ -436,8 +436,14 @@ export const ScholarshipDetailsPage: React.FC<
           scholarship_id: scholarshipData?.id,
           feedback: emailMessage,
         }
-        await axiosInstance.post('/api/v1/scholarship_feedbacks', data)
+        const response = await axiosInstance.post(
+          '/api/v1/scholarship_feedbacks',
+          data
+        )
 
+        showMessage(response.data.message, 'success')
+        setIsSendEmailModalOpen(false)
+        setEmailMessage('')
         getFeedbacks()
       } catch (error: any) {
         setIsLoading(false)
