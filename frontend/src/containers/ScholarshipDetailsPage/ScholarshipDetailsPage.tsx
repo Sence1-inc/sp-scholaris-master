@@ -543,11 +543,13 @@ export const ScholarshipDetailsPage: React.FC<
           {scholarshipData && (
             <div className="details-card">
               {(user.role_id === ADMIN_ROLE_ID ||
-                user.role_id === PROVIDER_ROLE_ID) && (
-                <Alert severity="warning" sx={{ marginBottom: '20px' }}>
-                  {scholarshipData.content_status}
-                </Alert>
-              )}
+                user.role_id === PROVIDER_ROLE_ID) &&
+                scholarshipData.content_status &&
+                scholarshipData.content_status !== 'revised' && (
+                  <Alert severity="warning" sx={{ marginBottom: '20px' }}>
+                    {scholarshipData.content_status}
+                  </Alert>
+                )}
               {formattedDate(scholarshipData.due_date).isBefore(dayjs()) && (
                 <Alert severity="error" sx={{ marginBottom: '20px' }}>
                   Application is now closed

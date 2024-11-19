@@ -92,6 +92,8 @@ module Api
         end
 
         if @scholarships.exists?
+          limit = params[:limit].to_i > 0 ? params[:limit].to_i : @scholarships.count
+
           @scholarships = @scholarships.includes(
             :eligibilities, 
             :requirements, 
@@ -101,14 +103,14 @@ module Api
             :courses, 
             :schools, 
             scholarship_provider: [:scholarship_provider_profile]
-          ).page(params[:page] || 1).per(params[:limit] || 10)
+          ).page(params[:page] || 1).per(limit)
 
           render json: {
             scholarships: @scholarships.as_json,
             total_count: @scholarships.total_count,
             total_pages: @scholarships.total_pages,
             current_page: @scholarships.current_page,
-            limit: params[:limit] || 10
+            limit: limit
           }, status: :ok
         else
           render json: {message: "No scholarships found.", scholarships: [], total_count: 0}, status: :ok

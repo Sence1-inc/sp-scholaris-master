@@ -86,7 +86,7 @@ export default function DataTable() {
       try {
         setIsLoading(true)
         const response = await axiosInstance.get(
-          `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships?page=${page + 1}&limit=${pageSize}`,
+          `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships?page=${page + 1}&limit=${10}`,
           {
             timeout: 100000,
             withCredentials: true,
@@ -190,7 +190,7 @@ export default function DataTable() {
           paginationModel: { page: page, pageSize: 10 },
         },
       }}
-      pageSizeOptions={[5, 10]}
+      pageSizeOptions={[10]}
       pagination
       paginationMode="server"
       loading={isLoading}

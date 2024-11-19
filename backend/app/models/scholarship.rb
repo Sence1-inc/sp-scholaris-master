@@ -28,6 +28,7 @@ class Scholarship < ApplicationRecord
   default_scope -> { where(deleted_at: nil) }
 
   CONTENT_STATUSES = {
+    revised: 'revised',
     unpublished: 'unpublished',
     for_modification: 'for modification'
   }.freeze
