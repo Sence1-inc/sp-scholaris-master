@@ -27,3 +27,10 @@ export const APPLICATION_STATUSES: { [key: number]: string } = {
   12: 'deferred',
   13: 'incomplete',
 }
+
+// UPDATE WITH BACKEND SCHOLARSHIP CONTENT_STATUSES
+export const CONTENT_STATUSES = {
+  revised: 'revised',
+  suspend: 'suspend',
+  for_modification: 'for modification',
+}

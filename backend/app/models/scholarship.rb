@@ -27,14 +27,15 @@ class Scholarship < ApplicationRecord
 
   default_scope -> { where(deleted_at: nil) }
 
+  # Update together with the FE constants
   CONTENT_STATUSES = {
     revised: 'revised',
-    unpublished: 'unpublished',
+    suspend: 'suspend',
     for_modification: 'for modification'
   }.freeze
 
   scope :filtered, ->(params) {
-    results = all.where(deleted_at: nil, status: 'active')
+    results = all.where(deleted_at: nil, status: 'active', content_status: CONTENT_STATUSES[:for_modification], content_status: CONTENT_STATUSES[:revised], content_status: nil)
             #  .where("DATE(CONVERT_TZ(due_date, '+00:00', ?)) > ?", params[:timezone], DateTime.current.to_date)
     results = results.includes(:courses, :schools, :scholarship_provider, :benefits, :benefit_categories)
     results = results.joins(:courses).where("courses.course_name = ?", params[:course]) if params[:course].present?

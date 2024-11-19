@@ -1,12 +1,15 @@
 import { Button, List, ListItem, Typography } from '@mui/material'
 import React, { ReactElement } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import instance from '../../axiosConfig'
 import {
   ADMIN_ROLE_ID,
   PROVIDER_ROLE_ID,
   STUDENT_ROLE_ID,
   USER_TYPES,
 } from '../../constants/constants'
+import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
+import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import CTAButton from '../CustomButton/CTAButton'
 
@@ -119,6 +122,18 @@ const AuthenticatedStudent = () => {
 }
 
 const AuthnticatedAdmin = () => {
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  const logout = async () => {
+    await instance.post('/api/v1/logout', {
+      email: user.email_address,
+    })
+    dispatch(initializeIsAuthenticated(false))
+    navigate('/sign-in')
+  }
+
   return (
     <List
       sx={{
@@ -137,6 +152,15 @@ const AuthnticatedAdmin = () => {
           Scholarships
         </Typography>
       </ListItem>
+      <ListItem disablePadding sx={{ width: 'auto' }}>
+        <CTAButton
+          loading={false}
+          handleClick={logout}
+          label="Logout"
+          styles={{ whiteSpace: 'nowrap', backgroundColor: 'primary.light' }}
+          id="student-profile"
+        />
+      </ListItem>
     </List>
   )
 }
@@ -151,16 +175,12 @@ export const Authenticated: React.FC<AuthenticatedProps> = ({
   switch (user.role_id) {
     case STUDENT_ROLE_ID:
       return <AuthenticatedStudent />
-      break
     case PROVIDER_ROLE_ID:
       return <AuthenticatedProvider user={user} />
-      break
     case ADMIN_ROLE_ID:
       return <AuthnticatedAdmin />
-      break
     default:
       return null
-      break
   }
 }
 

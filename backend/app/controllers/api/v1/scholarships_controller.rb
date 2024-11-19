@@ -10,7 +10,15 @@ module Api
       # GET /api/v1/scholarships or /api/v1/scholarships.json
       def index
         @scholarships = Scholarship.filtered(params)
-        
+        if cookies[:email].present?
+          decoded_email = JwtService.decode(cookies[:email])['email'] rescue nil
+          user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+
+           if user.role_id == User::ROLES[:admin]
+            @scholarships = Scholarship.all
+          end
+        end
+
         if @scholarships.present?
           @scholarships = @scholarships.includes(
             :eligibilities, 
@@ -213,19 +221,20 @@ module Api
             :school_year,
             :scholarship_type_id,
             :scholarship_provider_id,
-            :timezone
+            :timezone,
+            :content_status
           ).merge(eligibilities: params[:eligibilities]).merge(requirements: params[:requirements]).merge(benefits: params[:benefits]).merge(benefit_categories: params[:benefit_categories])
         end
 
         def authorize
           user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
 
-          if user.parent_id && @scholarship.scholarship_provider.user.email_address != User.find(user.parent_id).email_address && (user.parent_id != ENV['PARENT_ID'].to_i)
+          if user.role_id != User::ROLES[:admin] && user.parent_id && @scholarship.scholarship_provider.user.email_address != User.find(user.parent_id).email_address && (user.parent_id != ENV['PARENT_ID'].to_i)
             render_unauthorized_response
             return
           end
 
-          if @scholarship.scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email'] && !user.parent_id
+          if user.role_id != User::ROLES[:admin] && @scholarship.scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email'] && !user.parent_id
             render_unauthorized_response
             return
           end

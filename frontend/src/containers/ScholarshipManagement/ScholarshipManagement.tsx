@@ -1,13 +1,13 @@
-import { Remove, RemoveCircle, Visibility } from '@mui/icons-material'
+import { RemoveCircle, Visibility } from '@mui/icons-material'
 import { Box, IconButton, Tooltip } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import { CONTENT_STATUSES } from '../../constants/constants'
 import { useSnackbar } from '../../context/SnackBarContext'
-import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
-import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { useAppDispatch } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 
 interface GridRowDef {
@@ -21,9 +21,7 @@ interface GridRowDef {
 const ScholarshipManagement = () => {
   const navigate = useNavigate()
   const { showMessage } = useSnackbar()
-  const user = useAppSelector((state) => state.persistedReducer.user)
   const dispatch = useAppDispatch()
-  const { getScholarshipData } = useGetScholarshipsData()
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [page, setPage] = useState<number>(0)
@@ -36,11 +34,14 @@ const ScholarshipManagement = () => {
     }
   }, [rowCount])
 
-  const handleDelete = async (selectedRowId: number) => {
+  const handleSuspend = async (selectedRow: GridRowDef) => {
     setIsLoading(true)
     try {
-      const response = await axiosInstance.delete(
-        `/api/v1/scholarships/${selectedRowId}?page=${page + 1}&limit=${pageSize}`,
+      const response = await axiosInstance.put(
+        `/api/v1/scholarships/${selectedRow.id}`,
+        {
+          content_status: CONTENT_STATUSES['suspend'],
+        },
         {
           timeout: 100000,
           withCredentials: true,
@@ -49,7 +50,7 @@ const ScholarshipManagement = () => {
       setIsLoading(false)
       if (response.data) {
         showMessage('Successfully Deleted', 'success')
-        formatScholarships(response.data.scholarships)
+        // formatScholarships(response.data.scholarships)
       }
     } catch (error) {
       setIsLoading(false)
@@ -65,7 +66,7 @@ const ScholarshipManagement = () => {
   }, [])
 
   const formatScholarships = (data: Scholarship[]) => {
-    const row = data.map((scholarship: Scholarship) => {
+    const row = data?.map((scholarship: Scholarship) => {
       return {
         id: scholarship.id,
         listing_id: scholarship.listing_id,
@@ -129,7 +130,7 @@ const ScholarshipManagement = () => {
                 'Are you sure you want to suspend?',
                 'warning',
                 8000,
-                () => handleDelete(params.row.id)
+                () => handleSuspend(params.row)
               )
             }}
             sx={{ color: '#F50F0F' }}
