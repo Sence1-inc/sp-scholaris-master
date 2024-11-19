@@ -78,15 +78,19 @@ module Api
 
         if user.id == ENV['PARENT_ID'].to_i
           all_scholarships = Scholarship.none
+          scholarships = user.scholarship_provider.scholarships
+
+          all_scholarships = all_scholarships.or(scholarships) if scholarships.exists?
 
           user.children.each do |child|
             if child.scholarship_provider.present?
               scholarships = child.scholarship_provider.scholarships
-              all_scholarships = all_scholarships.or(scholarships)
+
+              all_scholarships = all_scholarships.or(scholarships) if scholarships.exists?
             end
           end
 
-          @scholarships = all_scholarships
+          @scholarships = all_scholarships.any? ? all_scholarships : Scholarship.none
         else
           @scholarships = Scholarship.where(scholarship_provider_id: @scholarship_provider.id)
         end
