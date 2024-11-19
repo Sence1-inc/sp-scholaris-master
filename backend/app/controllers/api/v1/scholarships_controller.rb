@@ -162,7 +162,7 @@ module Api
           notifier = Slack::Notifier.new ENV["SLACK_WEBHOOK_URL"],
                     channel: "#pj_scholarship-bot",
                     username: "notifier"
-          notifier.ping "Hello Scholaris admins! #{params[:scholarship_name]} has been updated."
+          notifier.ping "Hello Scholaris admins! #{result[:scholarship].scholarship_name} has been updated."
           render json: { message: result[:message], scholarship: result[:scholarship] }, status: :ok
         end
       end
