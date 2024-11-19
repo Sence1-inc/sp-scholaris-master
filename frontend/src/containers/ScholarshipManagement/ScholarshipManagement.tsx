@@ -1,31 +1,27 @@
-import DeleteIcon from '@mui/icons-material/Delete'
-import EditIcon from '@mui/icons-material/Edit'
-import VisibilityIcon from '@mui/icons-material/Visibility'
+import { RemoveCircle, Visibility } from '@mui/icons-material'
 import { Box, IconButton, Tooltip } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import { CONTENT_STATUSES } from '../../constants/constants'
 import { useSnackbar } from '../../context/SnackBarContext'
-import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
-import { useAppDispatch, useAppSelector } from '../../redux/store'
+import { useAppDispatch } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 
 interface GridRowDef {
   id: number
   scholarshipName: string
-  startDate: Date
-  endDate: Date
+  provider: string
+  content_status: string
   status: string
 }
 
-export default function DataTable() {
+const ScholarshipManagement = () => {
   const navigate = useNavigate()
   const { showMessage } = useSnackbar()
-  const user = useAppSelector((state) => state.persistedReducer.user)
   const dispatch = useAppDispatch()
-  const { getScholarshipData } = useGetScholarshipsData()
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [page, setPage] = useState<number>(0)
@@ -38,11 +34,14 @@ export default function DataTable() {
     }
   }, [rowCount])
 
-  const handleDelete = async (selectedRowId: number) => {
+  const handleSuspend = async (selectedRow: GridRowDef) => {
     setIsLoading(true)
     try {
-      const response = await axiosInstance.delete(
-        `/api/v1/scholarships/${selectedRowId}?page=${page + 1}&limit=${pageSize}`,
+      const response = await axiosInstance.put(
+        `/api/v1/scholarships/${selectedRow.id}`,
+        {
+          content_status: CONTENT_STATUSES['suspend'],
+        },
         {
           timeout: 100000,
           withCredentials: true,
@@ -51,7 +50,7 @@ export default function DataTable() {
       setIsLoading(false)
       if (response.data) {
         showMessage('Successfully Deleted', 'success')
-        formatScholarships(response.data.scholarships)
+        // formatScholarships(response.data.scholarships)
       }
     } catch (error) {
       setIsLoading(false)
@@ -67,13 +66,13 @@ export default function DataTable() {
   }, [])
 
   const formatScholarships = (data: Scholarship[]) => {
-    const row = data.map((scholarship: Scholarship) => {
+    const row = data?.map((scholarship: Scholarship) => {
       return {
         id: scholarship.id,
         listing_id: scholarship.listing_id,
         scholarshipName: scholarship.scholarship_name,
-        startDate: new Date(scholarship.start_date),
-        endDate: new Date(scholarship.due_date),
+        provider: scholarship.scholarship_provider.provider_name,
+        content_status: scholarship.content_status,
         status: scholarship.status,
       }
     })
@@ -82,11 +81,11 @@ export default function DataTable() {
   }
 
   useEffect(() => {
-    const getProviderScholarships = async () => {
+    const getScholarships = async () => {
       try {
         setIsLoading(true)
         const response = await axiosInstance.get(
-          `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships?page=${page + 1}&limit=${10}`,
+          `api/v1/scholarships?page=${page + 1}&limit=${pageSize}`,
           {
             timeout: 100000,
             withCredentials: true,
@@ -109,7 +108,7 @@ export default function DataTable() {
       }
     }
 
-    getProviderScholarships()
+    getScholarships()
     // eslint-disable-next-line
   }, [page, pageSize])
 
@@ -121,33 +120,22 @@ export default function DataTable() {
             onClick={() => navigate(`/scholarships/${params.row.id}`)}
             sx={{ color: '#06A5FF' }}
           >
-            <VisibilityIcon />
+            <Visibility />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Edit">
-          <IconButton
-            onClick={() => {
-              getScholarshipData(params.row.id)
-              navigate(`/scholarships/${params.row.id}/update`)
-            }}
-            sx={{ color: '#1F4BEA' }}
-          >
-            <EditIcon />
-          </IconButton>
-        </Tooltip>
-        <Tooltip title="Delete">
+        <Tooltip title="Suspend">
           <IconButton
             onClick={() => {
               showMessage(
-                'Are you sure you want to delete?',
+                'Are you sure you want to suspend?',
                 'warning',
                 8000,
-                () => handleDelete(params.row.id)
+                () => handleSuspend(params.row)
               )
             }}
             sx={{ color: '#F50F0F' }}
           >
-            <DeleteIcon />
+            <RemoveCircle />
           </IconButton>
         </Tooltip>
       </Box>
@@ -161,8 +149,13 @@ export default function DataTable() {
       headerName: 'Scholarship Name',
       flex: 1,
     },
-    { field: 'startDate', headerName: 'Start Date', type: 'date', flex: 0.5 },
-    { field: 'endDate', headerName: 'End Date', type: 'date', flex: 0.5 },
+    { field: 'provider', headerName: 'Provider Name', type: 'string', flex: 1 },
+    {
+      field: 'content_status',
+      headerName: 'Content Status',
+      type: 'string',
+      flex: 0.5,
+    },
     { field: 'status', headerName: 'Status', flex: 0.5 },
     {
       field: 'actions',
@@ -190,49 +183,12 @@ export default function DataTable() {
           paginationModel: { page: page, pageSize: 10 },
         },
       }}
-      pageSizeOptions={[10]}
+      pageSizeOptions={[5, 10]}
       pagination
       paginationMode="server"
       loading={isLoading}
-      sx={{
-        height: rowData?.length > 0 ? 'auto' : 200,
-        '.MuiDataGrid-root': {
-          border: 'none',
-        },
-        '.MuiDataGrid-main': {
-          borderTopLeftRadius: '16px',
-          borderTopRightRadius: '16px',
-        },
-        '& .MuiDataGrid-columnHeaders': {
-          backgroundColor: '#AFC3D9',
-        },
-        '.MuiDataGrid-footerContainer': {
-          borderBottomLeftRadius: '16px',
-          borderBottomRightRadius: '16px',
-        },
-        '& .MuiDataGrid-footerContainer': {
-          backgroundColor: '#AFC3D9',
-        },
-        '& .MuiDataGrid-row': {
-          '&:nth-of-type(odd)': {
-            backgroundColor: '#D8D8D8',
-          },
-          '&:nth-of-type(even)': {
-            backgroundColor: '#F1F1F1',
-          },
-        },
-        '& .MuiDataGrid-overlay': {
-          zIndex: '20',
-        },
-        borderRadius: '16px',
-        fontFamily: 'Outfit',
-        fontSize: {
-          xs: '1rem',
-        },
-        '& .MuiDataGrid-row:hover': {
-          backgroundColor: 'secondary.main',
-        },
-      }}
     />
   )
 }
+
+export default ScholarshipManagement

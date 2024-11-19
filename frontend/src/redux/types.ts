@@ -11,6 +11,7 @@ export type Scholarship = {
     provider_name: string
   }
   status: string
+  content_status: string
 }
 
 export type BenefitCategory = {
@@ -20,6 +21,7 @@ export type BenefitCategory = {
 
 export type ScholarshipData = {
   id: string
+  content_status: string
   scholarship_name: string
   listing_id: number
   description: string
@@ -287,22 +289,12 @@ type Formats = {
   thumbnail?: ImageFormat
 }
 
-// export type Description = {
-//   type: string
-//   children: {
-//     type: string
-//     text: string
-//   }[]
-// }
-
-// export type Article = {
-//   id: number
-//   documentId: string
-//   excerpt: string
-//   Name: string
-//   Description: Description[]
-//   createdAt: string
-//   updatedAt: string
-//   publishedAt: string
-//   locale: string
-// }
+export type ScholarshipFeedback = {
+  id: number
+  scholarship_id: number
+  scholarship_provider: ScholarshipProvider
+  feedback: string
+  notes: string
+  created_at: string
+  updated_at: string
+}

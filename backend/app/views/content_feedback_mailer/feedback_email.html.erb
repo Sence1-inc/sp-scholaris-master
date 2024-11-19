@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Scholarship Application</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    section {
+      margin: 16px
+    }
+  </style>
+</head>
+<body>
+  <section class="container">
+    <p>Dear <%= @provider_name %>,</p>
+    <p>We are requesting you to update details of your <%= @scholarship_name %>.</p>
+    <p><%= @feedback %></p>
+    <p>Best regards,<br>
+      Scholaris Team
+    </p>
+  </section>
+</body>
+</html>

@@ -9,6 +9,7 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import { USER_TYPES } from '../../constants/constants'
 import Logo from '../../public/images/logo.png'
 import { useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
@@ -31,11 +32,9 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
 
   const renderItems = () => {
     return !isAuthenticated ? (
-      <Unauthenticated
-        userType={pathname.includes('/student') ? 'student' : 'provider'}
-      />
+      <Unauthenticated userType={pathname.split('/')[1]} />
     ) : (
-      <Authenticated user={user} pathname={pathname} />
+      <Authenticated user={user} />
     )
   }
 

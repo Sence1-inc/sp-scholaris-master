@@ -6,6 +6,7 @@ import Disclaimer from './components/Disclaimer/Disclaimer'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
 import Footer from './components/Footer/Footer'
 import Navbar from './components/Navigation/Navbar'
+import AdminPrivate from './components/PrivateRoute/AdminPrivateRoute'
 import PrivateRoute from './components/PrivateRoute/PrivateRoute'
 import ProviderPrivate from './components/PrivateRoute/ProviderPrivateRoute'
 import StudentPrivate from './components/PrivateRoute/StudentPrivateRoute'
@@ -22,6 +23,7 @@ import ProviderProfile from './containers/ProfilesPage/ProviderProfile/ProviderP
 import ProviderDashboardPage from './containers/ProviderDashboardPage/ProviderDashboardPage'
 import { ScholarshipDetailsPage } from './containers/ScholarshipDetailsPage/ScholarshipDetailsPage'
 import ScholarshipEditorPage from './containers/ScholarshipEditorPage/ScholarshipEditorPage'
+import ScholarshipManagement from './containers/ScholarshipManagement/ScholarshipManagement'
 import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsPage'
 import SignInPage from './containers/SignInPage/SignInPage'
 import SignUpPage from './containers/SignUpPage/SignUpPage'
@@ -49,6 +51,16 @@ const StudentRoutes: React.FC = () => (
     <Route
       path="/account"
       element={<StudentPrivate component={StudentDashboardPage} />}
+    />
+    <Route path="*" element={<PageNotFoundPage />} />
+  </Routes>
+)
+
+const AdminRoutes: React.FC = () => (
+  <Routes>
+    <Route
+      path="/scholarships"
+      element={<AdminPrivate component={ScholarshipManagement} />}
     />
     <Route path="*" element={<PageNotFoundPage />} />
   </Routes>
@@ -141,6 +153,7 @@ const App: React.FC = () => {
                 path="/provider/*"
                 element={<ProviderRoutes isParent={!user.parent_id} />}
               />
+              <Route path="/admin/*" element={<AdminRoutes />} />
               <Route
                 path="/scholarships"
                 element={<SearchResultsPage isASection={false} />}

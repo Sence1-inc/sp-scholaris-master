@@ -1,5 +1,6 @@
 class ScholarshipProvider < ApplicationRecord
   has_many :scholarships
+  has_many :scholarship_feedbacks
   has_many :scholarship_applications, through: :scholarships
   has_one :scholarship_provider_profile
   belongs_to :user

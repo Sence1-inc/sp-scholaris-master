@@ -46,6 +46,12 @@ class ScholarshipService
     update_associated_categories(id, :benefit_categories, BenefitCategory)
     update_associated_text(id, :eligibilities, Eligibility)
 
+    scholarship.content_status = nil
+
+    if scholarship.content_status != nil 
+      scholarship.content_status = Scholarship::CONTENT_STATUSES[:revised]
+    end
+
     if scholarship.update(@scholarship_params)
       { message: 'Scholarship details successfully updated.', scholarship: scholarship }
     else
