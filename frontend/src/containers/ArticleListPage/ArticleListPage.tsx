@@ -35,10 +35,22 @@ const ArticleListPage: React.FC = () => {
       setLoading(false)
     }
     fetchArticles()
+    // eslint-disable-next-line
   }, [])
 
   if (loading) {
-    return <CircularProgress />
+    return (
+      <Container
+        sx={{
+          paddingTop: '20px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <CircularProgress />
+      </Container>
+    )
   }
 
   return (
@@ -50,7 +62,7 @@ const ArticleListPage: React.FC = () => {
         {articles.map((article) => (
           <Grid item xs={12} sm={6} md={4} key={article.id}>
             <Card
-              onClick={() => navigate(`/articles/${article.documentId}`)}
+              onClick={() => navigate(`/articles/${article.slug}`)}
               sx={{
                 cursor: 'pointer',
                 display: 'flex',
