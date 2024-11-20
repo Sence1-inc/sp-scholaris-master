@@ -20,7 +20,9 @@ const ArticleListPage: React.FC = () => {
 
   const getArticles = async () => {
     try {
-      const response = await axios.get(`${APP_URL}/api/articles?populate=*`)
+      const response = await axios.get(
+        `${APP_URL}/api/articles?filters[category][slug][$eq]=scholaris&populate=*`
+      )
       return response.data
     } catch (error) {
       console.error('Error fetching articles:', error)
