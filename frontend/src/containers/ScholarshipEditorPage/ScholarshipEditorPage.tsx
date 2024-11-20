@@ -9,6 +9,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Switch,
   Typography,
 } from '@mui/material'
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers'
@@ -45,6 +46,7 @@ type Errors = {
   school_year: string
   status: string
   scholarship_type: string
+  is_application_link_active: string
 }
 
 const ScholarshipEditorPage = () => {
@@ -52,7 +54,6 @@ const ScholarshipEditorPage = () => {
   const { id } = useParams<{ id: string }>()
   const { getScholarshipData } = useGetScholarshipsData()
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.persistedReducer.user)
   const data = useAppSelector((state) => state.persistedReducer.scholarshipData)
   const { scholarshipData } = data as { scholarshipData: ScholarshipData }
   const [scholarshipName, setScholarshipName] = useState<string>(
@@ -100,6 +101,8 @@ const ScholarshipEditorPage = () => {
   const [scholarshipType, setScholarshipType] = useState<string>(
     scholarshipData?.scholarship_type?.scholarship_type_name ?? ''
   )
+  const [isApplicationLinkActive, setIsApplicationLinkActive] =
+    useState<boolean>(scholarshipData.is_application_link_active ?? false)
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const [status, setStatus] = useState<string>(scholarshipData?.status ?? '')
   const [successMessage, setSuccessMessage] = useState<string>('')
@@ -120,6 +123,7 @@ const ScholarshipEditorPage = () => {
     school_year: '',
     status: '',
     scholarship_type: '',
+    is_application_link_active: '',
   })
   const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false)
 
@@ -144,8 +148,8 @@ const ScholarshipEditorPage = () => {
   }
 
   useEffect(() => {
-    if (user.scholarship_provider) {
-      setScholarshipProviderId(user.scholarship_provider.id)
+    if (scholarshipData.scholarship_provider) {
+      setScholarshipProviderId(scholarshipData.scholarship_provider.id)
     }
 
     // eslint-disable-next-line
@@ -190,10 +194,10 @@ const ScholarshipEditorPage = () => {
   }, [scholarshipData])
 
   useEffect(() => {
-    if (user.scholarship_provider) {
-      setScholarshipProviderId(user.scholarship_provider.id)
+    if (scholarshipData.scholarship_provider) {
+      setScholarshipProviderId(scholarshipData.scholarship_provider.id)
     }
-  }, [user])
+  }, [scholarshipData])
 
   useEffect(() => {
     const getScholarshipTypes = async () => {
@@ -314,6 +318,7 @@ const ScholarshipEditorPage = () => {
         school_year: '',
         status: '',
         scholarship_type: '',
+        is_application_link_active: '',
       })
     }
 
@@ -395,6 +400,7 @@ const ScholarshipEditorPage = () => {
         due_date: dueDate?.toISOString(),
         school_year: schoolYear,
         status: status,
+        is_application_link_active: isApplicationLinkActive,
         scholarship_provider_id: scholarshipProviderId,
       }
 
@@ -435,6 +441,7 @@ const ScholarshipEditorPage = () => {
             setScholarshipTypeId(null)
             setScholarshipType('')
             setCheckedCategories([])
+            setIsApplicationLinkActive(false)
             setErrors({
               scholarship_name: '',
               description: '',
@@ -449,6 +456,7 @@ const ScholarshipEditorPage = () => {
               school_year: '',
               status: '',
               scholarship_type: '',
+              is_application_link_active: '',
             })
           }
         }
@@ -456,6 +464,7 @@ const ScholarshipEditorPage = () => {
         setIsButtonLoading(false)
         if (error) {
           setSuccessMessage('')
+          console.log(error)
           showMessage(error.response.data.errors.join(', '), 'error')
           const errorMessages: { [key: string]: string } = {
             scholarship_name: error.response.data.errors
@@ -493,6 +502,9 @@ const ScholarshipEditorPage = () => {
               .join(', '),
             scholarship_type: error.response.data.errors
               .filter((str: string) => str.includes('Scholarship type'))
+              .join(', '),
+            is_application_link_active: error.response.data.errors
+              .filter((str: string) => str.includes('active'))
               .join(', '),
           }
 
@@ -690,9 +702,22 @@ const ScholarshipEditorPage = () => {
               }
               placeholder="e.g. www.excellenceinsciencescholarship.org"
             />
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Switch
+                    defaultChecked={scholarshipData.is_application_link_active}
+                    onClick={() =>
+                      setIsApplicationLinkActive(!isApplicationLinkActive)
+                    }
+                  />
+                }
+                label="Activate?"
+              />
+            </FormGroup>
             <Typography variant="subtitle1">
               {applicationLink
-                ? 'This is the link for students to apply.'
+                ? 'This is the link for students to apply. Activate it to let students directly apply to your form.'
                 : 'Please provide the link where students can apply for your scholarship.'}
             </Typography>
           </Box>

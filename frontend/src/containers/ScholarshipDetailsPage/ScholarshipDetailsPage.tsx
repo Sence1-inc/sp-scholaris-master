@@ -15,7 +15,7 @@ import {
 import { DataGrid, GridRowModel } from '@mui/x-data-grid'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
@@ -28,7 +28,7 @@ import ProviderProfile from '../../public/images/pro-profile.png'
 import { initializeScholarshipApplicationForm } from '../../redux/reducers/ScholarshipApplicationFormReducer'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { ScholarshipData, ScholarshipFeedback } from '../../redux/types'
+import { ScholarshipData, ScholarshipFeedback, User } from '../../redux/types'
 import { formattedDate } from '../StudentDashboardPage/StudentDashboardPage'
 import './ScholarshipDetailsPage.css'
 
@@ -75,7 +75,7 @@ export const ScholarshipDetailsPage: React.FC<
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.persistedReducer.user)
   const { getScholarshipData } = useGetScholarshipData()
   const applicationDetails = useAppSelector(
     (state) => state.persistedReducer.scholarshipApplicationForm
@@ -93,10 +93,6 @@ export const ScholarshipDetailsPage: React.FC<
   const [userMessage, setUserMessage] = useState<string>('')
   const [emailMessage, setEmailMessage] = useState<string>('')
   const [pdfFile, setPdfFile] = useState<File | null>(null)
-  const [scholarshipFeedbacks, setScholarshipFeedbacks] = useState<
-    ScholarshipFeedback[] | []
-  >([])
-  const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [page, setPage] = useState<number>(0)
   const [errors, setErrors] = useState<Errors>({
@@ -158,28 +154,14 @@ export const ScholarshipDetailsPage: React.FC<
 
   const handleSaveNotes = async (selectedRow: GridRowModel) => {
     try {
-      const response = await axiosInstance.put(
+      await axiosInstance.put(
         `/api/v1/scholarship_feedbacks/${selectedRow.id}`,
         { notes: selectedRow.notes }
       )
 
-      const rows = response.data.scholarship_feedbacks.map(
-        (scholarshipFeedback: ScholarshipFeedback) => {
-          return {
-            id: scholarshipFeedback.id,
-            feedback: scholarshipFeedback.feedback,
-            notes: scholarshipFeedback.notes,
-            createdAt: new Date(scholarshipFeedback.created_at).toDateString(),
-            updatedAt: new Date(scholarshipFeedback.updated_at).toDateString(),
-            providerName:
-              scholarshipFeedback.scholarship_provider.provider_name,
-          }
-        }
-      )
-
       getFeedbacks()
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      showMessage(error.data.message, 'error')
     }
   }
 
@@ -226,7 +208,6 @@ export const ScholarshipDetailsPage: React.FC<
       )
 
       setRowData(rows)
-      setTotalCount(response.data.total_count)
     } catch (error) {
       console.log(error)
     }
@@ -236,6 +217,7 @@ export const ScholarshipDetailsPage: React.FC<
     if (user.role_id === ADMIN_ROLE_ID && scholarshipData) {
       getFeedbacks()
     }
+    // eslint-disable-next-line
   }, [user.role_id, scholarshipData])
 
   useEffect(() => {
@@ -303,6 +285,10 @@ export const ScholarshipDetailsPage: React.FC<
     }
 
     return `${format(month, 2)}-${format(day, 2)}-${year}`
+  }
+
+  const handlePageChange = (params: { page: number; pageSize: number }) => {
+    setPage(params.page)
   }
 
   const handleApply = async () => {
@@ -638,12 +624,26 @@ export const ScholarshipDetailsPage: React.FC<
                   </p>
                 </div>
               </div>
+              {scholarshipData.is_application_link_active && (
+                <div className="details-section">
+                  <h4 className="title4">Application Link</h4>
+                  <Link
+                    id="application-link"
+                    style={{ wordWrap: 'break-word' }}
+                    to={scholarshipData.application_link}
+                    target="_blank"
+                  >
+                    {scholarshipData.application_link}
+                  </Link>
+                </div>
+              )}
               <div className="details-section">
-                {!user.email_address ||
-                (user &&
-                  user.email_address &&
-                  user.role_id !== PROVIDER_ROLE_ID &&
-                  user.role_id !== ADMIN_ROLE_ID) ? (
+                {!scholarshipData.is_application_link_active &&
+                (!user.email_address ||
+                  (user &&
+                    user.email_address &&
+                    user.role_id !== PROVIDER_ROLE_ID &&
+                    user.role_id !== ADMIN_ROLE_ID)) ? (
                   <CTAButton
                     handleClick={() => setIsModalOpen(true)}
                     label="Apply"
@@ -864,6 +864,7 @@ export const ScholarshipDetailsPage: React.FC<
               <DataGrid
                 rows={rowData}
                 columns={columns}
+                onPaginationModelChange={handlePageChange}
                 initialState={{
                   pagination: {
                     paginationModel: {

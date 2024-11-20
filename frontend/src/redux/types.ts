@@ -12,6 +12,7 @@ export type Scholarship = {
   }
   status: string
   content_status: string
+  is_application_link_active: boolean
 }
 
 export type BenefitCategory = {
@@ -31,6 +32,7 @@ export type ScholarshipData = {
   application_email: string
   school_year: string
   status: string
+  is_application_link_active: boolean
   scholarship_type: {
     id: number
     scholarship_type_name: string

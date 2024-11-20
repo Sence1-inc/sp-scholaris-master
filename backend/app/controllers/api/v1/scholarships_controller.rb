@@ -222,7 +222,8 @@ module Api
             :scholarship_type_id,
             :scholarship_provider_id,
             :timezone,
-            :content_status
+            :content_status,
+            :is_application_link_active
           ).merge(eligibilities: params[:eligibilities]).merge(requirements: params[:requirements]).merge(benefits: params[:benefits]).merge(benefit_categories: params[:benefit_categories])
         end
 
