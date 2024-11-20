@@ -640,17 +640,19 @@ export const ScholarshipDetailsPage: React.FC<
               </div>
               <div className="details-section">
                 {!user.email_address ||
-                  (user &&
-                    user.email_address &&
-                    user.role_id !== PROVIDER_ROLE_ID &&
-                    user.role_id !== ADMIN_ROLE_ID && (
-                      <CTAButton
-                        handleClick={() => setIsModalOpen(true)}
-                        label="Apply"
-                        loading={false}
-                        styles={{ fontSize: '24px' }}
-                      />
-                    ))}
+                (user &&
+                  user.email_address &&
+                  user.role_id !== PROVIDER_ROLE_ID &&
+                  user.role_id !== ADMIN_ROLE_ID) ? (
+                  <CTAButton
+                    handleClick={() => setIsModalOpen(true)}
+                    label="Apply"
+                    loading={false}
+                    styles={{ fontSize: '24px' }}
+                  />
+                ) : (
+                  <></>
+                )}
                 {user.role_id === ADMIN_ROLE_ID && (
                   <CTAButton
                     loading={isLoading}

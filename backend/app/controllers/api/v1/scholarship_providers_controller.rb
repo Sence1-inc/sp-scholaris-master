@@ -129,7 +129,7 @@ module Api
           return
         end
 
-        parent = user.parent_id != nil ? user.parent : user
+        parent = user.parent_id != nil && user.parent_id != ENV['PARENT_ID'].to_i ? user.parent : user
         scholarship_applications =  parent.scholarship_provider.scholarship_applications.includes(:scholarship).page(params[:page] || 1).per(params[:limit] || 10)
         if scholarship_applications.exists?
           render json: {
@@ -152,7 +152,7 @@ module Api
           return
         end
 
-        parent = user.parent_id != nil ? user.parent : user
+        parent = user.parent_id != nil && user.parent_id != ENV['PARENT_ID'].to_i ? user.parent : user
         scholarship_application = parent.scholarship_provider.scholarship_applications.find(params[:scholarship_application_id])
         if scholarship_application.update(notes: params[:notes], status: params[:status])
           render json: {

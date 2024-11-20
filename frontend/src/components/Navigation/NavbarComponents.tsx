@@ -1,7 +1,7 @@
 import { Button, List, ListItem, Typography } from '@mui/material'
 import React, { ReactElement } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import instance from '../../axiosConfig'
+import instance, { initialUserState } from '../../axiosConfig'
 import {
   ADMIN_ROLE_ID,
   PROVIDER_ROLE_ID,
@@ -9,6 +9,7 @@ import {
   USER_TYPES,
 } from '../../constants/constants'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
+import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import CTAButton from '../CustomButton/CTAButton'
@@ -131,6 +132,7 @@ const AuthnticatedAdmin = () => {
       email: user.email_address,
     })
     dispatch(initializeIsAuthenticated(false))
+    dispatch(initializeUser(initialUserState))
     navigate('/sign-in')
   }
 

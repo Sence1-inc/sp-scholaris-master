@@ -126,6 +126,7 @@ export type ScholarshipApplication = {
   user_id: number | null
   status: number
   notes: string
+  batch: string
   scholarship: Scholarship
   user?: User
 }
