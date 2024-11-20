@@ -1,4 +1,4 @@
-import { RemoveCircle, Visibility } from '@mui/icons-material'
+import { AddCircle, RemoveCircle, Visibility } from '@mui/icons-material'
 import { Box, IconButton, Tooltip } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
@@ -34,13 +34,13 @@ const ScholarshipManagement = () => {
     }
   }, [rowCount])
 
-  const handleSuspend = async (selectedRow: GridRowDef) => {
+  const handleSuspend = async (selectedRow: GridRowDef, status: string) => {
     setIsLoading(true)
     try {
       const response = await axiosInstance.put(
         `/api/v1/scholarships/${selectedRow.id}`,
         {
-          content_status: CONTENT_STATUSES['suspend'],
+          content_status: status,
         },
         {
           timeout: 100000,
@@ -49,8 +49,25 @@ const ScholarshipManagement = () => {
       )
       setIsLoading(false)
       if (response.data) {
-        showMessage('Successfully Deleted', 'success')
-        // formatScholarships(response.data.scholarships)
+        showMessage(`Successfully ${status}ed`, 'success')
+
+        const newRowData = rowData.map((row) => {
+          if (row.id === response.data.scholarship.id) {
+            return {
+              id: response.data.scholarship.id,
+              listing_id: response.data.scholarship.listing_id,
+              scholarshipName: response.data.scholarship.scholarship_name,
+              provider:
+                response.data.scholarship.scholarship_provider.provider_name,
+              content_status: response.data.scholarship.content_status,
+              status: response.data.scholarship.status,
+            }
+          }
+
+          return row
+        })
+
+        setRowData(newRowData)
       }
     } catch (error) {
       setIsLoading(false)
@@ -123,21 +140,40 @@ const ScholarshipManagement = () => {
             <Visibility />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Suspend">
-          <IconButton
-            onClick={() => {
-              showMessage(
-                'Are you sure you want to suspend?',
-                'warning',
-                8000,
-                () => handleSuspend(params.row)
-              )
-            }}
-            sx={{ color: '#F50F0F' }}
-          >
-            <RemoveCircle />
-          </IconButton>
-        </Tooltip>
+        {params.row.content_status !== CONTENT_STATUSES['suspend'] && (
+          <Tooltip title="Suspend">
+            <IconButton
+              onClick={() => {
+                showMessage(
+                  'Are you sure you want to suspend?',
+                  'warning',
+                  8000,
+                  () => handleSuspend(params.row, CONTENT_STATUSES['suspend'])
+                )
+              }}
+              sx={{ color: '#F50F0F' }}
+            >
+              <RemoveCircle />
+            </IconButton>
+          </Tooltip>
+        )}
+        {params.row.content_status === CONTENT_STATUSES['suspend'] && (
+          <Tooltip title="Suspend">
+            <IconButton
+              onClick={() => {
+                showMessage(
+                  'Are you sure you want to reactivate?',
+                  'warning',
+                  8000,
+                  () => handleSuspend(params.row, CONTENT_STATUSES['revised'])
+                )
+              }}
+              color="success"
+            >
+              <AddCircle />
+            </IconButton>
+          </Tooltip>
+        )}
       </Box>
     )
   }
