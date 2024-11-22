@@ -21,7 +21,7 @@ const ArticleListPage: React.FC = () => {
   const getArticles = async () => {
     try {
       const response = await axios.get(
-        `${APP_URL}/api/articles?filters[category][slug][$eq]=scholaris&populate=*`
+        `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&populate=*`
       )
       return response.data
     } catch (error) {
