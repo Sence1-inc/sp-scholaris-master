@@ -183,7 +183,7 @@ const App: React.FC = () => {
                 element={<VerifyEmailPage />}
               />
               <Route path="/articles" element={<ArticleListPage />} />
-              <Route path="/articles/:id" element={<ArticleDetailPage />} />
+              <Route path="/articles/:slug" element={<ArticleDetailPage />} />
               <Route path="*" element={<PageNotFoundPage />} />
               <Route
                 path="/scholarships/create/upload"
