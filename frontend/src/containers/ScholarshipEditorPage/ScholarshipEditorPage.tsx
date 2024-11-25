@@ -21,6 +21,7 @@ import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
+import { CONTENT_STATUSES } from '../../constants/constants'
 import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
@@ -462,62 +463,67 @@ const ScholarshipEditorPage = () => {
         }
       } catch (error: any) {
         setIsButtonLoading(false)
+        console.log(error)
         if (error) {
-          setSuccessMessage('')
-          console.log(error)
-          showMessage(error.response.data.errors.join(', '), 'error')
-          const errorMessages: { [key: string]: string } = {
-            scholarship_name: error.response.data.errors
-              .filter((str: string) => str.includes('Scholarship name'))
-              .join(', '),
-            description: error.response.data.errors
-              .filter((str: string) => str.includes('Description'))
-              .join(', '),
-            requirements: error.response.data.errors
-              .filter((str: string) => str.includes('Requirements'))
-              .join(', '),
-            eligibilities: error.response.data.errors
-              .filter((str: string) => str.includes('Eligibilities'))
-              .join(', '),
-            benefits: error.response.data.errors
-              .filter((str: string) => str.includes('Benefits'))
-              .join(', '),
-            start_date: error.response.data.errors
-              .filter((str: string) => str.includes('Start date'))
-              .join(', '),
-            due_date: error.response.data.errors
-              .filter((str: string) => str.includes('Due date'))
-              .join(', '),
-            application_link: error.response.data.errors
-              .filter((str: string) => str.includes('Application link'))
-              .join(', '),
-            application_email: error.response.data.errors
-              .filter((str: string) => str.includes('Application email'))
-              .join(', '),
-            school_year: error.response.data.errors
-              .filter((str: string) => str.includes('School year'))
-              .join(', '),
-            status: error.response.data.errors
-              .filter((str: string) => str.includes('Status'))
-              .join(', '),
-            scholarship_type: error.response.data.errors
-              .filter((str: string) => str.includes('Scholarship type'))
-              .join(', '),
-            is_application_link_active: error.response.data.errors
-              .filter((str: string) => str.includes('active'))
-              .join(', '),
+          if (error.response.status === 412) {
+            showMessage(error.response.data.message, 'error')
+          } else {
+            setSuccessMessage('')
+            console.log(error)
+            showMessage(error.response.data.errors.join(', '), 'error')
+            const errorMessages: { [key: string]: string } = {
+              scholarship_name: error.response.data.errors
+                .filter((str: string) => str.includes('Scholarship name'))
+                .join(', '),
+              description: error.response.data.errors
+                .filter((str: string) => str.includes('Description'))
+                .join(', '),
+              requirements: error.response.data.errors
+                .filter((str: string) => str.includes('Requirements'))
+                .join(', '),
+              eligibilities: error.response.data.errors
+                .filter((str: string) => str.includes('Eligibilities'))
+                .join(', '),
+              benefits: error.response.data.errors
+                .filter((str: string) => str.includes('Benefits'))
+                .join(', '),
+              start_date: error.response.data.errors
+                .filter((str: string) => str.includes('Start date'))
+                .join(', '),
+              due_date: error.response.data.errors
+                .filter((str: string) => str.includes('Due date'))
+                .join(', '),
+              application_link: error.response.data.errors
+                .filter((str: string) => str.includes('Application link'))
+                .join(', '),
+              application_email: error.response.data.errors
+                .filter((str: string) => str.includes('Application email'))
+                .join(', '),
+              school_year: error.response.data.errors
+                .filter((str: string) => str.includes('School year'))
+                .join(', '),
+              status: error.response.data.errors
+                .filter((str: string) => str.includes('Status'))
+                .join(', '),
+              scholarship_type: error.response.data.errors
+                .filter((str: string) => str.includes('Scholarship type'))
+                .join(', '),
+              is_application_link_active: error.response.data.errors
+                .filter((str: string) => str.includes('active'))
+                .join(', '),
+            }
+
+            const filteredErrors: Partial<Record<string, string>> = Object.keys(
+              errorMessages
+            )
+              .filter((key: string) => !!errorMessages[key])
+              .reduce((acc: Partial<Record<string, string>>, key: string) => {
+                acc[key] = errorMessages[key]
+                return acc
+              }, {})
+
+            setErrors(filteredErrors as Errors)
           }
-
-          const filteredErrors: Partial<Record<string, string>> = Object.keys(
-            errorMessages
-          )
-            .filter((key: string) => !!errorMessages[key])
-            .reduce((acc: Partial<Record<string, string>>, key: string) => {
-              acc[key] = errorMessages[key]
-              return acc
-            }, {})
-
-          setErrors(filteredErrors as Errors)
         }
       }
     }
@@ -859,12 +865,19 @@ const ScholarshipEditorPage = () => {
             </Select>
             <HelperText error={errors.status} />
           </Box>
-          <CTAButton
-            id="save-scholarship-via-manual"
-            handleClick={handleSubmit}
-            label="Save Scholarship"
-            loading={isButtonLoading}
-          />
+          {scholarshipData.content_status !==
+            CONTENT_STATUSES['pending_approval'] && (
+            <CTAButton
+              id="save-scholarship-via-manual"
+              handleClick={handleSubmit}
+              label={
+                scholarshipData.content_status === CONTENT_STATUSES['suspend']
+                  ? 'Submit for Approval'
+                  : 'Save Scholarship'
+              }
+              loading={isButtonLoading}
+            />
+          )}
         </Box>
       </Container>
     </FormGroup>

@@ -50,6 +50,10 @@ class ScholarshipService
       scholarship.content_status = Scholarship::CONTENT_STATUSES[:revised]
     end
 
+    if scholarship.content_status == Scholarship::CONTENT_STATUSES[:suspend] 
+      scholarship.content_status = Scholarship::CONTENT_STATUSES[:pending_approval]
+    end
+
     if scholarship.update(@scholarship_params)
       { message: 'Scholarship details successfully updated.', scholarship: scholarship }
     else

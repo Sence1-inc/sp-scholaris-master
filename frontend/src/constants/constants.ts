@@ -33,4 +33,5 @@ export const CONTENT_STATUSES = {
   revised: 'revised',
   suspend: 'suspend',
   for_modification: 'for modification',
+  pending_approval: 'pending approval',
 }

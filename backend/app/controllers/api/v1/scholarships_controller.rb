@@ -151,9 +151,21 @@ module Api
 
         result = scholarship_service.update_scholarship(@scholarship.id)
 
+        if @scholarship.scholarship_provider.user.role_id != User::ROLES[:admin] && @scholarship.content_status == Scholarship::CONTENT_STATUSES[:pending_approval]
+          render json: {message: "You are not allowed to update the scholarship"}, status: :precondition_failed
+          return
+        end
+
         if params[:content_status].present? && params[:content_status] == Scholarship::CONTENT_STATUSES[:suspend]
           feedback = "We regret to inform you that your scholarship has been suspended due to concerning details we discovered. If you have any questions or would like to discuss this matter, please contact us at your earliest convenience."
-          ContentFeedbackMailer.feedback_email(result[:scholarship].scholarship_provider.user.email_address, result[:scholarship].scholarship_provider.provider_name, result[:scholarship].scholarship_name, feedback).deliver_now
+          scholarship_feedback = ScholarshipFeedback.new(scholarship_provider_id: result[:scholarship].scholarship_provider.id, feedback: "Suspended due to concerning details", scholarship_id: result[:scholarship].id)
+          if scholarship_feedback.save
+            begin
+              ContentFeedbackMailer.feedback_email(result[:scholarship].scholarship_provider.user.email_address, result[:scholarship].scholarship_provider.provider_name, result[:scholarship].scholarship_name, feedback).deliver_now
+            rescue StandardError => e
+              Rails.logger.error("Failed to send email: #{e.message}")
+            end
+          end
         end
 
         if result[:errors].present?

@@ -1,5 +1,5 @@
 import { AddCircle, RemoveCircle, Visibility } from '@mui/icons-material'
-import { Box, IconButton, Tooltip } from '@mui/material'
+import { Box, IconButton, Popover, Tooltip } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -140,25 +140,29 @@ const ScholarshipManagement = () => {
             <Visibility />
           </IconButton>
         </Tooltip>
-        {params.row.content_status !== CONTENT_STATUSES['suspend'] && (
-          <Tooltip title="Suspend">
-            <IconButton
-              onClick={() => {
-                showMessage(
-                  'Are you sure you want to suspend?',
-                  'warning',
-                  8000,
-                  () => handleSuspend(params.row, CONTENT_STATUSES['suspend'])
-                )
-              }}
-              sx={{ color: '#F50F0F' }}
-            >
-              <RemoveCircle />
-            </IconButton>
-          </Tooltip>
-        )}
-        {params.row.content_status === CONTENT_STATUSES['suspend'] && (
-          <Tooltip title="Suspend">
+        {params.row.content_status !== CONTENT_STATUSES['suspend'] &&
+          params.row.content_status !==
+            CONTENT_STATUSES['pending_approval'] && (
+            <Tooltip title="Suspend">
+              <IconButton
+                onClick={() => {
+                  showMessage(
+                    'Are you sure you want to suspend?',
+                    'warning',
+                    8000,
+                    () => handleSuspend(params.row, CONTENT_STATUSES['suspend'])
+                  )
+                }}
+                sx={{ color: '#F50F0F' }}
+              >
+                <RemoveCircle />
+              </IconButton>
+            </Tooltip>
+          )}
+        {(params.row.content_status === CONTENT_STATUSES['suspend'] ||
+          params.row.content_status ===
+            CONTENT_STATUSES['pending_approval']) && (
+          <Tooltip title="Reactivate">
             <IconButton
               onClick={() => {
                 showMessage(
