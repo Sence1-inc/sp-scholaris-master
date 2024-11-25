@@ -21,7 +21,11 @@ import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import TextLoading from '../../components/Loading/TextLoading'
-import { ADMIN_ROLE_ID, PROVIDER_ROLE_ID } from '../../constants/constants'
+import {
+  ADMIN_ROLE_ID,
+  CONTENT_STATUSES,
+  PROVIDER_ROLE_ID,
+} from '../../constants/constants'
 import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
 import ProviderProfile from '../../public/images/pro-profile.png'
@@ -653,17 +657,21 @@ export const ScholarshipDetailsPage: React.FC<
                 ) : (
                   <></>
                 )}
-                {user.role_id === ADMIN_ROLE_ID && (
-                  <CTAButton
-                    loading={isLoading}
-                    handleClick={() => setIsSendEmailModalOpen(true)}
-                    label="Ask Provider to Edit"
-                    styles={{
-                      fontSize: '1.20rem',
-                      padding: { xs: '14px', md: '20px' },
-                    }}
-                  />
-                )}
+                {user.role_id === ADMIN_ROLE_ID &&
+                  scholarshipData.content_status !==
+                    CONTENT_STATUSES['suspend'] &&
+                  scholarshipData.content_status !==
+                    CONTENT_STATUSES['pending_approval'] && (
+                    <CTAButton
+                      loading={isLoading}
+                      handleClick={() => setIsSendEmailModalOpen(true)}
+                      label="Ask Provider to Edit"
+                      styles={{
+                        fontSize: '1.20rem',
+                        padding: { xs: '14px', md: '20px' },
+                      }}
+                    />
+                  )}
                 <Modal
                   open={isModalOpen}
                   onClose={() => {

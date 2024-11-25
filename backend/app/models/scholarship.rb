@@ -31,7 +31,8 @@ class Scholarship < ApplicationRecord
   CONTENT_STATUSES = {
     revised: 'revised',
     suspend: 'suspend',
-    for_modification: 'for modification'
+    for_modification: 'for modification',
+    pending_approval: 'pending approval'
   }.freeze
 
   scope :filtered, ->(params) {
