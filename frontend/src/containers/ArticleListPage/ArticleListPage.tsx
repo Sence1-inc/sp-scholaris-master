@@ -38,6 +38,7 @@ const ArticleListPage: React.FC = () => {
       setLoading(false)
     }
     fetchArticles()
+    // eslint-disable-next-line
   }, [])
 
   if (loading) {
