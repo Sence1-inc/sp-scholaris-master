@@ -203,7 +203,6 @@ const ArticleDetailPage: React.FC = () => {
       const response = await axios.get(
         `${APP_URL}/api/articles?filters[slug][$eq]=${slug}&populate=*`
       )
-
       return response.data
     } catch (error) {
       console.error('Error fetching article:', error)
