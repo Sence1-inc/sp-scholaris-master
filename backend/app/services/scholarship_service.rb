@@ -46,15 +46,22 @@ class ScholarshipService
     update_associated_categories(id, :benefit_categories, BenefitCategory)
     update_associated_text(id, :eligibilities, Eligibility)
 
+    user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+
+    editting_user = user.role_id == User::ROLES[:provider] ? scholarship.scholarship_provider.provider_name : "Scholaris Admin"
+
     if scholarship.content_status == Scholarship::CONTENT_STATUSES[:for_modification] 
       scholarship.content_status = Scholarship::CONTENT_STATUSES[:revised]
+      scholarship_feedback = ScholarshipFeedback.new(scholarship_provider_id: result[:scholarship].scholarship_provider.id, feedback: "Details has been revised by #{editting_user}", scholarship_id: result[:scholarship].id)
     end
 
-    if scholarship.content_status == Scholarship::CONTENT_STATUSES[:suspend] 
+    if scholarship.content_status == Scholarship::CONTENT_STATUSES[:suspend]
       scholarship.content_status = Scholarship::CONTENT_STATUSES[:pending_approval]
+      scholarship_feedback = ScholarshipFeedback.new(scholarship_provider_id: result[:scholarship].scholarship_provider.id, feedback: "#{scholarship.scholarship_provider.provider_name} has editted the details and is requesting for approval", scholarship_id: result[:scholarship].id)
     end
 
     if scholarship.update(@scholarship_params)
+      scholarship_feedback.save
       { message: 'Scholarship details successfully updated.', scholarship: scholarship }
     else
       { errors: scholarship.errors.full_messages }

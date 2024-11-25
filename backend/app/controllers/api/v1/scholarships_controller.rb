@@ -151,7 +151,9 @@ module Api
 
         result = scholarship_service.update_scholarship(@scholarship.id)
 
-        if @scholarship.scholarship_provider.user.role_id != User::ROLES[:admin] && @scholarship.content_status == Scholarship::CONTENT_STATUSES[:pending_approval]
+        user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+
+        if user.role_id != User::ROLES[:admin] && @scholarship.content_status == Scholarship::CONTENT_STATUSES[:pending_approval]
           render json: {message: "You are not allowed to update the scholarship"}, status: :precondition_failed
           return
         end
