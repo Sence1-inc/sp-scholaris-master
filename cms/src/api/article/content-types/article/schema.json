@@ -72,11 +72,6 @@
       "relation": "manyToMany",
       "target": "api::tag.tag",
       "mappedBy": "articles"
-    },
-    "project": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::project.project"
     }
   }
 }

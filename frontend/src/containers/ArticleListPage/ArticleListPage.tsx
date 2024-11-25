@@ -20,9 +20,7 @@ const ArticleListPage: React.FC = () => {
 
   const getArticles = async () => {
     try {
-      const response = await axios.get(
-        `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&populate=*`
-      )
+      const response = await axios.get(`${APP_URL}/api/articles?populate=*`)
       return response.data
     } catch (error) {
       console.error('Error fetching articles:', error)
@@ -37,22 +35,10 @@ const ArticleListPage: React.FC = () => {
       setLoading(false)
     }
     fetchArticles()
-    // eslint-disable-next-line
   }, [])
 
   if (loading) {
-    return (
-      <Container
-        sx={{
-          paddingTop: '20px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <CircularProgress />
-      </Container>
-    )
+    return <CircularProgress />
   }
 
   return (
@@ -64,7 +50,7 @@ const ArticleListPage: React.FC = () => {
         {articles.map((article) => (
           <Grid item xs={12} sm={6} md={4} key={article.id}>
             <Card
-              onClick={() => navigate(`/articles/${article.slug}`)}
+              onClick={() => navigate(`/articles/${article.documentId}`)}
               sx={{
                 cursor: 'pointer',
                 display: 'flex',

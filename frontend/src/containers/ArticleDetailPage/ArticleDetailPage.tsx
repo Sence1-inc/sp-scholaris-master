@@ -1,6 +1,4 @@
-import { ArrowBackIos } from '@mui/icons-material'
 import {
-  Button,
   Card,
   CardContent,
   CardMedia,
@@ -13,14 +11,13 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import { ReactMarkdownProps } from 'react-markdown/lib/complex-types'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import { Article } from '../../redux/types'
 
 const ArticleDetailPage: React.FC = () => {
-  const { slug } = useParams<{ slug: string }>()
-  const navigate = useNavigate()
+  const { id } = useParams<{ id: string }>()
   const [article, setArticle] = useState<Article | null>(null)
   const [loading, setLoading] = useState(true)
   const APP_URL = process.env.REACT_APP_CMS_API_URL
@@ -28,20 +25,18 @@ const ArticleDetailPage: React.FC = () => {
 
   const markdonwStyles = {
     h1: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <h1
         style={{
           color: theme.palette.primary.main,
-          fontSize: theme.typography.h1.fontSize,
-          fontFamily: theme.typography.h1.fontFamily,
-          fontWeight: theme.typography.h1.fontWeight,
+          fontSize: theme.typography.h4.fontSize,
+          fontFamily: theme.typography.h4.fontFamily,
+          fontWeight: theme.typography.h4.fontWeight,
           marginTop: theme.spacing(2),
         }}
         {...props}
       />
     ),
     h2: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <h2
         style={{
           color: theme.palette.primary.main,
@@ -54,7 +49,6 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
     h3: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <h3
         style={{
           color: theme.palette.primary.main,
@@ -67,7 +61,6 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
     h4: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <h4
         style={{
           color: theme.palette.primary.main,
@@ -80,7 +73,6 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
     h5: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <h5
         style={{
           color: theme.palette.primary.main,
@@ -93,7 +85,6 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
     h6: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <h6
         style={{
           color: theme.palette.primary.main,
@@ -106,7 +97,6 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
     p: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <p
         style={{
           lineHeight: theme.typography.body1.lineHeight,
@@ -120,7 +110,6 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
     a: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <a
         style={{
           color: theme.palette.secondary.main,
@@ -132,7 +121,6 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
     ul: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <ul
         style={{
           listStyleType: 'circle',
@@ -148,7 +136,6 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
     li: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <li
         style={{
           marginBottom: theme.spacing(1),
@@ -163,7 +150,6 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
     img: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <img
         style={{
           width: '100%',
@@ -175,7 +161,6 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
     strong: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <strong
         style={{
           fontWeight: theme.typography.fontWeightBold,
@@ -186,7 +171,6 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
     em: ({ node, ...props }: ReactMarkdownProps) => (
-      // eslint-disable-next-line
       <em
         style={{
           fontStyle: 'italic',
@@ -198,12 +182,12 @@ const ArticleDetailPage: React.FC = () => {
     ),
   }
 
-  const getArticle = async (slug: string) => {
+  const getArticle = async (id: string) => {
     try {
       const response = await axios.get(
-        `${APP_URL}/api/articles?filters[slug][$eq]=${slug}&populate=*`
+        `${APP_URL}/api/articles/${id}?populate=*`
       )
-
+      console.log('THIS', response.data)
       return response.data
     } catch (error) {
       console.error('Error fetching article:', error)
@@ -213,30 +197,17 @@ const ArticleDetailPage: React.FC = () => {
 
   useEffect(() => {
     const fetchArticle = async () => {
-      if (slug) {
-        const data = await getArticle(slug)
-        setArticle(data.data[0])
+      if (id) {
+        const data = await getArticle(id)
+        setArticle(data.data)
         setLoading(false)
       }
     }
     fetchArticle()
-
-    // eslint-disable-next-line
-  }, [slug])
+  }, [id])
 
   if (loading) {
-    return (
-      <Container
-        sx={{
-          paddingTop: '20px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <CircularProgress />
-      </Container>
-    )
+    return <CircularProgress />
   }
 
   if (!article) {
@@ -245,21 +216,6 @@ const ArticleDetailPage: React.FC = () => {
 
   return (
     <Container sx={{ padding: '20px' }}>
-      <Button
-        id="back-to-search"
-        onClick={() => navigate('/articles')}
-        sx={{
-          color: 'secondary.main',
-          fontSize: '1.2rem',
-          fontWeight: 700,
-          textDecoration: 'none',
-          '&:hover': {
-            textDecoration: 'underline',
-          },
-        }}
-      >
-        <ArrowBackIos sx={{ fontSize: '1.2rem' }} /> Back to Articles
-      </Button>
       <Card>
         {article.cover && (
           <CardMedia
