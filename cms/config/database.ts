@@ -7,7 +7,7 @@ export default ({ env }) => {
     mysql: {
       connection: {
         // host: env('INSTANCE_CONNECTION_NAME', 'localhost'),
-        socketPath: `/cloudsql/maximal-muse-420523:asia-east1:auth-db-test`,
+        socketPath: env(`INSTANCE_CONNECTION_NAME`, 'strapi'),
         port: env('DATABASE_PORT', 3306),
         database: env('DATABASE_NAME', 'strapi'),
         user: env('DATABASE_USER', 'strapi'),
