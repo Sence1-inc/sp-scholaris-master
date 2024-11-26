@@ -10,7 +10,10 @@ import {
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import ArticleListSection from '../../components/ArticleListSection/ArticleListSection'
+import Jumbotron from '../../components/Jumbotron/Jumbotron'
 import { Article } from '../../redux/types'
+import { containerStyle } from '../../styles/globalStyles'
 
 const ArticleListPage: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([])
@@ -21,7 +24,7 @@ const ArticleListPage: React.FC = () => {
   const getArticles = async () => {
     try {
       const response = await axios.get(
-        `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&populate=*`
+        `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&sort[0]=publishedAt:desc&populate=*`
       )
 
       return response.data
@@ -57,11 +60,14 @@ const ArticleListPage: React.FC = () => {
   }
 
   return (
-    <Container sx={{ padding: '20px' }}>
-      <Typography variant="h4" component="h1" gutterBottom>
-        Articles
-      </Typography>
-      <Grid container spacing={4}>
+    <Container sx={{ ...containerStyle }}>
+      <Jumbotron />
+      <ArticleListSection
+        articles={articles}
+        header="Popular Articles"
+        subheader="Articles"
+      />
+      {/* <Grid container spacing={4}>
         {articles.map((article) => (
           <Grid item xs={12} sm={6} md={4} key={article.id}>
             <Card
@@ -92,7 +98,7 @@ const ArticleListPage: React.FC = () => {
             </Card>
           </Grid>
         ))}
-      </Grid>
+      </Grid> */}
     </Container>
   )
 }

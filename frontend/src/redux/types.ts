@@ -249,6 +249,18 @@ export type Article = {
   createdAt: string
   updatedAt: string
   publishedAt: string
+  tags: Tag[]
+}
+
+export type Tag = {
+  createdAt: string
+  description: string
+  documentId: string
+  id: number
+  name: string
+  publishedAt: string
+  slug: string
+  updatedAt: string
 }
 
 export type Cover = {
