@@ -24,6 +24,12 @@
     "slug": {
       "type": "uid",
       "targetField": "name"
+    },
+    "tags": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::tag.tag",
+      "mappedBy": "projects"
     }
   }
 }

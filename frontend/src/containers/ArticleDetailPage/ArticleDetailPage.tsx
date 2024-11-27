@@ -1,12 +1,14 @@
-import { ArrowBackIos } from '@mui/icons-material'
+import { ArrowBackIos, ArrowRightOutlined } from '@mui/icons-material'
 import {
+  Box,
   Button,
   Card,
   CardContent,
-  CardMedia,
   CircularProgress,
   Container,
+  TextField,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material'
 import axios from 'axios'
@@ -16,15 +18,22 @@ import { ReactMarkdownProps } from 'react-markdown/lib/complex-types'
 import { useNavigate, useParams } from 'react-router-dom'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
-import { Article } from '../../redux/types'
+import ArticleListSectionCard from '../../components/ArticleListSection/ArticleListSectionCard'
+import GradImage from '../../public/images/banner-bg.png'
+import { Article, Tag } from '../../redux/types'
+import { containerStyle } from '../../styles/globalStyles'
 
 const ArticleDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   const [article, setArticle] = useState<Article | null>(null)
+  const [relatedArticles, setRelatedArticles] = useState<Article[] | []>([])
+  const [popularArticles, setPopularArticles] = useState<Article[] | []>([])
   const [loading, setLoading] = useState(true)
   const APP_URL = process.env.REACT_APP_CMS_API_URL
   const theme = useTheme()
+
+  const isXs = useMediaQuery(() => theme.breakpoints.down('sm'))
 
   const markdonwStyles = {
     h1: ({ node, ...props }: ReactMarkdownProps) => (
@@ -197,7 +206,7 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
   }
-
+  console.log(isXs)
   const getArticle = async (slug: string) => {
     try {
       const response = await axios.get(
@@ -210,18 +219,60 @@ const ArticleDetailPage: React.FC = () => {
     }
   }
 
+  const getRelatedArticles = async () => {
+    try {
+      const response = await axios.get(
+        `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&filters[tags][name][$eq]=${article?.tags[0].name}&sort[0]=publishedAt:desc&populate=*`
+      )
+
+      return response.data
+    } catch (error) {
+      console.error('Error fetching articles:', error)
+      return []
+    }
+  }
+
+  const getPopularArticles = async () => {
+    try {
+      const response = await axios.get(
+        `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&filters[is_popular][$eq]=${true}&sort[0]=publishedAt:desc&populate=*`
+      )
+
+      setPopularArticles(response.data.data)
+      setLoading(false)
+    } catch (error) {
+      console.error('Error fetching articles:', error)
+    }
+  }
+
   useEffect(() => {
     const fetchArticle = async () => {
-      if (slug) {
-        const data = await getArticle(slug)
-        setArticle(data.data[0])
-        setLoading(false)
-      }
+      const data = await getArticle(String(slug))
+      setArticle(data.data[0])
+      setLoading(false)
     }
-    fetchArticle()
+
+    if (slug) {
+      fetchArticle()
+    }
 
     // eslint-disable-next-line
   }, [slug])
+
+  useEffect(() => {
+    const fetchRelatedArticles = async () => {
+      const data = await getRelatedArticles()
+      setRelatedArticles(data.data)
+      setLoading(false)
+    }
+
+    if (article) {
+      fetchRelatedArticles()
+      getPopularArticles()
+    }
+
+    // eslint-disable-next-line
+  }, [article])
 
   if (loading) {
     return (
@@ -243,14 +294,23 @@ const ArticleDetailPage: React.FC = () => {
   }
 
   return (
-    <Container sx={{ padding: '20px' }}>
+    <Container
+      sx={{
+        ...containerStyle,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: '20px',
+        padding: '20px',
+      }}
+    >
       <Button
         id="back-to-search"
         onClick={() => navigate('/articles')}
         sx={{
           color: 'secondary.main',
-          fontSize: '1.2rem',
-          fontWeight: 700,
+          fontSize: '1rem',
+          fontWeight: 400,
           textDecoration: 'none',
           '&:hover': {
             textDecoration: 'underline',
@@ -259,35 +319,213 @@ const ArticleDetailPage: React.FC = () => {
       >
         <ArrowBackIos sx={{ fontSize: '1.2rem' }} /> Back to Articles
       </Button>
-      <Card>
-        {article.cover && (
-          <CardMedia
-            component="img"
-            height="300"
-            image={`${article.cover.formats.medium?.url}`}
-            alt={article.title}
-          />
-        )}
-        <CardContent sx={{ backgroundColor: 'common.white' }}>
-          <Typography variant="h1" sx={{ textAlign: 'center' }}>
-            {article.title}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ textAlign: 'center', marginBottom: '60px' }}
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <Box>
+          <Typography variant="subtitle1">{article.project.name}</Typography>
+          <Typography variant="h5">{article.title}</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', gap: '20px' }}>
+          <Box
+            sx={{
+              width: { xs: '100%', sm: '70%' },
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '20px',
+            }}
           >
-            Published on {new Date(article.publishedAt).toLocaleDateString()}
-          </Typography>
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw]}
-            components={markdonwStyles}
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <img
+                src={`${article.cover.formats.medium?.url ?? article.cover.formats.small?.url}`}
+                alt={article.title}
+                style={{ borderRadius: '16px' }}
+                width="100%"
+              />
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+                components={markdonwStyles}
+              >
+                {article.content}
+              </ReactMarkdown>
+              <Box
+                sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}
+              >
+                {article.tags.map((tag: Tag, index: number) => {
+                  return (
+                    <Button
+                      key={`${tag.slug}=${index}`}
+                      color="secondary"
+                      size="small"
+                      sx={{
+                        padding: '2px 6px',
+                        fontSize: '10px',
+                        textTransform: 'unset',
+                        borderRadius: '20px',
+                      }}
+                      variant="outlined"
+                    >
+                      {tag.name}
+                    </Button>
+                  )
+                })}
+              </Box>
+            </Box>
+          </Box>
+          {!isXs && (
+            <Box
+              sx={{
+                width: '30%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '20px',
+              }}
+            >
+              <Box
+                sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+              >
+                <Typography variant="h6">Search Article</Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: '10px',
+                    width: '100%',
+                  }}
+                >
+                  <TextField
+                    id="outlined-basic"
+                    placeholder="Search Article"
+                    variant="outlined"
+                    InputLabelProps={{ shrink: false }}
+                    sx={{
+                      padding: '4px 6px',
+                      borderRadius: '20px',
+                      '& .MuiOutlinedInput-root': { fontSize: '1rem' },
+                    }}
+                  />
+                  <Button
+                    variant="contained"
+                    sx={{
+                      fontSize: '1rem',
+                      borderRadius: '20px',
+                      lineHeight: '1rem',
+                    }}
+                  >
+                    Search
+                  </Button>
+                </Box>
+              </Box>
+              <Box>
+                <Typography variant="h6">Popular Articles</Typography>
+              </Box>
+              <Box
+                sx={{
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px',
+                }}
+              >
+                {popularArticles
+                  .filter((popArticle: Article) => article.id !== popArticle.id)
+                  .slice(0, 6)
+                  .map((article: Article) => {
+                    return (
+                      <ArticleListSectionCard
+                        key={article.id}
+                        article={article}
+                        isSidebar={true}
+                      />
+                    )
+                  })}
+              </Box>
+              <Card
+                sx={{
+                  border: 'none',
+                  borderRadius: '16px',
+                  backgroundColor: 'white',
+                  boxShadow: 'none',
+                  minHeight: '500px',
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  backgroundImage: `url(${GradImage})`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+                onClick={() => navigate('/scholarships')}
+              >
+                <CardContent
+                  sx={{
+                    background: 'rgba(255, 255, 255, 0.4)',
+                    backdropFilter: 'blur(2px)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                  }}
+                >
+                  <Typography variant="h5">
+                    Search Scholarship with Scholaris
+                  </Typography>
+                  <Typography variant="body2">
+                    Looking for scholarships?
+                  </Typography>
+                  <Button
+                    size="small"
+                    sx={{
+                      padding: '2px 6px',
+                      fontSize: '10px',
+                      textTransform: 'unset',
+                      borderRadius: '20px',
+                      width: '50%',
+                    }}
+                    variant="outlined"
+                  >
+                    View Scholarships <ArrowRightOutlined />
+                  </Button>
+                </CardContent>
+              </Card>
+            </Box>
+          )}
+        </Box>
+      </Box>
+      {relatedArticles.length > 0 && (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+            marginTop: '60px',
+            maxWidth: '100%',
+          }}
+        >
+          <Box>
+            <Typography variant="subtitle1">{article.tags[0].name}</Typography>
+            <Typography variant="h5">Related Articles</Typography>
+          </Box>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              gap: '10px',
+            }}
           >
-            {article.content}
-          </ReactMarkdown>
-        </CardContent>
-      </Card>
+            {relatedArticles
+              .slice(0, 4)
+              .filter((relArticle: Article) => article.id !== relArticle.id)
+              .map((article: Article) => {
+                return (
+                  <ArticleListSectionCard
+                    key={article.id}
+                    article={article}
+                    isRelated={true}
+                  />
+                )
+              })}
+          </Box>
+        </Box>
+      )}
     </Container>
   )
 }
