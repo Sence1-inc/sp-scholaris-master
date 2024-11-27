@@ -427,7 +427,7 @@ const ArticleDetailPage: React.FC = () => {
               >
                 {popularArticles
                   .filter((popArticle: Article) => article.id !== popArticle.id)
-                  .slice(1, 6)
+                  .slice(0, 6)
                   .map((article: Article) => {
                     return (
                       <ArticleListSectionCard
@@ -511,15 +511,18 @@ const ArticleDetailPage: React.FC = () => {
               gap: '10px',
             }}
           >
-            {relatedArticles.slice(1, 4).map((article: Article) => {
-              return (
-                <ArticleListSectionCard
-                  key={article.id}
-                  article={article}
-                  isRelated={true}
-                />
-              )
-            })}
+            {relatedArticles
+              .slice(0, 4)
+              .filter((relArticle: Article) => article.id !== relArticle.id)
+              .map((article: Article) => {
+                return (
+                  <ArticleListSectionCard
+                    key={article.id}
+                    article={article}
+                    isRelated={true}
+                  />
+                )
+              })}
           </Box>
         </Box>
       )}
