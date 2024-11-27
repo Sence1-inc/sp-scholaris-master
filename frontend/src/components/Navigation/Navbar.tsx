@@ -9,7 +9,6 @@ import {
 } from '@mui/material'
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { USER_TYPES } from '../../constants/constants'
 import Logo from '../../public/images/logo.png'
 import { useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'

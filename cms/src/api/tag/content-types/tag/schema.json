@@ -32,6 +32,12 @@
       "relation": "manyToMany",
       "target": "api::category.category",
       "inversedBy": "tags"
+    },
+    "projects": {
+      "type": "relation",
+      "relation": "manyToMany",
+      "target": "api::project.project",
+      "inversedBy": "tags"
     }
   }
 }
