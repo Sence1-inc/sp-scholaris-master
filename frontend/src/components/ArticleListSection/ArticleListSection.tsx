@@ -5,6 +5,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Link,
   Typography,
 } from '@mui/material'
 import React from 'react'
@@ -16,12 +17,14 @@ interface ArticleListSectionProps {
   header: string
   subheader: string
   articles: Article[] | []
+  type: 'popular' | 'latest' | 'provider' | 'student'
 }
 
 const ArticleListSection: React.FC<ArticleListSectionProps> = ({
   header,
   subheader,
   articles,
+  type,
 }) => {
   const navigate = useNavigate()
   return (
@@ -97,6 +100,16 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
           })}
         </Box>
       </Box>
+      <Link
+        component="button"
+        variant="subtitle1"
+        onClick={() => {
+          navigate(`/articles/search/all?type=${type}`)
+        }}
+        sx={{ alignSelf: 'flex-start' }}
+      >
+        Explore more articles
+      </Link>
     </Box>
   )
 }

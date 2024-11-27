@@ -1,7 +1,9 @@
-import { ArrowBackIos } from '@mui/icons-material'
+import { ArrowBackIos, ArrowRightOutlined } from '@mui/icons-material'
 import {
   Box,
   Button,
+  Card,
+  CardContent,
   CircularProgress,
   Container,
   TextField,
@@ -16,6 +18,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
 import ArticleListSectionCard from '../../components/ArticleListSection/ArticleListSectionCard'
+import GradImage from '../../public/images/banner-bg.png'
 import { Article, Tag } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
 
@@ -304,105 +307,170 @@ const ArticleDetailPage: React.FC = () => {
       >
         <ArrowBackIos sx={{ fontSize: '1.2rem' }} /> Back to Articles
       </Button>
-      <Box sx={{ display: 'flex', gap: '20px' }}>
-        <Box
-          sx={{
-            width: '70%',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '20px',
-          }}
-        >
-          <Box>
-            <Typography variant="subtitle1">{article.project.name}</Typography>
-            <Typography variant="h5">{article.title}</Typography>
-          </Box>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <img
-              src={`${article.cover.formats.medium?.url}`}
-              alt={article.title}
-              style={{ borderRadius: '16px' }}
-              width="100%"
-            />
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              rehypePlugins={[rehypeRaw]}
-              components={markdonwStyles}
-            >
-              {article.content}
-            </ReactMarkdown>
-            <Box sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}>
-              {article.tags.map((tag: Tag, index: number) => {
-                return (
-                  <Button
-                    key={`${tag.slug}=${index}`}
-                    color="secondary"
-                    size="small"
-                    sx={{
-                      padding: '2px 6px',
-                      fontSize: '10px',
-                      textTransform: 'unset',
-                      borderRadius: '20px',
-                    }}
-                    variant="outlined"
-                  >
-                    {tag.name}
-                  </Button>
-                )
-              })}
-            </Box>
-          </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <Box>
+          <Typography variant="subtitle1">{article.project.name}</Typography>
+          <Typography variant="h5">{article.title}</Typography>
         </Box>
-        <Box sx={{ width: '30%' }}>
+        <Box sx={{ display: 'flex', gap: '20px' }}>
           <Box
             sx={{
-              display: 'flex',
-              gap: '10px',
-              width: '100%',
-            }}
-          >
-            <TextField
-              id="outlined-basic"
-              placeholder="Search Article"
-              variant="outlined"
-              InputLabelProps={{ shrink: false }}
-              sx={{
-                padding: '4px 6px',
-                borderRadius: '20px',
-                '& .MuiOutlinedInput-root': { fontSize: '1rem' },
-              }}
-            />
-            <Button
-              variant="contained"
-              sx={{
-                fontSize: '1rem',
-                borderRadius: '20px',
-                lineHeight: '1rem',
-              }}
-            >
-              Search
-            </Button>
-          </Box>
-          <Box>
-            <Typography variant="h6">Popular Articles</Typography>
-          </Box>
-          <Box
-            sx={{
-              width: '100%',
+              width: '70%',
               display: 'flex',
               flexDirection: 'column',
-              gap: '10px',
+              gap: '20px',
             }}
           >
-            {popularArticles.slice(1, 4).map((article: Article) => {
-              return (
-                <ArticleListSectionCard
-                  key={article.id}
-                  article={article}
-                  isSidebar={true}
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <img
+                src={`${article.cover.formats.medium?.url}`}
+                alt={article.title}
+                style={{ borderRadius: '16px' }}
+                width="100%"
+              />
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                rehypePlugins={[rehypeRaw]}
+                components={markdonwStyles}
+              >
+                {article.content}
+              </ReactMarkdown>
+              <Box
+                sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}
+              >
+                {article.tags.map((tag: Tag, index: number) => {
+                  return (
+                    <Button
+                      key={`${tag.slug}=${index}`}
+                      color="secondary"
+                      size="small"
+                      sx={{
+                        padding: '2px 6px',
+                        fontSize: '10px',
+                        textTransform: 'unset',
+                        borderRadius: '20px',
+                      }}
+                      variant="outlined"
+                    >
+                      {tag.name}
+                    </Button>
+                  )
+                })}
+              </Box>
+            </Box>
+          </Box>
+          <Box
+            sx={{
+              width: '30%',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '20px',
+            }}
+          >
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+              <Typography variant="h6">Search Article</Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  gap: '10px',
+                  width: '100%',
+                }}
+              >
+                <TextField
+                  id="outlined-basic"
+                  placeholder="Search Article"
+                  variant="outlined"
+                  InputLabelProps={{ shrink: false }}
+                  sx={{
+                    padding: '4px 6px',
+                    borderRadius: '20px',
+                    '& .MuiOutlinedInput-root': { fontSize: '1rem' },
+                  }}
                 />
-              )
-            })}
+                <Button
+                  variant="contained"
+                  sx={{
+                    fontSize: '1rem',
+                    borderRadius: '20px',
+                    lineHeight: '1rem',
+                  }}
+                >
+                  Search
+                </Button>
+              </Box>
+            </Box>
+            <Box>
+              <Typography variant="h6">Popular Articles</Typography>
+            </Box>
+            <Box
+              sx={{
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px',
+              }}
+            >
+              {popularArticles
+                .filter((popArticle: Article) => article.id !== popArticle.id)
+                .slice(1, 6)
+                .map((article: Article) => {
+                  return (
+                    <ArticleListSectionCard
+                      key={article.id}
+                      article={article}
+                      isSidebar={true}
+                    />
+                  )
+                })}
+            </Box>
+            <Card
+              sx={{
+                border: 'none',
+                borderRadius: '16px',
+                backgroundColor: 'white',
+                boxShadow: 'none',
+                minHeight: '500px',
+                width: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'flex-end',
+                backgroundImage: `url(${GradImage})`,
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+              }}
+              onClick={() => navigate('/scholarships')}
+            >
+              <CardContent
+                sx={{
+                  background: 'rgba(255, 255, 255, 0.4)',
+                  backdropFilter: 'blur(2px)',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '10px',
+                }}
+              >
+                <Typography variant="h5">
+                  Search Scholarship with Scholaris
+                </Typography>
+                <Typography variant="body2">
+                  Looking for scholarships?
+                </Typography>
+                <Button
+                  size="small"
+                  sx={{
+                    padding: '2px 6px',
+                    fontSize: '10px',
+                    textTransform: 'unset',
+                    borderRadius: '20px',
+                    width: '50%',
+                  }}
+                  variant="outlined"
+                >
+                  View Scholarships <ArrowRightOutlined />
+                </Button>
+              </CardContent>
+            </Card>
           </Box>
         </Box>
       </Box>

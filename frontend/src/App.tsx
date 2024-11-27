@@ -17,6 +17,7 @@ import ApplicationsManagementPage from './containers/ApplicationsManagementPage/
 import StudentApplicationsManagementPage from './containers/ApplicationsManagementPage/StudentApplicationsManagementPage'
 import ArticleDetailPage from './containers/ArticleDetailPage/ArticleDetailPage'
 import ArticleListPage from './containers/ArticleListPage/ArticleListPage'
+import ArticleSearchListPage from './containers/ArticleListPage/ArticleSearchListPage'
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage'
 import ProviderProfile from './containers/ProfilesPage/ProviderProfile/ProviderProfile'
@@ -184,6 +185,10 @@ const App: React.FC = () => {
               />
               <Route path="/articles" element={<ArticleListPage />} />
               <Route path="/articles/:slug" element={<ArticleDetailPage />} />
+              <Route
+                path="/articles/search/:keyword"
+                element={<ArticleSearchListPage />}
+              />
               <Route path="*" element={<PageNotFoundPage />} />
               <Route
                 path="/scholarships/create/upload"

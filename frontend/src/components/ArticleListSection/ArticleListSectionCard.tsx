@@ -15,24 +15,26 @@ interface ArticleListSectionCardProps {
   article: Article
   isRelated?: boolean
   isSidebar?: boolean
+  isSearched?: boolean
 }
 
 const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
   article,
   isRelated = false,
   isSidebar = false,
+  isSearched = false,
 }) => {
   const navigate = useNavigate()
   return (
     <Card
       sx={{
         display: 'flex',
-        flexDirection: isRelated ? 'column' : 'row',
+        flexDirection: isRelated || isSearched ? 'column' : 'row',
         border: 'none',
         borderRadius: '16px',
         backgroundColor: 'white',
         boxShadow: 'none',
-        width: '100%',
+        width: isSearched ? '45%' : '100%',
         gap: '10px',
       }}
       onClick={() => navigate(`/articles/${article.slug}`)}
@@ -43,8 +45,8 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
         image={article.cover.formats.small?.url}
         sx={{
           borderRadius: '16px',
-          width: isRelated ? '100%' : { xs: 100, md: 150 },
-          height: { xs: 50, md: 100 },
+          width: isRelated || isSearched ? '100%' : { xs: 100, md: 150 },
+          height: isSearched ? { xs: 100, md: 200 } : { xs: 50, md: 100 },
         }}
       />
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>

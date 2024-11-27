@@ -54,18 +54,21 @@ const ArticleListPage: React.FC = () => {
       <Jumbotron />
       {articles.some((article: Article) => article.is_popular) && (
         <ArticleListSection
+          type="popular"
           articles={articles.filter((article: Article) => article.is_popular)}
           header="Popular Articles"
           subheader="Articles"
         />
       )}
       <ArticleListSection
+        type="latest"
         articles={articles.filter((article: Article) => !article.is_popular)}
         header="Latest Articles"
         subheader="Articles"
       />
       {articles.some((article: Article) => article.is_provider_specific) && (
         <ArticleListSection
+          type="provider"
           articles={articles.filter(
             (article: Article) => article.is_provider_specific
           )}
@@ -75,6 +78,7 @@ const ArticleListPage: React.FC = () => {
       )}
       {articles.some((article: Article) => article.is_student_specific) && (
         <ArticleListSection
+          type="student"
           articles={articles.filter(
             (article: Article) => article.is_student_specific
           )}

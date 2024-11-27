@@ -1,7 +1,11 @@
 import { Box, Button, TextField, Typography } from '@mui/material'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import JumbotronImage from '../../public/images/jumbotron-articles.png'
 
 const Jumbotron = () => {
+  const navigate = useNavigate()
+  const [searchKey, setSearchKey] = useState<string>('')
   return (
     <Box sx={{ display: 'flex' }}>
       <Box
@@ -35,10 +39,13 @@ const Jumbotron = () => {
               borderRadius: '20px',
               '& .MuiOutlinedInput-root': { fontSize: '1rem' },
             }}
+            value={searchKey}
+            onChange={(e) => setSearchKey(e.target.value)}
           />
           <Button
             variant="contained"
             sx={{ fontSize: '1rem', borderRadius: '20px', lineHeight: '1rem' }}
+            onClick={() => navigate(`/articles/search/${searchKey}`)}
           >
             Search
           </Button>
