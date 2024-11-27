@@ -1,11 +1,10 @@
 import { ArrowBackIos } from '@mui/icons-material'
 import {
+  Box,
   Button,
-  Card,
-  CardContent,
-  CardMedia,
   CircularProgress,
   Container,
+  TextField,
   Typography,
   useTheme,
 } from '@mui/material'
@@ -16,12 +15,16 @@ import { ReactMarkdownProps } from 'react-markdown/lib/complex-types'
 import { useNavigate, useParams } from 'react-router-dom'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
-import { Article } from '../../redux/types'
+import ArticleListSectionCard from '../../components/ArticleListSection/ArticleListSectionCard'
+import { Article, Tag } from '../../redux/types'
+import { containerStyle } from '../../styles/globalStyles'
 
 const ArticleDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   const [article, setArticle] = useState<Article | null>(null)
+  const [relatedArticles, setRelatedArticles] = useState<Article[] | []>([])
+  const [popularArticles, setPopularArticles] = useState<Article[] | []>([])
   const [loading, setLoading] = useState(true)
   const APP_URL = process.env.REACT_APP_CMS_API_URL
   const theme = useTheme()
@@ -210,18 +213,60 @@ const ArticleDetailPage: React.FC = () => {
     }
   }
 
+  const getRelatedArticles = async () => {
+    try {
+      const response = await axios.get(
+        `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&filters[tags][name][$eq]=${article?.tags[0].name}&sort[0]=publishedAt:desc&populate=*`
+      )
+
+      return response.data
+    } catch (error) {
+      console.error('Error fetching articles:', error)
+      return []
+    }
+  }
+
+  const getPopularArticles = async () => {
+    try {
+      const response = await axios.get(
+        `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&filters[is_popular][$eq]=${true}&sort[0]=publishedAt:desc&populate=*`
+      )
+
+      setPopularArticles(response.data.data)
+      setLoading(false)
+    } catch (error) {
+      console.error('Error fetching articles:', error)
+    }
+  }
+
   useEffect(() => {
     const fetchArticle = async () => {
-      if (slug) {
-        const data = await getArticle(slug)
-        setArticle(data.data[0])
-        setLoading(false)
-      }
+      const data = await getArticle(String(slug))
+      setArticle(data.data[0])
+      setLoading(false)
     }
-    fetchArticle()
+
+    if (slug) {
+      fetchArticle()
+    }
 
     // eslint-disable-next-line
   }, [slug])
+
+  useEffect(() => {
+    const fetchRelatedArticles = async () => {
+      const data = await getRelatedArticles()
+      setRelatedArticles(data.data)
+      setLoading(false)
+    }
+
+    if (article) {
+      fetchRelatedArticles()
+      getPopularArticles()
+    }
+
+    // eslint-disable-next-line
+  }, [article])
 
   if (loading) {
     return (
@@ -243,7 +288,7 @@ const ArticleDetailPage: React.FC = () => {
   }
 
   return (
-    <Container sx={{ padding: '20px' }}>
+    <Container sx={{ ...containerStyle }}>
       <Button
         id="back-to-search"
         onClick={() => navigate('/articles')}
@@ -259,7 +304,132 @@ const ArticleDetailPage: React.FC = () => {
       >
         <ArrowBackIos sx={{ fontSize: '1.2rem' }} /> Back to Articles
       </Button>
-      <Card>
+      <Box sx={{ display: 'flex', gap: '20px' }}>
+        <Box
+          sx={{
+            width: '70%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+          }}
+        >
+          <Box>
+            <Typography variant="subtitle1">{article.project.name}</Typography>
+            <Typography variant="h5">{article.title}</Typography>
+          </Box>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            <img
+              src={`${article.cover.formats.medium?.url}`}
+              alt={article.title}
+              style={{ borderRadius: '16px' }}
+              width="100%"
+            />
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw]}
+              components={markdonwStyles}
+            >
+              {article.content}
+            </ReactMarkdown>
+            <Box sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}>
+              {article.tags.map((tag: Tag, index: number) => {
+                return (
+                  <Button
+                    key={`${tag.slug}=${index}`}
+                    color="secondary"
+                    size="small"
+                    sx={{
+                      padding: '2px 6px',
+                      fontSize: '10px',
+                      textTransform: 'unset',
+                      borderRadius: '20px',
+                    }}
+                    variant="outlined"
+                  >
+                    {tag.name}
+                  </Button>
+                )
+              })}
+            </Box>
+          </Box>
+        </Box>
+        <Box sx={{ width: '30%' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              gap: '10px',
+              width: '100%',
+            }}
+          >
+            <TextField
+              id="outlined-basic"
+              placeholder="Search Article"
+              variant="outlined"
+              InputLabelProps={{ shrink: false }}
+              sx={{
+                padding: '4px 6px',
+                borderRadius: '20px',
+                '& .MuiOutlinedInput-root': { fontSize: '1rem' },
+              }}
+            />
+            <Button
+              variant="contained"
+              sx={{
+                fontSize: '1rem',
+                borderRadius: '20px',
+                lineHeight: '1rem',
+              }}
+            >
+              Search
+            </Button>
+          </Box>
+          <Box>
+            <Typography variant="h6">Popular Articles</Typography>
+          </Box>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
+            }}
+          >
+            {popularArticles.slice(1, 4).map((article: Article) => {
+              return (
+                <ArticleListSectionCard
+                  key={article.id}
+                  article={article}
+                  isSidebar={true}
+                />
+              )
+            })}
+          </Box>
+        </Box>
+      </Box>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <Box>
+          <Typography variant="subtitle1">{article.tags[0].name}</Typography>
+          <Typography variant="h5">Related Articles</Typography>
+        </Box>
+        <Box
+          sx={{
+            width: '100%',
+            display: 'flex',
+            gap: '10px',
+          }}
+        >
+          {relatedArticles.slice(1, 4).map((article: Article) => {
+            return (
+              <ArticleListSectionCard
+                key={article.id}
+                article={article}
+                isRelated={true}
+              />
+            )
+          })}
+        </Box>
+      </Box>
+      {/* <Card>
         {article.cover && (
           <CardMedia
             component="img"
@@ -287,7 +457,7 @@ const ArticleDetailPage: React.FC = () => {
             {article.content}
           </ReactMarkdown>
         </CardContent>
-      </Card>
+      </Card> */}
     </Container>
   )
 }

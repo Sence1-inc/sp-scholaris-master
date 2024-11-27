@@ -8,6 +8,7 @@ import {
   Typography,
 } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Article, Tag } from '../../redux/types'
 import ArticleListSectionCard from './ArticleListSectionCard'
 
@@ -22,6 +23,7 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
   subheader,
   articles,
 }) => {
+  const navigate = useNavigate()
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       <Box>
@@ -37,6 +39,7 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
             backgroundColor: 'white',
             boxShadow: 'none',
           }}
+          onClick={() => navigate(`/articles/${articles[0].slug}`)}
         >
           <CardMedia
             component="img"
@@ -61,9 +64,10 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
           <CardActions
             sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}
           >
-            {articles[0].tags.map((tag: Tag) => {
+            {articles[0].tags.map((tag: Tag, index: number) => {
               return (
                 <Button
+                  key={`${tag.slug}-${index}`}
                   color="secondary"
                   size="small"
                   sx={{
@@ -88,8 +92,8 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
             gap: '10px',
           }}
         >
-          {articles.slice(1, 3).map((article: Article) => {
-            return <ArticleListSectionCard article={article} />
+          {articles.slice(1, 4).map((article: Article) => {
+            return <ArticleListSectionCard key={article.id} article={article} />
           })}
         </Box>
       </Box>

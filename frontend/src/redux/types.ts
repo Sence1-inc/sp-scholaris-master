@@ -250,6 +250,20 @@ export type Article = {
   updatedAt: string
   publishedAt: string
   tags: Tag[]
+  project: Project
+  is_popular: boolean
+  is_provider_specific: boolean
+  is_student_specific: boolean
+}
+
+export type Project = {
+  createdAt: string
+  documentId: string
+  id: number
+  name: string
+  publishedAt: string
+  slug: string
+  updatedAt: string
 }
 
 export type Tag = {

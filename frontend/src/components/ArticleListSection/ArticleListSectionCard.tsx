@@ -5,23 +5,29 @@ import {
   CardActions,
   CardContent,
   CardMedia,
-  IconButton,
   Typography,
 } from '@mui/material'
 import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Article, Tag } from '../../redux/types'
 
 interface ArticleListSectionCardProps {
   article: Article
+  isRelated?: boolean
+  isSidebar?: boolean
 }
 
 const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
   article,
+  isRelated = false,
+  isSidebar = false,
 }) => {
+  const navigate = useNavigate()
   return (
     <Card
       sx={{
         display: 'flex',
+        flexDirection: isRelated ? 'column' : 'row',
         border: 'none',
         borderRadius: '16px',
         backgroundColor: 'white',
@@ -29,6 +35,7 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
         width: '100%',
         gap: '10px',
       }}
+      onClick={() => navigate(`/articles/${article.slug}`)}
     >
       <CardMedia
         component="img"
@@ -36,8 +43,8 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
         image={article.cover.formats.small?.url}
         sx={{
           borderRadius: '16px',
-          width: { xs: 100, md: 150 },
-          height: { xs: 100, md: 150 },
+          width: isRelated ? '100%' : { xs: 100, md: 150 },
+          height: { xs: 50, md: 100 },
         }}
       />
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -49,7 +56,9 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
-              width: { xs: '34vw', md: '30vw' },
+              width: isSidebar
+                ? { xs: '18vw', md: '14vw' }
+                : { xs: '34vw', md: '30vw' },
             }}
           >
             {article.title}
@@ -62,33 +71,38 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
               whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
-              width: { xs: '34vw', md: '30vw' },
+              width: isSidebar
+                ? { xs: '18vw', md: '14vw' }
+                : { xs: '34vw', md: '30vw' },
             }}
           >
             {article.description}
           </Typography>
         </CardContent>
-        <CardActions
-          sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}
-        >
-          {article.tags.map((tag: Tag) => {
-            return (
-              <Button
-                color="secondary"
-                size="small"
-                sx={{
-                  padding: '2px 6px',
-                  fontSize: '10px',
-                  textTransform: 'unset',
-                  borderRadius: '20px',
-                }}
-                variant="outlined"
-              >
-                {tag.name}
-              </Button>
-            )
-          })}
-        </CardActions>
+        {!isSidebar && (
+          <CardActions
+            sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}
+          >
+            {article.tags.map((tag: Tag, index: number) => {
+              return (
+                <Button
+                  key={`${tag.slug}=${index}`}
+                  color="secondary"
+                  size="small"
+                  sx={{
+                    padding: '2px 6px',
+                    fontSize: '10px',
+                    textTransform: 'unset',
+                    borderRadius: '20px',
+                  }}
+                  variant="outlined"
+                >
+                  {tag.name}
+                </Button>
+              )
+            })}
+          </CardActions>
+        )}
       </Box>
     </Card>
   )

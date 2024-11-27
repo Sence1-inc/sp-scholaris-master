@@ -27,7 +27,7 @@ const Jumbotron = () => {
         >
           <TextField
             id="outlined-basic"
-            placeholder="Outlined"
+            placeholder="Search Article"
             variant="outlined"
             InputLabelProps={{ shrink: false }}
             sx={{
