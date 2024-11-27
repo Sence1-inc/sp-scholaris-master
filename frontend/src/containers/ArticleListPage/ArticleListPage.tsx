@@ -50,7 +50,7 @@ const ArticleListPage: React.FC = () => {
   }
 
   return (
-    <Container sx={{ ...containerStyle, gap: '15vh' }}>
+    <Container sx={{ ...containerStyle, gap: '60px' }}>
       <Jumbotron />
       {articles.some((article: Article) => article.is_popular) && (
         <ArticleListSection

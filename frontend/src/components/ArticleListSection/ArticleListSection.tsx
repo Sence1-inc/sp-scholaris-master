@@ -33,10 +33,16 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
         <Typography variant="subtitle1">{subheader}</Typography>
         <Typography variant="h5">{header}</Typography>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'row', gap: '20px' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          gap: '20px',
+        }}
+      >
         <Card
           sx={{
-            width: '50%',
+            width: { xs: '100%', sm: '50%' },
             border: 'none',
             borderRadius: '16px',
             backgroundColor: 'white',
@@ -89,7 +95,7 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
         </Card>
         <Box
           sx={{
-            width: '50%',
+            width: { xs: '100%', sm: '50%' },
             display: 'flex',
             flexDirection: 'column',
             gap: '10px',

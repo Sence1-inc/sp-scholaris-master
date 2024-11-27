@@ -9,6 +9,7 @@ import {
   Link,
   Pagination,
   Typography,
+  useMediaQuery,
 } from '@mui/material'
 import axios from 'axios'
 import { useEffect, useState } from 'react'
@@ -23,6 +24,7 @@ import Jumbotron from '../../components/Jumbotron/Jumbotron'
 import GradImage from '../../public/images/banner-bg.png'
 import { Article, Tag } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
+import theme from '../../styles/theme'
 
 const ArticleSearchListPage = () => {
   const navigate = useNavigate()
@@ -36,6 +38,7 @@ const ArticleSearchListPage = () => {
   const [totalPages, setTotalPages] = useState<number>(1)
   const [tagSlug, setTagSlug] = useState<string>('')
   const [type, setType] = useState<string>('')
+  const isXs = useMediaQuery(() => theme.breakpoints.down('sm'))
 
   useEffect(() => {
     if (searchParams.get('tag')) {
@@ -165,7 +168,7 @@ const ArticleSearchListPage = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: '20px',
-              width: '70%',
+              width: { xs: '100%', sm: '70%' },
             }}
           >
             <Box
@@ -202,94 +205,96 @@ const ArticleSearchListPage = () => {
               color="primary"
             />
           </Box>
-          <Box
-            sx={{
-              width: '30%',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '20px',
-            }}
-          >
-            {tags.length > 0 && (
-              <Box>
-                <Typography variant="h6" marginBottom="10px">
-                  Filter Results
-                </Typography>
-                {tags?.map((tag: Tag, index: number) => {
-                  return (
-                    <Chip
-                      key={`${tag.name}-${index}`}
-                      color="secondary"
-                      label={tag.name}
-                      variant="outlined"
-                      onClick={() => {
-                        if (type) {
-                          const updatedSearchParams = new URLSearchParams(
-                            searchParams
-                          )
-                          updatedSearchParams.set('tag', tag.slug)
-                          navigate(
-                            `/articles/search/${keyword}?${updatedSearchParams.toString()}`
-                          )
-                        } else {
-                          navigate(
-                            `/articles/search/${keyword}?tag=${tag.slug}`
-                          )
-                        }
-                      }}
-                    />
-                  )
-                })}
-              </Box>
-            )}
-            <Card
+          {!isXs && (
+            <Box
               sx={{
-                border: 'none',
-                borderRadius: '16px',
-                backgroundColor: 'white',
-                boxShadow: 'none',
-                height: '500px',
+                width: '30%',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'flex-end',
-                backgroundImage: `url(${GradImage})`,
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
+                gap: '20px',
               }}
-              onClick={() => navigate('/scholarships')}
             >
-              <CardContent
+              {tags.length > 0 && (
+                <Box>
+                  <Typography variant="h6" marginBottom="10px">
+                    Filter Results
+                  </Typography>
+                  {tags?.map((tag: Tag, index: number) => {
+                    return (
+                      <Chip
+                        key={`${tag.name}-${index}`}
+                        color="secondary"
+                        label={tag.name}
+                        variant="outlined"
+                        onClick={() => {
+                          if (type) {
+                            const updatedSearchParams = new URLSearchParams(
+                              searchParams
+                            )
+                            updatedSearchParams.set('tag', tag.slug)
+                            navigate(
+                              `/articles/search/${keyword}?${updatedSearchParams.toString()}`
+                            )
+                          } else {
+                            navigate(
+                              `/articles/search/${keyword}?tag=${tag.slug}`
+                            )
+                          }
+                        }}
+                      />
+                    )
+                  })}
+                </Box>
+              )}
+              <Card
                 sx={{
-                  background: 'rgba(255, 255, 255, 0.4)',
-                  backdropFilter: 'blur(2px)',
+                  border: 'none',
+                  borderRadius: '16px',
+                  backgroundColor: 'white',
+                  boxShadow: 'none',
+                  height: '500px',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '10px',
+                  justifyContent: 'flex-end',
+                  backgroundImage: `url(${GradImage})`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
                 }}
+                onClick={() => navigate('/scholarships')}
               >
-                <Typography variant="h5">
-                  Search Scholarship with Scholaris
-                </Typography>
-                <Typography variant="body2">
-                  Looking for scholarships?
-                </Typography>
-                <Button
-                  size="small"
+                <CardContent
                   sx={{
-                    padding: '2px 6px',
-                    fontSize: '10px',
-                    textTransform: 'unset',
-                    borderRadius: '20px',
-                    width: '50%',
+                    background: 'rgba(255, 255, 255, 0.4)',
+                    backdropFilter: 'blur(2px)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
                   }}
-                  variant="outlined"
                 >
-                  View Scholarships <ArrowRightOutlined />
-                </Button>
-              </CardContent>
-            </Card>
-          </Box>
+                  <Typography variant="h5">
+                    Search Scholarship with Scholaris
+                  </Typography>
+                  <Typography variant="body2">
+                    Looking for scholarships?
+                  </Typography>
+                  <Button
+                    size="small"
+                    sx={{
+                      padding: '2px 6px',
+                      fontSize: '10px',
+                      textTransform: 'unset',
+                      borderRadius: '20px',
+                      width: '50%',
+                    }}
+                    variant="outlined"
+                  >
+                    View Scholarships <ArrowRightOutlined />
+                  </Button>
+                </CardContent>
+              </Card>
+            </Box>
+          )}
         </Box>
       </Box>
     </Container>

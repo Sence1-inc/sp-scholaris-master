@@ -7,15 +7,17 @@ const Jumbotron = () => {
   const navigate = useNavigate()
   const [searchKey, setSearchKey] = useState<string>('')
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
       <Box
         sx={{
           display: 'flex',
           flexDirection: 'column',
-          padding: '50px 0',
-          width: '80%',
+          padding: { xs: '20px 0', sm: '50px 0' },
+          width: { xs: '100%', sm: '80%' },
           height: 'inherit',
-          justifyContent: 'space-between',
+          gap: { xs: '20px', sm: '10px' },
+          justifyContent: { xs: 'center', sm: 'space-between' },
+          alignItems: { xs: 'center', sm: 'flex-start' },
         }}
       >
         <Typography variant="h3">

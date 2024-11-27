@@ -60,7 +60,7 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
               textOverflow: 'ellipsis',
               width: isSidebar
                 ? { xs: '18vw', md: '14vw' }
-                : { xs: '34vw', md: '30vw' },
+                : { xs: '55vw', sm: '34vw', md: '30vw' },
             }}
           >
             {article.title}

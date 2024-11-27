@@ -8,6 +8,7 @@ import {
   Container,
   TextField,
   Typography,
+  useMediaQuery,
   useTheme,
 } from '@mui/material'
 import axios from 'axios'
@@ -31,6 +32,8 @@ const ArticleDetailPage: React.FC = () => {
   const [loading, setLoading] = useState(true)
   const APP_URL = process.env.REACT_APP_CMS_API_URL
   const theme = useTheme()
+
+  const isXs = useMediaQuery(() => theme.breakpoints.down('sm'))
 
   const markdonwStyles = {
     h1: ({ node, ...props }: ReactMarkdownProps) => (
@@ -203,7 +206,7 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
   }
-
+  console.log(isXs)
   const getArticle = async (slug: string) => {
     try {
       const response = await axios.get(
@@ -291,14 +294,23 @@ const ArticleDetailPage: React.FC = () => {
   }
 
   return (
-    <Container sx={{ ...containerStyle }}>
+    <Container
+      sx={{
+        ...containerStyle,
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: '20px',
+        padding: '20px',
+      }}
+    >
       <Button
         id="back-to-search"
         onClick={() => navigate('/articles')}
         sx={{
           color: 'secondary.main',
-          fontSize: '1.2rem',
-          fontWeight: 700,
+          fontSize: '1rem',
+          fontWeight: 400,
           textDecoration: 'none',
           '&:hover': {
             textDecoration: 'underline',
@@ -315,7 +327,7 @@ const ArticleDetailPage: React.FC = () => {
         <Box sx={{ display: 'flex', gap: '20px' }}>
           <Box
             sx={{
-              width: '70%',
+              width: { xs: '100%', sm: '70%' },
               display: 'flex',
               flexDirection: 'column',
               gap: '20px',
@@ -323,7 +335,7 @@ const ArticleDetailPage: React.FC = () => {
           >
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
               <img
-                src={`${article.cover.formats.medium?.url}`}
+                src={`${article.cover.formats.medium?.url ?? article.cover.formats.small?.url}`}
                 alt={article.title}
                 style={{ borderRadius: '16px' }}
                 width="100%"
@@ -359,173 +371,158 @@ const ArticleDetailPage: React.FC = () => {
               </Box>
             </Box>
           </Box>
-          <Box
-            sx={{
-              width: '30%',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '20px',
-            }}
-          >
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-              <Typography variant="h6">Search Article</Typography>
-              <Box
-                sx={{
-                  display: 'flex',
-                  gap: '10px',
-                  width: '100%',
-                }}
-              >
-                <TextField
-                  id="outlined-basic"
-                  placeholder="Search Article"
-                  variant="outlined"
-                  InputLabelProps={{ shrink: false }}
-                  sx={{
-                    padding: '4px 6px',
-                    borderRadius: '20px',
-                    '& .MuiOutlinedInput-root': { fontSize: '1rem' },
-                  }}
-                />
-                <Button
-                  variant="contained"
-                  sx={{
-                    fontSize: '1rem',
-                    borderRadius: '20px',
-                    lineHeight: '1rem',
-                  }}
-                >
-                  Search
-                </Button>
-              </Box>
-            </Box>
-            <Box>
-              <Typography variant="h6">Popular Articles</Typography>
-            </Box>
+          {!isXs && (
             <Box
               sx={{
-                width: '100%',
+                width: '30%',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: '10px',
+                gap: '20px',
               }}
             >
-              {popularArticles
-                .filter((popArticle: Article) => article.id !== popArticle.id)
-                .slice(1, 6)
-                .map((article: Article) => {
-                  return (
-                    <ArticleListSectionCard
-                      key={article.id}
-                      article={article}
-                      isSidebar={true}
-                    />
-                  )
-                })}
-            </Box>
-            <Card
-              sx={{
-                border: 'none',
-                borderRadius: '16px',
-                backgroundColor: 'white',
-                boxShadow: 'none',
-                minHeight: '500px',
-                width: '100%',
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-end',
-                backgroundImage: `url(${GradImage})`,
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-              }}
-              onClick={() => navigate('/scholarships')}
-            >
-              <CardContent
+              <Box
+                sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}
+              >
+                <Typography variant="h6">Search Article</Typography>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    gap: '10px',
+                    width: '100%',
+                  }}
+                >
+                  <TextField
+                    id="outlined-basic"
+                    placeholder="Search Article"
+                    variant="outlined"
+                    InputLabelProps={{ shrink: false }}
+                    sx={{
+                      padding: '4px 6px',
+                      borderRadius: '20px',
+                      '& .MuiOutlinedInput-root': { fontSize: '1rem' },
+                    }}
+                  />
+                  <Button
+                    variant="contained"
+                    sx={{
+                      fontSize: '1rem',
+                      borderRadius: '20px',
+                      lineHeight: '1rem',
+                    }}
+                  >
+                    Search
+                  </Button>
+                </Box>
+              </Box>
+              <Box>
+                <Typography variant="h6">Popular Articles</Typography>
+              </Box>
+              <Box
                 sx={{
-                  background: 'rgba(255, 255, 255, 0.4)',
-                  backdropFilter: 'blur(2px)',
+                  width: '100%',
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '10px',
                 }}
               >
-                <Typography variant="h5">
-                  Search Scholarship with Scholaris
-                </Typography>
-                <Typography variant="body2">
-                  Looking for scholarships?
-                </Typography>
-                <Button
-                  size="small"
+                {popularArticles
+                  .filter((popArticle: Article) => article.id !== popArticle.id)
+                  .slice(1, 6)
+                  .map((article: Article) => {
+                    return (
+                      <ArticleListSectionCard
+                        key={article.id}
+                        article={article}
+                        isSidebar={true}
+                      />
+                    )
+                  })}
+              </Box>
+              <Card
+                sx={{
+                  border: 'none',
+                  borderRadius: '16px',
+                  backgroundColor: 'white',
+                  boxShadow: 'none',
+                  minHeight: '500px',
+                  width: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  backgroundImage: `url(${GradImage})`,
+                  backgroundRepeat: 'no-repeat',
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center',
+                }}
+                onClick={() => navigate('/scholarships')}
+              >
+                <CardContent
                   sx={{
-                    padding: '2px 6px',
-                    fontSize: '10px',
-                    textTransform: 'unset',
-                    borderRadius: '20px',
-                    width: '50%',
+                    background: 'rgba(255, 255, 255, 0.4)',
+                    backdropFilter: 'blur(2px)',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
                   }}
-                  variant="outlined"
                 >
-                  View Scholarships <ArrowRightOutlined />
-                </Button>
-              </CardContent>
-            </Card>
-          </Box>
+                  <Typography variant="h5">
+                    Search Scholarship with Scholaris
+                  </Typography>
+                  <Typography variant="body2">
+                    Looking for scholarships?
+                  </Typography>
+                  <Button
+                    size="small"
+                    sx={{
+                      padding: '2px 6px',
+                      fontSize: '10px',
+                      textTransform: 'unset',
+                      borderRadius: '20px',
+                      width: '50%',
+                    }}
+                    variant="outlined"
+                  >
+                    View Scholarships <ArrowRightOutlined />
+                  </Button>
+                </CardContent>
+              </Card>
+            </Box>
+          )}
         </Box>
       </Box>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-        <Box>
-          <Typography variant="subtitle1">{article.tags[0].name}</Typography>
-          <Typography variant="h5">Related Articles</Typography>
-        </Box>
+      {relatedArticles.length > 0 && (
         <Box
           sx={{
-            width: '100%',
             display: 'flex',
-            gap: '10px',
+            flexDirection: 'column',
+            gap: '20px',
+            marginTop: '60px',
+            maxWidth: '100%',
           }}
         >
-          {relatedArticles.slice(1, 4).map((article: Article) => {
-            return (
-              <ArticleListSectionCard
-                key={article.id}
-                article={article}
-                isRelated={true}
-              />
-            )
-          })}
+          <Box>
+            <Typography variant="subtitle1">{article.tags[0].name}</Typography>
+            <Typography variant="h5">Related Articles</Typography>
+          </Box>
+          <Box
+            sx={{
+              width: '100%',
+              display: 'flex',
+              gap: '10px',
+            }}
+          >
+            {relatedArticles.slice(1, 4).map((article: Article) => {
+              return (
+                <ArticleListSectionCard
+                  key={article.id}
+                  article={article}
+                  isRelated={true}
+                />
+              )
+            })}
+          </Box>
         </Box>
-      </Box>
-      {/* <Card>
-        {article.cover && (
-          <CardMedia
-            component="img"
-            height="300"
-            image={`${article.cover.formats.medium?.url}`}
-            alt={article.title}
-          />
-        )}
-        <CardContent sx={{ backgroundColor: 'common.white' }}>
-          <Typography variant="h1" sx={{ textAlign: 'center' }}>
-            {article.title}
-          </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ textAlign: 'center', marginBottom: '60px' }}
-          >
-            Published on {new Date(article.publishedAt).toLocaleDateString()}
-          </Typography>
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            rehypePlugins={[rehypeRaw]}
-            components={markdonwStyles}
-          >
-            {article.content}
-          </ReactMarkdown>
-        </CardContent>
-      </Card> */}
+      )}
     </Container>
   )
 }
