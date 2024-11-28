@@ -14,7 +14,7 @@ import { useAppDispatch } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 import ThankYou from '../ThankYou/ThankYou'
 
-export interface SubscriberData {
+export type SubscriberData = {
   email: string
   user_type: string
 }

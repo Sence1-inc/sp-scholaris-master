@@ -21,6 +21,7 @@ import {
 } from 'react-router-dom'
 import ArticleListSectionCard from '../../components/ArticleListSection/ArticleListSectionCard'
 import Jumbotron from '../../components/Jumbotron/Jumbotron'
+import SubscribeJumbotron from '../../components/Jumbotron/SubscribeJumbotron'
 import GradImage from '../../public/images/banner-bg.png'
 import { Article, Tag } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
@@ -67,7 +68,7 @@ const ArticleSearchListPage = () => {
         }
       })
 
-      if (keyword && keyword !== 'all' && type) {
+      if ((keyword && keyword !== 'all' && type) || (keyword && !type)) {
         query += `&filters[title][$contains]=${keyword}`
       }
       query += `&sort[0]=publishedAt:desc&pagination[page]=${page}&pagination[pageSize]=10&populate=*`
@@ -298,6 +299,7 @@ const ArticleSearchListPage = () => {
           )}
         </Box>
       </Box>
+      <SubscribeJumbotron />
     </Container>
   )
 }

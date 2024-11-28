@@ -3,6 +3,7 @@ import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import ArticleListSection from '../../components/ArticleListSection/ArticleListSection'
 import Jumbotron from '../../components/Jumbotron/Jumbotron'
+import SubscribeJumbotron from '../../components/Jumbotron/SubscribeJumbotron'
 import { Article } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
 
@@ -86,6 +87,7 @@ const ArticleListPage: React.FC = () => {
           subheader="Articles"
         />
       )}
+      <SubscribeJumbotron />
     </Container>
   )
 }
