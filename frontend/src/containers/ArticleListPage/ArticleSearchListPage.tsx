@@ -66,7 +66,8 @@ const ArticleSearchListPage = () => {
           query += `&filters[${key}][$eq]=${value}`
         }
       })
-      if (keyword && !type) {
+
+      if (keyword && keyword !== 'all' && type) {
         query += `&filters[title][$contains]=${keyword}`
       }
       query += `&sort[0]=publishedAt:desc&pagination[page]=${page}&pagination[pageSize]=10&populate=*`
