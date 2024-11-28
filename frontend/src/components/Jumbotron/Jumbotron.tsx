@@ -45,6 +45,7 @@ const Jumbotron = () => {
             onChange={(e) => setSearchKey(e.target.value)}
           />
           <Button
+            disabled={searchKey === ''}
             variant="contained"
             sx={{ fontSize: '1rem', borderRadius: '20px', lineHeight: '1rem' }}
             onClick={() => navigate(`/articles/search/${searchKey}`)}
