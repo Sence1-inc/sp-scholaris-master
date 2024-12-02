@@ -90,20 +90,25 @@ module Api
           user = nil
         end
 
+        if params[:pdf_file].present? && params[:pdf_file].size > 2.megabytes
+          render json: { message: "Failed to attach the pdf" }, status: :unprocessable_entity 
+          return
+        end
+
         application = ScholarshipApplication.new(
           recipient_email: recipient_email,
           user_message: user_message,
           scholarship_id: scholarship.id,
           student_email: student_email,
           user_id: user_id,
-
         )
 
         provider_name = scholarship.scholarship_provider.provider_name
         scholarship_name = scholarship.scholarship_name
-        pdf_attachment = params[:pdf_file].tempfile if params[:pdf_file].present?
 
         if application.save
+          pdf_attachment = params[:pdf_file].tempfile if params[:pdf_file].present?
+
           begin
             ScholarshipApplicationMailer.application_email(
               recipient_email, 
@@ -117,6 +122,8 @@ module Api
           rescue StandardError => e
             Rails.logger.error("Failed to send email: #{e.message}")
           end
+
+          pdf_attachment.rewind
 
           begin
             ScholarshipApplicationStudentMailer.mail_to_student(

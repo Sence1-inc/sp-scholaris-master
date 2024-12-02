@@ -175,6 +175,11 @@ export const ScholarshipDetailsPage: React.FC<
         field: 'pdf_file',
         message: 'Please provide a PDF file.',
       },
+      {
+        condition: pdfFile && pdfFile.size > 2 * 1024 * 1024,
+        field: 'pdf_file',
+        message: 'Please provide a PDF file with size less than 2 MB',
+      },
     ]
 
     const errorMessages = validationConditions
