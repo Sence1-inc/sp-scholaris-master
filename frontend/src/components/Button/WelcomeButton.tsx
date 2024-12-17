@@ -17,7 +17,7 @@ const WelcomeButton: React.FC<PrimaryButtonProps> = ({
   url,
 }: PrimaryButtonProps) => {
   return (
-    <Link to={`${url}`} className="button__welcome">
+    <Link to={`${url}`} className="button__welcome" id='img-btn-welcome'>
       <button className="button__welcome-primary">
         {icon && <img src={`${icon}`} alt="" />}
         <p>{label}</p>
