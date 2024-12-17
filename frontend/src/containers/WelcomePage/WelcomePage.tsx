@@ -126,12 +126,16 @@ const WelcomePage: React.FC = () => {
                 icon={UserIcon}
                 desc="Aspiring Student"
                 url="/student"
+
+                id="img-btn-aspiring-student"
               />
               <WelcomeButton
                 label="SGO"
                 icon={SchoolIcon}
                 desc="Scholarship-Granting Organization"
                 url="/provider"
+
+                id="img-btn-provider"
               />
             </div>
             <div className="content__welcome-annotations">

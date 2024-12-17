@@ -361,14 +361,14 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         }}
       >
         <CTAButton
-          id="sign-up"
+          id="sign-up-students"
           label="Sign up as student"
           loading={buttonLoading}
           handleClick={() => handleSignUp('student')}
           styles={{ fontSize: '24px' }}
         />
         <CTAButton
-          id="sign-up"
+          id="sign-up-providers"
           label="Sign up as provider"
           loading={buttonLoading}
           handleClick={() => handleSignUp('provider')}
