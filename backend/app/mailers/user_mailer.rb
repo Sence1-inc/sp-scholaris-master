@@ -38,7 +38,8 @@ class UserMailer < ApplicationMailer
   def email_verification(user)
     @user = user
     @url = ENV['BACKEND_URL']
-    @subscribe_link = user.role_id == User::ROLES[:provider] ? "#{ENV['BACKEND_URL']}/provider?nl=open" : "#{ENV['BACKEND_URL']}/student?nl=open"
+    # @subscribe_link = user.role_id == User::ROLES[:provider] ? "#{ENV['BACKEND_URL']}/provider?nl=open" : "#{ENV['BACKEND_URL']}/student?nl=open"
+    @subscribe_link = user.role_id == User::ROLES[:provider] ? "http://localhost:3000/provider?nl=open" : "http://localhost:3000/student?nl=open"
     mail(to: @user.email_address, subject: 'Verify Your Email for Scholaris')
   end
 end

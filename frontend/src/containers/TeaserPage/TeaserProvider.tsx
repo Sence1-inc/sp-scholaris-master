@@ -2,7 +2,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import { Box } from '@mui/material'
 import { keyframes } from '@mui/system'
 import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import FabButton from '../../components/FabButton/FabButton'
 import FeatureGuides from '../../components/Feature/FeatureGuides'
 import FloatingElement from '../../components/FloatingElement/FloatingElement'
@@ -23,26 +23,28 @@ const jump = keyframes({
 
 const HomePage: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const location = useLocation();
+  const navigate = useNavigate();
+  const searchParams = new URLSearchParams(location.search);
+  const query = searchParams.get('nl');
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
   const handleClose = () => {
-    setAnchorEl(null)
+    searchParams.set("nl", "");
+    navigate(
+      `/provider`
+    )
+    setAnchorEl(null);
   }
-
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const query = searchParams.get('nl');
-  console.log(query);
 
   return (
     <>
       <WelcomeSection subheader={PROVIDER_WELCOME_SUBHEADER} third_level_header={PROVIDER_WELCOME_THIRD_LEVEL_HEADING} usertype={PROVIDER_TYPE} />
       <FeatureGuides features={FEATURES} contentType="providerFeatures" usertype={PROVIDER_TYPE}/>
-      <FloatingElement anchorEl={anchorEl} handleClose={handleClose} 
-      subscribedFromEmail={Boolean(query)}>
+      <FloatingElement anchorEl={anchorEl} handleClose={handleClose} subscribedFromEmail={Boolean(query)}>
         <Newsletter
           user_type={PROVIDER_TYPE}
           title_content={

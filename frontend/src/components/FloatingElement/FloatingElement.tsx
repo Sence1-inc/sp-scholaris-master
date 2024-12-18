@@ -19,13 +19,14 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
 }) => {
   const theme = useTheme()
   const isLandscape = useMediaQuery(theme.breakpoints.up('sm'))
-  const isOpen = Boolean(anchorEl) : 
+  const isOpen = Boolean(anchorEl)
   const id = isOpen ? 'floating-paper' : undefined
+  const userSubscribed = Boolean(subscribedFromEmail)
 
   return (
     <Popover
       id={id}
-      open={subscribedFromEmail ? true : isOpen}
+      open={userSubscribed ? true : isOpen}
       anchorEl={anchorEl}
       onClose={handleClose}
       anchorOrigin={{
