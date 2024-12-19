@@ -33,7 +33,6 @@ const HomePage: React.FC = () => {
   }
 
   const handleClose = () => {
-    //searchParams.set("nl", "");
     navigate(
       `/provider`
     )
