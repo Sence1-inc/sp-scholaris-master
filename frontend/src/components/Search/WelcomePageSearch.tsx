@@ -92,6 +92,8 @@ const WelcomePageSearch: React.FC = () => {
     navigate(`/scholarships?${queryParams}`)
 
     getScholarships()
+
+    handleButtonClick();
   }
 
   const handleChange = async (value: string) => {
@@ -169,6 +171,15 @@ const WelcomePageSearch: React.FC = () => {
     navigate(`/scholarships/${params.row.id}`)
   }
 
+  const handleKeyDown = (e: { key: string }) => {
+    if (e.key === "Enter") {
+      handleButtonClick();
+    }
+  };
+
+  const handleButtonClick = () => {
+    alert(`Button triggered with input: ${name}`);
+  };
   return (
     <section
       ref={searchRef}
@@ -234,6 +245,7 @@ const WelcomePageSearch: React.FC = () => {
               variant="outlined"
               onChange={(e) => handleChange(e.target.value)}
               value={name}
+              onKeyDown={handleKeyDown}
               placeholder="e.g. CHED Merit Scholarship"
               sx={{
                 width: { xs: 'calc(95% - 20px)', sm: 'calc(80% - 20px)' },
