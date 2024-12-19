@@ -43,7 +43,7 @@ const HomePage: React.FC = () => {
     <>
       <WelcomeSection subheader={PROVIDER_WELCOME_SUBHEADER} third_level_header={PROVIDER_WELCOME_THIRD_LEVEL_HEADING} usertype={PROVIDER_TYPE} />
       <FeatureGuides features={FEATURES} contentType="providerFeatures" usertype={PROVIDER_TYPE}/>
-      <FloatingElement anchorEl={anchorEl} handleClose={handleClose} subscribedFromEmail={Boolean(query)}>
+      <FloatingElement anchorEl={anchorEl} handleClose={handleClose} isOpenedFromEmail={Boolean(query)}>
         <Newsletter
           user_type={PROVIDER_TYPE}
           title_content={

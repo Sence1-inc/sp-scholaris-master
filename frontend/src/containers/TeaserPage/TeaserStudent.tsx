@@ -57,7 +57,7 @@ const HomePage: React.FC = () => {
       />
       <FeatureGuides features={FEATURES} contentType="studentFeatures" />
       <Search isSection />
-      <FloatingElement anchorEl={anchorEl} handleClose={handleClose} subscribedFromEmail={Boolean(query)}> 
+      <FloatingElement anchorEl={anchorEl} handleClose={handleClose} isOpenedFromEmail={Boolean(query)}> 
         <Newsletter
           user_type={STUDENT_TYPE}
           title_content={
