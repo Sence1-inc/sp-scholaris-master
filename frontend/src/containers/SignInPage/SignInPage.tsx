@@ -145,6 +145,12 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     }
   }
 
+  const handleKeyDown = (e: { key: string }) => {
+    if (e.key === "Enter") {
+      handleSignIn();
+    }
+  };
+
   return (
     <Container
       maxWidth="md"
@@ -169,6 +175,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       <CustomTextfield
         label="Email address"
         value={userCredentials.email_address.toLowerCase()}
+        onKeyDown={handleKeyDown}
         handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleEmail(e.target.value)
         }
@@ -179,6 +186,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         type="password"
         label="Password"
         value={userCredentials.password}
+        onKeyDown={handleKeyDown}
         handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handlePassword(e.target.value)
         }

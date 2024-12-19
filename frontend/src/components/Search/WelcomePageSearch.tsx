@@ -85,15 +85,11 @@ const WelcomePageSearch: React.FC = () => {
     // eslint-disable-next-line
   }, [params.params])
 
-  const handleSearch: (e: React.MouseEvent<HTMLButtonElement>) => void = async (
-    e
-  ) => {
+  const handleSearch = async () => {
     const queryParams = queryString.stringify({ name })
     navigate(`/scholarships?${queryParams}`)
 
     getScholarships()
-
-    handleButtonClick();
   }
 
   const handleChange = async (value: string) => {
@@ -173,13 +169,10 @@ const WelcomePageSearch: React.FC = () => {
 
   const handleKeyDown = (e: { key: string }) => {
     if (e.key === "Enter") {
-      handleButtonClick();
+      handleSearch();
     }
   };
 
-  const handleButtonClick = () => {
-    alert(`Button triggered with input: ${name}`);
-  };
   return (
     <section
       ref={searchRef}
