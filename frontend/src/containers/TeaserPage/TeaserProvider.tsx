@@ -37,7 +37,7 @@ const HomePage: React.FC = () => {
     navigate(
       `/provider`
     )
-    setAnchorEl(null);
+    // setAnchorEl(null);
   }
 
   return (

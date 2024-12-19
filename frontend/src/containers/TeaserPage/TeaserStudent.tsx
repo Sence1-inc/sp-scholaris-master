@@ -42,7 +42,7 @@ const HomePage: React.FC = () => {
     navigate(
       `/student`
     )
-    setAnchorEl(null);
+    // setAnchorEl(null);
   }
 
   useEffect(() => {
