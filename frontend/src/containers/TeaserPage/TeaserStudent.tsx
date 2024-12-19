@@ -38,11 +38,11 @@ const HomePage: React.FC = () => {
   }
 
   const handleClose = () => {
-    searchParams.set("nl", "");
+    //searchParams.set("nl", "");
     navigate(
       `/student`
     )
-    //setAnchorEl(null);
+    setAnchorEl(null);
   }
 
   useEffect(() => {
