@@ -33,11 +33,11 @@ const HomePage: React.FC = () => {
   }
 
   const handleClose = () => {
-    searchParams.set("nl", "");
+    //searchParams.set("nl", "");
     navigate(
       `/provider`
     )
-    // setAnchorEl(null);
+    setAnchorEl(null);
   }
 
   return (
