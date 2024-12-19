@@ -17,7 +17,6 @@ import {
 } from '../../data/StudentContent'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch } from '../../redux/store'
-import { queryAllByAltText, queryByRole } from '@testing-library/react'
 
 const jump = keyframes({
   '0%': { transform: 'translateY(0)' },
