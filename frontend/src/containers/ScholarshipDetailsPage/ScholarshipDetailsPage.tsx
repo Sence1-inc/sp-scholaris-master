@@ -19,6 +19,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import HelperText from '../../components/HelperText/HelperText'
 import TextLoading from '../../components/Loading/TextLoading'
 import {
@@ -688,6 +689,7 @@ export const ScholarshipDetailsPage: React.FC<
                 >
                   <Box
                     sx={{
+                      position: 'relative',
                       width: { xs: '90vw', md: '80vw' },
                       maxHeight: '94vh',
                       margin: '20px auto',
@@ -701,6 +703,26 @@ export const ScholarshipDetailsPage: React.FC<
                       gap: '10px',
                     }}
                   >
+                    <CloseRoundedIcon
+                      onClick={ () => {
+                        setIsModalOpen(false)
+                      }}
+                      sx={{
+                        position: 'absolute',
+                        width: {xs: '21px', sm: '23px', md: '30px'},
+                        height: {xs: '21px', sm: '23px', md: '30px'},
+                        right: { xs: '17px', md: '20px' },
+                        top: { xs: '14px' , md: '16px' },
+                        opacity: '0.6',
+                        cursor: 'pointer',
+                        '&:hover': {
+                          borderRadius: '50%',
+                          backgroundColor: '#9A9A9A',
+                          color: '#FFFFFF'
+                        },
+                      }}
+                    >
+                    </CloseRoundedIcon>
                     <CustomTextfield
                       label="Student Email"
                       error={errors.student_email}
