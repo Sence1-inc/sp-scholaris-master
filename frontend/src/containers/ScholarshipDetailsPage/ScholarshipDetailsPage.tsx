@@ -1,4 +1,4 @@
-import { CloudUpload, Save } from '@mui/icons-material'
+import { CloseRounded, CloudUpload, Save } from '@mui/icons-material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
   Alert,
@@ -714,8 +714,28 @@ export const ScholarshipDetailsPage: React.FC<
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '10px',
+                        position: 'relative',
                       }}
                     >
+                      <CloseRounded
+                        onClick={() => {
+                          setIsModalOpen(false)
+                        }}
+                        sx={{
+                          position: 'absolute',
+                          width: { xs: '21px', sm: '23px', md: '30px' },
+                          height: { xs: '21px', sm: '23px', md: '30px' },
+                          right: { xs: '17px', md: '20px' },
+                          top: { xs: '14px', md: '16px' },
+                          opacity: '0.6',
+                          cursor: 'pointer',
+                          '&:hover': {
+                            borderRadius: '50%',
+                            backgroundColor: '#9A9A9A',
+                            color: '#FFFFFF',
+                          },
+                        }}
+                      />
                       <CustomTextfield
                         label="Student Email"
                         error={errors.student_email}
