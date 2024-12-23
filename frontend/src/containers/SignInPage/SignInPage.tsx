@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { useSnackbar } from '../../context/SnackBarContext'
 import { User } from '../../redux/types'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
+import BannerButton from '../../components/Button/BannerButton'
 
 interface SignInPageProps {}
 
@@ -155,6 +156,13 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         marginBlock: '40px',
       }}
     >
+      <Box
+         className='banner__container'
+        >
+          <BannerButton 
+            label='Banner'
+          />
+        </Box>
       <Typography
         variant="h2"
         sx={{
