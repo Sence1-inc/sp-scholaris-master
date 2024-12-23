@@ -26,6 +26,7 @@ import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import { ScholarshipProvider } from '../../../redux/types'
 import profileTheme from '../../../styles/profileTheme'
 import theme from '../../../styles/theme'
+import { initializeSubscirber } from '../../../redux/reducers/SubscriberReducer'
 
 const ProviderProfile: React.FC = () => {
   const [activeContent, setActiveContent] = useState<string>('view-profile')
@@ -72,6 +73,7 @@ const ProviderProfile: React.FC = () => {
 
         if (response.status === 200) {
           showMessage(response.data.message, 'success')
+          dispatch(initializeSubscirber(response.data.subscriber))
         } else {
           showMessage(
             `Error: ${response.data.error}. ${response.data.details.join(' ')}`,
