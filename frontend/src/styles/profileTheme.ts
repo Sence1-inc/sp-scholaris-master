@@ -341,7 +341,7 @@ const profiletheme = {
       color: '#FFFFFF',
       padding: '2px 4px',
       borderRadius: '2px',
-      left: '8px',
+      left: {xs: '65px', md: '8px'},
       top: '-10px'
     },
     mainNavDivider: {
