@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 interface Subscriber {
   email: string
   user_type: string
+  deleted_at: string
 }
 
 const initialState: Subscriber = {
   email: '',
   user_type: '',
+  deleted_at: '',
 }
 
 export const subscriberSlice = createSlice({

@@ -19,6 +19,10 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
 }) => {
   const { showMessage } = useSnackbar()
   const user = useAppSelector((state) => state.persistedReducer.user)
+  const subscribed = useAppSelector(
+    (state) => state.persistedReducer.subscriber
+  )
+
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const { getSubscriber, errorMessage } = useGetSubscriber()
@@ -60,6 +64,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             initializeSubscirber({
               email: '',
               user_type: '',
+              deleted_at: '',
             })
           )
           showMessage(errorData.message, 'error')
@@ -82,6 +87,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             initializeSubscirber({
               email: '',
               user_type: '',
+              deleted_at: '',
             })
           )
           showMessage(errorData.message, 'error')
@@ -105,29 +111,32 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
           {user.email_address}
         </Typography>
         <Box sx={profileTheme.box.boxBodyStyle2}>
-          <Button
-            variant="contained"
-            sx={ctaButtonStyle}
-            onClick={handleSubscribe}
-            id='subscribe'
-          >
-            Subscribe
-          </Button>
-          <Button
-            variant="contained"
-            sx={ctaButtonStyle}
-            onClick={(e: any) => {
-              showMessage(
-                'Are you sure you want to delete?',
-                'warning',
-                8000,
-                handleUnsubscribe
-              )
-            }}
-            id="unsubscribe"
-          >
-            Unsubscribe
-          </Button>
+          {subscribed.email == '' || subscribed.deleted_at !== null ? (
+            <Button
+              variant="contained"
+              sx={ctaButtonStyle}
+              onClick={handleSubscribe}
+              id="subscribe"
+            >
+              Subscribe
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              sx={ctaButtonStyle}
+              onClick={(e: any) => {
+                showMessage(
+                  'Are you sure you want to delete?',
+                  'warning',
+                  8000,
+                  handleUnsubscribe
+                )
+              }}
+              id="unsubscribe"
+            >
+              Unsubscribe
+            </Button>
+          )}
         </Box>
       </FormGroup>
     </AccountCard>
