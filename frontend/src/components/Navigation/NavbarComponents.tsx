@@ -336,12 +336,13 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
           Articles
         </Typography>
       </ListItem>
-      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+      <ListItem sx={profileTheme.navigation.mainNavListSignUp}>
         <Typography
           component={Link}
           to={`/sign-up`}
           sx={profileTheme.navigation.mainNavListItemLink}
         >
+          <Box component="span" sx={profileTheme.navigation.mainNavListSignUpSpan}>Sign up is free</Box>
           Sign Up
         </Typography>
       </ListItem>

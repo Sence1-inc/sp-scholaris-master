@@ -316,6 +316,34 @@ const profiletheme = {
         backgroundColor: '#0378FE',
       },
     },
+    mainNavListSignUp: {
+      display: 'flex',
+      gap: '10px',
+      position: 'relative',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '8px',
+      padding: '10px 20px',
+      width: '100%',
+      height: '100%',
+      minHeight: '48px',
+      whiteSpace: 'nowrap',
+      textTransform: 'capitalize',
+      border: '1px solid rgba(255, 255, 255, 0.5)',
+      '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      }
+    },
+    mainNavListSignUpSpan: {
+      position: 'absolute',
+      backgroundColor: '#FE4949',
+      fontSize: '11px',
+      color: '#FFFFFF',
+      padding: '2px 4px',
+      borderRadius: '2px',
+      left: '8px',
+      top: '-10px'
+    },
     mainNavDivider: {
       height: {xs: '1px', md: '36px'},
       width: {xs: '100%', md: '1px'},
@@ -397,6 +425,7 @@ const profiletheme = {
     }
   },
   footer: {
+    backgroundColor: '#002147',
     footerContainer: {
       height: 'auto',
       maxWidth: '1280px',
@@ -406,7 +435,7 @@ const profiletheme = {
       flexDirection: { xs: 'column', lg: 'row'},
       justifyContent: { md: 'center', lg: 'space-between'},
       alignItems: 'center',
-      padding: '10px 20px'
+      padding: '10px 20px',
     },
     footerLeft: {
       display: 'flex',
@@ -417,6 +446,7 @@ const profiletheme = {
       alignItems: 'center'
     },
     footerLink: {
+      marginTop: '2px',
       height: '16px'
     },
     footerCopyright: {
@@ -428,6 +458,9 @@ const profiletheme = {
     footerList: {
       display: 'flex',
       flexDirection: { sx: 'row' },
+      alignItems: 'center',
+      gap: '15px',
+      padding: 0,
     },
     footerListItem: {
       padding: 0,
@@ -436,7 +469,10 @@ const profiletheme = {
     footerListItemLink: {
       fontSize: '14px',
       fontWeight: '400',
-    }
+      fontFamily: 'Outfit, sans-serif',
+      color: '#FFFFFF',
+      textDecoration: 'none'
+    },
   }
 }
 

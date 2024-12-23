@@ -15,7 +15,7 @@ const Footer: React.FC = () => {
   const location = useLocation() as LocationTypes
 
   return (
-    <Box component="footer" id="footer">
+    <Box component="footer" id="footer" sx={profiletheme.footer}>
       <Box sx={profiletheme.footer.footerContainer}>
         <Box sx={profiletheme.footer.footerLeft}>
           <Box>
@@ -37,7 +37,7 @@ const Footer: React.FC = () => {
             </List>
           </Box>
           <Box>
-            <List>
+            <List sx={profiletheme.footer.footerList}>
               <ListItem sx={profiletheme.footer.footerListItem}>
                 <Box component={Link} to="https://www.facebook.com/scholarisfbpage" target="_blank"><FacebookIcon style={profiletheme.footer.footerLink} /></Box>
               </ListItem>
