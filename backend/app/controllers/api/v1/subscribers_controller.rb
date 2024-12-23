@@ -76,7 +76,7 @@ module Api
       def soft_del
         if !@subscriber.deleted_at.present?
           Subscriber.soft_delete(@subscriber)
-          render json: {message: "Unsubscribed successfully.", status: :ok}
+          render json: {subscriber: @subscriber, message: "Unsubscribed successfully.", status: :ok}
         else
           render json: {message: "Already unsubscribed"}, status: 422
         end
