@@ -1,4 +1,4 @@
-import { Box, Card, CardMedia, Typography } from '@mui/material'
+import { Box, Card, CardMedia, Typography, Container } from '@mui/material'
 import React from 'react'
 import WelcomeButton from '../../components/Button/WelcomeButton'
 import WelcomePageSearch from '../../components/Search/WelcomePageSearch'
@@ -7,6 +7,7 @@ import SchoolIcon from '../../public/images/school-solid.svg'
 import UserIcon from '../../public/images/users-solid.svg'
 import './WelcomePage.css'
 import { containerStyle } from '../../styles/globalStyles'
+import Jumbotron from '../../components/Jumbotron/Jumbotron'
 
 const WelcomePage: React.FC = () => {
   return (
@@ -152,6 +153,37 @@ const WelcomePage: React.FC = () => {
                 to further look for a candidate
               </Typography>
             </div>
+          </div>
+          <div>
+            <Container sx={{ ...containerStyle, gap: '60px' }}>
+              <Jumbotron />
+              <ArticleListSection
+                type="latest"
+                articles={articles.filter((article: Article) => !article.is_popular)}
+                header="Latest Articles"
+                subheader="Articles"
+              />
+              {articles.some((article: Article) => article.is_provider_specific) && (
+                <ArticleListSection
+                  type="provider"
+                  articles={articles.filter(
+                    (article: Article) => article.is_provider_specific
+                  )}
+                  header="Know More About Scholarship Providers"
+                  subheader="Articles"
+                />
+              )}
+              {articles.some((article: Article) => article.is_student_specific) && (
+                <ArticleListSection
+                  type="student"
+                  articles={articles.filter(
+                    (article: Article) => article.is_student_specific
+                  )}
+                  header="Know More About Scholarships"
+                  subheader="Articles"
+                />
+              )}
+            </Container>
           </div>
         </div>
       </div>
