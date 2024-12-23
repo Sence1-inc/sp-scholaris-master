@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import './BannerButton.css'
 import { useMediaQuery, useTheme } from '@mui/material';
 
-const ResponsiveComponent = () => {
+const BannerButton = () => {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm')); // up to 600px
   const isMediumScreen = useMediaQuery(theme.breakpoints.between('sm', 'md')); // 600px to 1024px
@@ -46,23 +46,7 @@ const ResponsiveComponent = () => {
 
   return null;
 };
-export interface PrimaryButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  label: string
-  icon?: string
-  desc?: string
-  url?: string
-}
 
-const BannerButton: React.FC<PrimaryButtonProps> = ({
-  label,
-  icon,
-  desc,
-  url,
-}: PrimaryButtonProps) => {
-  return (
-   <ResponsiveComponent />
-  )
-}
+   <BannerButton />
 
 export default BannerButton

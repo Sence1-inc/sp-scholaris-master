@@ -159,9 +159,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       <Box
          className='banner__container'
         >
-          <BannerButton 
-            label='Banner'
-          />
+          <BannerButton />
         </Box>
       <Typography
         variant="h2"

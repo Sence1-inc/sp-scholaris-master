@@ -241,9 +241,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
       <Box
          className='banner__container'
         >
-          <BannerButton 
-            label='Banner'
-          />
+          <BannerButton />
         </Box>
       <Typography
         variant="h2"

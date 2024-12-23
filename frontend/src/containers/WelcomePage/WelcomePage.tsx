@@ -18,9 +18,7 @@ const WelcomePage: React.FC = () => {
          <Box
          className='banner__container'
         >
-          <BannerButton 
-            label='Banner'
-          />
+          <BannerButton />
         </Box>
         <Box
           sx={{
