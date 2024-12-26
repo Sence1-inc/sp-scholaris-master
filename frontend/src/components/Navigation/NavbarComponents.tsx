@@ -27,18 +27,7 @@ interface AuthenticatedUserProps {
 const AuthenticatedProvider: React.FC<AuthenticatedUserProps> = ({
   user,
 }) => {
-
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
-
-  const logout = async () => {
-    await instance.post('/api/v1/logout', {
-      email: user.email_address,
-    })
-    dispatch(initializeIsAuthenticated(false))
-    dispatch(initializeUser(initialUserState))
-    navigate('/sign-in')
-  }
+  const navigate = useNavigate();
 
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
@@ -94,6 +83,7 @@ const AuthenticatedProvider: React.FC<AuthenticatedUserProps> = ({
         Applications
         </Typography>
       </ListItem>
+      <Box sx={profileTheme.navigation.mainNavDivider} />
       <ListItem disablePadding>
         <CTAButton
           loading={false}
@@ -102,21 +92,10 @@ const AuthenticatedProvider: React.FC<AuthenticatedUserProps> = ({
               `/provider/account/${user?.scholarship_provider?.id}/view-profile`
             )
           }
-          label={windowWidth > 1024 || windowWidth < 900 ? "Profile" : ''}
+          label={windowWidth > 1024 || windowWidth < 900 ? `${user.first_name}` : ''}
           icon={LoggedinIcon}
           styles={profileTheme.navigation.mainNavLoggedInButton}
           id="provider-profile"
-        />
-      </ListItem>
-      <Box sx={profileTheme.navigation.mainNavDivider} />
-      <ListItem disablePadding>
-        <CTAButton
-          loading={false}
-          handleClick={logout}
-          label={windowWidth > 1024 || windowWidth < 900 ? "Logout" : ''}
-          icon={LogoutIcon}
-          styles={profileTheme.navigation.mainNavLogoutButton}
-          id="logout-button"
         />
       </ListItem>
     </List>
@@ -126,17 +105,7 @@ const AuthenticatedProvider: React.FC<AuthenticatedUserProps> = ({
 const AuthenticatedStudent: React.FC<AuthenticatedUserProps> = ({
   user,
 }) => {
-  const dispatch = useAppDispatch()
-  const navigate = useNavigate()
-
-  const logout = async () => {
-    await instance.post('/api/v1/logout', {
-      email: user.email_address,
-    })
-    dispatch(initializeIsAuthenticated(false))
-    dispatch(initializeUser(initialUserState))
-    navigate('/sign-in')
-  }
+  const navigate = useNavigate();
 
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
 
@@ -180,29 +149,19 @@ const AuthenticatedStudent: React.FC<AuthenticatedUserProps> = ({
           loading={false}
           handleClick={() => navigate(`/scholarships`)}
           label={windowWidth > 1024 || windowWidth < 900 ? "Search Scholarships" : ''}
-          styles={profileTheme.navigation.mainNavSubSearchButton}
+          styles={profileTheme.navigation.mainNavSearchButton}
           id="search-scholarships"
-        />
-      </ListItem>
-      <ListItem disablePadding>
-        <CTAButton
-          loading={false}
-          handleClick={() => navigate(`/student/account`)}
-          label={windowWidth > 1024 || windowWidth < 900 ? "Profile" : ''}
-          icon={LoggedinIcon}
-          styles={profileTheme.navigation.mainNavLoggedInButton}
-          id="student-profile"
         />
       </ListItem>
       {windowWidth > 900 && <Box sx={profileTheme.navigation.mainNavDivider} />}
       <ListItem disablePadding>
         <CTAButton
           loading={false}
-          handleClick={logout}
-          label={windowWidth > 1024 || windowWidth < 900 ? "Logout" : ''}
-          icon={LogoutIcon}
-          styles={profileTheme.navigation.mainNavLogoutButton}
-          id="logout-button"
+          handleClick={() => navigate(`/student/account`)}
+          label={windowWidth > 1024 || windowWidth < 900 ? `${user.first_name}` : ''}
+          icon={LoggedinIcon}
+          styles={profileTheme.navigation.mainNavLoggedInButton}
+          id="student-profile"
         />
       </ListItem>
     </List>
@@ -336,6 +295,16 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
           Articles
         </Typography>
       </ListItem>
+      <ListItem disablePadding>
+        <CTAButton
+          icon={SearchIcon}
+          loading={false}
+          handleClick={() => navigate(`/scholarships`)}
+          label={windowWidth > 1024 || windowWidth < 900 ? "Search Scholarships" : ''}
+          styles={profileTheme.navigation.mainNavSearchButton}
+          id="search-scholarships"
+        />
+      </ListItem>
       <ListItem sx={profileTheme.navigation.mainNavListSignUp}>
         <Typography
           component={Link}
@@ -346,6 +315,7 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
           Sign Up
         </Typography>
       </ListItem>
+      {windowWidth > 900 && <Box sx={profileTheme.navigation.mainNavDivider} />}
       <ListItem disablePadding>
         <CTAButton
           icon={LoginIcon}
@@ -354,17 +324,6 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
           label={windowWidth > 1024 || windowWidth < 900 ? "Login" : ''}
           styles={profileTheme.navigation.mainNavLoginButton}
           id="login-button"
-        />
-      </ListItem>
-      {windowWidth > 900 && <Box sx={profileTheme.navigation.mainNavDivider} />}
-      <ListItem disablePadding>
-        <CTAButton
-          icon={SearchIcon}
-          loading={false}
-          handleClick={() => navigate(`/scholarships`)}
-          label={windowWidth > 1024 || windowWidth < 900 ? "Search Scholarships" : ''}
-          styles={profileTheme.navigation.mainNavSearchButton}
-          id="search-scholarships"
         />
       </ListItem>
     </List>

@@ -242,7 +242,7 @@ const profiletheme = {
         backgroundColor: '#F04D12',
       },
     },
-    mainNavSubSearchButton: {
+    mainNavLoggedInButton: {
       display: 'flex',
       gap: '10px',
       justifyContent: 'center',
@@ -259,25 +259,7 @@ const profiletheme = {
       border: '1px solid rgba(255, 255, 255, 0.5)',
       '&:hover': {
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
-      },
-    },
-    mainNavLoggedInButton: {
-      display: 'flex',
-      gap: '10px',
-      justifyContent: 'center',
-      alignItems: 'center',
-      borderRadius: '8px',
-      padding: '10px 20px',
-      width: '100%',
-      height: '100%',
-      minHeight: '48px',
-      whiteSpace: 'nowrap',
-      textTransform: 'capitalize',
-      fontSize: '16px',
-      backgroundColor: '#00CA32',
-      '&:hover': {
-        backgroundColor: '#00AF2C',
-      },
+      }
     },
     mainNavLogoutButton: {
       display: 'flex',
@@ -303,7 +285,7 @@ const profiletheme = {
       justifyContent: 'center',
       alignItems: 'center',
       borderRadius: '8px',
-      padding: '10px',
+      padding: '10px 15px',
       width: '100%',
       height: '100%',
       minHeight: '48px',
@@ -311,10 +293,11 @@ const profiletheme = {
       textTransform: 'capitalize',
       fontSize: '16px',
       fontFamily: 'Outfit, sans-serif',
-      backgroundColor: '#499DFE',
+      backgroundColor: 'transparent',
+      border: '1px solid rgba(255, 255, 255, 0.5)',
       '&:hover': {
-        backgroundColor: '#0378FE',
-      },
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      }
     },
     mainNavListSignUp: {
       display: 'flex',
@@ -405,14 +388,14 @@ const profiletheme = {
       maxWidth: '1280px',
       margin: '0 auto',
       width: '100%',
-      padding: '40px 20px'
+      padding: '20px 20px'
     }, 
     sectionHeading: {
       fontSize: '18px',
       fontWeight: '700',
       color: '#FFFFFF',
       textAlign: 'center',
-      marginBottom: '15px',
+      marginBottom: '10px',
       fontFamily: 'Outfit, sans-serif',
     },
     sectionDescriptionSmall: {
@@ -447,7 +430,7 @@ const profiletheme = {
     },
     footerLink: {
       marginTop: '2px',
-      height: '16px'
+      height: '18px'
     },
     footerCopyright: {
       fontSize: { xs: '14px', lg: '14px'},

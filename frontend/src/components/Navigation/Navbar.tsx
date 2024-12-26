@@ -13,7 +13,6 @@ import Logo from '../../public/images/logo.png'
 import { useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import { Authenticated, Unauthenticated } from './NavbarComponents'
-import NavbarTopComponent from './NavbarTopComponent';
 import profileTheme from '../../styles/profileTheme';
 
 interface NavbarProps {
@@ -76,7 +75,6 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
 
   return (
     <>
-      <NavbarTopComponent />
       <Box sx={{ display: 'flex', position: 'sticky', top: 0, zIndex: 999 }}>
         <AppBar component="nav" sx={profileTheme.navigation.mainNav}>
           <Toolbar sx={profileTheme.navigation.mainNavContainer}>
