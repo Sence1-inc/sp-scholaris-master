@@ -127,6 +127,15 @@ const AuthenticatedStudent: React.FC<AuthenticatedUserProps> = ({
       <ListItem sx={profileTheme.navigation.mainNavListItem}>
         <Typography
           component={Link}
+          to={`/student/survey`}
+          sx={profileTheme.navigation.mainNavListItemLink}
+        >
+          Survey
+        </Typography>
+      </ListItem>
+      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+        <Typography
+          component={Link}
           to={`/articles`}
           sx={profileTheme.navigation.mainNavListItemLink}
         >
@@ -252,10 +261,9 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
 
   return (
     <List sx={profileTheme.navigation.mainNavLists}>
-      {(pathname === '/provider' || pathname === 'student') && (
+      {(pathname === '/provider' || pathname === '/student') && (
         <ListItem sx={profileTheme.navigation.mainNavListItem}>
           <Typography
-            variant="body1"
             component={Button}
             onClick={() => {
               const fabButton = document.getElementById(
@@ -266,26 +274,12 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
                 fabButton.click()
               }
             }}
-            sx={{
-              padding: 0,
-              color: 'common.white',
-              textDecoration: 'none',
-              textTransform: 'capitalize',
-            }}
+            sx={profileTheme.navigation.mainNavListItemLink}
           >
             Newsletter
           </Typography>
         </ListItem>
       )}
-      <ListItem sx={profileTheme.navigation.mainNavListItem}>
-        <Typography
-          component={Link}
-          to={`/${userType}/survey`}
-          sx={profileTheme.navigation.mainNavListItemLink}
-        >
-          Survey
-        </Typography>
-      </ListItem>
       <ListItem sx={profileTheme.navigation.mainNavListItem}>
         <Typography
           component={Link}

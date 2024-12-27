@@ -198,6 +198,7 @@ const profiletheme = {
       fontFamily: 'Outfit, sans-serif',
       color: '#ffffff',
       textDecoration: 'none',
+      textTransform: 'Capitalize',
       transition: 'all 0.4s ease',
       '&:hover': {
         color: 'rgba(255, 255, 255, 0.8)',
