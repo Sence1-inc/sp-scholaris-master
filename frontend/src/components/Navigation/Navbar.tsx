@@ -33,13 +33,8 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.paddingRight = '0px';
-    } else {
-      document.body.style.paddingRight = '15px';
     }
-
-    return () => {
-      document.body.style.paddingRight = '15px';
-    };
+    
   }, [mobileOpen]);
 
 
