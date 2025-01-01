@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   Link,
@@ -66,32 +65,30 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
             >
               {articles[0].title}
             </Typography>
+            <Box sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}>
+              {articles[0].tags.map((tag: Tag, index: number) => {
+                return (
+                  <Button
+                    key={`${tag.slug}-${index}`}
+                    color="secondary"
+                    size="small"
+                    sx={{
+                      padding: '2px 6px',
+                      fontSize: '10px',
+                      textTransform: 'unset',
+                      borderRadius: '20px',
+                    }}
+                    variant="outlined"
+                  >
+                    {tag.name}
+                  </Button>
+                )
+              })}
+            </Box>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               {articles[0].description}
             </Typography>
           </CardContent>
-          <CardActions
-            sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}
-          >
-            {articles[0].tags.map((tag: Tag, index: number) => {
-              return (
-                <Button
-                  key={`${tag.slug}-${index}`}
-                  color="secondary"
-                  size="small"
-                  sx={{
-                    padding: '2px 6px',
-                    fontSize: '10px',
-                    textTransform: 'unset',
-                    borderRadius: '20px',
-                  }}
-                  variant="outlined"
-                >
-                  {tag.name}
-                </Button>
-              )
-            })}
-          </CardActions>
         </Card>
         <Box
           sx={{
