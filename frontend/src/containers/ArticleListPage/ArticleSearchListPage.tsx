@@ -1,6 +1,7 @@
-import { ArrowRightOutlined } from '@mui/icons-material'
+import { ArrowRightOutlined, NavigateNextOutlined } from '@mui/icons-material'
 import {
   Box,
+  Breadcrumbs,
   Button,
   Card,
   CardContent,
@@ -135,9 +136,30 @@ const ArticleSearchListPage = () => {
     setPage(value)
   }
 
+  const breadcrumbs = [
+    <Link
+      underline="hover"
+      key="1"
+      color="inherit"
+      href="/articles"
+      onClick={() => navigate('/articles')}
+    >
+      Articles
+    </Link>,
+    <Typography key="3" sx={{ color: 'text.primary' }}>
+      Search
+    </Typography>,
+  ]
+
   return (
-    <Container sx={{ ...containerStyle, gap: '15vh' }}>
+    <Container sx={{ ...containerStyle, gap: '10vh' }}>
       <Jumbotron />
+      <Breadcrumbs
+        separator={<NavigateNextOutlined fontSize="small" />}
+        aria-label="breadcrumb"
+      >
+        {breadcrumbs}
+      </Breadcrumbs>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <Typography variant="h5">Search Articles</Typography>

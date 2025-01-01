@@ -1,11 +1,13 @@
-import { ArrowBackIos, ArrowRightOutlined } from '@mui/icons-material'
+import { ArrowRightOutlined, NavigateNextOutlined } from '@mui/icons-material'
 import {
   Box,
+  Breadcrumbs,
   Button,
   Card,
   CardContent,
   CircularProgress,
   Container,
+  Link,
   TextField,
   Typography,
   useMediaQuery,
@@ -206,7 +208,7 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
   }
-  console.log(isXs)
+
   const getArticle = async (slug: string) => {
     try {
       const response = await axios.get(
@@ -293,6 +295,54 @@ const ArticleDetailPage: React.FC = () => {
     return <Typography variant="h6">Article not found</Typography>
   }
 
+  const mainTag = () => {
+    if (article.is_popular) {
+      return 'Popular Article'
+    } else if (article.is_provider_specific) {
+      return 'Provider Article'
+    } else if (article.is_student_specific) {
+      return 'Student Article'
+    } else {
+      return 'Latest Article'
+    }
+  }
+
+  const mainType = () => {
+    if (article.is_popular) {
+      return 'popular'
+    } else if (article.is_provider_specific) {
+      return 'provider'
+    } else if (article.is_student_specific) {
+      return 'student'
+    } else {
+      return 'latest'
+    }
+  }
+
+  const breadcrumbs = [
+    <Link
+      underline="hover"
+      key="1"
+      color="inherit"
+      href="/articles"
+      onClick={() => navigate('/articles')}
+    >
+      Articles
+    </Link>,
+    <Link
+      underline="hover"
+      key="1"
+      color="inherit"
+      href="/articles"
+      onClick={() => navigate(`/articles/search/all?type=${mainType}`)}
+    >
+      {mainTag()}
+    </Link>,
+    <Typography key="3" sx={{ color: 'text.primary' }}>
+      {article.title}
+    </Typography>,
+  ]
+
   return (
     <Container
       sx={{
@@ -304,21 +354,12 @@ const ArticleDetailPage: React.FC = () => {
         padding: '20px',
       }}
     >
-      <Button
-        id="back-to-search"
-        onClick={() => navigate('/articles')}
-        sx={{
-          color: 'secondary.main',
-          fontSize: '1rem',
-          fontWeight: 400,
-          textDecoration: 'none',
-          '&:hover': {
-            textDecoration: 'underline',
-          },
-        }}
+      <Breadcrumbs
+        separator={<NavigateNextOutlined fontSize="small" />}
+        aria-label="breadcrumb"
       >
-        <ArrowBackIos sx={{ fontSize: '1.2rem' }} /> Back to Articles
-      </Button>
+        {breadcrumbs}
+      </Breadcrumbs>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <Box>
           <Typography variant="subtitle1">{article.project.name}</Typography>
