@@ -146,6 +146,7 @@ const ArticleSearchListPage = () => {
             <Box sx={{ display: 'flex', gap: '10px' }}>
               <Typography variant="body1">Filters:</Typography>
               <Chip
+                sx={{ margin: '0 4px' }}
                 label={tagSlug
                   ?.replace(/-/g, ' ')
                   .replace(/\b\w/g, (char) => char.toUpperCase())}
