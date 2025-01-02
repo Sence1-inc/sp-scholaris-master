@@ -15,11 +15,7 @@ const WelcomePage: React.FC = () => {
       <Box
         sx={containerStyle}
       >
-         <Box
-         className='banner__container'
-        >
-          <BannerButton />
-        </Box>
+        <BannerButton />
         <Box
           sx={{
             width: { xs: '100%' },
