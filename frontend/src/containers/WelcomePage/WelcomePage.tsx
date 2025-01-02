@@ -3,7 +3,6 @@ import {
   Card,
   CardMedia,
   CircularProgress,
-  Container,
   Typography,
 } from '@mui/material'
 import axios from 'axios'
@@ -198,9 +197,7 @@ const WelcomePage: React.FC = () => {
         <Box sx={{ ...containerStyle, padding: '50px 80px' }}>
           <ArticleListSection
             type="latest"
-            articles={articles.filter(
-              (article: Article) => !article.is_popular
-            )}
+            articles={articles}
             header="Latest Articles"
             subheader="Articles"
           />
