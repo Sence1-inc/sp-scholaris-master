@@ -160,7 +160,14 @@ const ArticleSearchListPage = () => {
       >
         {breadcrumbs}
       </Breadcrumbs>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+          width: '100%',
+        }}
+      >
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <Typography variant="h5">Search Articles</Typography>
           <Typography variant="body1">Search Result: {keyword}</Typography>

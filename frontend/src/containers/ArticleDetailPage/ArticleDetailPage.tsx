@@ -353,6 +353,7 @@ const ArticleDetailPage: React.FC = () => {
         alignItems: 'flex-start',
         gap: '20px',
         padding: '20px',
+        width: '100%',
       }}
     >
       <Breadcrumbs
@@ -361,7 +362,14 @@ const ArticleDetailPage: React.FC = () => {
       >
         {breadcrumbs}
       </Breadcrumbs>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+          width: '100%',
+        }}
+      >
         <Box>
           <Typography variant="h5">{article.title}</Typography>
         </Box>

@@ -27,7 +27,14 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
 }) => {
   const navigate = useNavigate()
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+        width: '100%',
+      }}
+    >
       <Box>
         <Typography variant="subtitle1">{subheader}</Typography>
         <Typography variant="h5">{header}</Typography>

@@ -55,12 +55,14 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
             component="div"
             variant="h6"
             sx={{
-              whiteSpace: 'nowrap',
+              display: 'inline-block',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
+              whiteSpace: isSidebar ? 'nowrap' : 'normal',
+              wordWrap: 'break-word',
               width: isSidebar
                 ? { xs: '18vw', md: '14vw' }
-                : { xs: '55vw', sm: '34vw', md: '30vw' },
+                : { xs: '55vw', sm: '34vw', md: '28vw' },
             }}
           >
             {article.title}
