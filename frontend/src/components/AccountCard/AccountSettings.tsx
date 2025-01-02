@@ -109,6 +109,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
             variant="contained"
             sx={ctaButtonStyle}
             onClick={handleSubscribe}
+            id='subscribe'
           >
             Subscribe
           </Button>
@@ -123,6 +124,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
                 handleUnsubscribe
               )
             }}
+            id="unsubscribe"
           >
             Unsubscribe
           </Button>

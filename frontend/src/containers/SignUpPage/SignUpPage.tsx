@@ -10,6 +10,7 @@ import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import { useSnackbar } from '../../context/SnackBarContext'
 import { useAppSelector } from '../../redux/store'
+import BannerButton from '../../components/Button/BannerButton'
 
 interface SignUpPageProps {}
 
@@ -237,6 +238,11 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         marginBlock: '40px',
       }}
     >
+      <Box
+         className='banner__container'
+        >
+          <BannerButton />
+        </Box>
       <Typography
         variant="h2"
         sx={{
@@ -361,14 +367,14 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         }}
       >
         <CTAButton
-          id="sign-up"
+          id="sign-up-students"
           label="Sign up as student"
           loading={buttonLoading}
           handleClick={() => handleSignUp('student')}
           styles={{ fontSize: '24px' }}
         />
         <CTAButton
-          id="sign-up"
+          id="sign-up-providers"
           label="Sign up as provider"
           loading={buttonLoading}
           handleClick={() => handleSignUp('provider')}

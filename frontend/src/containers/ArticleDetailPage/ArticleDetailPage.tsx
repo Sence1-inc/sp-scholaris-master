@@ -1,11 +1,13 @@
-import { ArrowBackIos, ArrowRightOutlined } from '@mui/icons-material'
+import { ArrowRightOutlined, NavigateNextOutlined } from '@mui/icons-material'
 import {
   Box,
+  Breadcrumbs,
   Button,
   Card,
   CardContent,
   CircularProgress,
   Container,
+  Link,
   TextField,
   Typography,
   useMediaQuery,
@@ -27,6 +29,7 @@ const ArticleDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   const [article, setArticle] = useState<Article | null>(null)
+  const [searchKey, setSearchKey] = useState<string>('')
   const [relatedArticles, setRelatedArticles] = useState<Article[] | []>([])
   const [popularArticles, setPopularArticles] = useState<Article[] | []>([])
   const [loading, setLoading] = useState(true)
@@ -206,11 +209,11 @@ const ArticleDetailPage: React.FC = () => {
       />
     ),
   }
-  console.log(isXs)
+
   const getArticle = async (slug: string) => {
     try {
       const response = await axios.get(
-        `${APP_URL}/api/articles?filters[slug][$eq]=${slug}&populate=*`
+        `${APP_URL}/api/articles?filters[slug][$eq]=${slug}&sort[0]=publishedAt:desc&populate=*`
       )
       return response.data
     } catch (error) {
@@ -293,6 +296,54 @@ const ArticleDetailPage: React.FC = () => {
     return <Typography variant="h6">Article not found</Typography>
   }
 
+  const mainTag = () => {
+    if (article.is_popular) {
+      return 'Popular Article'
+    } else if (article.is_provider_specific) {
+      return 'Provider Article'
+    } else if (article.is_student_specific) {
+      return 'Student Article'
+    } else {
+      return 'Latest Article'
+    }
+  }
+
+  const mainType = () => {
+    if (article.is_popular) {
+      return 'popular'
+    } else if (article.is_provider_specific) {
+      return 'provider'
+    } else if (article.is_student_specific) {
+      return 'student'
+    } else {
+      return 'latest'
+    }
+  }
+
+  const breadcrumbs = [
+    <Link
+      sx={{ cursor: 'pointer' }}
+      underline="hover"
+      key="1"
+      color="inherit"
+      onClick={() => navigate('/articles')}
+    >
+      Articles
+    </Link>,
+    <Link
+      sx={{ cursor: 'pointer' }}
+      underline="hover"
+      key="1"
+      color="inherit"
+      onClick={() => navigate(`/articles/search/all?type=${mainType()}`)}
+    >
+      {mainTag()}
+    </Link>,
+    <Typography key="3" sx={{ color: 'text.primary' }}>
+      {article.title}
+    </Typography>,
+  ]
+
   return (
     <Container
       sx={{
@@ -302,27 +353,46 @@ const ArticleDetailPage: React.FC = () => {
         alignItems: 'flex-start',
         gap: '20px',
         padding: '20px',
+        width: '100%',
       }}
     >
-      <Button
-        id="back-to-search"
-        onClick={() => navigate('/articles')}
+      <Breadcrumbs
+        separator={<NavigateNextOutlined fontSize="small" />}
+        aria-label="breadcrumb"
+      >
+        {breadcrumbs}
+      </Breadcrumbs>
+      <Box
         sx={{
-          color: 'secondary.main',
-          fontSize: '1rem',
-          fontWeight: 400,
-          textDecoration: 'none',
-          '&:hover': {
-            textDecoration: 'underline',
-          },
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+          width: '100%',
         }}
       >
-        <ArrowBackIos sx={{ fontSize: '1.2rem' }} /> Back to Articles
-      </Button>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <Box>
-          <Typography variant="subtitle1">{article.project.name}</Typography>
-          <Typography variant="h5">{article.title}</Typography>
+          <Typography variant="h1">{article.title}</Typography>
+        </Box>
+        <Box sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}>
+          {article.tags.map((tag: Tag, index: number) => {
+            return (
+              <Button
+                key={`${tag.slug}=${index}`}
+                color="secondary"
+                size="small"
+                sx={{
+                  padding: '2px 6px',
+                  fontSize: '10px',
+                  textTransform: 'unset',
+                  borderRadius: '20px',
+                  marginLeft: '4px',
+                }}
+                variant="outlined"
+              >
+                {tag.name}
+              </Button>
+            )
+          })}
         </Box>
         <Box sx={{ display: 'flex', gap: '20px' }}>
           <Box
@@ -347,28 +417,6 @@ const ArticleDetailPage: React.FC = () => {
               >
                 {article.content}
               </ReactMarkdown>
-              <Box
-                sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}
-              >
-                {article.tags.map((tag: Tag, index: number) => {
-                  return (
-                    <Button
-                      key={`${tag.slug}=${index}`}
-                      color="secondary"
-                      size="small"
-                      sx={{
-                        padding: '2px 6px',
-                        fontSize: '10px',
-                        textTransform: 'unset',
-                        borderRadius: '20px',
-                      }}
-                      variant="outlined"
-                    >
-                      {tag.name}
-                    </Button>
-                  )
-                })}
-              </Box>
             </Box>
           </Box>
           {!isXs && (
@@ -401,6 +449,8 @@ const ArticleDetailPage: React.FC = () => {
                       borderRadius: '20px',
                       '& .MuiOutlinedInput-root': { fontSize: '1rem' },
                     }}
+                    value={searchKey}
+                    onChange={(e) => setSearchKey(e.target.value)}
                   />
                   <Button
                     variant="contained"
@@ -408,6 +458,13 @@ const ArticleDetailPage: React.FC = () => {
                       fontSize: '1rem',
                       borderRadius: '20px',
                       lineHeight: '1rem',
+                    }}
+                    onClick={() => {
+                      if (searchKey === '') {
+                        navigate(`/articles/search/all?type=latest`)
+                      } else {
+                        navigate(`/articles/search/${searchKey}`)
+                      }
                     }}
                   >
                     Search
@@ -466,7 +523,7 @@ const ArticleDetailPage: React.FC = () => {
                   }}
                 >
                   <Typography variant="h5">
-                    Search Scholarship with Scholaris
+                    Search Scholarships with Scholaris
                   </Typography>
                   <Typography variant="body2">
                     Looking for scholarships?
