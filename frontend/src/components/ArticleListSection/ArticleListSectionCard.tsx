@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Card,
-  CardActions,
   CardContent,
   CardMedia,
   Typography,
@@ -36,6 +35,7 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
         boxShadow: 'none',
         width: isSearched ? '45%' : '100%',
         gap: '10px',
+        cursor: 'pointer',
       }}
       onClick={() => navigate(`/articles/${article.slug}`)}
     >
@@ -65,6 +65,29 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
           >
             {article.title}
           </Typography>
+          {!isSidebar && (
+            <Box sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}>
+              {article.tags.map((tag: Tag, index: number) => {
+                return (
+                  <Button
+                    key={`${tag.slug}=${index}`}
+                    color="secondary"
+                    size="small"
+                    sx={{
+                      padding: '2px 6px',
+                      fontSize: '10px',
+                      textTransform: 'unset',
+                      borderRadius: '20px',
+                      marginLeft: '4px',
+                    }}
+                    variant="outlined"
+                  >
+                    {tag.name}
+                  </Button>
+                )
+              })}
+            </Box>
+          )}
           <Typography
             variant="subtitle1"
             component="div"
@@ -81,30 +104,6 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
             {article.description}
           </Typography>
         </CardContent>
-        {!isSidebar && (
-          <CardActions
-            sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}
-          >
-            {article.tags.map((tag: Tag, index: number) => {
-              return (
-                <Button
-                  key={`${tag.slug}=${index}`}
-                  color="secondary"
-                  size="small"
-                  sx={{
-                    padding: '2px 6px',
-                    fontSize: '10px',
-                    textTransform: 'unset',
-                    borderRadius: '20px',
-                  }}
-                  variant="outlined"
-                >
-                  {tag.name}
-                </Button>
-              )
-            })}
-          </CardActions>
-        )}
       </Box>
     </Card>
   )

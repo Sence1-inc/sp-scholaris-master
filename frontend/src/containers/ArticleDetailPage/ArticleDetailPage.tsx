@@ -29,6 +29,7 @@ const ArticleDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
   const navigate = useNavigate()
   const [article, setArticle] = useState<Article | null>(null)
+  const [searchKey, setSearchKey] = useState<string>('')
   const [relatedArticles, setRelatedArticles] = useState<Article[] | []>([])
   const [popularArticles, setPopularArticles] = useState<Article[] | []>([])
   const [loading, setLoading] = useState(true)
@@ -321,20 +322,20 @@ const ArticleDetailPage: React.FC = () => {
 
   const breadcrumbs = [
     <Link
+      sx={{ cursor: 'pointer' }}
       underline="hover"
       key="1"
       color="inherit"
-      href="/articles"
       onClick={() => navigate('/articles')}
     >
       Articles
     </Link>,
     <Link
+      sx={{ cursor: 'pointer' }}
       underline="hover"
       key="1"
       color="inherit"
-      href="/articles"
-      onClick={() => navigate(`/articles/search/all?type=${mainType}`)}
+      onClick={() => navigate(`/articles/search/all?type=${mainType()}`)}
     >
       {mainTag()}
     </Link>,
@@ -362,7 +363,6 @@ const ArticleDetailPage: React.FC = () => {
       </Breadcrumbs>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
         <Box>
-          <Typography variant="subtitle1">{article.project.name}</Typography>
           <Typography variant="h5">{article.title}</Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: '20px' }}>
@@ -402,6 +402,7 @@ const ArticleDetailPage: React.FC = () => {
                         fontSize: '10px',
                         textTransform: 'unset',
                         borderRadius: '20px',
+                        marginLeft: '4px',
                       }}
                       variant="outlined"
                     >
@@ -442,6 +443,8 @@ const ArticleDetailPage: React.FC = () => {
                       borderRadius: '20px',
                       '& .MuiOutlinedInput-root': { fontSize: '1rem' },
                     }}
+                    value={searchKey}
+                    onChange={(e) => setSearchKey(e.target.value)}
                   />
                   <Button
                     variant="contained"
@@ -449,6 +452,13 @@ const ArticleDetailPage: React.FC = () => {
                       fontSize: '1rem',
                       borderRadius: '20px',
                       lineHeight: '1rem',
+                    }}
+                    onClick={() => {
+                      if (searchKey === '') {
+                        navigate(`/articles/search/all?type=latest`)
+                      } else {
+                        navigate(`/articles/search/${searchKey}`)
+                      }
                     }}
                   >
                     Search

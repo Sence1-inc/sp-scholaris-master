@@ -77,6 +77,7 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
                       fontSize: '10px',
                       textTransform: 'unset',
                       borderRadius: '20px',
+                      marginLeft: '4px',
                     }}
                     variant="outlined"
                   >

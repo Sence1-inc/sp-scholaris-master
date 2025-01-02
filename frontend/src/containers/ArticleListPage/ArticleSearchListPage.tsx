@@ -138,10 +138,10 @@ const ArticleSearchListPage = () => {
 
   const breadcrumbs = [
     <Link
+      sx={{ cursor: 'pointer' }}
       underline="hover"
       key="1"
       color="inherit"
-      href="/articles"
       onClick={() => navigate('/articles')}
     >
       Articles
