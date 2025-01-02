@@ -48,7 +48,7 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
       >
         <Card
           sx={{
-            width: { xs: '100%', sm: '50%' },
+            width: { xs: '100%', sm: '60%' },
             border: 'none',
             borderRadius: '16px',
             backgroundColor: 'white',
@@ -100,7 +100,7 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
         </Card>
         <Box
           sx={{
-            width: { xs: '100%', sm: '50%' },
+            width: { xs: '100%', sm: '40%' },
             display: 'flex',
             flexDirection: 'column',
             gap: '10px',

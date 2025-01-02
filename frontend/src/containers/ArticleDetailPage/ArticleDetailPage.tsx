@@ -371,7 +371,7 @@ const ArticleDetailPage: React.FC = () => {
         }}
       >
         <Box>
-          <Typography variant="h5">{article.title}</Typography>
+          <Typography variant="h1">{article.title}</Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: '20px' }}>
           <Box
