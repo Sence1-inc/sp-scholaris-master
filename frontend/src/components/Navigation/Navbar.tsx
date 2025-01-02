@@ -13,13 +13,11 @@ import Logo from '../../public/images/logo.png'
 import { useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import { Authenticated, Unauthenticated } from './NavbarComponents'
-import profileTheme from '../../styles/profileTheme';
+import profileTheme from '../../styles/profileTheme'
 
 interface NavbarProps {
   window?: () => Window
 }
-
-const drawerWidth = '90vw'
 
 const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const location = useLocation()
@@ -32,11 +30,9 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
 
   useEffect(() => {
     if (mobileOpen) {
-      document.body.style.paddingRight = '0px';
+      document.body.style.paddingRight = '0px'
     }
-    
-  }, [mobileOpen]);
-
+  }, [mobileOpen])
 
   const renderItems = () => {
     return !isAuthenticated ? (
@@ -57,7 +53,12 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
     >
       <Box sx={profileTheme.navigation.mainNavLogoContainer}>
         <Link to="/">
-          <Box component="img" src={Logo} alt="Scholaris Logo" sx={profileTheme.navigation.mainNavLogo} />
+          <Box
+            component="img"
+            src={Logo}
+            alt="Scholaris Logo"
+            sx={profileTheme.navigation.mainNavLogo}
+          />
         </Link>
       </Box>
       <Divider />
@@ -75,14 +76,15 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
           <Toolbar sx={profileTheme.navigation.mainNavContainer}>
             <Box>
               <Link to="/">
-                <Box component="img" src={Logo} alt="Scholaris Logo" sx={profileTheme.navigation.mainNavLogo} />
+                <Box
+                  component="img"
+                  src={Logo}
+                  alt="Scholaris Logo"
+                  sx={profileTheme.navigation.mainNavLogo}
+                />
               </Link>
             </Box>
-            <Box
-              sx={profileTheme.navigation.mainNavList}
-            >
-              {renderItems()}
-            </Box>
+            <Box sx={profileTheme.navigation.mainNavList}>{renderItems()}</Box>
             <IconButton
               color="inherit"
               aria-label="open drawer"
@@ -110,7 +112,6 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
         </nav>
       </Box>
     </>
-
   )
 }
 

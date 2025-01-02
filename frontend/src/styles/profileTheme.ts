@@ -1,4 +1,3 @@
-import { WidthFull } from '@mui/icons-material'
 import theme from './theme'
 
 const profiletheme = {
@@ -162,10 +161,10 @@ const profiletheme = {
   },
   navigation: {
     mainNav: {
-      position: 'relative', 
+      position: 'relative',
       padding: 0,
       boxShadow: 'none',
-      fontFamily: 'Outfit, sans-serif'
+      fontFamily: 'Outfit, sans-serif',
     },
     mainNavContainer: {
       display: 'flex',
@@ -174,11 +173,11 @@ const profiletheme = {
       margin: '0 auto',
       maxWidth: '1280px',
       width: '100%',
-      minHeight: 'auto !important'
+      minHeight: 'auto !important',
     },
     mainNavList: {
-      display: { md: 'flex', xs: 'none' }, 
-      flexDirection: 'row'
+      display: { md: 'flex', xs: 'none' },
+      flexDirection: 'row',
     },
     mainNavLists: {
       display: 'flex',
@@ -202,7 +201,7 @@ const profiletheme = {
       transition: 'all 0.4s ease',
       '&:hover': {
         color: 'rgba(255, 255, 255, 0.8)',
-      }
+      },
     },
     mainNavLogo: {
       height: '48px',
@@ -212,11 +211,11 @@ const profiletheme = {
     mainNavLogoContainer: {
       padding: '40px 0 40px',
       margin: '0 0 10px',
-      borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+      borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
     },
     mainNavDrawerContainer: {
-      textAlign: 'center', 
-      color: 'common.white'
+      textAlign: 'center',
+      color: 'common.white',
     },
     mainNavDrawer: {
       display: { xs: 'block', md: 'none' },
@@ -260,7 +259,7 @@ const profiletheme = {
       border: '1px solid rgba(255, 255, 255, 0.5)',
       '&:hover': {
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
-      }
+      },
     },
     mainNavLogoutButton: {
       display: 'flex',
@@ -298,7 +297,7 @@ const profiletheme = {
       border: '1px solid rgba(255, 255, 255, 0.5)',
       '&:hover': {
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
-      }
+      },
     },
     mainNavListSignUp: {
       display: 'flex',
@@ -316,7 +315,7 @@ const profiletheme = {
       border: '1px solid rgba(255, 255, 255, 0.5)',
       '&:hover': {
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
-      }
+      },
     },
     mainNavListSignUpSpan: {
       position: 'absolute',
@@ -325,21 +324,21 @@ const profiletheme = {
       color: '#FFFFFF',
       padding: '2px 4px',
       borderRadius: '2px',
-      left: {xs: '65px', md: '8px'},
-      top: '-10px'
+      left: { xs: '65px', md: '8px' },
+      top: '-10px',
     },
     mainNavDivider: {
-      height: {xs: '1px', md: '36px'},
-      width: {xs: '100%', md: '1px'},
-      margin: {xs: '10px 0', md: '0'},
+      height: { xs: '1px', md: '36px' },
+      width: { xs: '100%', md: '1px' },
+      margin: { xs: '10px 0', md: '0' },
       border: '1px solid #E0EFFF',
       borderRadius: '5px',
-      opacity: {xs: '0.1', md: '0.3'},
-      fontFamily: 'Outfit, sans-serif'
+      opacity: { xs: '0.1', md: '0.3' },
+      fontFamily: 'Outfit, sans-serif',
     },
     topNav: {
       background: '#000000',
-      width: "100%"
+      width: '100%',
     },
     topNavContainer: {
       display: 'flex',
@@ -349,19 +348,19 @@ const profiletheme = {
       maxWidth: '1280px',
       margin: '0 auto',
       width: '100%',
-      padding: '5px 20px'
+      padding: '5px 20px',
     },
     topNavLeft: {
       height: 'auto',
-    }, 
+    },
     topNavRight: {
       display: 'flex',
       alignItems: 'center',
       gap: '20px',
       height: 'auto',
-    }, 
+    },
     topNavIcon: {
-      height: "24px"
+      height: '24px',
     },
     topNavLink: {
       display: 'flex',
@@ -389,8 +388,8 @@ const profiletheme = {
       maxWidth: '1280px',
       margin: '0 auto',
       width: '100%',
-      padding: '20px 20px'
-    }, 
+      padding: '20px 20px',
+    },
     sectionHeading: {
       fontSize: '18px',
       fontWeight: '700',
@@ -406,7 +405,7 @@ const profiletheme = {
       textAlign: 'center',
       margin: '0',
       fontFamily: 'Outfit, sans-serif',
-    }
+    },
   },
   footer: {
     backgroundColor: '#002147',
@@ -416,25 +415,25 @@ const profiletheme = {
       margin: '0 auto',
       width: '100%',
       display: 'flex',
-      flexDirection: { xs: 'column', lg: 'row'},
-      justifyContent: { md: 'center', lg: 'space-between'},
+      flexDirection: { xs: 'column', lg: 'row' },
+      justifyContent: { md: 'center', lg: 'space-between' },
       alignItems: 'center',
       padding: '10px 20px',
     },
     footerLeft: {
       display: 'flex',
-      gap: { xs: '10px', lg: '20px'},
-      marginBottom: { xs: '20px', lg: '0'}, 
-      flexDirection: { xs: 'column', lg: 'row'},
+      gap: { xs: '10px', lg: '20px' },
+      marginBottom: { xs: '20px', lg: '0' },
+      flexDirection: { xs: 'column', lg: 'row' },
       justifyContent: 'center',
-      alignItems: 'center'
+      alignItems: 'center',
     },
     footerLink: {
       marginTop: '2px',
-      height: '18px'
+      height: '18px',
     },
     footerCopyright: {
-      fontSize: { xs: '14px', lg: '14px'},
+      fontSize: { xs: '14px', lg: '14px' },
       fontWeight: '400',
       color: '#FFFFFF',
       fontFamily: 'Outfit, sans-serif',
@@ -455,9 +454,9 @@ const profiletheme = {
       fontWeight: '400',
       fontFamily: 'Outfit, sans-serif',
       color: '#FFFFFF',
-      textDecoration: 'none'
+      textDecoration: 'none',
     },
-  }
+  },
 }
 
 export default profiletheme
