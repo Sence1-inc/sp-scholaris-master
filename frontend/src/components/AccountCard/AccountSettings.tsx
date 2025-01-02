@@ -111,7 +111,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
           {user.email_address}
         </Typography>
         <Box sx={profileTheme.box.boxBodyStyle2}>
-          {subscribed.email == '' || subscribed.deleted_at !== null ? (
+          {subscribed.email === '' || subscribed.deleted_at !== null ? (
             <Button
               variant="contained"
               sx={ctaButtonStyle}
