@@ -1,6 +1,7 @@
-import { ArrowRightOutlined } from '@mui/icons-material'
+import { ArrowRightOutlined, NavigateNextOutlined } from '@mui/icons-material'
 import {
   Box,
+  Breadcrumbs,
   Button,
   Card,
   CardContent,
@@ -135,10 +136,38 @@ const ArticleSearchListPage = () => {
     setPage(value)
   }
 
+  const breadcrumbs = [
+    <Link
+      sx={{ cursor: 'pointer' }}
+      underline="hover"
+      key="1"
+      color="inherit"
+      onClick={() => navigate('/articles')}
+    >
+      Articles
+    </Link>,
+    <Typography key="3" sx={{ color: 'text.primary' }}>
+      Search
+    </Typography>,
+  ]
+
   return (
-    <Container sx={{ ...containerStyle, gap: '15vh' }}>
+    <Container sx={{ ...containerStyle, gap: '10vh' }}>
       <Jumbotron />
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+      <Breadcrumbs
+        separator={<NavigateNextOutlined fontSize="small" />}
+        aria-label="breadcrumb"
+      >
+        {breadcrumbs}
+      </Breadcrumbs>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '20px',
+          width: '100%',
+        }}
+      >
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           <Typography variant="h5">Search Articles</Typography>
           <Typography variant="body1">Search Result: {keyword}</Typography>
@@ -146,6 +175,7 @@ const ArticleSearchListPage = () => {
             <Box sx={{ display: 'flex', gap: '10px' }}>
               <Typography variant="body1">Filters:</Typography>
               <Chip
+                sx={{ margin: '0 4px' }}
                 label={tagSlug
                   ?.replace(/-/g, ' ')
                   .replace(/\b\w/g, (char) => char.toUpperCase())}
@@ -280,7 +310,7 @@ const ArticleSearchListPage = () => {
                   }}
                 >
                   <Typography variant="h5">
-                    Search Scholarship with Scholaris
+                    Search Scholarships with Scholaris
                   </Typography>
                   <Typography variant="body2">
                     Looking for scholarships?
