@@ -213,7 +213,7 @@ const ArticleDetailPage: React.FC = () => {
   const getArticle = async (slug: string) => {
     try {
       const response = await axios.get(
-        `${APP_URL}/api/articles?filters[slug][$eq]=${slug}&populate=*`
+        `${APP_URL}/api/articles?filters[slug][$eq]=${slug}&sort[0]=publishedAt:desc&populate=*`
       )
       return response.data
     } catch (error) {
