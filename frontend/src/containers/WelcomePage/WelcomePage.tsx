@@ -2,6 +2,7 @@ import { Box, Card, CardMedia, Typography } from '@mui/material'
 import React from 'react'
 import WelcomeButton from '../../components/Button/WelcomeButton'
 import WelcomePageSearch from '../../components/Search/WelcomePageSearch'
+import BannerButton from '../../components/Button/BannerButton'
 import SchoolIcon from '../../public/images/school-solid.svg'
 import UserIcon from '../../public/images/users-solid.svg'
 import './WelcomePage.css'
@@ -14,6 +15,7 @@ const WelcomePage: React.FC = () => {
       <Box
         sx={containerStyle}
       >
+        <BannerButton />
         <Box
           sx={{
             width: { xs: '100%' },
