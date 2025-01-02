@@ -247,6 +247,7 @@ const ArticleSearchListPage = () => {
                   {tags?.map((tag: Tag, index: number) => {
                     return (
                       <Chip
+                        sx={{ margin: '4px' }}
                         key={`${tag.name}-${index}`}
                         color="secondary"
                         label={tag.name}
