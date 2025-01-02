@@ -221,31 +221,36 @@ const ArticleSearchListPage = () => {
                   <Typography variant="h6" marginBottom="10px">
                     Filter Results
                   </Typography>
-                  {tags?.map((tag: Tag, index: number) => {
-                    return (
-                      <Chip
-                        key={`${tag.name}-${index}`}
-                        color="secondary"
-                        label={tag.name}
-                        variant="outlined"
-                        onClick={() => {
-                          if (type) {
-                            const updatedSearchParams = new URLSearchParams(
-                              searchParams
-                            )
-                            updatedSearchParams.set('tag', tag.slug)
-                            navigate(
-                              `/articles/search/${keyword}?${updatedSearchParams.toString()}`
-                            )
-                          } else {
-                            navigate(
-                              `/articles/search/${keyword}?tag=${tag.slug}`
-                            )
-                          }
-                        }}
-                      />
-                    )
-                  })}
+                  {tags
+                    ?.filter((tag: Tag) => tag.slug)
+                    .map((tag: Tag, index: number) => {
+                      return (
+                        <Chip
+                          sx={{ margin: '4px' }}
+                          key={`${tag.name}-${index}`}
+                          color="secondary"
+                          label={tag.name}
+                          variant="outlined"
+                          onClick={() => {
+                            if (type) {
+                              console.log(type)
+                              console.log(tag)
+                              const updatedSearchParams = new URLSearchParams(
+                                searchParams
+                              )
+                              updatedSearchParams.set('tag', tag.slug)
+                              navigate(
+                                `/articles/search/${keyword}?${updatedSearchParams.toString()}`
+                              )
+                            } else {
+                              navigate(
+                                `/articles/search/${keyword}?tag=${tag.slug}`
+                              )
+                            }
+                          }}
+                        />
+                      )
+                    })}
                 </Box>
               )}
               <Card
