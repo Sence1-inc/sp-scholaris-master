@@ -46,7 +46,10 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
         sx={{
           borderRadius: '16px',
           width: isRelated || isSearched ? '100%' : { xs: 100, md: 150 },
-          height: isSearched ? { xs: 100, md: 200 } : { xs: 50, md: 100 },
+          height:
+            isSearched || isRelated
+              ? { xs: 100, md: 200 }
+              : { xs: 50, md: 100 },
         }}
       />
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>

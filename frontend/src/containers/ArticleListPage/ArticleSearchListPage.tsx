@@ -306,7 +306,7 @@ const ArticleSearchListPage = () => {
                   }}
                 >
                   <Typography variant="h5">
-                    Search Scholarship with Scholaris
+                    Search Scholarships with Scholaris
                   </Typography>
                   <Typography variant="body2">
                     Looking for scholarships?

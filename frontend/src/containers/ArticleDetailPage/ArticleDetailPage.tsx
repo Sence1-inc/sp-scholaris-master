@@ -373,6 +373,27 @@ const ArticleDetailPage: React.FC = () => {
         <Box>
           <Typography variant="h1">{article.title}</Typography>
         </Box>
+        <Box sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}>
+          {article.tags.map((tag: Tag, index: number) => {
+            return (
+              <Button
+                key={`${tag.slug}=${index}`}
+                color="secondary"
+                size="small"
+                sx={{
+                  padding: '2px 6px',
+                  fontSize: '10px',
+                  textTransform: 'unset',
+                  borderRadius: '20px',
+                  marginLeft: '4px',
+                }}
+                variant="outlined"
+              >
+                {tag.name}
+              </Button>
+            )
+          })}
+        </Box>
         <Box sx={{ display: 'flex', gap: '20px' }}>
           <Box
             sx={{
@@ -396,29 +417,6 @@ const ArticleDetailPage: React.FC = () => {
               >
                 {article.content}
               </ReactMarkdown>
-              <Box
-                sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}
-              >
-                {article.tags.map((tag: Tag, index: number) => {
-                  return (
-                    <Button
-                      key={`${tag.slug}=${index}`}
-                      color="secondary"
-                      size="small"
-                      sx={{
-                        padding: '2px 6px',
-                        fontSize: '10px',
-                        textTransform: 'unset',
-                        borderRadius: '20px',
-                        marginLeft: '4px',
-                      }}
-                      variant="outlined"
-                    >
-                      {tag.name}
-                    </Button>
-                  )
-                })}
-              </Box>
             </Box>
           </Box>
           {!isXs && (
@@ -525,7 +523,7 @@ const ArticleDetailPage: React.FC = () => {
                   }}
                 >
                   <Typography variant="h5">
-                    Search Scholarship with Scholaris
+                    Search Scholarships with Scholaris
                   </Typography>
                   <Typography variant="body2">
                     Looking for scholarships?
