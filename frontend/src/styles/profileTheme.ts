@@ -1,3 +1,4 @@
+import { WidthFull } from '@mui/icons-material'
 import theme from './theme'
 
 const profiletheme = {
@@ -134,6 +135,9 @@ const profiletheme = {
     },
   },
   button: {
+    buttonIcon: {
+      height: '16px',
+    },
     buttonMain: {
       py: 2,
       px: 4,
@@ -144,7 +148,7 @@ const profiletheme = {
       gap: 2,
       borderRadius: 0,
       fontSize: 16,
-      fontWeight: 'meidum',
+      fontWeight: 'medium',
       color: '#002147',
       textAlign: 'left',
     },
@@ -156,6 +160,304 @@ const profiletheme = {
       },
     },
   },
+  navigation: {
+    mainNav: {
+      position: 'relative', 
+      padding: 0,
+      boxShadow: 'none',
+      fontFamily: 'Outfit, sans-serif'
+    },
+    mainNavContainer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      padding: { xs: '0 10px', sm: '10px 20px' },
+      margin: '0 auto',
+      maxWidth: '1280px',
+      width: '100%',
+      minHeight: 'auto !important'
+    },
+    mainNavList: {
+      display: { md: 'flex', xs: 'none' }, 
+      flexDirection: 'row'
+    },
+    mainNavLists: {
+      display: 'flex',
+      alignItems: 'center',
+      flexDirection: { xs: 'column', md: 'row' },
+      padding: 0,
+      gap: '18px',
+    },
+    mainNavListItem: {
+      padding: '12px',
+      width: 'auto',
+      whiteSpace: 'nowrap',
+    },
+    mainNavListItemLink: {
+      fontSize: '16px',
+      fontWeight: '500',
+      fontFamily: 'Outfit, sans-serif',
+      color: '#ffffff',
+      textDecoration: 'none',
+      textTransform: 'Capitalize',
+      transition: 'all 0.4s ease',
+      '&:hover': {
+        color: 'rgba(255, 255, 255, 0.8)',
+      }
+    },
+    mainNavLogo: {
+      height: '48px',
+      width: '211px',
+      maxWidth: '100%',
+    },
+    mainNavLogoContainer: {
+      padding: '40px 0 40px',
+      margin: '0 0 10px',
+      borderBottom: '1px solid rgba(255, 255, 255, 0.1)'
+    },
+    mainNavDrawerContainer: {
+      textAlign: 'center', 
+      color: 'common.white'
+    },
+    mainNavDrawer: {
+      display: { xs: 'block', md: 'none' },
+      '& .MuiDrawer-paper': {
+        boxSizing: 'border-box',
+        backgroundColor: 'primary.main',
+        padding: '0 20px',
+      },
+    },
+    mainNavSearchButton: {
+      display: 'flex',
+      gap: '10px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '8px',
+      padding: '10px 20px',
+      width: '100%',
+      height: '100%',
+      minHeight: '48px',
+      whiteSpace: 'nowrap',
+      textTransform: 'capitalize',
+      fontSize: '16px',
+      '&:hover': {
+        backgroundColor: '#F04D12',
+      },
+    },
+    mainNavLoggedInButton: {
+      display: 'flex',
+      gap: '10px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '8px',
+      padding: '10px 20px',
+      width: '100%',
+      height: '100%',
+      minHeight: '48px',
+      whiteSpace: 'nowrap',
+      textTransform: 'capitalize',
+      fontSize: '16px',
+      backgroundColor: 'transparent',
+      border: '1px solid rgba(255, 255, 255, 0.5)',
+      '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      }
+    },
+    mainNavLogoutButton: {
+      display: 'flex',
+      gap: '10px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '8px',
+      padding: '10px 20px',
+      width: '100%',
+      height: '100%',
+      minHeight: '48px',
+      whiteSpace: 'nowrap',
+      textTransform: 'capitalize',
+      fontSize: '16px',
+      backgroundColor: '#FE4949',
+      '&:hover': {
+        backgroundColor: '#E80101',
+      },
+    },
+    mainNavLoginButton: {
+      display: 'flex',
+      gap: '10px',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '8px',
+      padding: '10px 15px',
+      width: '100%',
+      height: '100%',
+      minHeight: '48px',
+      whiteSpace: 'nowrap',
+      textTransform: 'capitalize',
+      fontSize: '16px',
+      fontFamily: 'Outfit, sans-serif',
+      backgroundColor: 'transparent',
+      border: '1px solid rgba(255, 255, 255, 0.5)',
+      '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      }
+    },
+    mainNavListSignUp: {
+      display: 'flex',
+      gap: '10px',
+      position: 'relative',
+      justifyContent: 'center',
+      alignItems: 'center',
+      borderRadius: '8px',
+      padding: '10px 20px',
+      width: '100%',
+      height: '100%',
+      minHeight: '48px',
+      whiteSpace: 'nowrap',
+      textTransform: 'capitalize',
+      border: '1px solid rgba(255, 255, 255, 0.5)',
+      '&:hover': {
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+      }
+    },
+    mainNavListSignUpSpan: {
+      position: 'absolute',
+      backgroundColor: '#FE4949',
+      fontSize: '11px',
+      color: '#FFFFFF',
+      padding: '2px 4px',
+      borderRadius: '2px',
+      left: {xs: '65px', md: '8px'},
+      top: '-10px'
+    },
+    mainNavDivider: {
+      height: {xs: '1px', md: '36px'},
+      width: {xs: '100%', md: '1px'},
+      margin: {xs: '10px 0', md: '0'},
+      border: '1px solid #E0EFFF',
+      borderRadius: '5px',
+      opacity: {xs: '0.1', md: '0.3'},
+      fontFamily: 'Outfit, sans-serif'
+    },
+    topNav: {
+      background: '#000000',
+      width: "100%"
+    },
+    topNavContainer: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      height: 'auto',
+      maxWidth: '1280px',
+      margin: '0 auto',
+      width: '100%',
+      padding: '5px 20px'
+    },
+    topNavLeft: {
+      height: 'auto',
+    }, 
+    topNavRight: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '20px',
+      height: 'auto',
+    }, 
+    topNavIcon: {
+      height: "24px"
+    },
+    topNavLink: {
+      display: 'flex',
+      alignItems: 'center',
+      gap: '5px',
+      fontSize: '14px',
+      fontWeight: '400',
+      color: '#FFFFFF',
+      fontFamily: 'Outfit, sans-serif',
+      textDecoration: 'none',
+      transition: 'all 0.6 ease',
+      '&:hover': {
+        opacity: '0.8',
+      },
+    },
+  },
+  section: {
+    sectionMain: {
+      Width: '100%',
+      backgroundColor: '#002753',
+      fontFamily: 'Outfit, sans-serif',
+    },
+    sectionContainer: {
+      height: 'auto',
+      maxWidth: '1280px',
+      margin: '0 auto',
+      width: '100%',
+      padding: '20px 20px'
+    }, 
+    sectionHeading: {
+      fontSize: '18px',
+      fontWeight: '700',
+      color: '#FFFFFF',
+      textAlign: 'center',
+      marginBottom: '10px',
+      fontFamily: 'Outfit, sans-serif',
+    },
+    sectionDescriptionSmall: {
+      fontSize: '14px',
+      fontWeight: '400',
+      color: '#FFFFFF',
+      textAlign: 'center',
+      margin: '0',
+      fontFamily: 'Outfit, sans-serif',
+    }
+  },
+  footer: {
+    backgroundColor: '#002147',
+    footerContainer: {
+      height: 'auto',
+      maxWidth: '1280px',
+      margin: '0 auto',
+      width: '100%',
+      display: 'flex',
+      flexDirection: { xs: 'column', lg: 'row'},
+      justifyContent: { md: 'center', lg: 'space-between'},
+      alignItems: 'center',
+      padding: '10px 20px',
+    },
+    footerLeft: {
+      display: 'flex',
+      gap: { xs: '10px', lg: '20px'},
+      marginBottom: { xs: '20px', lg: '0'}, 
+      flexDirection: { xs: 'column', lg: 'row'},
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    footerLink: {
+      marginTop: '2px',
+      height: '18px'
+    },
+    footerCopyright: {
+      fontSize: { xs: '14px', lg: '14px'},
+      fontWeight: '400',
+      color: '#FFFFFF',
+      fontFamily: 'Outfit, sans-serif',
+    },
+    footerList: {
+      display: 'flex',
+      flexDirection: { sx: 'row' },
+      alignItems: 'center',
+      gap: '15px',
+      padding: 0,
+    },
+    footerListItem: {
+      padding: 0,
+      whiteSpace: 'nowrap',
+    },
+    footerListItemLink: {
+      fontSize: '14px',
+      fontWeight: '400',
+      fontFamily: 'Outfit, sans-serif',
+      color: '#FFFFFF',
+      textDecoration: 'none'
+    },
+  }
 }
 
 export default profiletheme

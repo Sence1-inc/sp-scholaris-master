@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Navigate } from 'react-router-dom'
 import axiosInstance, { initialUserState } from '../../../axiosConfig'
 import AccountSettings from '../../../components/AccountCard/AccountSettings'
 import AccountSideBar, {
@@ -38,8 +38,13 @@ const ProviderProfile: React.FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { getSubscriber, errorMessage: err } = useGetSubscriber()
+  const whitelistProfileRoutes = ['view-profile', 'account-settings'];
 
-  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'))
+  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'));
+
+  if (lastRoute && !whitelistProfileRoutes.includes(lastRoute)) {
+    return <Navigate to="/404" replace />;
+  }
 
   const handleDeleteCookie = async () => {
     const data = {

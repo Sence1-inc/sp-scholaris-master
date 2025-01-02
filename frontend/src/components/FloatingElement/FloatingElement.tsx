@@ -37,6 +37,7 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
       slotProps={{
         paper: { style: { borderRadius: '16px' } },
       }}
+      disableScrollLock={true}
     >
       <Paper
         sx={{
