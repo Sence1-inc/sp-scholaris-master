@@ -33,6 +33,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData, ScholarshipFeedback, User } from '../../redux/types'
 import { formattedDate } from '../StudentDashboardPage/StudentDashboardPage'
 import './ScholarshipDetailsPage.css'
+import SignIn from '../../components/SignIn/SignIn'
 
 interface Results {
   scholarshipData: ScholarshipData
@@ -88,8 +89,18 @@ export const ScholarshipDetailsPage: React.FC<
   const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isModalSignInOpen, setModalSignInOpen] = useState<boolean>(false)
+  const handleModalSignInOpen = () => setModalSignInOpen(true);
+  const handleModalSignInClose = () => setModalSignInOpen(false);
+  const [isSignUpShown, setSignUpShown] = useState<boolean>(false)
+  const updateSignUpShown = () => {
+    setSignUpShown(true)
+  }
   const [isSendEmailModalOpen, setIsSendEmailModalOpen] =
     useState<boolean>(false)
+  const isAuthenticated = useAppSelector(
+      (state) => state.persistedReducer.isAuthenticated
+    )
   const [studentEmail, setStudentEmail] = useState<string>('')
   const [studentName, setStudentName] = useState<string>('')
   const [userMessage, setUserMessage] = useState<string>('')
@@ -508,6 +519,26 @@ export const ScholarshipDetailsPage: React.FC<
           </Box>
         </Modal>
       )}
+      <Modal
+        open={isModalSignInOpen}
+        onClose={handleModalSignInClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'center',
+        }}>
+          <Box sx={{
+            width: '50vw',
+            height: 'auto',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '32px'
+          }}>
+            <SignIn updateSignUpShown={updateSignUpShown}/>
+          </Box>
+        </Box>
+      </Modal>
       <section id="details">
         <div className="container" style={{ padding: '80px 20px' }}>
           <aside id="aside">
@@ -535,6 +566,7 @@ export const ScholarshipDetailsPage: React.FC<
             All scholarship listings are currently test data and not actual
             listings. We’ll be updating them with real data soon, so stay tuned!
           </Alert> */}
+          
           {scholarshipData && (
             <div className="details-card">
               {(user.role_id === ADMIN_ROLE_ID ||
@@ -664,7 +696,9 @@ export const ScholarshipDetailsPage: React.FC<
                       user.role_id !== PROVIDER_ROLE_ID &&
                       user.role_id !== ADMIN_ROLE_ID)) ? (
                     <CTAButton
-                      handleClick={() => setIsModalOpen(true)}
+                      handleClick={() => isAuthenticated ? setIsModalOpen(true) : 
+                        handleModalSignInOpen() 
+                      }
                       label="Apply"
                       loading={false}
                       styles={{ fontSize: '24px' }}
