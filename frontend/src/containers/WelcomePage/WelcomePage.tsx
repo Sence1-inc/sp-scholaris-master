@@ -1,10 +1,17 @@
-import { Box, Card, CardMedia, Typography } from '@mui/material'
+import {
+  Box,
+  Card,
+  CardMedia,
+  CircularProgress,
+  Container,
+  Typography,
+} from '@mui/material'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import ArticleListSection from '../../components/ArticleListSection/ArticleListSection'
+import BannerButton from '../../components/Button/BannerButton'
 import WelcomeButton from '../../components/Button/WelcomeButton'
 import WelcomePageSearch from '../../components/Search/WelcomePageSearch'
-import BannerButton from '../../components/Button/BannerButton'
 import SchoolIcon from '../../public/images/school-solid.svg'
 import UserIcon from '../../public/images/users-solid.svg'
 import { Article } from '../../redux/types'
@@ -12,31 +19,29 @@ import { containerStyle } from '../../styles/globalStyles'
 import './WelcomePage.css'
 
 const WelcomePage: React.FC = () => {
-  const [articles, setArticles] = useState<Article[]>([])
+  const [articles, setArticles] = useState<Article[] | []>([])
+  const [isLoading, setIsLoading] = useState(true)
   const APP_URL = process.env.REACT_APP_CMS_API_URL
 
-  const getArticles = async () => {
-    try {
-      const response = await axios.get(
-        `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&sort[0]=publishedAt:desc&populate=*`
-      )
-
-      return response.data
-    } catch (error) {
-      console.error('Error fetching articles:', error)
-      return []
-    }
-  }
-
   useEffect(() => {
-    const fetchArticles = async () => {
-      const data = await getArticles()
-      setArticles(data.data)
+    const getArticles = async () => {
+      try {
+        const response = await axios.get(
+          `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&sort[0]=publishedAt:desc&populate=*`
+        )
+
+        setArticles(response.data.data)
+        setIsLoading(false)
+      } catch (error) {
+        console.error('Error fetching articles:', error)
+        setArticles([])
+      }
     }
-    fetchArticles()
+
+    getArticles()
     // eslint-disable-next-line
   }, [])
-
+  console.log(articles)
   return (
     <>
       <Box sx={containerStyle}>
@@ -178,14 +183,29 @@ const WelcomePage: React.FC = () => {
           </div>
         </div>
       </div>
-      <Box sx={{ ...containerStyle, padding: '50px 80px' }}>
-        <ArticleListSection
-          type="latest"
-          articles={articles}
-          header="Latest Articles"
-          subheader="Articles"
-        />
-      </Box>
+      {isLoading ? (
+        <Box
+          sx={{
+            paddingTop: '20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}
+        >
+          <CircularProgress />
+        </Box>
+      ) : (
+        <Box sx={{ ...containerStyle, padding: '50px 80px' }}>
+          <ArticleListSection
+            type="latest"
+            articles={articles.filter(
+              (article: Article) => !article.is_popular
+            )}
+            header="Latest Articles"
+            subheader="Articles"
+          />
+        </Box>
+      )}
     </>
   )
 }
