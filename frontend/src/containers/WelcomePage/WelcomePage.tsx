@@ -1,21 +1,45 @@
-import { Box, Card, CardMedia, Typography, Container } from '@mui/material'
-import React from 'react'
+import { Box, Card, CardMedia, Typography } from '@mui/material'
+import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import ArticleListSection from '../../components/ArticleListSection/ArticleListSection'
 import WelcomeButton from '../../components/Button/WelcomeButton'
 import WelcomePageSearch from '../../components/Search/WelcomePageSearch'
 import BannerButton from '../../components/Button/BannerButton'
 import SchoolIcon from '../../public/images/school-solid.svg'
 import UserIcon from '../../public/images/users-solid.svg'
-import './WelcomePage.css'
+import { Article } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
-import Jumbotron from '../../components/Jumbotron/Jumbotron'
+import './WelcomePage.css'
 
 const WelcomePage: React.FC = () => {
+  const [articles, setArticles] = useState<Article[]>([])
+  const APP_URL = process.env.REACT_APP_CMS_API_URL
+
+  const getArticles = async () => {
+    try {
+      const response = await axios.get(
+        `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&sort[0]=publishedAt:desc&populate=*`
+      )
+
+      return response.data
+    } catch (error) {
+      console.error('Error fetching articles:', error)
+      return []
+    }
+  }
+
+  useEffect(() => {
+    const fetchArticles = async () => {
+      const data = await getArticles()
+      setArticles(data.data)
+    }
+    fetchArticles()
+    // eslint-disable-next-line
+  }, [])
+
   return (
     <>
-
-      <Box
-        sx={containerStyle}
-      >
+      <Box sx={containerStyle}>
         <BannerButton />
         <Box
           sx={{
@@ -129,7 +153,6 @@ const WelcomePage: React.FC = () => {
                 icon={UserIcon}
                 desc="Aspiring Student"
                 url="/student"
-
                 id="img-btn-aspiring-student"
               />
               <WelcomeButton
@@ -137,7 +160,6 @@ const WelcomePage: React.FC = () => {
                 icon={SchoolIcon}
                 desc="Scholarship-Granting Organization"
                 url="/provider"
-
                 id="img-btn-provider"
               />
             </div>
@@ -154,40 +176,16 @@ const WelcomePage: React.FC = () => {
               </Typography>
             </div>
           </div>
-          <div>
-            <Container sx={{ ...containerStyle, gap: '60px' }}>
-              <Jumbotron />
-              <ArticleListSection
-                type="latest"
-                articles={articles.filter((article: Article) => !article.is_popular)}
-                header="Latest Articles"
-                subheader="Articles"
-              />
-              {articles.some((article: Article) => article.is_provider_specific) && (
-                <ArticleListSection
-                  type="provider"
-                  articles={articles.filter(
-                    (article: Article) => article.is_provider_specific
-                  )}
-                  header="Know More About Scholarship Providers"
-                  subheader="Articles"
-                />
-              )}
-              {articles.some((article: Article) => article.is_student_specific) && (
-                <ArticleListSection
-                  type="student"
-                  articles={articles.filter(
-                    (article: Article) => article.is_student_specific
-                  )}
-                  header="Know More About Scholarships"
-                  subheader="Articles"
-                />
-              )}
-            </Container>
-          </div>
         </div>
       </div>
-
+      <Box sx={{ ...containerStyle, padding: '50px 80px' }}>
+        <ArticleListSection
+          type="latest"
+          articles={articles}
+          header="Latest Articles"
+          subheader="Articles"
+        />
+      </Box>
     </>
   )
 }
