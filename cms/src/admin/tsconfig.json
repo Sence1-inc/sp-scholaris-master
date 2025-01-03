@@ -12,7 +12,7 @@
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "noEmit": true,
+    // "noEmit": true,
     "jsx": "react-jsx"
   },
   "include": ["../plugins/**/admin/src/**/*", "./"],

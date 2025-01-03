@@ -7,6 +7,7 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 interface FloatingElementProps {
   children: React.ReactNode
   anchorEl: HTMLButtonElement | null
+  isOpenedFromEmail: boolean
   handleClose: () => void
   isOpenedFromEmail: boolean
 }
@@ -14,6 +15,7 @@ interface FloatingElementProps {
 const FloatingElement: React.FC<FloatingElementProps> = ({
   children,
   anchorEl,
+  isOpenedFromEmail,
   handleClose,
   isOpenedFromEmail,
 }) => {
