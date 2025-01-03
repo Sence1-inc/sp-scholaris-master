@@ -516,18 +516,15 @@ export const ScholarshipDetailsPage: React.FC<
         </Modal>
       )}
       <Modal
-        open={isModalSignInOpen ? true : isModalSignInOpen}
+        open={isModalSignInOpen}
         onClose={handleModalSignInClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100%',
-        }}>
           <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            margin: '2.5vh auto',
             width: {xs: '95vw', sm: '60vw', lg: '40vw'},
             height: 'auto',
             maxHeight: '95vh',
@@ -537,7 +534,6 @@ export const ScholarshipDetailsPage: React.FC<
           }}>
             <SignIn />
           </Box>
-        </Box>
       </Modal>
       <section id="details">
         <div className="container" style={{ padding: '80px 20px' }}>
