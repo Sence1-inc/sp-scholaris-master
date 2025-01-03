@@ -17,7 +17,6 @@ import {
 } from '../../data/StudentContent'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch } from '../../redux/store'
-import { useLocation, useNavigate } from 'react-router-dom'
 
 const jump = keyframes({
   '0%': { transform: 'translateY(0)' },
@@ -28,10 +27,10 @@ const jump = keyframes({
 const HomePage: React.FC = () => {
   const dispatch = useAppDispatch()
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
-  const location = useLocation();
-  const navigate = useNavigate();
-  const searchParams = new URLSearchParams(location.search);
-  const query = searchParams.get('nl');
+  const location = useLocation()
+  const navigate = useNavigate()
+  const searchParams = new URLSearchParams(location.search)
+  const query = searchParams.get('nl')
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
