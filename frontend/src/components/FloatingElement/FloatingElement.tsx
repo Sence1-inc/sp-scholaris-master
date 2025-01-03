@@ -8,22 +8,25 @@ interface FloatingElementProps {
   children: React.ReactNode
   anchorEl: HTMLButtonElement | null
   handleClose: () => void
+  isOpenedFromEmail: boolean
 }
 
 const FloatingElement: React.FC<FloatingElementProps> = ({
   children,
   anchorEl,
   handleClose,
+  isOpenedFromEmail,
 }) => {
   const theme = useTheme()
   const isLandscape = useMediaQuery(theme.breakpoints.up('sm'))
   const isOpen = Boolean(anchorEl)
   const id = isOpen ? 'floating-paper' : undefined
+  const userClickedSubscribeFromEmail = Boolean(isOpenedFromEmail)
 
   return (
     <Popover
       id={id}
-      open={isOpen}
+      open={userClickedSubscribeFromEmail ? true : isOpen}
       anchorEl={anchorEl}
       onClose={handleClose}
       anchorOrigin={{
