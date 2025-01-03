@@ -89,9 +89,9 @@ export const ScholarshipDetailsPage: React.FC<
   const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
-  const [isModalSignInOpen, setModalSignInOpen] = useState<boolean>(false)
-  const handleModalSignInOpen = () => setModalSignInOpen(true);
-  const handleModalSignInClose = () => setModalSignInOpen(false);
+  const [isModalSignInOpen, setIsModalSignInOpen] = useState<boolean>(false)
+  const handleModalSignInOpen = () => setIsModalSignInOpen(true);
+  const handleModalSignInClose = () => { console.log("hello"); setIsModalSignInOpen(false)};
   const [isSendEmailModalOpen, setIsSendEmailModalOpen] =
     useState<boolean>(false)
   const isAuthenticated = useAppSelector(
@@ -227,7 +227,7 @@ export const ScholarshipDetailsPage: React.FC<
       getFeedbacks()
     }
     // eslint-disable-next-line
-  }, [user.role_id, scholarshipData, isModalSignInOpen])
+  }, [user.role_id, scholarshipData])
 
   useEffect(() => {
     setIsLoading(true)
@@ -516,7 +516,7 @@ export const ScholarshipDetailsPage: React.FC<
         </Modal>
       )}
       <Modal
-        open={isModalSignInOpen}
+        open={isModalSignInOpen ? true : isModalSignInOpen}
         onClose={handleModalSignInClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -528,7 +528,7 @@ export const ScholarshipDetailsPage: React.FC<
           height: '100%',
         }}>
           <Box sx={{
-            width: '40vw',
+            width: {xs: '95vw', sm: '60vw', lg: '40vw'},
             height: 'auto',
             maxHeight: '95vh',
             backgroundColor: '#FFFFFF',

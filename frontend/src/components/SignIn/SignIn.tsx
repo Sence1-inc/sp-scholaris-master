@@ -177,7 +177,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       <Typography
         variant="h2"
         sx={{
-          fontSize: '40px',
+          fontSize: {xs: '26px', md: '30px', lg: '40px'},
           fontWeight: '700',
           textAlign: 'center',
           color: 'var(--secondary-color)',
