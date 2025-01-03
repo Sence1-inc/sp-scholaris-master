@@ -12,7 +12,7 @@ import { PROVIDER_TYPE } from '../../constants/constants'
 import {
   FEATURES,
   PROVIDER_WELCOME_SUBHEADER,
-  PROVIDER_WELCOME_THIRD_LEVEL_HEADING
+  PROVIDER_WELCOME_THIRD_LEVEL_HEADING,
 } from '../../data/ProviderContent'
 
 const jump = keyframes({
@@ -33,17 +33,27 @@ const HomePage: React.FC = () => {
   }
 
   const handleClose = () => {
-    navigate(
-      `/provider`
-    )
-    setAnchorEl(null);
+    navigate(`/provider`)
+    setAnchorEl(null)
   }
 
   return (
     <>
-      <WelcomeSection subheader={PROVIDER_WELCOME_SUBHEADER} third_level_header={PROVIDER_WELCOME_THIRD_LEVEL_HEADING} usertype={PROVIDER_TYPE} />
-      <FeatureGuides features={FEATURES} contentType="providerFeatures" usertype={PROVIDER_TYPE}/>
-      <FloatingElement anchorEl={anchorEl} handleClose={handleClose} isOpenedFromEmail={Boolean(query)}>
+      <WelcomeSection
+        subheader={PROVIDER_WELCOME_SUBHEADER}
+        third_level_header={PROVIDER_WELCOME_THIRD_LEVEL_HEADING}
+        usertype={PROVIDER_TYPE}
+      />
+      <FeatureGuides
+        features={FEATURES}
+        contentType="providerFeatures"
+        usertype={PROVIDER_TYPE}
+      />
+      <FloatingElement
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+        isOpenedFromEmail={Boolean(query)}
+      >
         <Newsletter
           user_type={PROVIDER_TYPE}
           title_content={

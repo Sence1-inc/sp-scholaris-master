@@ -9,6 +9,7 @@ interface FloatingElementProps {
   anchorEl: HTMLButtonElement | null
   isOpenedFromEmail: boolean
   handleClose: () => void
+  isOpenedFromEmail: boolean
 }
 
 const FloatingElement: React.FC<FloatingElementProps> = ({
@@ -16,6 +17,7 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
   anchorEl,
   isOpenedFromEmail,
   handleClose,
+  isOpenedFromEmail,
 }) => {
   const theme = useTheme()
   const isLandscape = useMediaQuery(theme.breakpoints.up('sm'))

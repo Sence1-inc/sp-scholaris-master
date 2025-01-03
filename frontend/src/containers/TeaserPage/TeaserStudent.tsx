@@ -17,6 +17,7 @@ import {
 } from '../../data/StudentContent'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch } from '../../redux/store'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const jump = keyframes({
   '0%': { transform: 'translateY(0)' },
@@ -37,10 +38,8 @@ const HomePage: React.FC = () => {
   }
 
   const handleClose = () => {
-    navigate(
-      `/student`
-    )
-    setAnchorEl(null);
+    navigate(`/student`)
+    setAnchorEl(null)
   }
 
   useEffect(() => {
@@ -56,7 +55,11 @@ const HomePage: React.FC = () => {
       />
       <FeatureGuides features={FEATURES} contentType="studentFeatures" />
       <Search isSection />
-      <FloatingElement anchorEl={anchorEl} handleClose={handleClose} isOpenedFromEmail={Boolean(query)}> 
+      <FloatingElement
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+        isOpenedFromEmail={Boolean(query)}
+      >
         <Newsletter
           user_type={STUDENT_TYPE}
           title_content={
