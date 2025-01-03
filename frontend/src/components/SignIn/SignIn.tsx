@@ -13,9 +13,7 @@ import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedR
 import BannerButton from '../../components/Button/BannerButton'
 import SignUp from '../../components/SignUp/SignUp'
 
-interface SignInPageProps {
-    updateSignUpShown: Boolean
-}
+interface SignInPageProps {}
 
 type Errors = {
   email_address: string
@@ -38,14 +36,17 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     email_address: '',
     password: '',
   })
-  const [updateSignUpShown, setupdateSignUpShown] = useState<updateSignUpShown>
   const userState: User = useAppSelector((state) => state.persistedReducer.user)
   const [errors, setErrors] = useState<Errors>({
     email_address: '',
     password: '',
   })
   const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false)
-  const [isSignUpClicked, setSignUpClicked] = useState<boolean>(false)
+  const [isSignUpClicked, setIsSignUpClicked] = useState<boolean>(false)
+  const handleSignUpShow = () => {
+    location.pathname == '/sign-in' ?
+    nav(('/sign-up')) : setIsSignUpClicked(true)  
+  }
   const nav = useNavigate();
   const location = useLocation();
 
@@ -70,11 +71,8 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           navigate('/')
       }
     }
-    if (isSignUpClicked) {
-
-    }
     // eslint-disable-next-line
-  }, [isAuthenticated, ])
+  }, [isAuthenticated])
 
   function handleEmail(inputValue: string) {
     setUserCredentials((prevUserCredentials) => ({
@@ -158,6 +156,10 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   }
 
   return (
+    <>
+    {
+    isSignUpClicked ? 
+    <SignUp/>:
     <Container
       maxWidth="md"
       sx={{
@@ -238,13 +240,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         <Button
           id="to-sign-up"
           disableRipple
-        //   component={RouterLink}
-        //   to="/sign-up"
-          onClick={() => {
-            location.pathname == '/sign-in' ?
-            nav(('/sign-in')) :
-
-          }}
+          onClick={handleSignUpShow}
           variant="text"
           sx={{
             cursor: 'pointer',
@@ -281,7 +277,10 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         />
       </Box>
     </Container>
+    }
+    </>
   )
 }
 
 export default SignInPage
+

@@ -92,10 +92,6 @@ export const ScholarshipDetailsPage: React.FC<
   const [isModalSignInOpen, setModalSignInOpen] = useState<boolean>(false)
   const handleModalSignInOpen = () => setModalSignInOpen(true);
   const handleModalSignInClose = () => setModalSignInOpen(false);
-  const [isSignUpShown, setSignUpShown] = useState<boolean>(false)
-  const updateSignUpShown = () => {
-    setSignUpShown(true)
-  }
   const [isSendEmailModalOpen, setIsSendEmailModalOpen] =
     useState<boolean>(false)
   const isAuthenticated = useAppSelector(
@@ -231,7 +227,7 @@ export const ScholarshipDetailsPage: React.FC<
       getFeedbacks()
     }
     // eslint-disable-next-line
-  }, [user.role_id, scholarshipData])
+  }, [user.role_id, scholarshipData, isModalSignInOpen])
 
   useEffect(() => {
     setIsLoading(true)
@@ -528,14 +524,18 @@ export const ScholarshipDetailsPage: React.FC<
         <Box sx={{
           display: 'flex',
           justifyContent: 'center',
+          alignItems: 'center',
+          height: '100%',
         }}>
           <Box sx={{
-            width: '50vw',
+            width: '40vw',
             height: 'auto',
+            maxHeight: '95vh',
             backgroundColor: '#FFFFFF',
-            borderRadius: '32px'
+            borderRadius: '32px',
+            overflowY: 'scroll'
           }}>
-            <SignIn updateSignUpShown={updateSignUpShown}/>
+            <SignIn />
           </Box>
         </Box>
       </Modal>
