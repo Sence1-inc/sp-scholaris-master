@@ -230,7 +230,7 @@ const WelcomePageSearch: React.FC = () => {
             }}
           >
             <TextField
-              id="outlined-basic"
+              id="input-search-from-welcome-page"
               variant="outlined"
               onChange={(e) => handleChange(e.target.value)}
               value={name}

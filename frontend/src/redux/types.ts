@@ -11,6 +11,8 @@ export type Scholarship = {
     provider_name: string
   }
   status: string
+  content_status: string
+  is_application_link_active: boolean
 }
 
 export type BenefitCategory = {
@@ -20,6 +22,7 @@ export type BenefitCategory = {
 
 export type ScholarshipData = {
   id: string
+  content_status: string
   scholarship_name: string
   listing_id: number
   description: string
@@ -29,6 +32,7 @@ export type ScholarshipData = {
   application_email: string
   school_year: string
   status: string
+  is_application_link_active: boolean
   scholarship_type: {
     id: number
     scholarship_type_name: string
@@ -124,6 +128,7 @@ export type ScholarshipApplication = {
   user_id: number | null
   status: number
   notes: string
+  batch: string
   scholarship: Scholarship
   user?: User
 }
@@ -244,6 +249,32 @@ export type Article = {
   createdAt: string
   updatedAt: string
   publishedAt: string
+  tags: Tag[]
+  project: Project
+  is_popular: boolean
+  is_provider_specific: boolean
+  is_student_specific: boolean
+}
+
+export type Project = {
+  createdAt: string
+  documentId: string
+  id: number
+  name: string
+  publishedAt: string
+  slug: string
+  updatedAt: string
+}
+
+export type Tag = {
+  createdAt: string
+  description: string
+  documentId: string
+  id: number
+  name: string
+  publishedAt: string
+  slug: string
+  updatedAt: string
 }
 
 export type Cover = {
@@ -287,22 +318,12 @@ type Formats = {
   thumbnail?: ImageFormat
 }
 
-// export type Description = {
-//   type: string
-//   children: {
-//     type: string
-//     text: string
-//   }[]
-// }
-
-// export type Article = {
-//   id: number
-//   documentId: string
-//   excerpt: string
-//   Name: string
-//   Description: Description[]
-//   createdAt: string
-//   updatedAt: string
-//   publishedAt: string
-//   locale: string
-// }
+export type ScholarshipFeedback = {
+  id: number
+  scholarship_id: number
+  scholarship_provider: ScholarshipProvider
+  feedback: string
+  notes: string
+  created_at: string
+  updated_at: string
+}

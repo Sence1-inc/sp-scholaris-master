@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
+import { PROVIDER_ROLE_ID } from '../../constants/constants'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -43,7 +44,7 @@ const ProviderPrivate: React.FC<ProviderPrivateProps> = ({
     return null
   }
 
-  return authenticated && user.role.id === 4 ? (
+  return authenticated && user.role.id === PROVIDER_ROLE_ID ? (
     <Component />
   ) : (
     <Navigate to="/sign-in" />

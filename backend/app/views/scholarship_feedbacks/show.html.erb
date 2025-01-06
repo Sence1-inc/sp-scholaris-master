@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @scholarship_feedback %>
+
+<div>
+  <%= link_to "Edit this scholarship feedback", edit_scholarship_feedback_path(@scholarship_feedback) %> |
+  <%= link_to "Back to scholarship feedbacks", scholarship_feedbacks_path %>
+
+  <%= button_to "Destroy this scholarship feedback", @scholarship_feedback, method: :delete %>
+</div>

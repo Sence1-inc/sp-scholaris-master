@@ -38,13 +38,27 @@ class ScholarshipService
     end
   end
 
-  def update_scholarship(id)
+  def update_scholarship(id, user)
     scholarship = Scholarship.find(id)
 
     update_associated_text(id, :requirements, Requirement)
     update_associated_text(id, :benefits, Benefit)
     update_associated_categories(id, :benefit_categories, BenefitCategory)
     update_associated_text(id, :eligibilities, Eligibility)
+
+    if scholarship.content_status.present? && scholarship.content_status == Scholarship::CONTENT_STATUSES[:for_modification] 
+      scholarship.content_status = Scholarship::CONTENT_STATUSES[:revised]
+      editting_user = user.role_id == User::ROLES[:provider] ? scholarship.scholarship_provider.provider_name : "Scholaris Admin"
+      scholarship_feedback = ScholarshipFeedback.new(scholarship_provider_id: scholarship.scholarship_provider.id, feedback: "Details has been revised by #{editting_user}", scholarship_id: scholarship.id)
+      scholarship_feedback.save
+    end
+
+    if scholarship.content_status.present? && scholarship.content_status == Scholarship::CONTENT_STATUSES[:suspend]
+      scholarship.content_status = Scholarship::CONTENT_STATUSES[:pending_approval]
+      feedback =  user.role_id == User::ROLES[:provider] ? "#{scholarship.scholarship_provider.provider_name} has editted the details and is requesting for approval" : "Scholaris Admin approved the changes"
+      scholarship_feedback = ScholarshipFeedback.new(scholarship_provider_id: scholarship.scholarship_provider.id, feedback: feedback, scholarship_id: scholarship.id)
+      scholarship_feedback.save
+    end
 
     if scholarship.update(@scholarship_params)
       { message: 'Scholarship details successfully updated.', scholarship: scholarship }

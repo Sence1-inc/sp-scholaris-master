@@ -16,6 +16,12 @@ class User < ApplicationRecord
 
   default_scope -> { where(deleted_at: nil) }
 
+  ROLES = {
+    admin: 2,
+    student: 3,
+    provider: 4
+  }.freeze
+
   def as_json(options = {})
     super(options.merge(include: [:role, :student_profile, :scholarship_provider], except: [:created_at, :updated_at, :deleted_at]))
   end

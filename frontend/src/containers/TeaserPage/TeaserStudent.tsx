@@ -2,6 +2,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import { Box } from '@mui/material'
 import { keyframes } from '@mui/system'
 import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import FabButton from '../../components/FabButton/FabButton'
 import FeatureGuides from '../../components/Feature/FeatureGuides'
 import FloatingElement from '../../components/FloatingElement/FloatingElement'
@@ -26,12 +27,17 @@ const jump = keyframes({
 const HomePage: React.FC = () => {
   const dispatch = useAppDispatch()
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+  const searchParams = new URLSearchParams(location.search)
+  const query = searchParams.get('nl')
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
   const handleClose = () => {
+    navigate(`/student`)
     setAnchorEl(null)
   }
 
@@ -48,7 +54,11 @@ const HomePage: React.FC = () => {
       />
       <FeatureGuides features={FEATURES} contentType="studentFeatures" />
       <Search isSection />
-      <FloatingElement anchorEl={anchorEl} handleClose={handleClose}>
+      <FloatingElement
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+        isOpenedFromEmail={Boolean(query)}
+      >
         <Newsletter
           user_type={STUDENT_TYPE}
           title_content={

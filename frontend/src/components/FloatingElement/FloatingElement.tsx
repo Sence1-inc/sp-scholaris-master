@@ -7,23 +7,26 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 interface FloatingElementProps {
   children: React.ReactNode
   anchorEl: HTMLButtonElement | null
+  isOpenedFromEmail: boolean
   handleClose: () => void
 }
 
 const FloatingElement: React.FC<FloatingElementProps> = ({
   children,
   anchorEl,
+  isOpenedFromEmail,
   handleClose,
 }) => {
   const theme = useTheme()
   const isLandscape = useMediaQuery(theme.breakpoints.up('sm'))
   const isOpen = Boolean(anchorEl)
   const id = isOpen ? 'floating-paper' : undefined
+  const userClickedSubscribeFromEmail = Boolean(isOpenedFromEmail)
 
   return (
     <Popover
       id={id}
-      open={isOpen}
+      open={userClickedSubscribeFromEmail ? true : isOpen}
       anchorEl={anchorEl}
       onClose={handleClose}
       anchorOrigin={{
@@ -37,6 +40,7 @@ const FloatingElement: React.FC<FloatingElementProps> = ({
       slotProps={{
         paper: { style: { borderRadius: '16px' } },
       }}
+      disableScrollLock={true}
     >
       <Paper
         sx={{

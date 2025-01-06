@@ -1,0 +1,234 @@
+import { AddCircle, RemoveCircle, Visibility } from '@mui/icons-material'
+import { Box, IconButton, Tooltip } from '@mui/material'
+import { DataGrid } from '@mui/x-data-grid'
+import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
+import { CONTENT_STATUSES } from '../../constants/constants'
+import { useSnackbar } from '../../context/SnackBarContext'
+import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
+import { useAppDispatch } from '../../redux/store'
+import { Scholarship } from '../../redux/types'
+
+interface GridRowDef {
+  id: number
+  scholarshipName: string
+  provider: string
+  content_status: string
+  status: string
+}
+
+const ScholarshipManagement = () => {
+  const navigate = useNavigate()
+  const { showMessage } = useSnackbar()
+  const dispatch = useAppDispatch()
+  const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [page, setPage] = useState<number>(0)
+  const [pageSize, setPageSize] = useState<number>(10)
+  const [rowCount, setRowCount] = useState<number>(0)
+
+  useEffect(() => {
+    if (rowCount === 0) {
+      setIsLoading(false)
+    }
+  }, [rowCount])
+
+  const handleSuspend = async (selectedRow: GridRowDef, status: string) => {
+    setIsLoading(true)
+    try {
+      const response = await axiosInstance.put(
+        `/api/v1/scholarships/${selectedRow.id}`,
+        {
+          content_status: status,
+        },
+        {
+          timeout: 100000,
+          withCredentials: true,
+        }
+      )
+      setIsLoading(false)
+      if (response.data) {
+        showMessage(`Successfully ${status}ed`, 'success')
+
+        const newRowData = rowData.map((row) => {
+          if (row.id === response.data.scholarship.id) {
+            return {
+              id: response.data.scholarship.id,
+              listing_id: response.data.scholarship.listing_id,
+              scholarshipName: response.data.scholarship.scholarship_name,
+              provider:
+                response.data.scholarship.scholarship_provider.provider_name,
+              content_status: response.data.scholarship.content_status,
+              status: response.data.scholarship.status,
+            }
+          }
+
+          return row
+        })
+
+        setRowData(newRowData)
+      }
+    } catch (error) {
+      setIsLoading(false)
+      if (error) {
+        showMessage('Error deleting scholarship', 'error')
+      }
+    }
+  }
+
+  useEffect(() => {
+    dispatch(initializeScholarshipData({}))
+    // eslint-disable-next-line
+  }, [])
+
+  const formatScholarships = (data: Scholarship[]) => {
+    const row = data?.map((scholarship: Scholarship) => {
+      return {
+        id: scholarship.id,
+        listing_id: scholarship.listing_id,
+        scholarshipName: scholarship.scholarship_name,
+        provider: scholarship.scholarship_provider.provider_name,
+        content_status: scholarship.content_status,
+        status: scholarship.status,
+      }
+    })
+
+    setRowData(row)
+  }
+
+  useEffect(() => {
+    const getScholarships = async () => {
+      try {
+        setIsLoading(true)
+        const response = await axiosInstance.get(
+          `api/v1/scholarships?page=${page + 1}&limit=${pageSize}`,
+          {
+            timeout: 100000,
+            withCredentials: true,
+          }
+        )
+
+        if (response.status === 200) {
+          setIsLoading(false)
+          setRowCount(response.data.total_count)
+          formatScholarships(response.data.scholarships)
+        }
+      } catch (error: any) {
+        setIsLoading(false)
+        if (error) {
+          setRowData([])
+          if (error.response && error.response.status === 403) {
+            navigate('/')
+          }
+        }
+      }
+    }
+
+    getScholarships()
+    // eslint-disable-next-line
+  }, [page, pageSize])
+
+  const renderActions = (params: any) => {
+    return (
+      <Box>
+        <Tooltip title="View">
+          <IconButton
+            onClick={() => navigate(`/scholarships/${params.row.id}`)}
+            sx={{ color: '#06A5FF' }}
+          >
+            <Visibility />
+          </IconButton>
+        </Tooltip>
+        {params.row.content_status !== CONTENT_STATUSES['suspend'] &&
+          params.row.content_status !==
+            CONTENT_STATUSES['pending_approval'] && (
+            <Tooltip title="Suspend">
+              <IconButton
+                onClick={() => {
+                  showMessage(
+                    'Are you sure you want to suspend?',
+                    'warning',
+                    8000,
+                    () => handleSuspend(params.row, CONTENT_STATUSES['suspend'])
+                  )
+                }}
+                sx={{ color: '#F50F0F' }}
+              >
+                <RemoveCircle />
+              </IconButton>
+            </Tooltip>
+          )}
+        {(params.row.content_status === CONTENT_STATUSES['suspend'] ||
+          params.row.content_status ===
+            CONTENT_STATUSES['pending_approval']) && (
+          <Tooltip title="Reactivate">
+            <IconButton
+              onClick={() => {
+                showMessage(
+                  'Are you sure you want to reactivate?',
+                  'warning',
+                  8000,
+                  () => handleSuspend(params.row, CONTENT_STATUSES['revised'])
+                )
+              }}
+              color="success"
+            >
+              <AddCircle />
+            </IconButton>
+          </Tooltip>
+        )}
+      </Box>
+    )
+  }
+
+  const columns = [
+    { field: 'listing_id', headerName: 'Listing ID', flex: 0.5 },
+    {
+      field: 'scholarshipName',
+      headerName: 'Scholarship Name',
+      flex: 1,
+    },
+    { field: 'provider', headerName: 'Provider Name', type: 'string', flex: 1 },
+    {
+      field: 'content_status',
+      headerName: 'Content Status',
+      type: 'string',
+      flex: 0.5,
+    },
+    { field: 'status', headerName: 'Status', flex: 0.5 },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      flex: 1,
+      renderCell: (params: any) => renderActions(params),
+    },
+  ]
+
+  const handlePageChange = (params: { page: number; pageSize: number }) => {
+    setPage(params.page)
+    setPageSize(params.pageSize)
+  }
+
+  return (
+    <DataGrid
+      localeText={{ noRowsLabel: 'No saved data' }}
+      rows={rowData}
+      rowCount={rowCount}
+      columns={columns}
+      onPaginationModelChange={handlePageChange}
+      initialState={{
+        pagination: {
+          paginationModel: { page: page, pageSize: 10 },
+        },
+      }}
+      pageSizeOptions={[5, 10]}
+      pagination
+      paginationMode="server"
+      loading={isLoading}
+    />
+  )
+}
+
+export default ScholarshipManagement

@@ -1,4 +1,5 @@
 class ScholarshipApplication < ApplicationRecord
+  before_validation :set_default_batch, on: :create
   belongs_to :scholarship
   belongs_to :user, optional: true
 
@@ -38,5 +39,13 @@ class ScholarshipApplication < ApplicationRecord
 
   def as_json(options = {})
     super(options.merge(include: [:scholarship, :user], except: [:deleted_at]))
+  end
+
+  def set_default_batch
+    self.batch ||= generate_batch
+  end
+
+  def generate_batch
+    self.scholarship.due_date
   end
 end

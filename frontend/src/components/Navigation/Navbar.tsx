@@ -7,18 +7,17 @@ import {
   IconButton,
   Toolbar,
 } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import Logo from '../../public/images/logo.png'
 import { useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import { Authenticated, Unauthenticated } from './NavbarComponents'
+import profileTheme from '../../styles/profileTheme'
 
 interface NavbarProps {
   window?: () => Window
 }
-
-const drawerWidth = '90vw'
 
 const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const location = useLocation()
@@ -29,13 +28,17 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   )
   const [mobileOpen, setMobileOpen] = React.useState(false)
 
+  useEffect(() => {
+    if (mobileOpen) {
+      document.body.style.paddingRight = '0px'
+    }
+  }, [mobileOpen])
+
   const renderItems = () => {
     return !isAuthenticated ? (
-      <Unauthenticated
-        userType={pathname.includes('/student') ? 'student' : 'provider'}
-      />
+      <Unauthenticated userType={pathname.split('/')[1]} />
     ) : (
-      <Authenticated user={user} pathname={pathname} />
+      <Authenticated user={user} />
     )
   }
 
@@ -46,11 +49,16 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const drawer = (
     <Box
       onClick={handleDrawerToggle}
-      sx={{ textAlign: 'center', color: 'common.white' }}
+      sx={profileTheme.navigation.mainNavDrawerContainer}
     >
-      <Box sx={{ padding: '40px 0' }}>
+      <Box sx={profileTheme.navigation.mainNavLogoContainer}>
         <Link to="/">
-          <img src={Logo} alt="Scholaris Logo" />
+          <Box
+            component="img"
+            src={Logo}
+            alt="Scholaris Logo"
+            sx={profileTheme.navigation.mainNavLogo}
+          />
         </Link>
       </Box>
       <Divider />
@@ -62,61 +70,48 @@ const Navbar: React.FC<NavbarProps> = ({ window }) => {
     window !== undefined ? () => window().document.body : undefined
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <AppBar component="nav" sx={{ position: 'relative', padding: '8px' }}>
-        <Toolbar
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-          }}
-          sx={{
-            padding: { xs: '0 10px', sm: '0 20px' },
-          }}
-        >
-          <Box>
-            <Link to="/">
-              <img src={Logo} alt="Scholaris Logo" />
-            </Link>
-          </Box>
-          <Box
-            sx={{ display: { md: 'flex', xs: 'none' }, flexDirection: 'row' }}
+    <>
+      <Box sx={{ display: 'flex', position: 'sticky', top: 0, zIndex: 999 }}>
+        <AppBar component="nav" sx={profileTheme.navigation.mainNav}>
+          <Toolbar sx={profileTheme.navigation.mainNavContainer}>
+            <Box>
+              <Link to="/">
+                <Box
+                  component="img"
+                  src={Logo}
+                  alt="Scholaris Logo"
+                  sx={profileTheme.navigation.mainNavLogo}
+                />
+              </Link>
+            </Box>
+            <Box sx={profileTheme.navigation.mainNavList}>{renderItems()}</Box>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ display: { md: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
+        <nav>
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true,
+            }}
+            sx={profileTheme.navigation.mainNavDrawer}
           >
-            {renderItems()}
-          </Box>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ display: { md: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-        </Toolbar>
-      </AppBar>
-      <nav>
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true,
-          }}
-          sx={{
-            display: { xs: 'block', md: 'none' },
-            '& .MuiDrawer-paper': {
-              boxSizing: 'border-box',
-              width: drawerWidth,
-              backgroundColor: 'primary.main',
-              padding: '0 20px',
-            },
-          }}
-        >
-          {drawer}
-        </Drawer>
-      </nav>
-    </Box>
+            {drawer}
+          </Drawer>
+        </nav>
+      </Box>
+    </>
   )
 }
 

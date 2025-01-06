@@ -27,6 +27,7 @@ interface GridRowDef {
   student_name: string
   application_date: Dayjs | Date | string | null
   student_email: string
+  batch: string
   status: string
   updated_at: Dayjs | Date | string | null
   notes: string
@@ -86,7 +87,7 @@ const ApplicationsManagementPage = () => {
       headerName: 'Application Date',
       type: 'string',
       editable: false,
-      flex: 1,
+      flex: 0.5,
     },
     {
       field: 'student_email',
@@ -94,6 +95,13 @@ const ApplicationsManagementPage = () => {
       type: 'string',
       editable: false,
       flex: 0.5,
+    },
+    {
+      field: 'batch',
+      headerName: 'Batch',
+      type: 'string',
+      editable: false,
+      flex: 1,
     },
     {
       field: 'status',
@@ -291,6 +299,7 @@ const ApplicationsManagementPage = () => {
                 scholarship_application.created_at
               ).toDateString(),
               student_email: scholarship_application.student_email,
+              batch: scholarship_application.batch,
               status: scholarship_application.status,
               updated_at: new Date(
                 scholarship_application.updated_at

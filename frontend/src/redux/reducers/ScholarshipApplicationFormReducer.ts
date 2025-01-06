@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface ScholarshipApplicationForm {
+export type ScholarshipApplicationForm = {
   provider_id: number | null
   student_email: string
   student_name: string

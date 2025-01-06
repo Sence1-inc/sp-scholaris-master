@@ -78,20 +78,26 @@ module Api
 
         if user.id == ENV['PARENT_ID'].to_i
           all_scholarships = Scholarship.none
+          scholarships = user.scholarship_provider.scholarships
+
+          all_scholarships = all_scholarships.or(scholarships) if scholarships.exists?
 
           user.children.each do |child|
             if child.scholarship_provider.present?
               scholarships = child.scholarship_provider.scholarships
-              all_scholarships = all_scholarships.or(scholarships)
+
+              all_scholarships = all_scholarships.or(scholarships) if scholarships.exists?
             end
           end
 
-          @scholarships = all_scholarships
+          @scholarships = all_scholarships.any? ? all_scholarships : Scholarship.none
         else
           @scholarships = Scholarship.where(scholarship_provider_id: @scholarship_provider.id)
         end
 
         if @scholarships.exists?
+          limit = params[:limit].to_i > 0 ? params[:limit].to_i : @scholarships.count
+
           @scholarships = @scholarships.includes(
             :eligibilities, 
             :requirements, 
@@ -101,14 +107,14 @@ module Api
             :courses, 
             :schools, 
             scholarship_provider: [:scholarship_provider_profile]
-          ).page(params[:page] || 1).per(params[:limit] || 10)
+          ).page(params[:page] || 1).per(limit)
 
           render json: {
             scholarships: @scholarships.as_json,
             total_count: @scholarships.total_count,
             total_pages: @scholarships.total_pages,
             current_page: @scholarships.current_page,
-            limit: params[:limit] || 10
+            limit: limit
           }, status: :ok
         else
           render json: {message: "No scholarships found.", scholarships: [], total_count: 0}, status: :ok
@@ -123,7 +129,7 @@ module Api
           return
         end
 
-        parent = user.parent_id != nil ? user.parent : user
+        parent = user.parent_id != nil && user.parent_id != ENV['PARENT_ID'].to_i ? user.parent : user
         scholarship_applications =  parent.scholarship_provider.scholarship_applications.includes(:scholarship).page(params[:page] || 1).per(params[:limit] || 10)
         if scholarship_applications.exists?
           render json: {
@@ -146,7 +152,7 @@ module Api
           return
         end
 
-        parent = user.parent_id != nil ? user.parent : user
+        parent = user.parent_id != nil && user.parent_id != ENV['PARENT_ID'].to_i ? user.parent : user
         scholarship_application = parent.scholarship_provider.scholarship_applications.find(params[:scholarship_application_id])
         if scholarship_application.update(notes: params[:notes], status: params[:status])
           render json: {
