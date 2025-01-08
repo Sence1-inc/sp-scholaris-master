@@ -191,6 +191,7 @@ const ScholarshipEditorPage = () => {
       setScholarshipType(
         scholarshipData.scholarship_type?.scholarship_type_name
       )
+      setIsApplicationLinkActive(scholarshipData.is_application_link_active)
     }
     // eslint-disable-next-line
   }, [scholarshipData])
@@ -713,10 +714,12 @@ const ScholarshipEditorPage = () => {
               <FormControlLabel
                 control={
                   <Switch
-                    defaultChecked={scholarshipData.is_application_link_active}
-                    onClick={() =>
-                      setIsApplicationLinkActive(!isApplicationLinkActive)
-                    }
+                    defaultChecked={isApplicationLinkActive}
+                    checked={isApplicationLinkActive}
+                    onClick={() => {
+                      console.log(isApplicationLinkActive)
+                      setIsApplicationLinkActive((prevState) => !prevState)
+                    }}
                   />
                 }
                 label="Activate?"
