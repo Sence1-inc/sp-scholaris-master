@@ -61,11 +61,15 @@ module Api
       def create
         scholarship_service = ScholarshipService.new(scholarship_params)
         result = scholarship_service.create_scholarship
-        notifier = Slack::Notifier.new ENV["SLACK_WEBHOOK_URL"],
+
+        if result[:status] == :created
+          notifier = Slack::Notifier.new ENV["SLACK_WEBHOOK_URL"],
                     channel: "#pj_scholarship-bot",
                     username: "notifier"
-        notifier.ping "Hello Scholaris admins! A new scholarship (#{params[:scholarship_name]}) has been listed"
-        render json: result, status: result.key?(:errors) ? :unprocessable_entity : :created
+          notifier.ping "Hello Scholaris admins! A new scholarship (#{params[:scholarship_name]}) has been listed"
+        end
+        
+        render json: result, status: result[:status]
       end
 
       def upload
