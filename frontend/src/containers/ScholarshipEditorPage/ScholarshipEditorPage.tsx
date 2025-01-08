@@ -26,7 +26,7 @@ import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { BenefitCategory, ScholarshipData } from '../../redux/types'
+import { BenefitCategory, ScholarshipData, User } from '../../redux/types'
 
 export interface ScholarshipType {
   id: number
@@ -57,6 +57,7 @@ const ScholarshipEditorPage = () => {
   const dispatch = useAppDispatch()
   const data = useAppSelector((state) => state.persistedReducer.scholarshipData)
   const { scholarshipData } = data as { scholarshipData: ScholarshipData }
+  const user: User = useAppSelector((state) => state.persistedReducer.user)
   const [scholarshipName, setScholarshipName] = useState<string>(
     scholarshipData?.scholarship_name ?? ''
   )
@@ -149,8 +150,8 @@ const ScholarshipEditorPage = () => {
   }
 
   useEffect(() => {
-    if (scholarshipData.scholarship_provider) {
-      setScholarshipProviderId(scholarshipData.scholarship_provider.id)
+    if (user.scholarship_provider) {
+      setScholarshipProviderId(user.scholarship_provider.id)
     }
 
     // eslint-disable-next-line

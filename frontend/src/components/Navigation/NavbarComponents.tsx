@@ -305,7 +305,7 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
           to={`/sign-up`}
           sx={profileTheme.navigation.mainNavListItemLink}
         >
-          <Box component="span" sx={profileTheme.navigation.mainNavListSignUpSpan}>Sign up is free</Box>
+          <Box component="span" sx={profileTheme.navigation.mainNavListSignUpSpan}>It's free</Box>
           Sign Up
         </Typography>
       </ListItem>
