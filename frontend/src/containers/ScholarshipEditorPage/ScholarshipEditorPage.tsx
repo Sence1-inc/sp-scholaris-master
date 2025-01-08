@@ -717,7 +717,6 @@ const ScholarshipEditorPage = () => {
                     defaultChecked={isApplicationLinkActive}
                     checked={isApplicationLinkActive}
                     onClick={() => {
-                      console.log(isApplicationLinkActive)
                       setIsApplicationLinkActive((prevState) => !prevState)
                     }}
                   />
