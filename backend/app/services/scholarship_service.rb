@@ -32,9 +32,9 @@ class ScholarshipService
       @requirements.save
       @eligibilities.save
       @benefits.save
-      { message: 'Scholarship was successfully created.' }
+      { message: 'Scholarship was successfully created.', status: :created }
     else
-      { errors: @scholarship.errors.full_messages }
+      { errors: @scholarship.errors.full_messages, status: :unprocessable_entity }
     end
   end
 
@@ -97,7 +97,7 @@ class ScholarshipService
       category_attributes = category.except(:id)
 
       category_record = klass.find_or_initialize_by(id: category_id)
-      category_record.assign_attributes(category_attributes.permit(:category_name)) # Permit only allowed attributes
+      category_record.assign_attributes(category_attributes.permit(:category_name))
 
       scholarship.add_association_record(association, category_record)
     end

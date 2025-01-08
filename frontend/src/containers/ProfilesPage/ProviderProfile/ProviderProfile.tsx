@@ -39,16 +39,16 @@ const ProviderProfile: React.FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { getSubscriber, errorMessage: err } = useGetSubscriber()
-  const whitelistProfileRoutes = ['view-profile', 'account-settings'];
+  const whitelistProfileRoutes = ['view-profile', 'account-settings']
 
-  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'));
+  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'))
 
   if (lastRoute && !whitelistProfileRoutes.includes(lastRoute)) {
-    return <Navigate to="/404" replace />;
+    return <Navigate to="/404" replace />
   }
 
-  if (id && (!Number.isInteger(parseInt(id)) || user.id != parseInt(id))) {
-    return <Navigate to="/404" replace />;
+  if (id && (!Number.isInteger(parseInt(id)) || user.id !== parseInt(id))) {
+    return <Navigate to="/404" replace />
   }
 
   const handleDeleteCookie = async () => {
