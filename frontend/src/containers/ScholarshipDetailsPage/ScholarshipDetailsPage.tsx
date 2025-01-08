@@ -1,7 +1,8 @@
-import { CloseRounded, CloudUpload, Save } from '@mui/icons-material'
+import { CloudUpload, Save } from '@mui/icons-material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
 import {
   Alert,
+  Backdrop,
   Box,
   Button,
   CircularProgress,
@@ -19,6 +20,7 @@ import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
 import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
+import TextLoading from '../../components/Loading/TextLoading'
 import {
   ADMIN_ROLE_ID,
   CONTENT_STATUSES,
@@ -261,16 +263,12 @@ export const ScholarshipDetailsPage: React.FC<
     setScholarshipData(result.scholarshipData)
     if (
       Object.keys(result.scholarshipData).length > 0 &&
-      result.scholarshipData.scholarship_name
-    ) {
-      setIsLoading(false)
-    } else if (
-      Object.keys(result.scholarshipData).length === 0 &&
       !result.scholarshipData.scholarship_name
     ) {
       setIsLoading(true)
+    } else {
+      setIsLoading(false)
     }
-
     // eslint-disable-next-line
   }, [result.scholarshipData])
 
@@ -458,6 +456,9 @@ export const ScholarshipDetailsPage: React.FC<
 
   return (
     <>
+      <Backdrop sx={{ color: '#fff', zIndex: 10 }} open={isLoading}>
+        <CircularProgress color="inherit" />
+      </Backdrop>
       {user.role_id === ADMIN_ROLE_ID && (
         <Modal
           open={isSendEmailModalOpen}
@@ -545,39 +546,26 @@ export const ScholarshipDetailsPage: React.FC<
                     {scholarshipData.content_status}
                   </Alert>
                 )}
-              {formattedDate(scholarshipData.due_date).isBefore(dayjs()) &&
-                !isLoading && (
-                  <Alert severity="error" sx={{ marginBottom: '20px' }}>
-                    Application is now closed
-                  </Alert>
-                )}
-              {isLoading && (
-                <CircularProgress
-                  color="inherit"
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    width: '100% !important',
-                  }}
-                />
+              {formattedDate(scholarshipData.due_date).isBefore(dayjs()) && (
+                <Alert severity="error" sx={{ marginBottom: '20px' }}>
+                  Application is now closed
+                </Alert>
               )}
-              {!isLoading && (
-                <>
-                  <h3 className="title3">{scholarshipData.scholarship_name}</h3>
-                  <p
-                    style={{
-                      whiteSpace: 'pre-wrap',
-                      lineHeight: 1,
-                      marginBottom: '20px',
-                    }}
-                  >
-                    Listing ID: {scholarshipData.listing_id}
-                  </p>
-                  <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}>
-                    {scholarshipData.description}
-                  </p>
-                </>
-              )}
+              <h3 className="title3">
+                {scholarshipData.scholarship_name || <TextLoading />}
+              </h3>
+              <p
+                style={{
+                  whiteSpace: 'pre-wrap',
+                  lineHeight: 1,
+                  marginBottom: '20px',
+                }}
+              >
+                Listing ID: {scholarshipData.listing_id}
+              </p>
+              <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.3 }}>
+                {scholarshipData.description}
+              </p>
               {scholarshipData.benefits &&
                 scholarshipData.benefits.length > 0 && (
                   <div className="details-section">
@@ -620,28 +608,26 @@ export const ScholarshipDetailsPage: React.FC<
                     ))}
                   </div>
                 )}
-              {!isLoading && (
-                <div className="details-section details-columns">
-                  <div className="details-column">
-                    <h5 className="title4">Application Start Date</h5>
-                    <p className="bordered">
-                      {getDate(scholarshipData.start_date)}
-                    </p>
-                  </div>
-                  <div className="details-column">
-                    <h5 className="title4">Application End Date</h5>
-                    <p className="bordered">
-                      {getDate(scholarshipData.due_date)}
-                    </p>
-                  </div>
-                  <div className="details-column">
-                    <h5 className="title4">School Year</h5>
-                    <p className="bordered">
-                      S. Y. : {scholarshipData.school_year}
-                    </p>
-                  </div>
+              <div className="details-section details-columns">
+                <div className="details-column">
+                  <h5 className="title4">Application Start Date</h5>
+                  <p className="bordered">
+                    {getDate(scholarshipData.start_date)}
+                  </p>
                 </div>
-              )}
+                <div className="details-column">
+                  <h5 className="title4">Application End Date</h5>
+                  <p className="bordered">
+                    {getDate(scholarshipData.due_date)}
+                  </p>
+                </div>
+                <div className="details-column">
+                  <h5 className="title4">School Year</h5>
+                  <p className="bordered">
+                    S. Y. : {scholarshipData.school_year}
+                  </p>
+                </div>
+              </div>
               {scholarshipData.is_application_link_active && (
                 <div className="details-section">
                   <h4 className="title4">Application Link</h4>
@@ -655,224 +641,194 @@ export const ScholarshipDetailsPage: React.FC<
                   </Link>
                 </div>
               )}
-              {!isLoading && (
-                <div className="details-section">
-                  {!scholarshipData.is_application_link_active &&
-                  (!user.email_address ||
-                    (user &&
-                      user.email_address &&
-                      user.role_id !== PROVIDER_ROLE_ID &&
-                      user.role_id !== ADMIN_ROLE_ID)) ? (
+              <div className="details-section">
+                {!scholarshipData.is_application_link_active &&
+                (!user.email_address ||
+                  (user &&
+                    user.email_address &&
+                    user.role_id !== PROVIDER_ROLE_ID &&
+                    user.role_id !== ADMIN_ROLE_ID)) ? (
+                  <CTAButton
+                    handleClick={() => setIsModalOpen(true)}
+                    label="Apply"
+                    loading={false}
+                    styles={{ fontSize: '24px' }}
+                  />
+                ) : (
+                  <></>
+                )}
+                {user.role_id === ADMIN_ROLE_ID &&
+                  scholarshipData.content_status !==
+                    CONTENT_STATUSES['suspend'] &&
+                  scholarshipData.content_status !==
+                    CONTENT_STATUSES['pending_approval'] && (
                     <CTAButton
-                      handleClick={() => setIsModalOpen(true)}
-                      label="Apply"
-                      loading={false}
-                      styles={{ fontSize: '24px' }}
-                    />
-                  ) : (
-                    <></>
-                  )}
-                  {user.role_id === ADMIN_ROLE_ID &&
-                    scholarshipData.content_status !==
-                      CONTENT_STATUSES['suspend'] &&
-                    scholarshipData.content_status !==
-                      CONTENT_STATUSES['pending_approval'] && (
-                      <CTAButton
-                        loading={isLoading}
-                        handleClick={() => setIsSendEmailModalOpen(true)}
-                        label="Ask Provider to Edit"
-                        styles={{
-                          fontSize: '1.20rem',
-                          padding: { xs: '14px', md: '20px' },
-                        }}
-                      />
-                    )}
-                  <Modal
-                    open={isModalOpen}
-                    onClose={() => {
-                      setIsModalOpen(false)
-                      setErrors({
-                        student_email: '',
-                        student_name: '',
-                        user_message: '',
-                        pdf_file: '',
-                      })
-                    }}
-                    aria-labelledby="modal-modal-title"
-                    aria-describedby="modal-modal-description"
-                  >
-                    <Box
-                      sx={{
-                        width: { xs: '90vw', md: '80vw' },
-                        maxHeight: '94vh',
-                        margin: '20px auto',
-                        backgroundColor: 'background.default',
-                        padding: '20px 20px',
-                        borderRadius: '24px',
-                        overflowY: 'auto',
-                        overflowX: 'hidden',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        gap: '10px',
-                        position: 'relative',
+                      loading={isLoading}
+                      handleClick={() => setIsSendEmailModalOpen(true)}
+                      label="Ask Provider to Edit"
+                      styles={{
+                        fontSize: '1.20rem',
+                        padding: { xs: '14px', md: '20px' },
                       }}
-                    >
-                      <CloseRounded
-                        onClick={() => {
-                          setIsModalOpen(false)
-                        }}
+                    />
+                  )}
+                <Modal
+                  open={isModalOpen}
+                  onClose={() => {
+                    setIsModalOpen(false)
+                    setErrors({
+                      student_email: '',
+                      student_name: '',
+                      user_message: '',
+                      pdf_file: '',
+                    })
+                  }}
+                  aria-labelledby="modal-modal-title"
+                  aria-describedby="modal-modal-description"
+                >
+                  <Box
+                    sx={{
+                      width: { xs: '90vw', md: '80vw' },
+                      maxHeight: '94vh',
+                      margin: '20px auto',
+                      backgroundColor: 'background.default',
+                      padding: '20px 20px',
+                      borderRadius: '24px',
+                      overflowY: 'auto',
+                      overflowX: 'hidden',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '10px',
+                    }}
+                  >
+                    <CustomTextfield
+                      label="Student Email"
+                      error={errors.student_email}
+                      value={studentEmail}
+                      handleChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        setStudentEmail(e.target.value)
+                        dispatch(
+                          initializeScholarshipApplicationForm({
+                            ...applicationDetails,
+                            student_email: studentEmail,
+                          })
+                        )
+                      }}
+                      placeholder="e.g. student@example.com"
+                      styles={{
+                        padding: { xs: '12px', md: '17px', marginTop: '10px' },
+                      }}
+                    />
+                    <CustomTextfield
+                      label="Student Name"
+                      error={errors.student_name}
+                      value={studentName}
+                      handleChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        setStudentName(e.target.value)
+                        dispatch(
+                          initializeScholarshipApplicationForm({
+                            ...applicationDetails,
+                            student_name: studentName,
+                          })
+                        )
+                      }}
+                      placeholder="e.g. Jane Doe"
+                      styles={{
+                        padding: { xs: '12px', md: '17px', marginTop: '10px' },
+                      }}
+                    />
+                    <CustomTextfield
+                      label="Message to Provider"
+                      error={errors.user_message}
+                      value={userMessage}
+                      handleChange={(
+                        e: React.ChangeEvent<HTMLInputElement>
+                      ) => {
+                        setUserMessage(e.target.value)
+                        dispatch(
+                          initializeScholarshipApplicationForm({
+                            ...applicationDetails,
+                            user_message: userMessage,
+                          })
+                        )
+                      }}
+                      multiline={true}
+                      rows={4}
+                      placeholder="e.g. I am writing to express my sincere interest in the [Scholarship Name] as it aligns perfectly with my academic and career goals. As a dedicated student with a passion for [Your Field or Major], I have consistently demonstrated my commitment through my academic achievements and extracurricular involvement. This scholarship would not only alleviate the financial burden of my education but also empower me to further pursue my ambitions and contribute meaningfully to my community. I am eager to seize this opportunity and make a positive impact through the support of your esteemed scholarship."
+                      styles={{
+                        padding: { xs: '5px', md: '16px' },
+                        marginTop: '10px',
+                      }}
+                    />
+                    <Box>
+                      <Button
                         sx={{
-                          position: 'absolute',
-                          width: { xs: '21px', sm: '23px', md: '30px' },
-                          height: { xs: '21px', sm: '23px', md: '30px' },
-                          right: { xs: '17px', md: '20px' },
-                          top: { xs: '14px', md: '16px' },
-                          opacity: '0.6',
-                          cursor: 'pointer',
-                          '&:hover': {
-                            borderRadius: '50%',
-                            backgroundColor: '#9A9A9A',
-                            color: '#FFFFFF',
-                          },
+                          backgroundColor: 'primary',
+                          fontSize: '0.9rem',
+                          width: '100%',
                         }}
-                      />
-                      <CustomTextfield
-                        label="Student Email"
-                        error={errors.student_email}
-                        value={studentEmail}
-                        handleChange={(
-                          e: React.ChangeEvent<HTMLInputElement>
-                        ) => {
-                          setStudentEmail(e.target.value)
-                          dispatch(
-                            initializeScholarshipApplicationForm({
-                              ...applicationDetails,
-                              student_email: studentEmail,
-                            })
-                          )
-                        }}
-                        placeholder="e.g. student@example.com"
-                        styles={{
-                          padding: {
-                            xs: '12px',
-                            md: '17px',
-                            marginTop: '10px',
-                          },
-                        }}
-                      />
-                      <CustomTextfield
-                        label="Student Name"
-                        error={errors.student_name}
-                        value={studentName}
-                        handleChange={(
-                          e: React.ChangeEvent<HTMLInputElement>
-                        ) => {
-                          setStudentName(e.target.value)
-                          dispatch(
-                            initializeScholarshipApplicationForm({
-                              ...applicationDetails,
-                              student_name: studentName,
-                            })
-                          )
-                        }}
-                        placeholder="e.g. Jane Doe"
-                        styles={{
-                          padding: {
-                            xs: '12px',
-                            md: '17px',
-                            marginTop: '10px',
-                          },
-                        }}
-                      />
-                      <CustomTextfield
-                        label="Message to Provider"
-                        error={errors.user_message}
-                        value={userMessage}
-                        handleChange={(
-                          e: React.ChangeEvent<HTMLInputElement>
-                        ) => {
-                          setUserMessage(e.target.value)
-                          dispatch(
-                            initializeScholarshipApplicationForm({
-                              ...applicationDetails,
-                              user_message: userMessage,
-                            })
-                          )
-                        }}
-                        multiline={true}
-                        rows={4}
-                        placeholder="e.g. I am writing to express my sincere interest in the [Scholarship Name] as it aligns perfectly with my academic and career goals. As a dedicated student with a passion for [Your Field or Major], I have consistently demonstrated my commitment through my academic achievements and extracurricular involvement. This scholarship would not only alleviate the financial burden of my education but also empower me to further pursue my ambitions and contribute meaningfully to my community. I am eager to seize this opportunity and make a positive impact through the support of your esteemed scholarship."
-                        styles={{
-                          padding: { xs: '5px', md: '16px' },
-                          marginTop: '10px',
-                        }}
-                      />
-                      <Box>
-                        <Button
-                          sx={{
-                            backgroundColor: 'primary',
-                            fontSize: '0.9rem',
-                            width: '100%',
+                        component="label"
+                        role={undefined}
+                        variant="contained"
+                        tabIndex={-1}
+                        startIcon={<CloudUpload />}
+                      >
+                        <span
+                          style={{
+                            inlineSize: '95%',
+                            overflowWrap: 'break-word',
                           }}
-                          component="label"
-                          role={undefined}
-                          variant="contained"
-                          tabIndex={-1}
-                          startIcon={<CloudUpload />}
                         >
-                          <span
-                            style={{
-                              inlineSize: '95%',
-                              overflowWrap: 'break-word',
-                            }}
-                          >
-                            {pdfFile
-                              ? pdfFile.name
-                              : 'Upload pdf file (optional)'}
-                          </span>
-                          <VisuallyHiddenInput
-                            type="file"
-                            onChange={(
-                              event: React.ChangeEvent<HTMLInputElement>
-                            ) => {
-                              if (event.target.files) {
-                                setPdfFile(event.target.files[0])
-                                dispatch(
-                                  initializeScholarshipApplicationForm({
-                                    ...applicationDetails,
-                                    pdf_file: event.target.files[0],
-                                  })
-                                )
-                              }
-                            }}
-                            accept=".pdf"
-                          />
-                        </Button>
-                        <Typography
-                          variant="subtitle1"
-                          sx={{ fontSize: '0.8rem', lineHeight: '1.25', mt: 1 }}
-                        >
-                          * You can upload your credentials, grades,
-                          recommendation letter, or any relevant pdf file for
-                          your scholarship application. For multiple documents,
-                          save it in a single pdf file.
-                        </Typography>
-                        <HelperText error={errors.pdf_file} />
-                      </Box>
-
-                      <CTAButton
-                        loading={isLoading}
-                        handleClick={handleApply}
-                        label="Apply"
-                        styles={{
-                          fontSize: '1.20rem',
-                          padding: { xs: '14px', md: '20px' },
-                        }}
-                      />
+                          {pdfFile
+                            ? pdfFile.name
+                            : 'Upload pdf file (optional)'}
+                        </span>
+                        <VisuallyHiddenInput
+                          type="file"
+                          onChange={(
+                            event: React.ChangeEvent<HTMLInputElement>
+                          ) => {
+                            if (event.target.files) {
+                              setPdfFile(event.target.files[0])
+                              dispatch(
+                                initializeScholarshipApplicationForm({
+                                  ...applicationDetails,
+                                  pdf_file: event.target.files[0],
+                                })
+                              )
+                            }
+                          }}
+                          accept=".pdf"
+                        />
+                      </Button>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ fontSize: '0.8rem', lineHeight: '1.25', mt: 1 }}
+                      >
+                        * You can upload your credentials, grades,
+                        recommendation letter, or any relevant pdf file for your
+                        scholarship application. For multiple documents, save it
+                        in a single pdf file.
+                      </Typography>
+                      <HelperText error={errors.pdf_file} />
                     </Box>
-                  </Modal>
-                </div>
-              )}
+
+                    <CTAButton
+                      loading={isLoading}
+                      handleClick={handleApply}
+                      label="Apply"
+                      styles={{
+                        fontSize: '1.20rem',
+                        padding: { xs: '14px', md: '20px' },
+                      }}
+                    />
+                  </Box>
+                </Modal>
+              </div>
             </div>
           )}
 

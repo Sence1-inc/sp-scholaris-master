@@ -9,7 +9,6 @@ import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { useSnackbar } from '../../context/SnackBarContext'
 import { User } from '../../redux/types'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
-import BannerButton from '../../components/Button/BannerButton'
 
 interface SignInPageProps {}
 
@@ -145,7 +144,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       }
     }
   }
-  
+
   return (
     <Container
       maxWidth="md"
@@ -156,11 +155,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         marginBlock: '40px',
       }}
     >
-      <Box
-         className='banner__container'
-        >
-          <BannerButton />
-        </Box>
       <Typography
         variant="h2"
         sx={{
@@ -175,7 +169,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       <CustomTextfield
         label="Email address"
         value={userCredentials.email_address.toLowerCase()}
-        handleOnKeyDonw={handleSignIn}
         handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleEmail(e.target.value)
         }
@@ -186,7 +179,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         type="password"
         label="Password"
         value={userCredentials.password}
-        handleOnKeyDonw={handleSignIn}
         handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handlePassword(e.target.value)
         }

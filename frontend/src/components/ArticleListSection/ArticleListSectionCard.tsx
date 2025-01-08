@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   CardMedia,
   Typography,
@@ -35,7 +36,6 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
         boxShadow: 'none',
         width: isSearched ? '45%' : '100%',
         gap: '10px',
-        cursor: 'pointer',
       }}
       onClick={() => navigate(`/articles/${article.slug}`)}
     >
@@ -46,10 +46,7 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
         sx={{
           borderRadius: '16px',
           width: isRelated || isSearched ? '100%' : { xs: 100, md: 150 },
-          height:
-            isSearched || isRelated
-              ? { xs: 100, md: 200 }
-              : { xs: 50, md: 100 },
+          height: isSearched ? { xs: 100, md: 200 } : { xs: 50, md: 100 },
         }}
       />
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -58,41 +55,16 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
             component="div"
             variant="h6"
             sx={{
-              display: 'inline-block',
+              whiteSpace: 'nowrap',
               overflow: 'hidden',
               textOverflow: 'ellipsis',
-              whiteSpace: isSidebar ? 'nowrap' : 'normal',
-              wordWrap: 'break-word',
               width: isSidebar
                 ? { xs: '18vw', md: '14vw' }
-                : { xs: '55vw', sm: '34vw', md: '28vw' },
+                : { xs: '55vw', sm: '34vw', md: '30vw' },
             }}
           >
             {article.title}
           </Typography>
-          {!isSidebar && (
-            <Box sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}>
-              {article.tags.map((tag: Tag, index: number) => {
-                return (
-                  <Button
-                    key={`${tag.slug}=${index}`}
-                    color="secondary"
-                    size="small"
-                    sx={{
-                      padding: '2px 6px',
-                      fontSize: '10px',
-                      textTransform: 'unset',
-                      borderRadius: '20px',
-                      marginLeft: '4px',
-                    }}
-                    variant="outlined"
-                  >
-                    {tag.name}
-                  </Button>
-                )
-              })}
-            </Box>
-          )}
           <Typography
             variant="subtitle1"
             component="div"
@@ -109,6 +81,30 @@ const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
             {article.description}
           </Typography>
         </CardContent>
+        {!isSidebar && (
+          <CardActions
+            sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}
+          >
+            {article.tags.map((tag: Tag, index: number) => {
+              return (
+                <Button
+                  key={`${tag.slug}=${index}`}
+                  color="secondary"
+                  size="small"
+                  sx={{
+                    padding: '2px 6px',
+                    fontSize: '10px',
+                    textTransform: 'unset',
+                    borderRadius: '20px',
+                  }}
+                  variant="outlined"
+                >
+                  {tag.name}
+                </Button>
+              )
+            })}
+          </CardActions>
+        )}
       </Box>
     </Card>
   )

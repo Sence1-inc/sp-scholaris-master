@@ -9,11 +9,9 @@
     "develop": "strapi develop",
     "seed:example": "node ./scripts/seed.js",
     "start": "strapi start",
-    "strapi": "strapi",
-    "gcp-build": "NODE_ENV=production strapi build"
+    "strapi": "strapi"
   },
   "dependencies": {
-    "@strapi-community/strapi-provider-upload-google-cloud-storage": "^4.10.5",
     "@strapi/plugin-cloud": "5.2.0",
     "@strapi/plugin-users-permissions": "5.2.0",
     "@strapi/strapi": "5.2.0",

@@ -9,7 +9,7 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
-import { useNavigate, useParams, Navigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import axiosInstance, { initialUserState } from '../../../axiosConfig'
 import AccountSettings from '../../../components/AccountCard/AccountSettings'
 import AccountSideBar, {
@@ -26,7 +26,6 @@ import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import { ScholarshipProvider } from '../../../redux/types'
 import profileTheme from '../../../styles/profileTheme'
 import theme from '../../../styles/theme'
-import { initializeSubscirber } from '../../../redux/reducers/SubscriberReducer'
 
 const ProviderProfile: React.FC = () => {
   const [activeContent, setActiveContent] = useState<string>('view-profile')
@@ -39,13 +38,8 @@ const ProviderProfile: React.FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { getSubscriber, errorMessage: err } = useGetSubscriber()
-  const whitelistProfileRoutes = ['view-profile', 'account-settings'];
 
-  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'));
-
-  if (lastRoute && !whitelistProfileRoutes.includes(lastRoute)) {
-    return <Navigate to="/404" replace />;
-  }
+  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'))
 
   const handleDeleteCookie = async () => {
     const data = {
@@ -78,7 +72,6 @@ const ProviderProfile: React.FC = () => {
 
         if (response.status === 200) {
           showMessage(response.data.message, 'success')
-          dispatch(initializeSubscirber(response.data.subscriber))
         } else {
           showMessage(
             `Error: ${response.data.error}. ${response.data.details.join(' ')}`,

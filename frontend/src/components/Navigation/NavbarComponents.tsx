@@ -1,5 +1,5 @@
-import { Button, List, ListItem, Typography, Box } from '@mui/material'
-import React, { ReactElement, useState, useEffect } from 'react'
+import { Button, List, ListItem, Typography } from '@mui/material'
+import React, { ReactElement } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import instance, { initialUserState } from '../../axiosConfig'
 import {
@@ -13,78 +13,66 @@ import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import CTAButton from '../CustomButton/CTAButton'
-import profileTheme from '../../styles/profileTheme';
-import LoggedinIcon from '../../public/images/loggedin.svg';
-import LoginIcon from '../../public/images/login.svg';
-import SearchIcon from '../../public/images/search.svg';
-import LogoutIcon from '../../public/images/logout.svg';
 
-
-interface AuthenticatedUserProps {
+interface AuthenticatedProviderProps {
   user: User
 }
 
-const AuthenticatedProvider: React.FC<AuthenticatedUserProps> = ({
+const AuthenticatedProvider: React.FC<AuthenticatedProviderProps> = ({
   user,
 }) => {
-  const navigate = useNavigate();
-
-  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
+  const navigate = useNavigate()
   return (
-    <List sx={profileTheme.navigation.mainNavLists}>
-      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+    <List
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        gap: 4,
+      }}
+    >
+      <ListItem sx={{ width: 'auto' }}>
         <Typography
+          variant="body1"
           component={Link}
           to="/provider/survey"
-          sx={profileTheme.navigation.mainNavListItemLink}
+          sx={{ color: 'common.white', textDecoration: 'none' }}
         >
-        Survey
+          Survey
         </Typography>
       </ListItem>
-      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+      <ListItem sx={{ width: 'auto' }}>
         <Typography
+          variant="body1"
           component={Link}
           to="/provider/dashboard"
-          sx={profileTheme.navigation.mainNavListItemLink}
+          sx={{ color: 'common.white', textDecoration: 'none' }}
         >
-        Dashboard
+          Dashboard
         </Typography>
       </ListItem>
       {!user.parent_id && (
-        <ListItem sx={profileTheme.navigation.mainNavListItem}>
+        <ListItem sx={{ width: 'auto' }}>
           <Typography
+            variant="body1"
             component={Link}
             to="/provider/accounts"
-            sx={profileTheme.navigation.mainNavListItemLink}
+            sx={{ color: 'common.white', textDecoration: 'none' }}
           >
-          Accounts
+            Accounts
           </Typography>
         </ListItem>
       )}
-      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+      <ListItem sx={{ width: 'auto' }}>
         <Typography
+          variant="body1"
           component={Link}
           to="/provider/applications"
-          sx={profileTheme.navigation.mainNavListItemLink}
+          sx={{ color: 'common.white', textDecoration: 'none' }}
         >
-        Applications
+          Applications
         </Typography>
       </ListItem>
-      <Box sx={profileTheme.navigation.mainNavDivider} />
-      <ListItem disablePadding>
+      <ListItem disablePadding sx={{ width: 'auto' }}>
         <CTAButton
           loading={false}
           handleClick={() =>
@@ -92,9 +80,8 @@ const AuthenticatedProvider: React.FC<AuthenticatedUserProps> = ({
               `/provider/account/${user?.scholarship_provider?.id}/view-profile`
             )
           }
-          label={windowWidth > 1024 || windowWidth < 900 ? `${user.first_name}` : ''}
-          icon={LoggedinIcon}
-          styles={profileTheme.navigation.mainNavLoggedInButton}
+          label="Profile"
+          styles={{ whiteSpace: 'nowrap', backgroundColor: 'primary.light' }}
           id="provider-profile"
         />
       </ListItem>
@@ -102,74 +89,32 @@ const AuthenticatedProvider: React.FC<AuthenticatedUserProps> = ({
   )
 }
 
-const AuthenticatedStudent: React.FC<AuthenticatedUserProps> = ({
-  user,
-}) => {
-  const navigate = useNavigate();
-
-  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-
+const AuthenticatedStudent = () => {
+  const navigate = useNavigate()
   return (
-    <List sx={profileTheme.navigation.mainNavLists}>
-      <ListItem sx={profileTheme.navigation.mainNavListItem}>
-        <Typography
-          component={Link}
-          to={`/student/survey`}
-          sx={profileTheme.navigation.mainNavListItemLink}
-        >
-          Survey
-        </Typography>
-      </ListItem>
-      <ListItem sx={profileTheme.navigation.mainNavListItem}>
-        <Typography
-          component={Link}
-          to={`/articles`}
-          sx={profileTheme.navigation.mainNavListItemLink}
-        >
-          Articles
-        </Typography>
-      </ListItem>
-      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+    <List
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        gap: 4,
+      }}
+    >
+      <ListItem sx={{ width: 'auto' }}>
         <Typography
           variant="body1"
           component={Link}
           to="/student/applications"
-          sx={profileTheme.navigation.mainNavListItemLink}
+          sx={{ color: 'common.white', textDecoration: 'none' }}
         >
           Applications
         </Typography>
       </ListItem>
-      <ListItem disablePadding>
-        <CTAButton
-          icon={SearchIcon}
-          loading={false}
-          handleClick={() => navigate(`/scholarships`)}
-          label={windowWidth > 1024 || windowWidth < 900 ? "Search Scholarships" : ''}
-          styles={profileTheme.navigation.mainNavSearchButton}
-          id="search-scholarships"
-        />
-      </ListItem>
-      {windowWidth > 900 && <Box sx={profileTheme.navigation.mainNavDivider} />}
-      <ListItem disablePadding>
+      <ListItem disablePadding sx={{ width: 'auto' }}>
         <CTAButton
           loading={false}
           handleClick={() => navigate(`/student/account`)}
-          label={windowWidth > 1024 || windowWidth < 900 ? `${user.first_name}` : ''}
-          icon={LoggedinIcon}
-          styles={profileTheme.navigation.mainNavLoggedInButton}
+          label="Profile"
+          styles={{ whiteSpace: 'nowrap', backgroundColor: 'primary.light' }}
           id="student-profile"
         />
       </ListItem>
@@ -192,25 +137,30 @@ const AuthnticatedAdmin = () => {
   }
 
   return (
-    <List sx={profileTheme.navigation.mainNavLists}>
-      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+    <List
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        gap: 4,
+      }}
+    >
+      <ListItem sx={{ width: 'auto' }}>
         <Typography
+          variant="body1"
           component={Link}
           to="/admin/scholarships"
-          sx={profileTheme.navigation.mainNavListItemLink}
+          sx={{ color: 'common.white', textDecoration: 'none' }}
         >
           Scholarships
         </Typography>
       </ListItem>
-      <Box sx={profileTheme.navigation.mainNavDivider} />
-      <ListItem disablePadding>
+      <ListItem disablePadding sx={{ width: 'auto' }}>
         <CTAButton
           loading={false}
           handleClick={logout}
           label="Logout"
-          icon={LogoutIcon}
-          styles={profileTheme.navigation.mainNavLogoutButton}
-          id="logout-button"
+          styles={{ whiteSpace: 'nowrap', backgroundColor: 'primary.light' }}
+          id="student-profile"
         />
       </ListItem>
     </List>
@@ -226,7 +176,7 @@ export const Authenticated: React.FC<AuthenticatedProps> = ({
 }): ReactElement<any, any> | null => {
   switch (user.role_id) {
     case STUDENT_ROLE_ID:
-      return <AuthenticatedStudent user={user} />
+      return <AuthenticatedStudent />
     case PROVIDER_ROLE_ID:
       return <AuthenticatedProvider user={user} />
     case ADMIN_ROLE_ID:
@@ -245,25 +195,19 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
 }) => {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-
-    window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
 
   return (
-    <List sx={profileTheme.navigation.mainNavLists}>
-      {(pathname === '/provider' || pathname === '/student') && (
-        <ListItem sx={profileTheme.navigation.mainNavListItem}>
+    <List
+      sx={{
+        display: 'flex',
+        flexDirection: { xs: 'column', md: 'row' },
+        gap: 3,
+      }}
+    >
+      {(pathname === '/provider' || pathname === 'student') && (
+        <ListItem sx={{ width: 'auto' }}>
           <Typography
+            variant="body1"
             component={Button}
             onClick={() => {
               const fabButton = document.getElementById(
@@ -274,50 +218,44 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
                 fabButton.click()
               }
             }}
-            sx={profileTheme.navigation.mainNavListItemLink}
+            sx={{
+              padding: 0,
+              color: 'common.white',
+              textDecoration: 'none',
+              textTransform: 'capitalize',
+            }}
           >
             Newsletter
           </Typography>
         </ListItem>
       )}
-      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+      <ListItem sx={{ width: 'auto' }}>
         <Typography
+          variant="body1"
           component={Link}
-          to={`/articles`}
-          sx={profileTheme.navigation.mainNavListItemLink}
+          to={`/${userType}/survey`}
+          sx={{ color: 'common.white', textDecoration: 'none' }}
         >
-          Articles
+          Survey
         </Typography>
       </ListItem>
-      <ListItem disablePadding>
-        <CTAButton
-          icon={SearchIcon}
-          loading={false}
-          handleClick={() => navigate(`/scholarships`)}
-          label={windowWidth > 1024 || windowWidth < 900 ? "Search Scholarships" : ''}
-          styles={profileTheme.navigation.mainNavSearchButton}
-          id="search-scholarships"
-        />
-      </ListItem>
-      <ListItem sx={profileTheme.navigation.mainNavListSignUp}>
+      <ListItem sx={{ minWidth: 'auto' }}>
         <Typography
+          variant="body1"
           component={Link}
           to={`/sign-up`}
-          sx={profileTheme.navigation.mainNavListItemLink}
+          sx={{ color: 'common.white', textDecoration: 'none' }}
         >
-          <Box component="span" sx={profileTheme.navigation.mainNavListSignUpSpan}>Sign up is free</Box>
           Sign Up
         </Typography>
       </ListItem>
-      {windowWidth > 900 && <Box sx={profileTheme.navigation.mainNavDivider} />}
       <ListItem disablePadding>
         <CTAButton
-          icon={LoginIcon}
           loading={false}
-          handleClick={() => navigate(`/sign-in`)}
-          label={windowWidth > 1024 || windowWidth < 900 ? "Login" : ''}
-          styles={profileTheme.navigation.mainNavLoginButton}
-          id="login-button"
+          handleClick={() => navigate(`/scholarships`)}
+          label="Search Scholarships"
+          styles={{ whiteSpace: 'nowrap' }}
+          id="search-scholarships"
         />
       </ListItem>
     </List>

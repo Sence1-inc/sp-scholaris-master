@@ -10,7 +10,6 @@ import CustomTextfield from '../../components/CutomTextfield/CustomTextfield'
 import HelperText from '../../components/HelperText/HelperText'
 import { useSnackbar } from '../../context/SnackBarContext'
 import { useAppSelector } from '../../redux/store'
-import BannerButton from '../../components/Button/BannerButton'
 
 interface SignUpPageProps {}
 
@@ -238,11 +237,6 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
         marginBlock: '40px',
       }}
     >
-      <Box
-         className='banner__container'
-        >
-          <BannerButton />
-        </Box>
       <Typography
         variant="h2"
         sx={{

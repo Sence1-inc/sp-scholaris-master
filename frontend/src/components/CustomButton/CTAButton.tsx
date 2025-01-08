@@ -1,11 +1,7 @@
 import { LoadingButton } from '@mui/lab'
-import { Box } from '@mui/material'
 import React from 'react'
-import profileTheme from '../../styles/profileTheme';
-
 
 interface CTAButtonProps {
-  icon?: string
   handleClick: any
   label: string
   loading: boolean
@@ -19,7 +15,6 @@ const CTAButton: React.FC<CTAButtonProps> = ({
   label,
   loading,
   styles,
-  icon,
   disabled = false,
   id,
 }) => {
@@ -42,7 +37,6 @@ const CTAButton: React.FC<CTAButtonProps> = ({
         ...styles,
       }}
     >
-      {icon && <Box component="img" sx={profileTheme.button.buttonIcon} src={icon} alt='icon' />}
       {label}
     </LoadingButton>
   )

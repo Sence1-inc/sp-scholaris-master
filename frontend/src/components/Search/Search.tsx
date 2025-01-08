@@ -106,7 +106,9 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     // eslint-disable-next-line
   }, [params.params])
 
-  const handleSearch = async () => {
+  const handleSearch: (e: React.MouseEvent<HTMLButtonElement>) => void = async (
+    e
+  ) => {
     const queryParams = queryString.stringify({ name })
     navigate(`/scholarships?${queryParams}`)
 
@@ -176,12 +178,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     setIsLoading(false)
     setRowData(row)
   }
-
-  const handleKeyDown = (e: { key: string }) => {
-    if (e.key === "Enter") {
-      handleSearch();
-    }
-  };
 
   const columns = [
     {
@@ -281,7 +277,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               variant="outlined"
               onChange={(e) => handleChange(e.target.value)}
               value={name}
-              onKeyDown={handleKeyDown}
               placeholder="e.g. CHED Merit Scholarship"
               sx={{
                 width: {

@@ -1,3 +1,4 @@
+@@ -1,113 +0,0 @@
 version: "3.8"
 
 services:
@@ -60,6 +61,7 @@ services:
     networks:
       - mynetwork
   strapi:
+sence1roandayne marked this conversation as resolved.
     container_name: strapi
     build: .
     image: strapi:latest

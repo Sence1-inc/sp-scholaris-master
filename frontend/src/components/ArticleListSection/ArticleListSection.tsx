@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   CardMedia,
   Link,
@@ -27,14 +28,7 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
 }) => {
   const navigate = useNavigate()
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '20px',
-        width: '100%',
-      }}
-    >
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
       <Box>
         <Typography variant="subtitle1">{subheader}</Typography>
         <Typography variant="h5">{header}</Typography>
@@ -48,7 +42,7 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
       >
         <Card
           sx={{
-            width: { xs: '100%', sm: '60%' },
+            width: { xs: '100%', sm: '50%' },
             border: 'none',
             borderRadius: '16px',
             backgroundColor: 'white',
@@ -72,35 +66,36 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
             >
               {articles[0].title}
             </Typography>
-            <Box sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}>
-              {articles[0].tags.map((tag: Tag, index: number) => {
-                return (
-                  <Button
-                    key={`${tag.slug}-${index}`}
-                    color="secondary"
-                    size="small"
-                    sx={{
-                      padding: '2px 6px',
-                      fontSize: '10px',
-                      textTransform: 'unset',
-                      borderRadius: '20px',
-                      marginLeft: '4px',
-                    }}
-                    variant="outlined"
-                  >
-                    {tag.name}
-                  </Button>
-                )
-              })}
-            </Box>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               {articles[0].description}
             </Typography>
           </CardContent>
+          <CardActions
+            sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}
+          >
+            {articles[0].tags.map((tag: Tag, index: number) => {
+              return (
+                <Button
+                  key={`${tag.slug}-${index}`}
+                  color="secondary"
+                  size="small"
+                  sx={{
+                    padding: '2px 6px',
+                    fontSize: '10px',
+                    textTransform: 'unset',
+                    borderRadius: '20px',
+                  }}
+                  variant="outlined"
+                >
+                  {tag.name}
+                </Button>
+              )
+            })}
+          </CardActions>
         </Card>
         <Box
           sx={{
-            width: { xs: '100%', sm: '40%' },
+            width: { xs: '100%', sm: '50%' },
             display: 'flex',
             flexDirection: 'column',
             gap: '10px',
