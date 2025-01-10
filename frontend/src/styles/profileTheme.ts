@@ -136,6 +136,7 @@ const profiletheme = {
   button: {
     buttonIcon: {
       height: '16px',
+      width: '16px'
     },
     buttonMain: {
       py: 2,
@@ -324,7 +325,7 @@ const profiletheme = {
       color: '#FFFFFF',
       padding: '2px 4px',
       borderRadius: '2px',
-      left: { xs: '65px', md: '8px' },
+      left: { xs: '83px', md: '25px' },
       top: '-10px',
     },
     mainNavDivider: {
