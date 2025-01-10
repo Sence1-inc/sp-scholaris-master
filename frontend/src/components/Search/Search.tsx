@@ -22,6 +22,8 @@ import { ctaButtonStyle } from '../../styles/globalStyles'
 import theme from '../../styles/theme'
 import Filter from '../Filter/Filter'
 import './Search.css'
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
 
 interface GridRowDef {
   scholarshipName: string
@@ -224,7 +226,44 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
             onClick={() => navigate(`/scholarships/${params.row.id}`)}
             sx={{ color: 'primary.main', display: 'flex', gap: '4px' }}
           >
-            <Typography variant="body1">View</Typography> <Visibility />
+            {/* <Typography variant="body1">View</Typography> <Visibility /> */}
+            <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              padding: "5px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minWidth: "50px",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+              },
+            }}
+          >
+            <VisibilityIcon fontSize="small" />
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              padding: "5px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minWidth: "50px",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+              },
+            }}
+          >
+            <StarBorderIcon fontSize="small" />
+          </Button>
           </IconButton>
         ) : (
           <Typography
@@ -239,8 +278,43 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               width: '150px',
             }}
           >
-            View
-            <OpenInNew fontSize="small" />
+            <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              padding: "5px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minWidth: "50px",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+              },
+            }}
+          >
+            <VisibilityIcon fontSize="small" />
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              padding: "5px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minWidth: "50px",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+              },
+            }}
+          >
+            <StarBorderIcon fontSize="small" />
+          </Button>
           </Typography>
         )}
       </Box>

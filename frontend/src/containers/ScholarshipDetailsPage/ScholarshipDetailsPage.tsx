@@ -33,6 +33,10 @@ import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData, ScholarshipFeedback, User } from '../../redux/types'
 import { formattedDate } from '../StudentDashboardPage/StudentDashboardPage'
 import './ScholarshipDetailsPage.css'
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
+import Grid from "@mui/material/Grid";
+
 
 interface Results {
   scholarshipData: ScholarshipData
@@ -456,6 +460,16 @@ export const ScholarshipDetailsPage: React.FC<
     }
   }
 
+  const handleSignin = () => {
+    navigate("/sign-in"); // Replace with your desired path
+  };
+
+  const [isFirstButton, setIsFirstButton] = useState(true);
+
+  const handleSavedButton = () => {
+    setIsFirstButton(!isFirstButton);
+  };
+
   return (
     <>
       {user.role_id === ADMIN_ROLE_ID && (
@@ -563,7 +577,60 @@ export const ScholarshipDetailsPage: React.FC<
               )}
               {!isLoading && (
                 <>
-                  <h3 className="title3">{scholarshipData.scholarship_name}</h3>
+                  <Grid container
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    spacing={2}
+                  >
+                  <Grid item xs={6}>
+                    <h3 className="title3">{scholarshipData.scholarship_name}</h3>
+                  </Grid>
+                  <Grid item xs={6} justifyItems="flex-end">
+                  {isFirstButton ? (
+                    <Button
+                      variant="contained"
+                      onClick={handleSavedButton}
+                      sx={{
+                        backgroundColor: "white",
+                        color: "black",
+                        padding: "10px",
+                        borderRadius: "8px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minWidth: "100px",
+                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+                        "&:hover": {
+                          backgroundColor: "#f0f0f0",
+                        },
+                      }}
+                    >
+                      <StarBorderIcon fontSize="small" />Save
+                    </Button>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      onClick={handleSavedButton}
+                      sx={{
+                        backgroundColor: '#002147',
+                        color: "#fff",
+                        padding: "10px",
+                        borderRadius: "8px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        minWidth: "100px",
+                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+                        "&:hover": {
+                          backgroundColor: "#f0f0f0",
+                        },
+                      }}
+                    >
+                      <StarIcon fontSize="small" />Saved
+                    </Button>
+                  )}
+                  </Grid>
+                </Grid>
                   <p
                     style={{
                       whiteSpace: 'pre-wrap',
