@@ -11,6 +11,9 @@ class User < ApplicationRecord
   has_many :scholarship_providers, through: :children
   has_many :scholarships, through: :scholarship_provider
 
+  has_many :bookmarks
+  has_many :bookmarked_scholarships, through: :bookmarks, :source => :scholarship
+
   validates :email_address, presence: true
   validate :birthdate_is_valid
 
