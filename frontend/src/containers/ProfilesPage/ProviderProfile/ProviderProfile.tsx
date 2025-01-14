@@ -30,7 +30,7 @@ import { initializeSubscirber } from '../../../redux/reducers/SubscriberReducer'
 
 const ProviderProfile: React.FC = () => {
   const [activeContent, setActiveContent] = useState<string>('view-profile')
-  const { lastRoute } = useParams()
+  const { lastRoute, id } = useParams()
   const { showMessage } = useSnackbar()
   const subscr: any = useAppSelector(
     (state) => state.persistedReducer.subscriber
@@ -39,12 +39,16 @@ const ProviderProfile: React.FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { getSubscriber, errorMessage: err } = useGetSubscriber()
-  const whitelistProfileRoutes = ['view-profile', 'account-settings'];
+  const whitelistProfileRoutes = ['view-profile', 'account-settings']
 
-  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'));
+  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'))
 
   if (lastRoute && !whitelistProfileRoutes.includes(lastRoute)) {
-    return <Navigate to="/404" replace />;
+    return <Navigate to="/404" replace />
+  }
+
+  if (id && (!Number.isInteger(parseInt(id)) || user.id !== parseInt(id))) {
+    return <Navigate to="/404" replace />
   }
 
   const handleDeleteCookie = async () => {
