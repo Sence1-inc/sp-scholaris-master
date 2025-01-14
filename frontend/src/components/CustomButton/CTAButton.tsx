@@ -30,6 +30,7 @@ const CTAButton: React.FC<CTAButtonProps> = ({
       fullWidth
       loading={loading}
       loadingPosition="center"
+      disableRipple={true}
       onClick={handleClick}
       variant="contained"
       sx={{

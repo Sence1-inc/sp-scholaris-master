@@ -313,6 +313,12 @@ const profiletheme = {
       minHeight: '48px',
       whiteSpace: 'nowrap',
       textTransform: 'capitalize',
+      fontSize: '16px',
+      fontWeight: '500',
+      fontFamily: 'Outfit, sans-serif',
+      color: '#ffffff',
+      textDecoration: 'none',
+      transition: 'all 0.4s ease',
       border: '1px solid rgba(255, 255, 255, 0.5)',
       '&:hover': {
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
