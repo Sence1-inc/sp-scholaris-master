@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Bookmarks</h1>
+
+<div id="api_v1_bookmarks">
+  <% @api_v1_bookmarks.each do |api_v1_bookmark| %>
+    <%= render api_v1_bookmark %>
+    <p>
+      <%= link_to "Show this bookmark", api_v1_bookmark %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New bookmark", new_api_v1_bookmark_path %>
