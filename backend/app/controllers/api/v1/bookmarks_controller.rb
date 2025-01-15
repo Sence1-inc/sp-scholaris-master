@@ -10,7 +10,7 @@ class Api::V1::BookmarksController < ApplicationController
 
   # GET /api/v1/bookmarks/
   def show
-
+  
     @schols = Bookmark.select('scholarship_providers.id as scholarship_provider_id, scholarship_providers.provider_name, scholarships.scholarship_name, bookmarks.id, scholarships.id as scholarship_id, users.id as user_id').joins(scholarship: :scholarship_provider).joins(:user).where('bookmarks.user_id = '+ params["user_id"].to_s)
 
     render json: { bookmarks: @schols }, status: 200
@@ -24,7 +24,7 @@ class Api::V1::BookmarksController < ApplicationController
     
     if @bookmark_exists && @bookmark_exists.deleted_at != nil
       if @bookmark_exists.update(deleted_at: nil)
-        render json: @api_v1_bookmark
+        render json: @bookmark_exists
       else
         render json: { error: @bookmark_exists.errors }, status: :unprocessable_entity    
       end
