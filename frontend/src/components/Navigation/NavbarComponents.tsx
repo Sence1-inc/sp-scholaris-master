@@ -299,11 +299,11 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
           id="search-scholarships"
         />
       </ListItem>
-      <ListItem sx={profileTheme.navigation.mainNavListSignUp}>
+      <ListItem disablePadding>
         <Typography
           component={Link}
           to={`/sign-up`}
-          sx={profileTheme.navigation.mainNavListItemLink}
+          sx={profileTheme.navigation.mainNavListSignUp}
         >
           <Box component="span" sx={profileTheme.navigation.mainNavListSignUpSpan}>It's free</Box>
           Sign Up

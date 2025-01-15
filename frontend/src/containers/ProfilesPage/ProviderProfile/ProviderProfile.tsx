@@ -47,7 +47,7 @@ const ProviderProfile: React.FC = () => {
     return <Navigate to="/404" replace />
   }
 
-  if (id && (!Number.isInteger(parseInt(id)) || user.id !== parseInt(id))) {
+  if (id && (!Number.isInteger(parseInt(id)) || user.scholarship_provider.id !== parseInt(id))) {
     return <Navigate to="/404" replace />
   }
 

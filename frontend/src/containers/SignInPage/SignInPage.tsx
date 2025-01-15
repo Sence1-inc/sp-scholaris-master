@@ -10,6 +10,11 @@ import { useSnackbar } from '../../context/SnackBarContext'
 import { User } from '../../redux/types'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
 import BannerButton from '../../components/Button/BannerButton'
+import {
+  ADMIN_ROLE_ID,
+  PROVIDER_ROLE_ID,
+  STUDENT_ROLE_ID,
+} from '../../constants/constants'
 
 interface SignInPageProps {}
 
@@ -44,18 +49,18 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   useEffect(() => {
     if (isAuthenticated) {
       switch (userState?.role?.id) {
-        case 3:
+        case STUDENT_ROLE_ID:
           navigate('/student/account')
           break
 
-        case 4:
+        case PROVIDER_ROLE_ID:
           if (userState.scholarship_provider.provider_name) {
             navigate('/provider/dashboard')
           } else {
             navigate(`/provider/account/${userState.id}/view-profile`)
           }
           break
-        case 5:
+        case ADMIN_ROLE_ID:
           navigate('/admin/scholarships')
           break
         default:
@@ -145,7 +150,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       }
     }
   }
-  
+
   return (
     <Container
       maxWidth="md"
@@ -156,11 +161,9 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         marginBlock: '40px',
       }}
     >
-      <Box
-         className='banner__container'
-        >
-          <BannerButton />
-        </Box>
+      <Box className="banner__container">
+        <BannerButton />
+      </Box>
       <Typography
         variant="h2"
         sx={{
