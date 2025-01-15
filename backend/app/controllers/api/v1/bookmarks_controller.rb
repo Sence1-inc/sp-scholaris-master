@@ -1,5 +1,6 @@
 class Api::V1::BookmarksController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :is_authorized, only: %i[ show create remove_bookmark ]
 
   # GET /api/v1/bookmarks or /api/v1/bookmarks.json
   # def index
@@ -73,5 +74,10 @@ class Api::V1::BookmarksController < ApplicationController
     def api_v1_bookmark_params
       params.require(:bookmark).permit(:bookmark, :user_id, :scholarship_id, :provider_id, :school_id)
       # params.fetch(:api_v1_bookmark, {})
+    end
+
+    def is_authorized
+      user = User.find(params[:user_id])
+      handle_is_resource_owner(user)
     end
 end
