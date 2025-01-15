@@ -94,18 +94,18 @@ const BookmarksPage: React.FC = () => {
       field: 'provider',
       headerName: 'Organization',
       type: 'string',
-      ...(sm ? { flex: 1.5 } : { width: 200 }),
+      ...(sm ? { flex: 1.2 } : { width: 200 }),
     },
     {
       field: 'status',
       headerName: 'Status',
-      ...(sm ? { flex: 0.6 } : { width: 100 }),
+      ...(sm ? { flex: 0.6 } : { width: 80 }),
     },
     {
       field: 'actions',
       headerName: 'Actions',
       type: 'actions',
-      ...(sm ? { flex: 1 } : {}),
+      ...(sm ? { flex: 1.5 } : { width: 100 }),
       renderCell: (params: any) => renderActions(params),
     },
   ]
@@ -215,7 +215,7 @@ const BookmarksPage: React.FC = () => {
 
     setFilteredRows(newFilteredRows);
   }, [rowData, activeTab]);
-
+console.log('bp', theme.breakpoints.between('xs', 'md'))
   return (
     <Box component="section" sx={profiletheme.bookmarks.bookmarksSection}>
       <Box sx={profiletheme.container.sectionContainer}>
@@ -228,9 +228,9 @@ const BookmarksPage: React.FC = () => {
         </Button>
         <Box sx={profiletheme.bookmarks.bookmarksBox}>
           <Tabs sx={profiletheme.bookmarks.bookmarksTabs} value={activeTab} onChange={handleTabChange}>
-            <Tab sx={profiletheme.bookmarks.bookmarksTab} disableRipple={true} label="All Bookmarks" />
-            <Tab sx={profiletheme.bookmarks.bookmarksTab} disableRipple={true} label="Active Scholarships" />
-            <Tab sx={profiletheme.bookmarks.bookmarksTab} disableRipple={true} label="Inactive Scholarships" />
+            <Tab sx={profiletheme.bookmarks.bookmarksTab} disableRipple={true} label={sm ? "All Bookmarks" : "All"} />
+            <Tab sx={profiletheme.bookmarks.bookmarksTab} disableRipple={true} label={sm ? "Active Scholarships" : "Active"} />
+            <Tab sx={profiletheme.bookmarks.bookmarksTab} disableRipple={true} label={sm ? "Inactive Scholarships" : "Inactive"} />
           </Tabs>
           <DataGrid
             onRowClick={handleRowClick}
