@@ -119,7 +119,6 @@ const BookmarksPage: React.FC = () => {
   }
 
   const renderActions = (params: any) => {
-    console.log(params)
     return (
       <Box sx={{ ...containerStyle, padding: 0 }}>
         <Button
@@ -215,7 +214,7 @@ const BookmarksPage: React.FC = () => {
 
     setFilteredRows(newFilteredRows);
   }, [rowData, activeTab]);
-console.log('bp', theme.breakpoints.between('xs', 'md'))
+
   return (
     <Box component="section" sx={profiletheme.bookmarks.bookmarksSection}>
       <Box sx={profiletheme.container.sectionContainer}>
