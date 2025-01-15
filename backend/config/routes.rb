@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       resources :bookmarks do
+        get ':user_id', to: 'bookmarks#show', on: :collection
         delete 'remove_bookmark', to: 'bookmarks#remove_bookmark', on: :collection
       end
       resources :scholarship_applications do
