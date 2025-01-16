@@ -17,6 +17,8 @@ import { Scholarship } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
 import theme from '../../styles/theme'
 import './SearchResultsPage.css'
+import axiosInstance from '../../axiosConfig'
+import { Bookmark } from '../../redux/types'
 
 interface GridRowDef {
   scholarshipName: string
@@ -54,6 +56,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const [rowData, setRowData] = useState<GridRowDef[]>([])
 
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
+  const user = useAppSelector((state) => state.persistedReducer.user)
 
   const columns = [
     {
@@ -85,21 +88,64 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
       renderCell: (params: any) => renderActions(params),
     },
   ]
-
   const [isFirstButton, setIsFirstButton] = useState(true);
 
-  const handleSavedButton = () => {
+  const checkIfBookmarked = async(params: any) => {
+    
+    try {
+      const response = await axiosInstance.get(
+        `/api/v1/bookmarks/${user.id}`
+      )
+      const bookmarks = response.data;
+      const bookmarkStatus = bookmarks.find((bookmark : Bookmark ) => bookmark.scholarship_id === params.row.id) ? true : false;
+      console.log(bookmarkStatus);
+      return bookmarkStatus;
+    } catch (error : any) {
+
+    }
+  }
+  const handleSaveButton = async(params : any) => {
+    console.log(user)
+    console.log(params.row)
+    const scholarshipData = {
+      user_id: user.id,
+      scholarship_id: params.row.id
+    }    
+    try {
+      const response = await axiosInstance.post(
+        `/api/v1/bookmarks`,
+        scholarshipData,
+        { withCredentials: true }
+      )
+      if (response.data) {
+        console.log(response.data);
+      }
+    } catch (error : any ) {
+
+    }
     setIsFirstButton(!isFirstButton);
   };
+
+  const handleUnsaveButton = async(params : any) => {
+
+  }
 
 
   const renderActions = (params: any) => {
     return (
-      <Box sx={{ ...containerStyle, padding: 0 }}>
-        <Typography
+      <Box sx={{ ...containerStyle, 
+        padding: 0,
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: '8px',
+        width: '150px' 
+        }}>
+        {/* <Typography
           color="primary"
           component={Link}
-          to={`/scholarships/${params.row.id}`}
+          to="/"
+          // to={`/scholarships/${params.row.id}`}
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -107,7 +153,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             gap: '8px',
             width: '150px',
           }}
-        >
+        > */}
           {/* <VisibilityIcon fontSize="small" /> */}
           <Button
             variant="contained"
@@ -119,7 +165,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              minWidth: "50px",
+              maxWidth: "50px",
+              maxHeight: "32px",
               "&:hover": {
                 backgroundColor: "#f0f0f0",
               },
@@ -127,9 +174,10 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           >
             <VisibilityIcon fontSize="small" />
           </Button>
-          {isFirstButton ? (
+          { () => {checkIfBookmarked(params)} ? (
               <Button
                 variant="contained"
+                onClick={() => handleSaveButton(params)}
                 sx={{
                   backgroundColor: "white",
                   color: "black",
@@ -138,7 +186,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  minWidth: "50px",
+                  maxWidth: "50px",
+                  maxHeight: "32px",
                   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
                   "&:hover": {
                     backgroundColor: "#f0f0f0",
@@ -150,7 +199,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             ) : (
               <Button
                 variant="contained"
-                onClick={handleSavedButton}
+                onClick={() => handleUnsaveButton(params)}
                 sx={{
                   backgroundColor: '#002147',
                   color: "#fff",
@@ -159,7 +208,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  minWidth: "100px",
+                  maxWidth: "50px",
+                  maxHeight: "32px",
                   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
                   "&:hover": {
                     backgroundColor: "#f0f0f0",
@@ -169,7 +219,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
                 <StarIcon fontSize="small" />
               </Button>
             )}
-        </Typography>
+        {/* </Typography> */}
       </Box>
     )
   }

@@ -327,3 +327,12 @@ export type ScholarshipFeedback = {
   created_at: string
   updated_at: string
 }
+
+export type Bookmark = {
+  id: number,
+  provider_name: string,
+  scholarship_id: number,
+  scholarship_name: string,
+  scholarship_provider_id: number,
+  user_id: number
+}
