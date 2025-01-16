@@ -146,6 +146,16 @@ const AuthenticatedStudent: React.FC<AuthenticatedUserProps> = ({
         <Typography
           variant="body1"
           component={Link}
+          to="/student/bookmarks"
+          sx={profileTheme.navigation.mainNavListItemLink}
+        >
+          Bookmarks
+        </Typography>
+      </ListItem>
+      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+        <Typography
+          variant="body1"
+          component={Link}
           to="/student/applications"
           sx={profileTheme.navigation.mainNavListItemLink}
         >
@@ -305,7 +315,7 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
           to={`/sign-up`}
           sx={profileTheme.navigation.mainNavListItemLink}
         >
-          <Box component="span" sx={profileTheme.navigation.mainNavListSignUpSpan}>Sign up is free</Box>
+          <Box component="span" sx={profileTheme.navigation.mainNavListSignUpSpan}>It's free</Box>
           Sign Up
         </Typography>
       </ListItem>

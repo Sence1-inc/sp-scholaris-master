@@ -1,4 +1,6 @@
-import { OpenInNew } from '@mui/icons-material'
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import StarIcon from '@mui/icons-material/Star';
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import HomeIcon from '@mui/icons-material/Home'
 import { Box, Button, Typography, useMediaQuery } from '@mui/material'
@@ -84,6 +86,13 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     },
   ]
 
+  const [isFirstButton, setIsFirstButton] = useState(true);
+
+  const handleSavedButton = () => {
+    setIsFirstButton(!isFirstButton);
+  };
+
+
   const renderActions = (params: any) => {
     return (
       <Box sx={{ ...containerStyle, padding: 0 }}>
@@ -99,8 +108,67 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             width: '150px',
           }}
         >
-          View
-          <OpenInNew fontSize="small" />
+          {/* <VisibilityIcon fontSize="small" /> */}
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              padding: "5px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minWidth: "50px",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+              },
+            }}
+          >
+            <VisibilityIcon fontSize="small" />
+          </Button>
+          {isFirstButton ? (
+              <Button
+                variant="contained"
+                sx={{
+                  backgroundColor: "white",
+                  color: "black",
+                  padding: "5px",
+                  borderRadius: "8px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minWidth: "50px",
+                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+                  "&:hover": {
+                    backgroundColor: "#f0f0f0",
+                  },
+                }}
+              >
+                <StarBorderIcon fontSize="small" />
+              </Button>
+            ) : (
+              <Button
+                variant="contained"
+                onClick={handleSavedButton}
+                sx={{
+                  backgroundColor: '#002147',
+                  color: "#fff",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minWidth: "100px",
+                  boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+                  "&:hover": {
+                    backgroundColor: "#f0f0f0",
+                  },
+                }}
+              >
+                <StarIcon fontSize="small" />
+              </Button>
+            )}
         </Typography>
       </Box>
     )
