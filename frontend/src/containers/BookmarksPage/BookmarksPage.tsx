@@ -11,6 +11,8 @@ import { containerStyle } from '../../styles/globalStyles'
 import theme from '../../styles/theme'
 import profiletheme from '../../styles/profileTheme'
 import BookmarkIcon from '@mui/icons-material/StarRounded';
+import { Bookmark } from '../../redux/types'
+import axiosInstance from '../../axiosConfig'
 
 interface GridRowDef {
   scholarshipName: string
@@ -21,36 +23,36 @@ interface GridRowDef {
 }
 
 // This is only a placeholder 
-const SampleScholarship = [
-  {
-    id: 1,
-    listing_id: 123,
-    scholarship_name: "My Scholarship",
-    start_date: "01/20/2024",
-    due_date: "01/20/2025",
-    scholarship_provider: {
-      id: 1,
-      provider_name: "Me"
-    },
-    status: "active",
-    content_status: "aaa",
-    is_application_link_active: true,
-  },
-  {
-    id: 2,
-    listing_id: 124,
-    scholarship_name: "My Scholarship 2",
-    start_date: "01/20/2024",
-    due_date: "01/20/2025",
-    scholarship_provider: {
-      id: 1,
-      provider_name: "Me2"
-    },
-    status: "inactive",
-    content_status: "aaa",
-    is_application_link_active: true,
-  }
-]
+// const SampleScholarship = [
+//   {
+//     id: 1,
+//     listing_id: 123,
+//     scholarship_name: "My Scholarship",
+//     start_date: "01/20/2024",
+//     due_date: "01/20/2025",
+//     scholarship_provider: {
+//       id: 1,
+//       provider_name: "Me"
+//     },
+//     status: "active",
+//     content_status: "aaa",
+//     is_application_link_active: true,
+//   },
+//   {
+//     id: 2,
+//     listing_id: 124,
+//     scholarship_name: "My Scholarship 2",
+//     start_date: "01/20/2024",
+//     due_date: "01/20/2025",
+//     scholarship_provider: {
+//       id: 1,
+//       provider_name: "Me2"
+//     },
+//     status: "inactive",
+//     content_status: "aaa",
+//     is_application_link_active: true,
+//   }
+// ]
 
 const BookmarksPage: React.FC = () => {
   const dispatch = useAppDispatch()
@@ -66,6 +68,8 @@ const BookmarksPage: React.FC = () => {
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [activeTab, setActiveTab] = useState<number>(0);
   const [filteredRows, setFilteredRows] = useState<GridRowDef[]>([]);
+  const user = useAppSelector((state) => state.persistedReducer.user)
+  const [studentBookmarks, setStudentBookmarks] = useState<number[]>([]);
   
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
 
@@ -175,18 +179,44 @@ const BookmarksPage: React.FC = () => {
   // result.scholarships.scholarships
   // SampleScholarship data will be changed to the list of scholarship
   // with a bookmark true on the bookmark for the user. 
-  useEffect(() => {
-    if (
-      Array.isArray(SampleScholarship) &&
-      SampleScholarship.length > 0
-    ) {
-      formatScholarships(SampleScholarship)
-      setTotalCount(result.scholarships.total_count)
-    } else {
-      setRowData([])
+
+  const getBookmarkedScholarships = async() => {
+    try {
+      const response = await axiosInstance.get(
+        `/api/v1/bookmarks/${user.id}`
+      )
+      console.log(response.data.bookmarks);
+      response.data.bookmarks.map((item: Bookmark)=> {
+        //console.log(item);
+        setStudentBookmarks([...studentBookmarks, item.scholarship_id]);
+      });
+      //console.log(studentBookmarks);
+      
+      //console.log(result.scholarships.scholarships);
+    } catch (error : any) {
+
     }
+  }
+
+  useEffect(() => {
+    const arr = getBookmarkedScholarships();
+    
+    //console.log(typeof(bookmarkedScholarships));
+    //bookmarkedScholarships.forEach((item: Bookmark, index)=> {
+    // bookmarkedScholarships.map((bookmark: Bookmark) => {
+    //   console.log(bookmark.scholarship_id);
+    // console.log(bookmarkedScholarships);
+    // if (
+    //   Array.isArray(SampleScholarship) &&
+    //   SampleScholarship.length > 0
+    // ) {
+    //   formatScholarships(SampleScholarship)
+    //   setTotalCount(result.scholarships.total_count)
+    // } else {
+    //   setRowData([])
+    // }
     // eslint-disable-next-line
-  }, [SampleScholarship])
+  }, [])
 
   useEffect(() => {
     if ((params?.params?.page as number) > result?.scholarships?.total_pages) {

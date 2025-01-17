@@ -19,6 +19,9 @@ import theme from '../../styles/theme'
 import './SearchResultsPage.css'
 import axiosInstance from '../../axiosConfig'
 import { Bookmark } from '../../redux/types'
+import axios from 'axios';
+import { render } from '@testing-library/react';
+import { isTemplateSpan } from 'typescript';
 
 interface GridRowDef {
   scholarshipName: string
@@ -57,6 +60,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
   const user = useAppSelector((state) => state.persistedReducer.user)
+  const [bookmarksOfUser, setBookmarksOfUser] = useState<number[]>([]);
 
   const columns = [
     {
@@ -90,23 +94,41 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   ]
   const [isFirstButton, setIsFirstButton] = useState(true);
 
-  const checkIfBookmarked = async(params: any) => {
+  const getBookmarksOfUser = async() => {
     
     try {
       const response = await axiosInstance.get(
         `/api/v1/bookmarks/${user.id}`
       )
-      const bookmarks = response.data;
-      const bookmarkStatus = bookmarks.find((bookmark : Bookmark ) => bookmark.scholarship_id === params.row.id) ? true : false;
-      console.log(bookmarkStatus);
-      return bookmarkStatus;
-    } catch (error : any) {
 
+      if(response.data){
+        // console.log(response.data)
+        
+        const arr = response.data.map((bookmark: Bookmark) => {
+          console.log("hello");
+          // console.log("in bookmark map", bookmark.scholarship_id);
+          setBookmarksOfUser([...bookmarksOfUser, bookmark.scholarship_id])
+          // setBookmarksOfUser(bookmarksOfUser);  
+          return bookmark.scholarship_id;
+        })
+        return null;
+      }   
+  
+    } catch (error : any) {
+    }
+  }
+
+  const bookmarkChecker = (params: any) => {
+    getBookmarksOfUser();
+    if(bookmarksOfUser.includes(params.row.id)) {
+      return false;
+    } else {
+      return true;
     }
   }
   const handleSaveButton = async(params : any) => {
-    console.log(user)
-    console.log(params.row)
+    console.log("in save");
+    // console.log(params.row)
     const scholarshipData = {
       user_id: user.id,
       scholarship_id: params.row.id
@@ -114,24 +136,52 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     try {
       const response = await axiosInstance.post(
         `/api/v1/bookmarks`,
-        scholarshipData,
-        { withCredentials: true }
+        scholarshipData
       )
       if (response.data) {
-        console.log(response.data);
+        console.log("saved");
+        renderActions(params);
+        // setIsFirstButton(false);
       }
     } catch (error : any ) {
 
     }
-    setIsFirstButton(!isFirstButton);
   };
 
   const handleUnsaveButton = async(params : any) => {
+    console.log("in unsave");
+    try {
+      const response = await axiosInstance.get(
+        `/api/v1/bookmarks/${user.id}`
+      ) 
+      const bookmarks = response.data;
+      const bookmarkData = bookmarks.find((bookmark : Bookmark ) => bookmark.scholarship_id === params.row.id);
+    if(bookmarkData) {
+        try {
+          const response = await axios.delete(
+            `api/v1/bookmarks/remove_bookmark`,
+            bookmarkData.id
+          )
+          
+          if(response.data) {
+            console.log(response.data.message);
+            renderActions(params);
+            // setIsFirstButton(true);
+          }         
+        } catch (error : any) {
+          return;
+        }
+      }
+    } catch (error :  any) {
 
+    }
   }
-
-
+  
+  
   const renderActions = (params: any) => {
+    setIsFirstButton(bookmarkChecker(params));
+
+    console.log("is first button", isFirstButton);
     return (
       <Box sx={{ ...containerStyle, 
         padding: 0,
@@ -174,7 +224,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           >
             <VisibilityIcon fontSize="small" />
           </Button>
-          { () => {checkIfBookmarked(params)} ? (
+          { isFirstButton ? (
               <Button
                 variant="contained"
                 onClick={() => handleSaveButton(params)}
@@ -224,6 +274,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     )
   }
 
+  
   const formatScholarships = (data: Scholarship[]) => {
     const row = data.map((scholarship: Scholarship) => {
       return {
@@ -308,11 +359,16 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     // eslint-disable-next-line
   }, [params.params])
 
+  useEffect(() => {
+    () => {getBookmarksOfUser};
+  }, [])
+
   const handleRowClick = (params: GridRowParams) => {
     navigate(`/scholarships/${params.row.id}`)
   }
 
   return (
+    
     <section className="content">
       <Box sx={containerStyle} style={{ width: '100%' }}>
         <Button
