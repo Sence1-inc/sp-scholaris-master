@@ -4,7 +4,7 @@ import StarIcon from '@mui/icons-material/Star';
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import HomeIcon from '@mui/icons-material/Home'
 import { Box, Button, Typography, useMediaQuery } from '@mui/material'
-import { DataGrid, GridRowParams } from '@mui/x-data-grid'
+import { DataGrid, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
 import Cookies from 'js-cookie'
 import queryString from 'query-string'
 import { useEffect, useState } from 'react'
@@ -60,7 +60,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
   const user = useAppSelector((state) => state.persistedReducer.user)
-  const [bookmarksOfUser, setBookmarksOfUser] = useState<number[]>([]);
+  const [isBookmarked, setIsBookmarked] = useState<boolean>();
 
   const columns = [
     {
@@ -92,38 +92,24 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
       renderCell: (params: any) => renderActions(params),
     },
   ]
-  const [isFirstButton, setIsFirstButton] = useState(true);
-
-  const getBookmarksOfUser = async() => {
-    
-    try {
-      const response = await axiosInstance.get(
-        `/api/v1/bookmarks/${user.id}`
-      )
-
-      if(response.data){
-        // console.log(response.data)
-        
-        const arr = response.data.map((bookmark: Bookmark) => {
-          console.log("hello");
-          // console.log("in bookmark map", bookmark.scholarship_id);
-          setBookmarksOfUser([...bookmarksOfUser, bookmark.scholarship_id])
-          // setBookmarksOfUser(bookmarksOfUser);  
-          return bookmark.scholarship_id;
-        })
-        return null;
-      }   
   
-    } catch (error : any) {
-    }
-  }
 
-  const bookmarkChecker = (params: any) => {
-    getBookmarksOfUser();
-    if(bookmarksOfUser.includes(params.row.id)) {
-      return false;
-    } else {
-      return true;
+  const bookmarkChecker = async(params: GridRenderCellParams) => {   
+    try {
+      const scholarshipData = {
+        user_id: user.id,
+        scholarship_id: params.row.id
+      }  
+      const response = await axiosInstance.post(
+        `api/v1/bookmarks/is_bookmarked`,
+        scholarshipData
+      )     
+      if(response.data) {
+        setIsBookmarked(true);
+      }
+      
+    } catch (error : any) {
+        setIsBookmarked(false);
     }
   }
   const handleSaveButton = async(params : any) => {
@@ -140,8 +126,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
       )
       if (response.data) {
         console.log("saved");
-        renderActions(params);
-        // setIsFirstButton(false);
+        //setIsFirstButton(false);
       }
     } catch (error : any ) {
 
@@ -164,8 +149,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           )
           
           if(response.data) {
-            console.log(response.data.message);
-            renderActions(params);
+            //console.log(response.data.message);
+        
             // setIsFirstButton(true);
           }         
         } catch (error : any) {
@@ -178,10 +163,9 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   }
   
   
-  const renderActions = (params: any) => {
-    setIsFirstButton(bookmarkChecker(params));
-
-    console.log("is first button", isFirstButton);
+  const renderActions = (params: GridRenderCellParams) => {
+    bookmarkChecker(params);
+    //console.log(params.row.scholarshipName, isFirstButton);
     return (
       <Box sx={{ ...containerStyle, 
         padding: 0,
@@ -224,7 +208,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           >
             <VisibilityIcon fontSize="small" />
           </Button>
-          { isFirstButton ? (
+          { !isBookmarked ? (
               <Button
                 variant="contained"
                 onClick={() => handleSaveButton(params)}
@@ -358,10 +342,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     navigate(`/scholarships?${queryParams}`)
     // eslint-disable-next-line
   }, [params.params])
-
-  useEffect(() => {
-    () => {getBookmarksOfUser};
-  }, [])
 
   const handleRowClick = (params: GridRowParams) => {
     navigate(`/scholarships/${params.row.id}`)

@@ -179,44 +179,40 @@ const BookmarksPage: React.FC = () => {
   // result.scholarships.scholarships
   // SampleScholarship data will be changed to the list of scholarship
   // with a bookmark true on the bookmark for the user. 
+  useEffect(() => {
+    const bookmarks = getBookmarkedScholarships()
+    console.log('bookmarks', bookmarks)
+    if (
+      Array.isArray(bookmarks) &&
+      bookmarks.length > 0
+    ) {
+      formatScholarships(bookmarks);
+      setTotalCount(result.scholarships.total_count)
+    } else {
+      setRowData([])
+    }
+    // eslint-disable-next-line
+  }, [])
 
   const getBookmarkedScholarships = async() => {
     try {
       const response = await axiosInstance.get(
         `/api/v1/bookmarks/${user.id}`
       )
-      console.log(response.data.bookmarks);
-      response.data.bookmarks.map((item: Bookmark)=> {
-        //console.log(item);
-        setStudentBookmarks([...studentBookmarks, item.scholarship_id]);
-      });
-      //console.log(studentBookmarks);
-      
-      //console.log(result.scholarships.scholarships);
+      //console.log(response.data.bookmarks)
+      console.log (response);
+      const temp = response.data.bookmark;
+      return temp;
+      //console.log(response.data);
+      // response.data.bookmarks.map((bookmark: Bookmark)=> {
+      //   console.log(bookmark);
+      // });
+     
     } catch (error : any) {
-
+      console.log(error);
     }
   }
 
-  useEffect(() => {
-    const arr = getBookmarkedScholarships();
-    
-    //console.log(typeof(bookmarkedScholarships));
-    //bookmarkedScholarships.forEach((item: Bookmark, index)=> {
-    // bookmarkedScholarships.map((bookmark: Bookmark) => {
-    //   console.log(bookmark.scholarship_id);
-    // console.log(bookmarkedScholarships);
-    // if (
-    //   Array.isArray(SampleScholarship) &&
-    //   SampleScholarship.length > 0
-    // ) {
-    //   formatScholarships(SampleScholarship)
-    //   setTotalCount(result.scholarships.total_count)
-    // } else {
-    //   setRowData([])
-    // }
-    // eslint-disable-next-line
-  }, [])
 
   useEffect(() => {
     if ((params?.params?.page as number) > result?.scholarships?.total_pages) {
@@ -245,6 +241,7 @@ const BookmarksPage: React.FC = () => {
     setFilteredRows(newFilteredRows);
   }, [rowData, activeTab]);
 
+  getBookmarkedScholarships();
   return (
     <Box component="section" sx={profiletheme.bookmarks.bookmarksSection}>
       <Box sx={profiletheme.container.sectionContainer}>

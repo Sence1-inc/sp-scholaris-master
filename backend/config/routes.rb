@@ -6,6 +6,7 @@ Rails.application.routes.draw do
       resources :bookmarks do
         get ':user_id', to: 'bookmarks#show', on: :collection
         delete 'remove_bookmark', to: 'bookmarks#remove_bookmark', on: :collection
+        post 'is_bookmarked', to: 'bookmarks#is_bookmarked', on: :collection
       end
       resources :scholarship_applications do
         post 'send_email', on: :collection, to: 'scholarship_applications#send_email', as: 'send_email'
