@@ -13,6 +13,7 @@ export type Scholarship = {
   status: string
   content_status: string
   is_application_link_active: boolean
+  is_bookmarked: boolean
 }
 
 export type BenefitCategory = {
@@ -329,10 +330,10 @@ export type ScholarshipFeedback = {
 }
 
 export type Bookmark = {
-  id: number,
-  provider_name: string,
-  scholarship_id: number,
-  scholarship_name: string,
-  scholarship_provider_id: number,
+  id: number
+  provider_name: string
+  scholarship_id: number
+  scholarship_name: string
+  scholarship_provider_id: number
   user_id: number
 }
