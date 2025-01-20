@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :bookmarks do
         get ':user_id', to: 'bookmarks#show', on: :collection
-        delete 'remove_bookmark', to: 'bookmarks#remove_bookmark', on: :collection
+        post 'remove_bookmark', to: 'bookmarks#remove_bookmark', on: :collection
         post 'is_bookmarked', to: 'bookmarks#is_bookmarked', on: :collection
       end
       resources :scholarship_applications do

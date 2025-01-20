@@ -32,7 +32,10 @@ module Api
           ).page(params[:page]).per(params[:limit])
 
           scholarships_data = @scholarships.map do |scholarship|
-            scholarship.as_json.merge('is_bookmarked' => Bookmark.is_bookmarked(@user.id, scholarship.id))
+            scholarship.as_json.merge(
+              'is_bookmarked' => Bookmark.is_bookmarked(@user.id, scholarship.id),
+              'bookmark_id' => Bookmark.find_by(user_id: @user.id, scholarship_id: scholarship.id)&.id
+            )
           end
 
           render json: {

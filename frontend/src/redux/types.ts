@@ -15,6 +15,7 @@ export type Scholarship = {
   content_status: string
   is_application_link_active: boolean
   is_bookmarked: boolean
+  bookmark_id?: number
 }
 
 export type BenefitCategory = {

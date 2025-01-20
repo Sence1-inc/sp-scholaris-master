@@ -1,26 +1,28 @@
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import HomeIcon from '@mui/icons-material/Home'
-import StarIcon from '@mui/icons-material/Star'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import { Box, Button, Typography, useMediaQuery } from '@mui/material'
 import { DataGrid, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
-import axios from 'axios'
 import Cookies from 'js-cookie'
 import queryString from 'query-string'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import Search from '../../components/Search/Search'
+import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { Bookmark, Scholarship } from '../../redux/types'
+import { Scholarship } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
 import theme from '../../styles/theme'
 import './SearchResultsPage.css'
 
 interface GridRowDef {
+  id: number
+  bookmarkId: number
+  scholarshipId: number
   scholarshipName: string
   startDate: string | Date
   endDate: string | Date
@@ -35,6 +37,7 @@ interface SearchResultsPageProps {
 export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   isASection,
 }) => {
+  const { showMessage } = useSnackbar()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { getScholarships, areScholarshipsLoading } = useGetScholarships()
@@ -90,9 +93,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     },
   ]
 
-  const handleSaveButton = async (scholarship_id: boolean) => {
-    console.log('in save')
-    // console.log(params.row)
+  const handleSaveButton = async (params: any) => {
     const scholarshipData = {
       user_id: user.id,
       scholarship_id: params.row.id,
@@ -102,38 +103,56 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         `/api/v1/bookmarks`,
         scholarshipData
       )
-      if (response.data) {
-        console.log('saved')
-        //setIsFirstButton(false);
-      }
-    } catch (error: any) {}
+      const updatedScholarship = response.data.scholarship
+
+      const updatedRows = rowData.map((row) =>
+        row.id === updatedScholarship.id
+          ? {
+              ...row,
+              isBookmarked: updatedScholarship.is_bookmarked,
+              bookmarkId: updatedScholarship.bookmark_id,
+            }
+          : row
+      )
+
+      setRowData([...updatedRows])
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.error, 'error')
+    }
   }
 
   const handleUnsaveButton = async (params: any) => {
-    console.log('in unsave')
     try {
-      const response = await axiosInstance.get(`/api/v1/bookmarks/${user.id}`)
-      const bookmarks = response.data
-    
-        try {
-          const response = await axios.delete(
-            `api/v1/bookmarks/remove_bookmark`,
-            bookmarkData.id
-          )
-
-          if (response.data) {
-            console.log(response.data)
-          }
-        } catch (error: any) {
-          return
+      const response = await axiosInstance.post(
+        `api/v1/bookmarks/remove_bookmark`,
+        {
+          bookmark_id: Number(params.row.bookmarkId),
+          user_id: user.id,
         }
-      
-    } catch (error: any) {}
+      )
+      const updatedScholarship = response.data.scholarship
+
+      const updatedRows = rowData.map((row) =>
+        row.id === updatedScholarship.id
+          ? {
+              ...row,
+              isBookmarked: updatedScholarship.is_bookmarked,
+              bookmarkId: updatedScholarship.bookmark_id,
+            }
+          : row
+      )
+
+      setRowData([...updatedRows])
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.error, 'error')
+    }
   }
 
   const renderActions = (params: GridRenderCellParams) => {
-    
-    console.log(paramsisBookmarked);
+    const isBookmarked = params.row.isBookmarked
+
     return (
       <Box
         sx={{
@@ -146,20 +165,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           width: '150px',
         }}
       >
-        {/* <Typography
-          color="primary"
-          component={Link}
-          to="/"
-          // to={`/scholarships/${params.row.id}`}
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '8px',
-            width: '150px',
-          }}
-        > */}
-        {/* <VisibilityIcon fontSize="small" /> */}
         <Button
           variant="contained"
           sx={{
@@ -179,52 +184,37 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         >
           <VisibilityIcon fontSize="small" />
         </Button>
-        {!params.row.isBookmarked ? (
-          <Button
-            variant="contained"
-            onClick={() => handleSaveButton(params.row.id)}
+        <Button
+          variant="contained"
+          onClick={() =>
+            !isBookmarked
+              ? handleSaveButton(params)
+              : handleUnsaveButton(params)
+          }
+          sx={{
+            backgroundColor: !isBookmarked ? 'white' : '#002147',
+            color: 'black',
+            padding: '5px',
+            borderRadius: '8px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            maxWidth: '50px',
+            maxHeight: '32px',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+            '&:hover': {
+              backgroundColor: '#f0f0f0',
+            },
+          }}
+          key={isBookmarked ? 'bookmarked' : 'not-bookmarked'}
+        >
+          <StarBorderIcon
+            fontSize="small"
             sx={{
-              backgroundColor: 'white',
-              color: 'black',
-              padding: '5px',
-              borderRadius: '8px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              maxWidth: '50px',
-              maxHeight: '32px',
-              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
-              '&:hover': {
-                backgroundColor: '#f0f0f0',
-              },
+              color: isBookmarked ? 'white' : '#002147',
             }}
-          >
-            <StarBorderIcon fontSize="small" />
-          </Button>
-        ) : (
-          <Button
-            variant="contained"
-            onClick={() => handleUnsaveButton(params.row.id)}
-            sx={{
-              backgroundColor: '#002147',
-              color: '#fff',
-              padding: '10px',
-              borderRadius: '8px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              maxWidth: '50px',
-              maxHeight: '32px',
-              boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
-              '&:hover': {
-                backgroundColor: '#f0f0f0',
-              },
-            }}
-          >
-            <StarIcon fontSize="small" />
-          </Button>
-        )}
-        {/* </Typography> */}
+          />
+        </Button>
       </Box>
     )
   }
@@ -233,6 +223,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     const row = data.map((scholarship: Scholarship) => {
       return {
         id: scholarship.id,
+        bookmarkId: Number(scholarship.bookmark_id),
+        scholarshipId: Number(scholarship.id),
         scholarshipName: scholarship.scholarship_name,
         startDate: new Date(scholarship.start_date).toDateString(),
         endDate: new Date(scholarship.due_date).toDateString(),

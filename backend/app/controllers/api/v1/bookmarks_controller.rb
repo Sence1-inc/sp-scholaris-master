@@ -25,7 +25,11 @@ class Api::V1::BookmarksController < ApplicationController
     
     if @bookmark_exists && @bookmark_exists.deleted_at != nil
       if @bookmark_exists.update(deleted_at: nil)
-        render json: @bookmark_exists
+        scholarship = @bookmark_exists.scholarship.as_json.merge(
+          'is_bookmarked' => true,
+          'bookmark_id' => Bookmark.find_by(user_id: params[:user_id], scholarship_id:  @bookmark_exists.scholarship.id)&.id
+        )
+        render json: { message: "Saved to bookmarks",bookmark: @bookmark_exists, scholarship: scholarship },  status: 201 
       else
         render json: { error: @bookmark_exists.errors }, status: :unprocessable_entity    
       end
@@ -35,7 +39,11 @@ class Api::V1::BookmarksController < ApplicationController
       @api_v1_bookmark = Bookmark.new(api_v1_bookmark_params)
 
       if @api_v1_bookmark.save
-        render json: { bookmark: @api_v1_bookmark },  status: :created 
+        scholarship = @api_v1_bookmark.scholarship.as_json.merge(
+          'is_bookmarked' => true,
+          'bookmark_id' => Bookmark.find_by(user_id: params[:user_id], scholarship_id:  @api_v1_bookmark.scholarship.id)&.id
+        )
+        render json: { message: "Saved to bookmarks", bookmark: @api_v1_bookmark, scholarship: scholarship },  status: :created 
       else
         render json: { error: @api_v1_bookmark.errors }, status: :unprocessable_entity 
       end
@@ -48,8 +56,11 @@ class Api::V1::BookmarksController < ApplicationController
     @bookmark = Bookmark.find(params[:bookmark_id])
 
     if Bookmark.soft_delete(@bookmark)
-
-      render json: { message: "Successfully removed bookmark." }, status: 200
+      scholarship = @bookmark.scholarship.as_json.merge(
+          'is_bookmarked' => false,
+          'bookmark_id' => nil
+        )
+      render json: { message: "Successfully removed bookmark.", scholarship: scholarship }, status: 200
     end
   end
 
