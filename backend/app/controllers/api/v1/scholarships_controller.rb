@@ -12,9 +12,9 @@ module Api
         @scholarships = Scholarship.filtered(params)
         if cookies[:email].present?
           decoded_email = JwtService.decode(cookies[:email])['email'] rescue nil
-          user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+          @user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
 
-           if user.role_id == User::ROLES[:admin]
+           if @user.role_id == User::ROLES[:admin]
             @scholarships = Scholarship.all
           end
         end
@@ -31,8 +31,12 @@ module Api
             scholarship_provider: [:scholarship_provider_profile]
           ).page(params[:page]).per(params[:limit])
 
+          scholarships_data = @scholarships.map do |scholarship|
+            scholarship.as_json.merge('is_bookmarked' => is_bookmarked(scholarship, @user))
+          end
+
           render json: {
-            scholarships: @scholarships.as_json,
+            scholarships: scholarships_data,
             total_count: @scholarships.total_count,
             total_pages: @scholarships.total_pages,
             current_page: @scholarships.current_page,
@@ -239,6 +243,11 @@ module Api
             :content_status,
             :is_application_link_active
           ).merge(eligibilities: params[:eligibilities]).merge(requirements: params[:requirements]).merge(benefits: params[:benefits]).merge(benefit_categories: params[:benefit_categories])
+        end
+
+        def is_bookmarked(scholarship, user)
+          return false unless user.present?
+          user.bookmarked_scholarships.exists?(id: scholarship.id)
         end
 
         def authorize
