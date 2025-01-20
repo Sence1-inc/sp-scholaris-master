@@ -1,5 +1,6 @@
 import { CloseRounded, CloudUpload, Save } from '@mui/icons-material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
 import {
   Alert,
   Box,
@@ -11,7 +12,8 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import { DataGrid, GridRowModel, GridRenderCellParams } from '@mui/x-data-grid'
+import Grid from '@mui/material/Grid'
+import { DataGrid, GridRowModel } from '@mui/x-data-grid'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -33,10 +35,6 @@ import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData, ScholarshipFeedback, User } from '../../redux/types'
 import { formattedDate } from '../StudentDashboardPage/StudentDashboardPage'
 import './ScholarshipDetailsPage.css'
-import StarBorderIcon from '@mui/icons-material/StarBorder';
-import StarIcon from '@mui/icons-material/Star';
-import Grid from "@mui/material/Grid";
-
 
 interface Results {
   scholarshipData: ScholarshipData
@@ -464,16 +462,14 @@ export const ScholarshipDetailsPage: React.FC<
   }
 
   const handleSignin = () => {
-    navigate("/sign-in"); // Replace with your desired path
-  };
+    navigate('/sign-in') // Replace with your desired path
+  }
 
-  
   const handleSaveButton = async (params: ScholarshipData) => {
-
     if (!isAuthenticated) {
       navigate('/sign-in')
     }
-    console.log("in handle save:", params);
+    console.log('in handle save:', params)
     const scholarshipData = {
       user_id: user.id,
       scholarship_id: params.id,
@@ -507,7 +503,7 @@ export const ScholarshipDetailsPage: React.FC<
       const response = await axiosInstance.post(
         `api/v1/bookmarks/remove_bookmark`,
         {
-          bookmark_id: Number(params.bookmarkId),
+          bookmark_id: Number(params.bookmark_id),
           user_id: user.id,
         }
       )
@@ -609,7 +605,7 @@ export const ScholarshipDetailsPage: React.FC<
             All scholarship listings are currently test data and not actual
             listings. We’ll be updating them with real data soon, so stay tuned!
           </Alert> */}
-          
+
           {scholarshipData && (
             <div className="details-card">
               {(user.role_id === ADMIN_ROLE_ID ||
@@ -638,46 +634,56 @@ export const ScholarshipDetailsPage: React.FC<
               )}
               {!isLoading && (
                 <>
-                  <Grid container
+                  <Grid
+                    container
                     justifyContent="flex-end"
                     alignItems="center"
                     spacing={2}
                   >
-                  <Grid item xs={6}>
-                    <h3 className="title3">{scholarshipData.scholarship_name}</h3>
-                  </Grid>
-                  <Grid item xs={6} justifyItems="flex-end">
-                  
-                    <Button
-                      variant="contained"
-                      onClick={() =>
-                        !scholarshipData.is_bookmarked
-                          ? handleSaveButton(scholarshipData)
-                          : handleUnsaveButton(scholarshipData)
-                      }
-                      sx={{
-                        backgroundColor: "white",
-                        color: "black",
-                        padding: "10px",
-                        borderRadius: "8px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        minWidth: "100px",
-                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
-                        "&:hover": {
-                          backgroundColor: "#f0f0f0",
-                        },
-                      }}
-                    >
-                      <StarBorderIcon fontSize="small" 
+                    <Grid item xs={6}>
+                      <h3 className="title3">
+                        {scholarshipData.scholarship_name}
+                      </h3>
+                    </Grid>
+                    <Grid item xs={6} justifyItems="flex-end">
+                      <Button
+                        variant="contained"
+                        onClick={() =>
+                          !scholarshipData.is_bookmarked
+                            ? handleSaveButton(scholarshipData)
+                            : handleUnsaveButton(scholarshipData)
+                        }
                         sx={{
-                          color: scholarshipData.is_bookmarked ? 'white' : '#002147',
+                          backgroundColor: !scholarshipData.is_bookmarked
+                            ? 'white'
+                            : '#002147',
+                          color: scholarshipData.is_bookmarked
+                            ? 'white'
+                            : '#002147',
+                          padding: '10px',
+                          borderRadius: '8px',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          minWidth: '100px',
+                          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+                          '&:hover': {
+                            backgroundColor: '#f0f0f0',
+                          },
                         }}
-                      />Save
-                    </Button>
+                      >
+                        <StarBorderIcon
+                          fontSize="small"
+                          sx={{
+                            color: scholarshipData.is_bookmarked
+                              ? 'white'
+                              : '#002147',
+                          }}
+                        />
+                        Save
+                      </Button>
+                    </Grid>
                   </Grid>
-                </Grid>
                   <p
                     style={{
                       whiteSpace: 'pre-wrap',

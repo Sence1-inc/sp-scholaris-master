@@ -69,6 +69,7 @@ export type ScholarshipData = {
     },
   ]
   is_bookmarked: boolean
+  bookmark_id?: number
 }
 
 export type ProviderData = {

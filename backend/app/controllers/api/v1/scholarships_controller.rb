@@ -62,7 +62,20 @@ module Api
     
       # GET /api/v1/scholarships/1 or /api/v1/scholarships/1.json
       def show
-        render json: @scholarship.as_json
+        if cookies[:email].present?
+          @user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
+          @scholarship_data = @scholarship.as_json.merge(
+            'is_bookmarked' => Bookmark.is_bookmarked(@user.id, @scholarship.id),
+            'bookmark_id' => Bookmark.find_by(user_id: @user.id, scholarship_id: @scholarship.id)&.id
+          )
+        else
+          @scholarship_data = @scholarship.as_json.merge(
+            'is_bookmarked' => false,
+            'bookmark_id' => nil
+          )
+        end
+
+        render json: @scholarship_data.as_json
       end
     
       # GET /api/v1/scholarships/new
