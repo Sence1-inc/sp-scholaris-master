@@ -1,12 +1,14 @@
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import BookmarkIcon from '@mui/icons-material/StarRounded'
+import BookmarkIconOutline from '@mui/icons-material/StarBorderRounded';
 import { Box, Button, Tab, Tabs, useMediaQuery } from '@mui/material'
-import { DataGrid, GridRowParams } from '@mui/x-data-grid'
+import { DataGrid, GridRowParams, GridRenderCellParams } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
+import { useSnackbar } from '../../context/SnackBarContext'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
@@ -23,41 +25,10 @@ interface GridRowDef {
   status: string
 }
 
-// This is only a placeholder
-// const SampleScholarship = [
-//   {
-//     id: 1,
-//     listing_id: 123,
-//     scholarship_name: "My Scholarship",
-//     start_date: "01/20/2024",
-//     due_date: "01/20/2025",
-//     scholarship_provider: {
-//       id: 1,
-//       provider_name: "Me"
-//     },
-//     status: "active",
-//     content_status: "aaa",
-//     is_application_link_active: true,
-//   },
-//   {
-//     id: 2,
-//     listing_id: 124,
-//     scholarship_name: "My Scholarship 2",
-//     start_date: "01/20/2024",
-//     due_date: "01/20/2025",
-//     scholarship_provider: {
-//       id: 1,
-//       provider_name: "Me2"
-//     },
-//     status: "inactive",
-//     content_status: "aaa",
-//     is_application_link_active: true,
-//   }
-// ]
-
 const BookmarksPage: React.FC = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const { showMessage } = useSnackbar()
   const { getScholarships, areScholarshipsLoading } = useGetScholarships()
   const result: any = useAppSelector(
     (state) => state.persistedReducer.scholarships
@@ -70,13 +41,15 @@ const BookmarksPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState<number>(0)
   const [filteredRows, setFilteredRows] = useState<GridRowDef[]>([])
   const user = useAppSelector((state) => state.persistedReducer.user)
-  const [studentBookmarks, setStudentBookmarks] = useState<number[]>([])
+  const isAuthenticated = useAppSelector(
+    (state) => state.persistedReducer.isAuthenticated
+  )
 
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
 
   const columns = [
     {
-      field: 'scholarshipId',
+      field: 'bookmarkId',
       headerName: 'ID',
       ...(sm ? { flex: 0.5 } : { width: 50 }),
     },
@@ -111,7 +84,7 @@ const BookmarksPage: React.FC = () => {
       headerName: 'Actions',
       type: 'actions',
       ...(sm ? { flex: 1.5 } : { width: 100 }),
-      renderCell: (params: any) => renderActions(params),
+      renderCell: (params: GridRenderCellParams) => renderActions(params),
     },
   ]
 
@@ -119,19 +92,29 @@ const BookmarksPage: React.FC = () => {
     setActiveTab(newValue)
   }
 
-  const handleBookmarksToggle = () => {
-    console.log('bookmarks save/unsaved')
-  }
-
-  const renderActions = (params: any) => {
+  const renderActions = (params: GridRenderCellParams) => {
+    const isBookmarked = params.row.isBookmarked;
     return (
       <Box sx={{ ...containerStyle, padding: 0 }}>
         <Button
-          onClick={handleBookmarksToggle}
-          sx={profiletheme.bookmarks.bookmarksButtonActive}
+          onClick={() =>
+            !isBookmarked
+              ? handleSaveButton(params)
+              : handleUnsaveButton(params)
+          }
+          sx={{
+            backgroundColor: !isBookmarked ? 'white' : '#002147',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+            color: !isBookmarked ? '#002147' : 'white',
+            width: '105px',
+          }}
         >
-          <BookmarkIcon sx={{ color: '#FFFFFF' }} />
-          Saved
+          { !isBookmarked ?
+          <BookmarkIconOutline sx={{ backgroundColor: 'white' }} /> 
+          : <BookmarkIconOutline sx={{ backgroundColor: '#002147' }} />
+          }
+            { !isBookmarked ? 
+            'Save' : 'Saved' }
         </Button>
       </Box>
     )
@@ -145,8 +128,10 @@ const BookmarksPage: React.FC = () => {
         scholarshipName: scholarship.scholarship_name,
         startDate: new Date(scholarship.start_date).toDateString(),
         endDate: new Date(scholarship.due_date).toDateString(),
-        providerName: String(scholarship.provider_name),
+        providerName: String(scholarship.scholarship_provider.provider_name),
         status: scholarship.status,
+        isBookmarked: scholarship.is_bookmarked,
+        bookmarkId: scholarship.bookmark_id
       }
     })
     setIsLoading(false)
@@ -158,6 +143,67 @@ const BookmarksPage: React.FC = () => {
     setPage(par.page + 1)
     dispatch(initializeParams({ ...params.params, limit: par.pageSize }))
     setIsLoading(false)
+  }
+
+  const handleSaveButton = async (params: GridRenderCellParams) => {
+    if (!isAuthenticated) {
+      navigate('/sign-in')
+    }
+
+    const scholarshipData = {
+      user_id: user.id,
+      scholarship_id: params.row.id,
+    }
+    try {
+      const response = await axiosInstance.post(
+        `/api/v1/bookmarks`,
+        scholarshipData
+      )
+      const updatedScholarship = response.data.scholarship
+
+      const updatedRows = rowData.map((row) =>
+        row.id === updatedScholarship.id
+          ? {
+              ...row,
+              isBookmarked: updatedScholarship.is_bookmarked,
+              bookmarkId: updatedScholarship.bookmark_id,
+            }
+          : row
+      )
+
+      setRowData([...updatedRows])
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.error, 'error')
+    }
+  }
+
+  const handleUnsaveButton = async (params: GridRenderCellParams) => {
+    try {
+      const response = await axiosInstance.post(
+        `api/v1/bookmarks/remove_bookmark`,
+        {
+          bookmark_id: Number(params.row.bookmarkId),
+          user_id: user.id,
+        }
+      )
+      const updatedScholarship = response.data.scholarship
+
+      const updatedRows = rowData.map((row) =>
+        row.id === updatedScholarship.id
+          ? {
+              ...row,
+              isBookmarked: updatedScholarship.is_bookmarked,
+              bookmarkId: updatedScholarship.bookmark_id,
+            }
+          : row
+      )
+
+      setRowData([...updatedRows])
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.error, 'error')
+    }
   }
 
   useEffect(() => {
@@ -174,12 +220,6 @@ const BookmarksPage: React.FC = () => {
     // eslint-disable-next-line
   }, [params.params.page])
 
-  // NOTE
-  // The contents in here is placeholder for now.
-  // Change this during integration
-  // result.scholarships.scholarships
-  // SampleScholarship data will be changed to the list of scholarship
-  // with a bookmark true on the bookmark for the user.
   useEffect(() => {
     getBookmarkedScholarships()
     // eslint-disable-next-line

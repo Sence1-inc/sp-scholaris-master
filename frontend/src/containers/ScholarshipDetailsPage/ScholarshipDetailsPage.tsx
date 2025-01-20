@@ -469,7 +469,6 @@ export const ScholarshipDetailsPage: React.FC<
     if (!isAuthenticated) {
       navigate('/sign-in')
     }
-    console.log('in handle save:', params)
     const scholarshipData = {
       user_id: user.id,
       scholarship_id: params.id,
@@ -480,8 +479,6 @@ export const ScholarshipDetailsPage: React.FC<
         scholarshipData
       )
       const updatedScholarship = response.data.scholarship
-      console.log("response", response);
-      console.log("params in save", params)
       const updatedRows = rowData.map((row) =>
         row.id === updatedScholarship.id
           ? {
@@ -511,8 +508,6 @@ export const ScholarshipDetailsPage: React.FC<
         }
       )
       const updatedScholarship = response.data.scholarship
-      console.log("response", response);
-      console.log("params in unsave", params)
 
       const updatedRows = rowData.map((row) =>
         row.id === updatedScholarship.id
@@ -687,7 +682,8 @@ export const ScholarshipDetailsPage: React.FC<
                               : '#002147',
                           }}
                         />
-                        Save
+                        { !scholarshipData.is_bookmarked ? 
+                        'Save' : 'Saved' }
                       </Button>
                     </Grid>
                   </Grid>
