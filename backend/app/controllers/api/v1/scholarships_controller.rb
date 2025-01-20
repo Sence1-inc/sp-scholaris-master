@@ -32,7 +32,7 @@ module Api
           ).page(params[:page]).per(params[:limit])
 
           scholarships_data = @scholarships.map do |scholarship|
-            scholarship.as_json.merge('is_bookmarked' => is_bookmarked(scholarship, @user))
+            scholarship.as_json.merge('is_bookmarked' => Bookmark.is_bookmarked(@user.id, scholarship.id))
           end
 
           render json: {
@@ -243,11 +243,6 @@ module Api
             :content_status,
             :is_application_link_active
           ).merge(eligibilities: params[:eligibilities]).merge(requirements: params[:requirements]).merge(benefits: params[:benefits]).merge(benefit_categories: params[:benefit_categories])
-        end
-
-        def is_bookmarked(scholarship, user)
-          return false unless user.present?
-          user.bookmarked_scholarships.exists?(id: scholarship.id)
         end
 
         def authorize
