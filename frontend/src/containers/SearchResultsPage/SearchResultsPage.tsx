@@ -258,6 +258,11 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   }, [params.params.page])
 
   useEffect(() => {
+    getScholarships()
+    // eslint-disable-next-line
+  }, [])
+
+  useEffect(() => {
     if (
       Array.isArray(result.scholarships.scholarships) &&
       result.scholarships.scholarships.length > 0

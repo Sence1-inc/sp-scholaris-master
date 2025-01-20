@@ -31,11 +31,20 @@ module Api
             scholarship_provider: [:scholarship_provider_profile]
           ).page(params[:page]).per(params[:limit])
 
-          scholarships_data = @scholarships.map do |scholarship|
-            scholarship.as_json.merge(
-              'is_bookmarked' => Bookmark.is_bookmarked(@user.id, scholarship.id),
-              'bookmark_id' => Bookmark.find_by(user_id: @user.id, scholarship_id: scholarship.id)&.id
-            )
+          if cookies[:email].present?
+            scholarships_data = @scholarships.map do |scholarship|
+              scholarship.as_json.merge(
+                'is_bookmarked' => Bookmark.is_bookmarked(@user.id, scholarship.id),
+                'bookmark_id' => Bookmark.find_by(user_id: @user.id, scholarship_id: scholarship.id)&.id
+              )
+            end
+          else
+            scholarships_data = @scholarships.map do |scholarship|
+              scholarship.as_json.merge(
+                'is_bookmarked' => false,
+                'bookmark_id' => nil
+              )
+            end
           end
 
           render json: {

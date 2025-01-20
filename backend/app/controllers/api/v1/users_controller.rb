@@ -208,13 +208,13 @@ module Api
       
       cookies.delete :access_token
       cookies.delete :refresh_token
-      cookies.delete :user_email
+      cookies.delete :email
 
       response.headers["Cache-Control"] = "no-cache, no-store"
       response.headers["Pragma"] = "no-cache"
       response.headers["Expires"] = "Wed, 31 Dec 1980 05:00:00 GMT"
 
-      render json: { deleted: cookies[:access_token].nil? }, status: :ok
+      render json: { deleted: cookies[:access_token].nil? && cookies[:email].nil? }, status: :ok
     end
 
     def scholarship_applications
