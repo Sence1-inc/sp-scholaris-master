@@ -480,7 +480,8 @@ export const ScholarshipDetailsPage: React.FC<
         scholarshipData
       )
       const updatedScholarship = response.data.scholarship
-
+      console.log("response", response);
+      console.log("params in save", params)
       const updatedRows = rowData.map((row) =>
         row.id === updatedScholarship.id
           ? {
@@ -490,7 +491,8 @@ export const ScholarshipDetailsPage: React.FC<
             }
           : row
       )
-
+      setScholarshipData({...params, 
+        is_bookmarked: updatedScholarship.is_bookmarked}) 
       setRowData([...updatedRows])
       showMessage(response.data.message, 'success')
     } catch (error: any) {
