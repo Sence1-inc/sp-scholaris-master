@@ -9,13 +9,18 @@ class Api::V1::BookmarksController < ApplicationController
   #   render json: @api_v1_bookmarks
   # end
 
-  # GET /api/v1/bookmarks/
+  # GET /api/v1/bookmarks/:user_id
   def show
-  
-    @schols = Bookmark.select('scholarship_providers.id as scholarship_provider_id, scholarship_providers.provider_name, scholarships.scholarship_name, bookmarks.id, scholarships.id as scholarship_id, users.id as user_id, scholarships.start_date as scholarship_start, scholarships.due_date as scholarship_end, scholarships.status as scholarship_status').joins(scholarship: :scholarship_provider).joins(:user).where('bookmarks.user_id = '+ params["user_id"].to_s)
+    @user = User.find(params[:user_id])
 
-    render json: { scholarships: @schols }, status: 200
+    scholarships_data = @user.bookmarked_scholarships.map do |scholarship|
+      scholarship.as_json.merge(
+        'is_bookmarked' => Bookmark.is_bookmarked(@user.id, scholarship.id),
+        'bookmark_id' => Bookmark.find_by(user_id: @user.id, scholarship_id: scholarship.id)&.id
+      )
+    end
 
+    render json: { scholarships: scholarships_data }, status: 200
   end
   
   # POST /api/v1/bookmarks
