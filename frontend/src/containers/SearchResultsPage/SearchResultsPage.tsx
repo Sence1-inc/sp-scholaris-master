@@ -40,6 +40,9 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const { showMessage } = useSnackbar()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+  const isAuthenticated = useAppSelector(
+    (state) => state.persistedReducer.isAuthenticated
+  )
   const { getScholarships, areScholarshipsLoading } = useGetScholarships()
   const [searchParams] = useSearchParams()
   const course = searchParams.get('course')
@@ -93,7 +96,11 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     },
   ]
 
-  const handleSaveButton = async (params: any) => {
+  const handleSaveButton = async (params: GridRenderCellParams) => {
+    if (!isAuthenticated) {
+      navigate('/sign-in')
+    }
+
     const scholarshipData = {
       user_id: user.id,
       scholarship_id: params.row.id,
@@ -122,7 +129,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     }
   }
 
-  const handleUnsaveButton = async (params: any) => {
+  const handleUnsaveButton = async (params: GridRenderCellParams) => {
     try {
       const response = await axiosInstance.post(
         `api/v1/bookmarks/remove_bookmark`,
