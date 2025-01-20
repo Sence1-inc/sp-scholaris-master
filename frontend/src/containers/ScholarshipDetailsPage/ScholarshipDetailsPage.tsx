@@ -492,7 +492,8 @@ export const ScholarshipDetailsPage: React.FC<
           : row
       )
       setScholarshipData({...params, 
-        is_bookmarked: updatedScholarship.is_bookmarked}) 
+        is_bookmarked: updatedScholarship.is_bookmarked,
+        bookmark_id: updatedScholarship.bookmark_id}) 
       setRowData([...updatedRows])
       showMessage(response.data.message, 'success')
     } catch (error: any) {
@@ -523,7 +524,8 @@ export const ScholarshipDetailsPage: React.FC<
           : row
       )
       setScholarshipData({...params, 
-        is_bookmarked: updatedScholarship.is_bookmarked}) 
+        is_bookmarked: updatedScholarship.is_bookmarked,
+        bookmark_id: updatedScholarship.bookmark_id}) 
       setRowData([...updatedRows])
       showMessage(response.data.message, 'success')
     } catch (error: any) {
