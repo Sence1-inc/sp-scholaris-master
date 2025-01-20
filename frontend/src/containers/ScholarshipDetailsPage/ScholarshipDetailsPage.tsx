@@ -11,7 +11,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import { DataGrid, GridRowModel } from '@mui/x-data-grid'
+import { DataGrid, GridRowModel, GridRenderCellParams } from '@mui/x-data-grid'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -107,6 +107,9 @@ export const ScholarshipDetailsPage: React.FC<
     user_message: '',
     pdf_file: '',
   })
+  const isAuthenticated = useAppSelector(
+    (state) => state.persistedReducer.isAuthenticated
+  )
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -464,11 +467,68 @@ export const ScholarshipDetailsPage: React.FC<
     navigate("/sign-in"); // Replace with your desired path
   };
 
-  const [isFirstButton, setIsFirstButton] = useState(true);
+  
+  const handleSaveButton = async (params: ScholarshipData) => {
 
-  const handleSavedButton = () => {
-    setIsFirstButton(!isFirstButton);
-  };
+    if (!isAuthenticated) {
+      navigate('/sign-in')
+    }
+    console.log("in handle save:", params);
+    const scholarshipData = {
+      user_id: user.id,
+      scholarship_id: params.id,
+    }
+    try {
+      const response = await axiosInstance.post(
+        `/api/v1/bookmarks`,
+        scholarshipData
+      )
+      const updatedScholarship = response.data.scholarship
+
+      const updatedRows = rowData.map((row) =>
+        row.id === updatedScholarship.id
+          ? {
+              ...row,
+              isBookmarked: updatedScholarship.is_bookmarked,
+              bookmarkId: updatedScholarship.bookmark_id,
+            }
+          : row
+      )
+
+      setRowData([...updatedRows])
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.error, 'error')
+    }
+  }
+
+  const handleUnsaveButton = async (params: ScholarshipData) => {
+    try {
+      const response = await axiosInstance.post(
+        `api/v1/bookmarks/remove_bookmark`,
+        {
+          bookmark_id: Number(params.bookmarkId),
+          user_id: user.id,
+        }
+      )
+      const updatedScholarship = response.data.scholarship
+
+      const updatedRows = rowData.map((row) =>
+        row.id === updatedScholarship.id
+          ? {
+              ...row,
+              isBookmarked: updatedScholarship.is_bookmarked,
+              bookmarkId: updatedScholarship.bookmark_id,
+            }
+          : row
+      )
+
+      setRowData([...updatedRows])
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.error, 'error')
+    }
+  }
 
   return (
     <>
@@ -549,6 +609,7 @@ export const ScholarshipDetailsPage: React.FC<
             All scholarship listings are currently test data and not actual
             listings. We’ll be updating them with real data soon, so stay tuned!
           </Alert> */}
+          
           {scholarshipData && (
             <div className="details-card">
               {(user.role_id === ADMIN_ROLE_ID ||
@@ -586,10 +647,14 @@ export const ScholarshipDetailsPage: React.FC<
                     <h3 className="title3">{scholarshipData.scholarship_name}</h3>
                   </Grid>
                   <Grid item xs={6} justifyItems="flex-end">
-                  {isFirstButton ? (
+                  
                     <Button
                       variant="contained"
-                      onClick={handleSavedButton}
+                      onClick={() =>
+                        !scholarshipData.is_bookmarked
+                          ? handleSaveButton(scholarshipData)
+                          : handleUnsaveButton(scholarshipData)
+                      }
                       sx={{
                         backgroundColor: "white",
                         color: "black",
@@ -605,30 +670,12 @@ export const ScholarshipDetailsPage: React.FC<
                         },
                       }}
                     >
-                      <StarBorderIcon fontSize="small" />Save
+                      <StarBorderIcon fontSize="small" 
+                        sx={{
+                          color: scholarshipData.is_bookmarked ? 'white' : '#002147',
+                        }}
+                      />Save
                     </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      onClick={handleSavedButton}
-                      sx={{
-                        backgroundColor: '#002147',
-                        color: "#fff",
-                        padding: "10px",
-                        borderRadius: "8px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        minWidth: "100px",
-                        boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
-                        "&:hover": {
-                          backgroundColor: "#f0f0f0",
-                        },
-                      }}
-                    >
-                      <StarIcon fontSize="small" />Saved
-                    </Button>
-                  )}
                   </Grid>
                 </Grid>
                   <p

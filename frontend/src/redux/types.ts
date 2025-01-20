@@ -68,6 +68,7 @@ export type ScholarshipData = {
       benefit_name: string
     },
   ]
+  is_bookmarked: boolean
 }
 
 export type ProviderData = {

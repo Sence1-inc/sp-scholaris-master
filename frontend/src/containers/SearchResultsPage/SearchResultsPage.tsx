@@ -158,6 +158,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   }
 
   const renderActions = (params: GridRenderCellParams) => {
+    console.log("params", params);
     const isBookmarked = params.row.isBookmarked
 
     return (
