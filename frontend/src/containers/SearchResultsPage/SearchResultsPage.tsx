@@ -58,7 +58,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
   const user = useAppSelector((state) => state.persistedReducer.user)
-  const [isBookmarked, setIsBookmarked] = useState<boolean>()
 
   const columns = [
     {
@@ -87,11 +86,11 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
       headerName: 'Actions',
       type: 'actions',
       ...(sm ? { flex: 1 } : {}),
-      renderCell: (params: any) => renderActions(params),
+      renderCell: (params: GridRenderCellParams) => renderActions(params),
     },
   ]
 
-  const handleSaveButton = async (params: any) => {
+  const handleSaveButton = async (scholarship_id: boolean) => {
     console.log('in save')
     // console.log(params.row)
     const scholarshipData = {
@@ -115,10 +114,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     try {
       const response = await axiosInstance.get(`/api/v1/bookmarks/${user.id}`)
       const bookmarks = response.data
-      const bookmarkData = bookmarks.find(
-        (bookmark: Bookmark) => bookmark.scholarship_id === params.row.id
-      )
-      if (bookmarkData) {
+    
         try {
           const response = await axios.delete(
             `api/v1/bookmarks/remove_bookmark`,
@@ -126,19 +122,18 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           )
 
           if (response.data) {
-            //console.log(response.data.message);
-            // setIsFirstButton(true);
+            console.log(response.data)
           }
         } catch (error: any) {
           return
         }
-      }
+      
     } catch (error: any) {}
   }
 
   const renderActions = (params: GridRenderCellParams) => {
-    console.log(params)
-
+    
+    console.log(paramsisBookmarked);
     return (
       <Box
         sx={{
@@ -184,10 +179,10 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         >
           <VisibilityIcon fontSize="small" />
         </Button>
-        {!isBookmarked ? (
+        {!params.row.isBookmarked ? (
           <Button
             variant="contained"
-            onClick={() => handleSaveButton(params)}
+            onClick={() => handleSaveButton(params.row.id)}
             sx={{
               backgroundColor: 'white',
               color: 'black',
@@ -209,7 +204,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         ) : (
           <Button
             variant="contained"
-            onClick={() => handleUnsaveButton(params)}
+            onClick={() => handleUnsaveButton(params.row.id)}
             sx={{
               backgroundColor: '#002147',
               color: '#fff',
