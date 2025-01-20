@@ -1,28 +1,29 @@
 import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
-import { Box, Button, useMediaQuery, Tabs, Tab } from '@mui/material'
+import BookmarkIcon from '@mui/icons-material/StarRounded'
+import { Box, Button, Tab, Tabs, useMediaQuery } from '@mui/material'
 import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
-import { useNavigate,  } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import axiosInstance from '../../axiosConfig'
 import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
-import theme from '../../styles/theme'
 import profiletheme from '../../styles/profileTheme'
-import BookmarkIcon from '@mui/icons-material/StarRounded';
-import { Bookmark } from '../../redux/types'
-import axiosInstance from '../../axiosConfig'
+import theme from '../../styles/theme'
 
 interface GridRowDef {
+  id: number
+  scholarshipId: number
   scholarshipName: string
   startDate: string | Date
   endDate: string | Date
-  provider: string
+  providerName: string
   status: string
 }
 
-// This is only a placeholder 
+// This is only a placeholder
 // const SampleScholarship = [
 //   {
 //     id: 1,
@@ -66,11 +67,11 @@ const BookmarksPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
-  const [activeTab, setActiveTab] = useState<number>(0);
-  const [filteredRows, setFilteredRows] = useState<GridRowDef[]>([]);
+  const [activeTab, setActiveTab] = useState<number>(0)
+  const [filteredRows, setFilteredRows] = useState<GridRowDef[]>([])
   const user = useAppSelector((state) => state.persistedReducer.user)
-  const [studentBookmarks, setStudentBookmarks] = useState<number[]>([]);
-  
+  const [studentBookmarks, setStudentBookmarks] = useState<number[]>([])
+
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
 
   const columns = [
@@ -95,7 +96,7 @@ const BookmarksPage: React.FC = () => {
       ...(sm ? { flex: 1 } : { width: 150 }),
     },
     {
-      field: 'provider',
+      field: 'providerName',
       headerName: 'Organization',
       type: 'string',
       ...(sm ? { flex: 1.2 } : { width: 200 }),
@@ -115,11 +116,11 @@ const BookmarksPage: React.FC = () => {
   ]
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
-  };
+    setActiveTab(newValue)
+  }
 
   const handleBookmarksToggle = () => {
-    console.log("bookmarks save/unsaved")
+    console.log('bookmarks save/unsaved')
   }
 
   const renderActions = (params: any) => {
@@ -129,7 +130,8 @@ const BookmarksPage: React.FC = () => {
           onClick={handleBookmarksToggle}
           sx={profiletheme.bookmarks.bookmarksButtonActive}
         >
-          <BookmarkIcon sx={{ color: '#FFFFFF' }} />Saved
+          <BookmarkIcon sx={{ color: '#FFFFFF' }} />
+          Saved
         </Button>
       </Box>
     )
@@ -143,7 +145,7 @@ const BookmarksPage: React.FC = () => {
         scholarshipName: scholarship.scholarship_name,
         startDate: new Date(scholarship.start_date).toDateString(),
         endDate: new Date(scholarship.due_date).toDateString(),
-        provider: scholarship.scholarship_provider.provider_name,
+        providerName: String(scholarship.provider_name),
         status: scholarship.status,
       }
     })
@@ -172,47 +174,25 @@ const BookmarksPage: React.FC = () => {
     // eslint-disable-next-line
   }, [params.params.page])
 
-
   // NOTE
-  // The contents in here is placeholder for now. 
+  // The contents in here is placeholder for now.
   // Change this during integration
   // result.scholarships.scholarships
   // SampleScholarship data will be changed to the list of scholarship
-  // with a bookmark true on the bookmark for the user. 
+  // with a bookmark true on the bookmark for the user.
   useEffect(() => {
-    const bookmarks = getBookmarkedScholarships()
-    console.log('bookmarks', bookmarks)
-    if (
-      Array.isArray(bookmarks) &&
-      bookmarks.length > 0
-    ) {
-      formatScholarships(bookmarks);
-      setTotalCount(result.scholarships.total_count)
-    } else {
-      setRowData([])
-    }
+    getBookmarkedScholarships()
     // eslint-disable-next-line
   }, [])
 
-  const getBookmarkedScholarships = async() => {
+  const getBookmarkedScholarships = async () => {
     try {
-      const response = await axiosInstance.get(
-        `/api/v1/bookmarks/${user.id}`
-      )
-      //console.log(response.data.bookmarks)
-      console.log (response);
-      const temp = response.data.bookmark;
-      return temp;
-      //console.log(response.data);
-      // response.data.bookmarks.map((bookmark: Bookmark)=> {
-      //   console.log(bookmark);
-      // });
-     
-    } catch (error : any) {
-      console.log(error);
+      const response = await axiosInstance.get(`/api/v1/bookmarks/${user.id}`)
+      formatScholarships(response.data.scholarships)
+    } catch (error: any) {
+      console.log(error)
     }
   }
-
 
   useEffect(() => {
     if ((params?.params?.page as number) > result?.scholarships?.total_pages) {
@@ -233,15 +213,14 @@ const BookmarksPage: React.FC = () => {
 
   useEffect(() => {
     const newFilteredRows = rowData.filter((row) => {
-      if (activeTab === 1) return row.status === 'active';
-      if (activeTab === 2) return row.status === 'inactive';
-      return true; // All rows for Tab 0
-    });
+      if (activeTab === 1) return row.status === 'active'
+      if (activeTab === 2) return row.status === 'inactive'
+      return true // All rows for Tab 0
+    })
 
-    setFilteredRows(newFilteredRows);
-  }, [rowData, activeTab]);
+    setFilteredRows(newFilteredRows)
+  }, [rowData, activeTab])
 
-  getBookmarkedScholarships();
   return (
     <Box component="section" sx={profiletheme.bookmarks.bookmarksSection}>
       <Box sx={profiletheme.container.sectionContainer}>
@@ -250,13 +229,30 @@ const BookmarksPage: React.FC = () => {
           onClick={() => navigate('/scholarships')}
           sx={profiletheme.button.backButton}
         >
-          <ArrowBackIos sx={{ fontSize: '1.2rem' }} />Back To Search
+          <ArrowBackIos sx={{ fontSize: '1.2rem' }} />
+          Back To Search
         </Button>
         <Box sx={profiletheme.bookmarks.bookmarksBox}>
-          <Tabs sx={profiletheme.bookmarks.bookmarksTabs} value={activeTab} onChange={handleTabChange}>
-            <Tab sx={profiletheme.bookmarks.bookmarksTab} disableRipple={true} label={sm ? "All Bookmarks" : "All"} />
-            <Tab sx={profiletheme.bookmarks.bookmarksTab} disableRipple={true} label={sm ? "Active Scholarships" : "Active"} />
-            <Tab sx={profiletheme.bookmarks.bookmarksTab} disableRipple={true} label={sm ? "Inactive Scholarships" : "Inactive"} />
+          <Tabs
+            sx={profiletheme.bookmarks.bookmarksTabs}
+            value={activeTab}
+            onChange={handleTabChange}
+          >
+            <Tab
+              sx={profiletheme.bookmarks.bookmarksTab}
+              disableRipple={true}
+              label={sm ? 'All Bookmarks' : 'All'}
+            />
+            <Tab
+              sx={profiletheme.bookmarks.bookmarksTab}
+              disableRipple={true}
+              label={sm ? 'Active Scholarships' : 'Active'}
+            />
+            <Tab
+              sx={profiletheme.bookmarks.bookmarksTab}
+              disableRipple={true}
+              label={sm ? 'Inactive Scholarships' : 'Inactive'}
+            />
           </Tabs>
           <DataGrid
             onRowClick={handleRowClick}
@@ -274,23 +270,32 @@ const BookmarksPage: React.FC = () => {
             pagination
             paginationMode="server"
             loading={isLoading || areScholarshipsLoading}
-            getRowClassName={(params) => 
+            getRowClassName={(params) =>
               params.row.status === 'inactive' ? 'inactive' : 'active'
             }
-            sx={[profiletheme.bookmarks.bookmarksGridTable, {
-              height:
-                Array.isArray(filteredRows) && filteredRows?.length > 0 ? 'auto' : 200,
-              '.MuiDataGrid-overlayWrapper': {
-                minHeight: '200px',
+            sx={[
+              profiletheme.bookmarks.bookmarksGridTable,
+              {
                 height:
-                  filteredRows.length > 0 ? 'auto !important' : '200px !important',
+                  Array.isArray(filteredRows) && filteredRows?.length > 0
+                    ? 'auto'
+                    : 200,
+                '.MuiDataGrid-overlayWrapper': {
+                  minHeight: '200px',
+                  height:
+                    filteredRows.length > 0
+                      ? 'auto !important'
+                      : '200px !important',
+                },
+                '.MuiDataGrid-overlayWrapperInner': {
+                  minHeight: '200px',
+                  height:
+                    filteredRows.length > 0
+                      ? 'auto !important'
+                      : '200px !important',
+                },
               },
-              '.MuiDataGrid-overlayWrapperInner': {
-                minHeight: '200px',
-                height:
-                  filteredRows.length > 0 ? 'auto !important' : '200px !important',
-              },
-            }]}
+            ]}
           />
         </Box>
       </Box>
@@ -298,5 +303,4 @@ const BookmarksPage: React.FC = () => {
   )
 }
 
-
-export default BookmarksPage;
+export default BookmarksPage

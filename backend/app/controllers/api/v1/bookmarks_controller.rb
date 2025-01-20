@@ -14,7 +14,7 @@ class Api::V1::BookmarksController < ApplicationController
   
     @schols = Bookmark.select('scholarship_providers.id as scholarship_provider_id, scholarship_providers.provider_name, scholarships.scholarship_name, bookmarks.id, scholarships.id as scholarship_id, users.id as user_id, scholarships.start_date as scholarship_start, scholarships.due_date as scholarship_end, scholarships.status as scholarship_status').joins(scholarship: :scholarship_provider).joins(:user).where('bookmarks.user_id = '+ params["user_id"].to_s)
 
-    render json: { bookmarks: @schols }, status: 200
+    render json: { scholarships: @schols }, status: 200
 
   end
   
