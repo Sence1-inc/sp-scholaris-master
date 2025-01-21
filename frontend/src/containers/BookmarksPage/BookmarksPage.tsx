@@ -95,7 +95,10 @@ const BookmarksPage: React.FC = () => {
   const renderActions = (params: GridRenderCellParams) => {
     const isBookmarked = params.row.isBookmarked;
     return (
-      <Box sx={{ ...containerStyle, padding: 0 }}>
+      <Box sx={{ ...containerStyle, 
+      padding: 0 ,
+  
+      }}>
         <Button
           onClick={() =>
             !isBookmarked
@@ -105,13 +108,20 @@ const BookmarksPage: React.FC = () => {
           sx={{
             backgroundColor: !isBookmarked ? 'white' : '#002147',
             boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
-            color: !isBookmarked ? '#002147' : 'white',
-            width: '105px',
+            color: !isBookmarked ? '#002147' : 'white',     
+            width: {xs: 'auto', lg: '105px'},
+            fontSize: {xs: '12px', lg: '16px'}      
           }}
         >
           { !isBookmarked ?
-          <BookmarkIconOutline sx={{ backgroundColor: 'white' }} /> 
-          : <BookmarkIconOutline sx={{ backgroundColor: '#002147' }} />
+          <BookmarkIconOutline sx={{ backgroundColor: 'white', 
+            marginTop: '-3px',
+            width: {xs: '17px', lg: 'auto'}
+          }} /> 
+          : <BookmarkIconOutline sx={{ backgroundColor: '#002147',
+            marginTop: '-3px',
+            width: {xs: '17px', lg: 'auto'}
+          }} />
           }
             { !isBookmarked ? 
             'Save' : 'Saved' }

@@ -12,11 +12,12 @@ class Api::V1::BookmarksController < ApplicationController
   # GET /api/v1/bookmarks/:user_id
   def show
     @user = User.find(params[:user_id])
+    bookmarked_ids = Bookmark.where(user_id: @user.id).pluck(:scholarship_id, :id).to_h
 
     scholarships_data = @user.bookmarked_scholarships.map do |scholarship|
       scholarship.as_json.merge(
         'is_bookmarked' => Bookmark.is_bookmarked(@user.id, scholarship.id),
-        'bookmark_id' => Bookmark.find_by(user_id: @user.id, scholarship_id: scholarship.id)&.id
+        'bookmark_id' => bookmarked_ids[scholarship.id]
       )
     end
 
