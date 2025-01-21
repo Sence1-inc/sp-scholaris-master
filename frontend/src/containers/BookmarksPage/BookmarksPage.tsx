@@ -240,7 +240,7 @@ const BookmarksPage: React.FC = () => {
       const response = await axiosInstance.get(`/api/v1/bookmarks/${user.id}`)
       formatScholarships(response.data.scholarships)
     } catch (error: any) {
-      console.log(error)
+      showMessage(error.response.data.error, 'Error')
     }
   }
 
