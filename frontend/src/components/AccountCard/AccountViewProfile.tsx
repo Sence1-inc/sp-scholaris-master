@@ -219,6 +219,7 @@ const AccountViewProfile: React.FC = () => {
         >
           {!isEditting ? (
             <Button
+              id="edit-provider-account"
               sx={{ borderRadius: '32px' }}
               variant="contained"
               onClick={() => setIsEditting(true)}
