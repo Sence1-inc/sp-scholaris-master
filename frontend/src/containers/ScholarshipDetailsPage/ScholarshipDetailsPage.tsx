@@ -603,10 +603,6 @@ export const ScholarshipDetailsPage: React.FC<
               Results
             </Button>
           </aside>
-          {/* <Alert severity="warning" sx={{ marginBottom: '40px' }}>
-            All scholarship listings are currently test data and not actual
-            listings. We’ll be updating them with real data soon, so stay tuned!
-          </Alert> */}
 
           {scholarshipData && (
             <div className="details-card">
