@@ -2,7 +2,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import { Box, IconButton, Tooltip } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
@@ -169,7 +169,7 @@ export default function DataTable() {
       headerName: 'Actions',
       type: 'actions',
       flex: 1,
-      renderCell: (params: any) => renderActions(params),
+      renderCell: (params: GridRenderCellParams) => renderActions(params),
     },
   ]
 

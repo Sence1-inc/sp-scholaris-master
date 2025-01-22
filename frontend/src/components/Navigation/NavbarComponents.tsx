@@ -146,6 +146,16 @@ const AuthenticatedStudent: React.FC<AuthenticatedUserProps> = ({
         <Typography
           variant="body1"
           component={Link}
+          to="/student/bookmarks"
+          sx={profileTheme.navigation.mainNavListItemLink}
+        >
+          Bookmarks
+        </Typography>
+      </ListItem>
+      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+        <Typography
+          variant="body1"
+          component={Link}
           to="/student/applications"
           sx={profileTheme.navigation.mainNavListItemLink}
         >

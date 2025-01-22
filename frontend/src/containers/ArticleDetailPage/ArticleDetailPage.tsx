@@ -11,7 +11,6 @@ import {
   TextField,
   Typography,
   useMediaQuery,
-  useTheme,
 } from '@mui/material'
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
@@ -24,6 +23,7 @@ import ArticleListSectionCard from '../../components/ArticleListSection/ArticleL
 import GradImage from '../../public/images/banner-bg.png'
 import { Article, Tag } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
+import theme from '../../styles/theme'
 
 const ArticleDetailPage: React.FC = () => {
   const { slug } = useParams<{ slug: string }>()
@@ -34,7 +34,6 @@ const ArticleDetailPage: React.FC = () => {
   const [popularArticles, setPopularArticles] = useState<Article[] | []>([])
   const [loading, setLoading] = useState(true)
   const APP_URL = process.env.REACT_APP_CMS_API_URL
-  const theme = useTheme()
 
   const isXs = useMediaQuery(() => theme.breakpoints.down('sm'))
 
@@ -44,7 +43,7 @@ const ArticleDetailPage: React.FC = () => {
       <h1
         style={{
           color: theme.palette.primary.main,
-          fontSize: theme.typography.h1.fontSize,
+          fontSize: '4rem',
           fontFamily: theme.typography.h1.fontFamily,
           fontWeight: theme.typography.h1.fontWeight,
           marginTop: theme.spacing(2),

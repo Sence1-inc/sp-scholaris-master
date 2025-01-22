@@ -8,6 +8,7 @@ import {
   Scholarships,
 } from '../redux/reducers/ScholarshipsReducer'
 import { useAppDispatch, useAppSelector } from '../redux/store'
+import axiosInstance from '../axiosConfig'
 
 interface ErrorResponse {
   error: string
@@ -26,7 +27,7 @@ const useGetScholarships = () => {
     try {
       setAreScholarshipsLoading(true)
       const response: AxiosResponse<Scholarships | ErrorResponse> =
-        await axios.get(`${baseURL}/api/v1/scholarships`, {
+        await axiosInstance.get(`${baseURL}/api/v1/scholarships`, {
           params: {
             ...params,
             limit: 10,

@@ -1,3 +1,4 @@
+import { Padding } from '@mui/icons-material'
 import theme from './theme'
 
 const profiletheme = {
@@ -49,6 +50,11 @@ const profiletheme = {
     },
   },
   container: {
+    sectionContainer: {
+      maxWidth: '1280px',
+      margin: '0 auto',
+      padding: '20px'
+    },
     rootContainer: {
       width: '100%',
       my: 10,
@@ -159,6 +165,16 @@ const profiletheme = {
         backgroundColor: '#d75e33',
       },
     },
+    backButton: {
+      alignSelf: 'flex-start',
+      color: 'secondary.main',
+      fontSize: '1.2rem',
+      fontWeight: 700,
+      textDecoration: 'none',
+      '&:hover': {
+        textDecoration: 'underline',
+      },
+    }
   },
   navigation: {
     mainNav: {
@@ -463,7 +479,94 @@ const profiletheme = {
       color: '#FFFFFF',
       textDecoration: 'none',
     },
-  },
+  },    
+  bookmarks: {
+    bookmarksSection: {
+      padding: "60px 0"
+    },
+    bookmarksBox: {
+      margin: "40px 0 0"
+    },
+    bookmarksTabs: {
+      borderBottom: "1px solid #E4E9EF",
+      marginBottom: "30px",
+      '.MuiTabs-indicator': {
+        display: 'none',
+      }
+    },
+    bookmarksTab: {
+      padding: { xs: '10px 15px', lg: "20px 26px" },
+      border: "1px solid #E4E9EF",
+      color: "rgba(97, 97, 97, .87)",
+      fontSize: { xs: '10px', lg: '14px' },
+      '&.Mui-selected': {
+        background: "#E6F1FF",
+        color: "rgba(0, 0, 0, .87)"
+      }
+    },
+    bookmarksGridTable: {
+      '.MuiDataGrid-root': {
+        border: 'none',
+      },
+      '.MuiDataGrid-main': {
+        borderTopLeftRadius: '8px',
+        borderTopRightRadius: '8px',
+      },
+      '& .MuiDataGrid-columnHeaders': {
+        backgroundColor: '#E0EFFF',
+      },
+      '.MuiDataGrid-footerContainer': {
+        borderBottomLeftRadius: '8px',
+        borderBottomRightRadius: '8px',
+      },
+      '& .MuiDataGrid-footerContainer': {
+        backgroundColor: '#E0EFFF', // Change table header color
+      },
+      '& .MuiDataGrid-row': {
+        backgroundColor: '#FFFFFF',
+      },
+      '& .inactive.MuiDataGrid-row': {
+        backgroundColor: '#DFDFDF',
+        color: "#828282"
+      },
+      '& .MuiDataGrid-overlay': {
+        zIndex: '20',
+      },
+      borderRadius: '8px',
+      fontFamily: 'Outfit, sans-serif',
+      fontSize: {
+        xs: '12px',
+        md: '1rem',
+      },
+      fontWeight: 400,
+      '& .MuiDataGrid-row:hover': {
+        backgroundColor: 'secondary.main',
+      },
+      "& .MuiDataGrid-cell--withRenderer": {
+        maxWidth: { xs: '85px !important' }
+      }
+    },
+    bookmarksButtonActive: {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '4px',
+      width: 'auto',
+      fontFamily: "Outfit, sans-serif",
+      fontSize: { xs: '10px', lg: '14px' },
+      fontWeight: "500",
+      color: "#FFFFFF",
+      backgroundColor: "#002147",
+      borderRadius: "4px",
+      padding: { xs: '3px', lg: '6px' },
+      "&:hover": {
+        backgroundColor: "#2B71C1",
+      },
+      "svg": {
+        width: { xs: '14px', lg: '16px' }
+      },
+    }
+  }
 }
 
 export default profiletheme

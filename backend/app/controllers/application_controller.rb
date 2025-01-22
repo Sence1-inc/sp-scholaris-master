@@ -31,4 +31,10 @@ class ApplicationController < ActionController::Base
         Rails.logger.error("Argument error: #{exception.message}")
         render json: { error: "Invalid request parameter: #{exception.message}" }, status: :bad_request
     end
+
+    def handle_is_resource_owner(user)
+        if user.email_address != JwtService.decode(cookies[:email])['email']
+            render json: { error: 'Forbidden' }, status: :forbidden
+        end
+    end
 end
