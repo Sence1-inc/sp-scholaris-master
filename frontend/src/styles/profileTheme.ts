@@ -142,6 +142,7 @@ const profiletheme = {
   button: {
     buttonIcon: {
       height: '16px',
+      width: '16px'
     },
     buttonMain: {
       py: 2,
@@ -328,6 +329,12 @@ const profiletheme = {
       minHeight: '48px',
       whiteSpace: 'nowrap',
       textTransform: 'capitalize',
+      fontSize: '16px',
+      fontWeight: '500',
+      fontFamily: 'Outfit, sans-serif',
+      color: '#ffffff',
+      textDecoration: 'none',
+      transition: 'all 0.4s ease',
       border: '1px solid rgba(255, 255, 255, 0.5)',
       '&:hover': {
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
@@ -340,7 +347,7 @@ const profiletheme = {
       color: '#FFFFFF',
       padding: '2px 4px',
       borderRadius: '2px',
-      left: { xs: '65px', md: '8px' },
+      left: { xs: '83px', md: '25px' },
       top: '-10px',
     },
     mainNavDivider: {

@@ -90,11 +90,15 @@ module Api
       def create
         scholarship_service = ScholarshipService.new(scholarship_params)
         result = scholarship_service.create_scholarship
-        notifier = Slack::Notifier.new ENV["SLACK_WEBHOOK_URL"],
+
+        if result[:status] == :created
+          notifier = Slack::Notifier.new ENV["SLACK_WEBHOOK_URL"],
                     channel: "#pj_scholarship-bot",
                     username: "notifier"
-        notifier.ping "Hello Scholaris admins! A new scholarship (#{params[:scholarship_name]}) has been listed"
-        render json: result, status: result.key?(:errors) ? :unprocessable_entity : :created
+          notifier.ping "Hello Scholaris admins! A new scholarship (#{params[:scholarship_name]}) has been listed"
+        end
+        
+        render json: result, status: result[:status]
       end
 
       def upload
@@ -273,12 +277,15 @@ module Api
         def authorize
           user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
 
-          if user.role_id != User::ROLES[:admin] && user.parent_id && @scholarship.scholarship_provider.user.email_address != User.find(user.parent_id).email_address && (user.parent_id != ENV['PARENT_ID'].to_i)
-            render_unauthorized_response
+          if !user.parent_id && user.email_address === @scholarship.scholarship_provider.user.email_address
             return
           end
 
-          if user.role_id != User::ROLES[:admin] && @scholarship.scholarship_provider.user.email_address != JwtService.decode(cookies[:email])['email'] && !user.parent_id
+          if user.role_id == User::ROLES[:admin] && user.email_address == ENV['ADMIN_USER']
+            return
+          end
+
+          if user.role_id != User::ROLES[:admin] && user.parent_id && @scholarship.scholarship_provider.user.email_address != User.find(user.parent_id).email_address && (user.parent_id != ENV['PARENT_ID'].to_i)
             render_unauthorized_response
             return
           end
