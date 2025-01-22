@@ -29,6 +29,7 @@ import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsP
 import SignInPage from './containers/SignInPage/SignInPage'
 import SignUpPage from './containers/SignUpPage/SignUpPage'
 import StudentDashboardPage from './containers/StudentDashboardPage/StudentDashboardPage'
+import BookmarksPage from './containers/BookmarksPage/BookmarksPage'
 import SurveyPage from './containers/SurveyPage/SurveyPage'
 import TeaserProvider from './containers/TeaserPage/TeaserProvider'
 import TeaserStudent from './containers/TeaserPage/TeaserStudent'
@@ -52,6 +53,10 @@ const StudentRoutes: React.FC = () => (
     <Route
       path="/account"
       element={<StudentPrivate component={StudentDashboardPage} />}
+    />
+    <Route
+      path="/bookmarks"
+      element={<StudentPrivate component={BookmarksPage} />}
     />
     <Route path="*" element={<PageNotFoundPage />} />
   </Routes>
