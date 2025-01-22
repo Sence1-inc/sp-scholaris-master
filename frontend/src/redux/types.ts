@@ -4,6 +4,7 @@ export type Scholarship = {
   id: number
   listing_id: number
   scholarship_name: string
+  provider_name?: string
   start_date: string
   due_date: string
   scholarship_provider: {
@@ -13,6 +14,8 @@ export type Scholarship = {
   status: string
   content_status: string
   is_application_link_active: boolean
+  is_bookmarked: boolean
+  bookmark_id?: number
 }
 
 export type BenefitCategory = {
@@ -65,6 +68,8 @@ export type ScholarshipData = {
       benefit_name: string
     },
   ]
+  is_bookmarked: boolean
+  bookmark_id?: number
 }
 
 export type ProviderData = {
@@ -326,4 +331,13 @@ export type ScholarshipFeedback = {
   notes: string
   created_at: string
   updated_at: string
+}
+
+export type Bookmark = {
+  id: number
+  provider_name: string
+  scholarship_id: number
+  scholarship_name: string
+  scholarship_provider_id: number
+  user_id: number
 }
