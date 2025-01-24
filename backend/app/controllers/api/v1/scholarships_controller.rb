@@ -20,22 +20,13 @@ module Api
         end
 
         if @scholarships.present?
-          @scholarships = @scholarships.includes(
-            :eligibilities, 
-            :requirements, 
-            :scholarship_type, 
-            :benefits, 
-            :benefit_categories, 
-            :courses, 
-            :schools, 
-            scholarship_provider: [:scholarship_provider_profile]
-          ).page(params[:page]).per(params[:limit])
+          @scholarships = @scholarships.page(params[:page]).per(params[:limit])
 
           if cookies[:email].present?
             scholarships_data = @scholarships.map do |scholarship|
               scholarship.as_json.merge(
                 'is_bookmarked' => Bookmark.is_bookmarked(@user.id, scholarship.id),
-                'bookmark_id' => Bookmark.find_by(user_id: @user.id, scholarship_id: scholarship.id)&.id
+                'bookmark_id' => Bookmark.get_bookmark_id(scholarship, @user.id)
               )
             end
           else
@@ -66,7 +57,7 @@ module Api
           @user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
           @scholarship_data = @scholarship.as_json.merge(
             'is_bookmarked' => Bookmark.is_bookmarked(@user.id, @scholarship.id),
-            'bookmark_id' => Bookmark.find_by(user_id: @user.id, scholarship_id: @scholarship.id)&.id
+            'bookmark_id' => Bookmark.get_bookmark_id(scholarship, @user.id)
           )
         else
           @scholarship_data = @scholarship.as_json.merge(
