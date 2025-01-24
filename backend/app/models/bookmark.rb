@@ -14,4 +14,8 @@ class Bookmark < ApplicationRecord
         end
     end
 
+    def self.get_bookmark_id(scholarship, user_id)
+        return scholarship.bookmarks.where('user_id = '+ user_id.to_s).pick(:id)
+    end
+
 end
