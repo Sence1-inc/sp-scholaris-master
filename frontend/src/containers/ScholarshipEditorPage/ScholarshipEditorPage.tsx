@@ -416,7 +416,7 @@ const ScholarshipEditorPage = () => {
           )
           if (response.data) {
             setIsButtonLoading(false)
-            dispatch(initializeScholarshipData(response.data.scholarship))
+            dispatch(initializeScholarshipData(response.data.scholarship_data))
             setSuccessMessage(response.data.message)
             showMessage(response.data.message, 'success')
           }
