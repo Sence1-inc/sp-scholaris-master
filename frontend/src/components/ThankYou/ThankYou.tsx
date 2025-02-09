@@ -4,7 +4,7 @@ import { useAppSelector } from '../../redux/store'
 
 const ThankYou = () => {
   const subscriber = useAppSelector(
-    (state) => state.persistedReducer.subscriber
+    (state) => state.subscriber
   )
   const navigate = useNavigate()
   return (

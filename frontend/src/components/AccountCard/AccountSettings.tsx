@@ -19,9 +19,9 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   handleUnsubscribe,
 }) => {
   const { showMessage } = useSnackbar()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const subscribed = useAppSelector(
-    (state) => state.persistedReducer.subscriber
+    (state) => state.subscriber
   )
 
   const { id } = useParams()
@@ -113,7 +113,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
         </Typography>
         <Box sx={profileTheme.box.boxBodyStyle2}>
           {
-            subscribed.email == '' || ( subscribed.deleted_at !== null )? 
+            subscribed.email === '' || ( subscribed.deleted_at !== null )? 
             (
               <Button
                 variant="contained"

@@ -79,13 +79,13 @@ export const ScholarshipDetailsPage: React.FC<
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const user: User = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.user)
   const { getScholarshipData } = useGetScholarshipData()
   const applicationDetails = useAppSelector(
-    (state) => state.persistedReducer.scholarshipApplicationForm
+    (state) => state.scholarshipApplicationForm
   )
   const result = useAppSelector(
-    (state) => state.persistedReducer.scholarshipData
+    (state) => state.scholarshipData
   ) as Results
   const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -106,7 +106,7 @@ export const ScholarshipDetailsPage: React.FC<
     pdf_file: '',
   })
   const isAuthenticated = useAppSelector(
-    (state) => state.persistedReducer.isAuthenticated
+    (state) => state.isAuthenticated
   )
 
   const columns = [
@@ -648,7 +648,7 @@ export const ScholarshipDetailsPage: React.FC<
                         variant="contained"
                         onClick={() =>
                           !scholarshipData.is_bookmarked
-                            ? handleSaveButton(scholarshipData)
+                            ? isAuthenticated ? handleSaveButton(scholarshipData) : handleSignin()
                             : handleUnsaveButton(scholarshipData)
                         }
                         sx={{

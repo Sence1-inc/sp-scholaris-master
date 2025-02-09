@@ -17,7 +17,7 @@ const StudentDashboardPersonalInfoCard: React.FC<
   StudentDashboardPersonalInfoCardProps
 > = ({ profileData, setProfileData, handleSave }) => {
   const isSm = useMediaQuery(() => theme.breakpoints.down('sm'))
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement>,

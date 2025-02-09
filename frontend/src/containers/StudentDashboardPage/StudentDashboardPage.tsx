@@ -28,7 +28,7 @@ const StudentDashboardPage = () => {
   const { showMessage } = useSnackbar()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
 
   const [profileData, setProfileData] = useState<StudentProfile>({
     about: '',

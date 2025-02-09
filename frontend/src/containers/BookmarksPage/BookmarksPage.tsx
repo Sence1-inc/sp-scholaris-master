@@ -1,19 +1,18 @@
-import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
-import BookmarkIcon from '@mui/icons-material/StarRounded'
+import ArrowBackIos from '@mui/icons-material/ArrowBackIos';
 import BookmarkIconOutline from '@mui/icons-material/StarBorderRounded';
-import { Box, Button, Tab, Tabs, useMediaQuery } from '@mui/material'
-import { DataGrid, GridRowParams, GridRenderCellParams } from '@mui/x-data-grid'
-import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axiosInstance from '../../axiosConfig'
-import useGetScholarships from '../../hooks/useGetScholarships'
-import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
-import { useSnackbar } from '../../context/SnackBarContext'
-import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { Scholarship } from '../../redux/types'
-import { containerStyle } from '../../styles/globalStyles'
-import profiletheme from '../../styles/profileTheme'
-import theme from '../../styles/theme'
+import { Box, Button, Tab, Tabs, useMediaQuery } from '@mui/material';
+import { DataGrid, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../../axiosConfig';
+import { useSnackbar } from '../../context/SnackBarContext';
+import useGetScholarships from '../../hooks/useGetScholarships';
+import { initializeParams } from '../../redux/reducers/SearchParamsReducer';
+import { useAppDispatch, useAppSelector } from '../../redux/store';
+import { Scholarship } from '../../redux/types';
+import { containerStyle } from '../../styles/globalStyles';
+import profiletheme from '../../styles/profileTheme';
+import theme from '../../styles/theme';
 
 interface GridRowDef {
   id: number
@@ -31,18 +30,17 @@ const BookmarksPage: React.FC = () => {
   const { showMessage } = useSnackbar()
   const { getScholarships, areScholarshipsLoading } = useGetScholarships()
   const result: any = useAppSelector(
-    (state) => state.persistedReducer.scholarships
+    (state) => state.scholarships
   )
   const [page, setPage] = useState<number>(0)
   const params = useAppSelector((state) => state.searchParams)
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [activeTab, setActiveTab] = useState<number>(0)
   const [filteredRows, setFilteredRows] = useState<GridRowDef[]>([])
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const isAuthenticated = useAppSelector(
-    (state) => state.persistedReducer.isAuthenticated
+    (state) => state.isAuthenticated
   )
 
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
@@ -308,7 +306,7 @@ const BookmarksPage: React.FC = () => {
             onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}
             rows={filteredRows}
-            rowCount={totalCount}
+            rowCount={10}
             columns={columns}
             onPaginationModelChange={handlePageChange}
             initialState={{

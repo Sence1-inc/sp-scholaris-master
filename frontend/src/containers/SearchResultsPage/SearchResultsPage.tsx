@@ -41,7 +41,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const isAuthenticated = useAppSelector(
-    (state) => state.persistedReducer.isAuthenticated
+    (state) => state.isAuthenticated
   )
   const { getScholarships, areScholarshipsLoading } = useGetScholarships()
   const [searchParams] = useSearchParams()
@@ -54,7 +54,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const location = searchParams.get('location')
   const name = searchParams.get('name')
   const result: any = useAppSelector(
-    (state) => state.persistedReducer.scholarships
+    (state) => state.scholarships
   )
   const [page, setPage] = useState<number>(0)
   const params = useAppSelector((state) => state.searchParams)
@@ -63,7 +63,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const [rowData, setRowData] = useState<GridRowDef[]>([])
 
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
 
   const columns = [
     {

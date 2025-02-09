@@ -20,7 +20,7 @@ const WelcomeSection: React.FC<WelcomeSectionProps> = ({
   const location = useLocation()
   const navigate = useNavigate()
   const isAuthenticated = useAppSelector(
-    (state) => state.persistedReducer.isAuthenticated
+    (state) => state.isAuthenticated
   )
 
   return (

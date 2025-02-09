@@ -24,7 +24,7 @@ interface GridRowDef {
 
 const StudentApplicationsManagementPage = () => {
   const { showMessage } = useSnackbar()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [selectedStatus, setSelectedStatus] = useState<{
     [key: number]: number
