@@ -57,7 +57,7 @@ module Api
           @user = User.find_by(email_address: JwtService.decode(cookies[:email])['email'])
           @scholarship_data = @scholarship.as_json.merge(
             'is_bookmarked' => Bookmark.is_bookmarked(@user.id, @scholarship.id),
-            'bookmark_id' => Bookmark.get_bookmark_id(scholarship, @user.id)
+            'bookmark_id' => Bookmark.get_bookmark_id(@scholarship, @user.id)
           )
         else
           @scholarship_data = @scholarship.as_json.merge(
@@ -66,7 +66,7 @@ module Api
           )
         end
 
-        render json: @scholarship_data.as_json
+        render json: @scholarship_data.as_json, status: :ok
       end
     
       # GET /api/v1/scholarships/new
