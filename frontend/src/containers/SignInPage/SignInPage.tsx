@@ -57,7 +57,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           if (userState.scholarship_provider.provider_name) {
             navigate('/provider/dashboard')
           } else {
-            navigate(`/provider/account/${userState.id}/view-profile`)
+            navigate(`/provider/account/${userState.scholarship_provider.id}/view-profile`)
           }
           break
         case ADMIN_ROLE_ID:

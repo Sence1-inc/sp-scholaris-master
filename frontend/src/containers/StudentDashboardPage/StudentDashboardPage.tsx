@@ -122,7 +122,7 @@ const StudentDashboardPage = () => {
         })
       )
       dispatch(initializeIsAuthenticated(false))
-      navigate('/sign-in')
+      navigate('/sign-in', { replace: true })
     }
   }
 

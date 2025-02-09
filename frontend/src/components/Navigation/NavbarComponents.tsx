@@ -198,7 +198,7 @@ const AuthnticatedAdmin = () => {
     })
     dispatch(initializeIsAuthenticated(false))
     dispatch(initializeUser(initialUserState))
-    navigate('/sign-in')
+    navigate('/sign-in', { replace: true })
   }
 
   return (

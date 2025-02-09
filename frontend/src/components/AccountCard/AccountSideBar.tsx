@@ -57,7 +57,7 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
     if (response.data.deleted) {
       dispatch(initializeUser(initialUserState))
       dispatch(initializeIsAuthenticated(false))
-      navigate('/sign-in')
+      navigate('/sign-in', { replace: true })
     }
   }
 
