@@ -173,6 +173,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         }}
       >
         <Button
+          onClick={() => navigate(`/scholarships/${params.row.id}`)}
           variant="contained"
           sx={{
             backgroundColor: 'white',

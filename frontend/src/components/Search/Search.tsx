@@ -228,6 +228,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
           >
             {/* <Typography variant="body1">View</Typography> <Visibility /> */}
             <Button
+             onClick={() => navigate(`/scholarships/${params.row.id}`)}
             variant="contained"
             sx={{
               backgroundColor: "white",
