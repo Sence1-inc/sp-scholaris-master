@@ -1,8 +1,8 @@
-import axios, { AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import queryString from 'query-string'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { baseURL } from '../axiosConfig'
+import axiosInstance, { baseURL } from '../axiosConfig'
 import {
   initializeScholarships,
   Scholarships,

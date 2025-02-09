@@ -5,7 +5,7 @@ import { useAppDispatch, useAppSelector } from '../redux/store'
 
 const useGetSubscriber = () => {
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const [errorMessage, setErrorMessage] = useState<string>('')
   const getSubscriber = async () => {
     if (user.scholarship_provider.id) {

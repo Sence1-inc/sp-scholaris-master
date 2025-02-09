@@ -103,7 +103,7 @@ instance.interceptors.response.use(
     }
 
     if (error.response && error.response.status === 403) {
-      const email = store.getState().persistedReducer.user.email_address
+      const email = store.getState().user.email_address
 
       await instance.post('/api/v1/logout', {
         email: email,

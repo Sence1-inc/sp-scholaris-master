@@ -1,4 +1,5 @@
-import { OpenInNew, Visibility } from '@mui/icons-material'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import {
   Box,
   Button,
@@ -39,7 +40,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const params = useAppSelector((state) => state.searchParams)
   const navigate = useNavigate()
   const data: any = useAppSelector(
-    (state) => state.persistedReducer.scholarships
+    (state) => state.scholarships
   )
   const { getScholarships } = useGetScholarships()
   const { name: nameParam, page, limit, ...restParams } = params.params

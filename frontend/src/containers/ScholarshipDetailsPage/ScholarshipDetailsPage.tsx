@@ -83,14 +83,12 @@ export const ScholarshipDetailsPage: React.FC<
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const user: User = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.user)
   const { getScholarshipData } = useGetScholarshipData()
   const applicationDetails = useAppSelector(
-    (state) => state.persistedReducer.scholarshipApplicationForm
+    (state) => state.scholarshipApplicationForm
   )
-  const result = useAppSelector(
-    (state) => state.persistedReducer.scholarshipData
-  ) as Results
+  const result = useAppSelector((state) => state.scholarshipData) as Results
   const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -327,7 +325,7 @@ export const ScholarshipDetailsPage: React.FC<
         message: 'Please provide a PDF file.',
       },
       {
-        condition: pdfFile && pdfFile.size > 2 * 1024 * 1024,
+        condition: Boolean(pdfFile) && (pdfFile?.size ?? 0) > 2 * 1024 * 1024,
         field: 'pdf_file',
         message: 'Please provide a PDF file with size less than 2 MB',
       },

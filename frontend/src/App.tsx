@@ -102,7 +102,7 @@ const ProviderRoutes: React.FC<ProviderRoutesProps> = ({
 const App: React.FC = () => {
   const { getScholarships } = useGetScholarships()
   const params = useAppSelector((state) => state.searchParams)
-  const user: User = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.user)
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const location = useLocation()
   const { benefits, provider, start_date, due_date, type } = params.params

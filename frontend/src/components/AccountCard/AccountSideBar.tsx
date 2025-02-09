@@ -42,7 +42,7 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
   const [activeButton, setActiveButton] = useState<string | undefined>('')
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const { lastRoute } = useParams()
 
   const handleDeleteCookie = async () => {

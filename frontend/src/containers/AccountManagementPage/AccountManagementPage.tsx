@@ -31,7 +31,7 @@ interface UserCredentials {
 
 const AccountManagementPage = () => {
   const { showMessage } = useSnackbar()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false)

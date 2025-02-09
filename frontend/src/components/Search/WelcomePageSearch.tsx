@@ -30,7 +30,7 @@ const WelcomePageSearch: React.FC = () => {
   const params: any = useAppSelector((state) => state.searchParams)
   const navigate = useNavigate()
   const data: any = useAppSelector(
-    (state) => state.persistedReducer.scholarships
+    (state) => state.scholarships
   )
   const { getScholarships } = useGetScholarships()
   const { name: nameParam, page, limit, ...restParams } = params.params
