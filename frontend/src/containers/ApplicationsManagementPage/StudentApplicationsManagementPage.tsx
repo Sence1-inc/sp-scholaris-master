@@ -114,25 +114,22 @@ const StudentApplicationsManagementPage = () => {
           `/api/v1/users/${user.id}/scholarship_applications?page=${page + 1}&limit=${pageSize}`
         )
 
-        console.log(response)
         const row = response.data.scholarship_applications.map(
-          (scholarship_application: ScholarshipApplication) => {
-            return {
-              id: scholarship_application.id,
-              scholarship_id: scholarship_application.scholarship_id,
-              scholarship_name:
-                scholarship_application.scholarship.scholarship_name,
-              student_name: `${scholarship_application.user ? scholarship_application.user?.first_name : 'No student account'} ${scholarship_application.user ? scholarship_application.user?.last_name : ''}`,
-              created_at: new Date(
-                scholarship_application.created_at
-              ).toDateString(),
-              student_email: scholarship_application.student_email,
-              status: scholarship_application.status,
-              updated_at: new Date(
-                scholarship_application.updated_at
-              ).toDateString(),
-            }
-          }
+          (scholarship_application: ScholarshipApplication) => ({
+            id: scholarship_application.id,
+            scholarship_id: scholarship_application.scholarship_id,
+            scholarship_name:
+              scholarship_application.scholarship.scholarship_name,
+            student_name: `${scholarship_application.user ? scholarship_application.user?.first_name : 'No student account'} ${scholarship_application.user ? scholarship_application.user?.last_name : ''}`,
+            created_at: new Date(
+              scholarship_application.created_at
+            ).toDateString(),
+            student_email: scholarship_application.student_email,
+            status: formatStatus(APPLICATION_STATUSES[scholarship_application.status]),
+            updated_at: new Date(
+              scholarship_application.updated_at
+            ).toDateString(),
+          })
         )
 
         const statuses = response.data.scholarship_applications.reduce(
@@ -148,9 +145,9 @@ const StudentApplicationsManagementPage = () => {
         )
 
         setSelectedStatus(statuses)
-        setIsDataLoading(false)
-        setRowCount(response.data.total_count)
         setRowData(row)
+        setRowCount(response.data.total_count)
+        setIsDataLoading(false)
       } catch (error: any) {
         setIsDataLoading(false)
         showMessage(error.response.data.message, 'error')
@@ -158,8 +155,7 @@ const StudentApplicationsManagementPage = () => {
     }
 
     getApplications()
-    // eslint-disable-next-line
-  }, [])
+  }, [page, pageSize, user.id])
 
   return (
     <Box
@@ -208,12 +204,8 @@ const StudentApplicationsManagementPage = () => {
         rows={rowData}
         rowCount={rowCount}
         columns={columns}
+        paginationModel={{ page, pageSize }}
         onPaginationModelChange={handlePageChange}
-        initialState={{
-          pagination: {
-            paginationModel: { page: page, pageSize: 10 },
-          },
-        }}
         pageSizeOptions={[10]}
         pagination
         paginationMode="server"
