@@ -2,7 +2,7 @@ import { AxiosResponse } from 'axios'
 import queryString from 'query-string'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axiosInstance, { baseURL } from '../axiosConfig'
+import axiosInstance, { baseURL, CustomApiError } from '../axiosConfig'
 import {
   initializeScholarships,
   Scholarships,
@@ -42,9 +42,8 @@ const useGetScholarships = () => {
       }
     } catch (error) {
       setAreScholarshipsLoading(false)
-      if (error) {
+      if (error instanceof CustomApiError) {
         dispatch(initializeScholarships([]))
-        console.error('Error: ', error)
       }
     }
   }
