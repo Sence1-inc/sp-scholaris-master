@@ -39,7 +39,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
     role: 'provider',
   })
   const isAuthenticated = useAppSelector(
-    (state) => state.persistedReducer.isAuthenticated
+    (state) => state.isAuthenticated
   )
   const [errors, setErrors] = useState<Errors>({
     email_address: '',

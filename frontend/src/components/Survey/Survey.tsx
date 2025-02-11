@@ -40,7 +40,7 @@ const Survey: React.FC<SurveyProps> = ({
   handleChange,
   pathname,
 }) => {
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const [checkedChoices, setCheckedChoices] = useState<any>({})
   const [radioChoices, setRadioChoices] = useState<any>({})
 

@@ -188,7 +188,7 @@ const AuthenticatedStudent: React.FC<AuthenticatedUserProps> = ({
 }
 
 const AuthnticatedAdmin = () => {
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -198,7 +198,7 @@ const AuthnticatedAdmin = () => {
     })
     dispatch(initializeIsAuthenticated(false))
     dispatch(initializeUser(initialUserState))
-    navigate('/sign-in')
+    navigate('/sign-in', { replace: true })
   }
 
   return (

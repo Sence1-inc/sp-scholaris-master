@@ -1,14 +1,13 @@
-import axios, { AxiosResponse } from 'axios'
+import { AxiosResponse } from 'axios'
 import queryString from 'query-string'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { baseURL } from '../axiosConfig'
+import axiosInstance, { baseURL } from '../axiosConfig'
 import {
   initializeScholarships,
   Scholarships,
 } from '../redux/reducers/ScholarshipsReducer'
 import { useAppDispatch, useAppSelector } from '../redux/store'
-import axiosInstance from '../axiosConfig'
 
 interface ErrorResponse {
   error: string
