@@ -1,9 +1,8 @@
 import { Box, Button, FormGroup, InputLabel, Typography } from '@mui/material'
 import React, { useEffect } from 'react'
 import { useParams } from 'react-router-dom'
-import axiosInstance from '../../axiosConfig'
+import axiosInstance, { CustomApiError } from '../../axiosConfig'
 import { useSnackbar } from '../../context/SnackBarContext'
-import useGetSubscriber from '../../hooks/useGetSubscriber'
 import { initializeSubscirber } from '../../redux/reducers/SubscriberReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
@@ -19,42 +18,49 @@ interface AccountSettingsProps {
   handleUnsubscribe: () => void
 }
 
+interface Subscriber {
+  email: string
+  user_type: string
+  deleted_at: string | undefined
+}
+
+const subscriberService = {
+  async getExistingSubscriber(id: string) {
+    const response = await axiosInstance.get(`api/v1/subscribers/${id}`)
+    return response.status === 201 ? response.data : null
+  },
+
+  async restoreSubscription(subscriberId: string) {
+    return await axiosInstance.post(`api/v1/subscribers/restore`, { id: subscriberId })
+  },
+
+  async createNewSubscription(email: string) {
+    return await axiosInstance.post(`api/v1/subscribers`, {
+      email,
+      user_type: 'provider',
+    })
+  }
+}
+
+const emptySubscriber: Subscriber = {
+  email: '',
+  user_type: '',
+  deleted_at: undefined
+}
+
 /**
  * @function AccountSettings
  * @description Displays user account settings.
  * @param {AccountSettingsProps} props - The component props.
+ * @param {() => void} handleUnsubscribe - The function to handle the unsubscribe action.
  * @returns {JSX.Element} The rendered component.
  */
-const AccountSettings: React.FC<AccountSettingsProps> = ({
-  handleUnsubscribe,
-}) => {
+const AccountSettings: React.FC<AccountSettingsProps> = ({ handleUnsubscribe }) => {
   const { showMessage } = useSnackbar()
   const user = useAppSelector((state) => state.user)
-  const subscribed = useAppSelector(
-    (state) => state.subscriber
-  )
-
+  const subscribed = useAppSelector((state) => state.subscriber)
   const { id } = useParams()
   const dispatch = useAppDispatch()
-  const { getSubscriber, errorMessage } = useGetSubscriber()
-
-  /**
-   * @function useEffect
-   * @description Fetches the subscriber data when the user is authenticated.
-   * @param {Object} user - The authenticated user object.
-   * @returns {void}
-   */
-  useEffect(() => {
-    if (user) {
-      getSubscriber()
-
-      if (errorMessage) {
-        showMessage(errorMessage, 'error')
-      }
-    }
-
-    // eslint-disable-next-line
-  }, [user])
 
   /**
    * @function handleSubscribe
@@ -66,61 +72,47 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
     e: React.MouseEvent<HTMLButtonElement>
   ) => void = async (e) => {
     e.preventDefault()
+    if (!id || !user.email_address) return
 
     try {
-      const subscriber = await axiosInstance.get(`api/v1/subscribers/${id}`)
+      // Try to get existing subscriber
+      const existingSubscriber = await subscriberService.getExistingSubscriber(id)
 
-      if (subscriber.status === 201) {
-        const response = await axiosInstance.post(
-          `api/v1/subscribers/restore`,
-          {
-            id: subscriber.data.id,
-          }
-        )
-        if (response.status === 200) {
-          const successData = response.data
-          dispatch(initializeSubscirber(successData.subscriber))
-          showMessage(successData.message, 'success')
-        } else {
-          const errorData = response.data
-          dispatch(
-            initializeSubscirber({
-              email: '',
-              user_type: '',
-              deleted_at: '',
-            })
-          )
-          showMessage(errorData.message, 'error')
-        }
-      }
-    } catch (error: any) {
-      if (error.response && error.response.status === 404) {
-        showMessage('Subscribing, please wait.', 'info')
-        const response = await axiosInstance.post(`api/v1/subscribers`, {
-          email: user.email_address,
-          user_type: 'provider',
-        })
-        if (response.status === 201) {
-          const successData = response.data
-          dispatch(initializeSubscirber(successData.subscriber))
-          showMessage(successData.message, 'success')
-        } else {
-          const errorData = response.data
-          dispatch(
-            initializeSubscirber({
-              email: '',
-              user_type: '',
-              deleted_at: '',
-            })
-          )
-          showMessage(errorData.message, 'error')
-        }
+      if (existingSubscriber) {
+        // Restore existing subscription
+        const response = await subscriberService.restoreSubscription(existingSubscriber.id)
+        handleSubscriptionResponse(response)
       } else {
-        showMessage(error.response.data.message, 'error')
+        // Create new subscription
+        showMessage('Subscribing, please wait.', 'info')
+        const response = await subscriberService.createNewSubscription(user.email_address)
+        handleSubscriptionResponse(response)
       }
+    } catch (error) {
+      handleSubscriptionError(error)
     }
   }
-  
+
+  const handleSubscriptionResponse = (response: any) => {
+    if (response.status === 200 || response.status === 201) {
+      dispatch(initializeSubscirber(response.data.subscriber))
+      showMessage(response.data.message, 'success')
+    } else {
+      dispatch(initializeSubscirber(emptySubscriber))
+      showMessage(response.data.message, 'error')
+    }
+  }
+
+  const handleSubscriptionError = (error: unknown) => {
+    if (error instanceof CustomApiError) {
+      showMessage(error.response?.data?.message ?? 'An error occurred', 'error')
+    } else {
+      showMessage('An unexpected error occurred', 'error')
+    }
+  }
+
+  const isUnsubscribed = subscribed.email === '' || subscribed.deleted_at !== null
+
   return (
     <AccountCard
       heading="Account Settings"
@@ -134,39 +126,30 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
           {user.email_address}
         </Typography>
         <Box sx={profileTheme.box.boxBodyStyle2}>
-          {
-            subscribed.email === '' || ( subscribed.deleted_at !== null )? 
-            (
-              <Button
-                variant="contained"
-                sx={ctaButtonStyle}
-                onClick={handleSubscribe}
-
-                id='subscribe'
-              >
-                Subscribe
-              </Button>
-            ) 
-              :
-            (
-              <Button
-                variant="contained"
-                sx={ctaButtonStyle}
-                onClick={(e: any) => {
-                  showMessage(
-                    'Are you sure you want to delete?',
-                    'warning',
-                    8000,
-                    handleUnsubscribe
-                  )
-                }}
-
-                id="unsubscribe"
-              >
-                Unsubscribe
-              </Button>
-            )
-          }
+          {isUnsubscribed ? (
+            <Button
+              variant="contained"
+              sx={ctaButtonStyle}
+              onClick={handleSubscribe}
+              id='subscribe'
+            >
+              Subscribe
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              sx={ctaButtonStyle}
+              onClick={() => showMessage(
+                'Are you sure you want to delete?',
+                'warning',
+                8000,
+                handleUnsubscribe
+              )}
+              id="unsubscribe"
+            >
+              Unsubscribe
+            </Button>
+          )}
         </Box>
       </FormGroup>
     </AccountCard>
