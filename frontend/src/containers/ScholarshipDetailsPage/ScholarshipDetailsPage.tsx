@@ -90,9 +90,7 @@ export const ScholarshipDetailsPage: React.FC<
   const applicationDetails = useAppSelector(
     (state) => state.scholarshipApplicationForm
   )
-  const result = useAppSelector(
-    (state) => state.scholarshipData
-  ) as Results
+  const result = useAppSelector((state) => state.scholarshipData) as Results
   const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -111,9 +109,7 @@ export const ScholarshipDetailsPage: React.FC<
     user_message: '',
     pdf_file: '',
   })
-  const isAuthenticated = useAppSelector(
-    (state) => state.isAuthenticated
-  )
+  const isAuthenticated = useAppSelector((state) => state.isAuthenticated)
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -500,9 +496,11 @@ export const ScholarshipDetailsPage: React.FC<
             }
           : row
       )
-      setScholarshipData({...params, 
+      setScholarshipData({
+        ...params,
         is_bookmarked: updatedScholarship.is_bookmarked,
-        bookmark_id: updatedScholarship.bookmark_id}) 
+        bookmark_id: updatedScholarship.bookmark_id,
+      })
       setRowData([...updatedRows])
       showMessage(response.data.message, 'success')
     } catch (error: any) {
@@ -530,9 +528,11 @@ export const ScholarshipDetailsPage: React.FC<
             }
           : row
       )
-      setScholarshipData({...params, 
+      setScholarshipData({
+        ...params,
         is_bookmarked: updatedScholarship.is_bookmarked,
-        bookmark_id: updatedScholarship.bookmark_id}) 
+        bookmark_id: updatedScholarship.bookmark_id,
+      })
       setRowData([...updatedRows])
       showMessage(response.data.message, 'success')
     } catch (error: any) {
@@ -660,7 +660,9 @@ export const ScholarshipDetailsPage: React.FC<
                         variant="contained"
                         onClick={() =>
                           !scholarshipData.is_bookmarked
-                            ? isAuthenticated ? handleSaveButton(scholarshipData) : handleSignin()
+                            ? isAuthenticated
+                              ? handleSaveButton(scholarshipData)
+                              : handleSignin()
                             : handleUnsaveButton(scholarshipData)
                         }
                         sx={{
@@ -690,8 +692,7 @@ export const ScholarshipDetailsPage: React.FC<
                               : '#002147',
                           }}
                         />
-                        { !scholarshipData.is_bookmarked ? 
-                        'Save' : 'Saved' }
+                        {!scholarshipData.is_bookmarked ? 'Save' : 'Saved'}
                       </Button>
                     </Grid>
                   </Grid>
@@ -795,9 +796,9 @@ export const ScholarshipDetailsPage: React.FC<
                       user.role_id !== PROVIDER_ROLE_ID &&
                       user.role_id !== ADMIN_ROLE_ID)) ? (
                     <CTAButton
-                      // disabled={formattedDate(
-                      //   scholarshipData.due_date
-                      // ).isBefore(dayjs())}
+                      disabled={formattedDate(
+                        scholarshipData.due_date
+                      ).isBefore(dayjs())}
                       handleClick={() => setIsModalOpen(true)}
                       label="Apply"
                       loading={false}
