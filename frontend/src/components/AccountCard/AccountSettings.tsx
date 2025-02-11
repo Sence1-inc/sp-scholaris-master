@@ -75,15 +75,12 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ handleUnsubscribe }) 
     if (!id || !user.email_address) return
 
     try {
-      // Try to get existing subscriber
       const existingSubscriber = await subscriberService.getExistingSubscriber(id)
 
       if (existingSubscriber) {
-        // Restore existing subscription
         const response = await subscriberService.restoreSubscription(existingSubscriber.id)
         handleSubscriptionResponse(response)
       } else {
-        // Create new subscription
         showMessage('Subscribing, please wait.', 'info')
         const response = await subscriberService.createNewSubscription(user.email_address)
         handleSubscriptionResponse(response)
