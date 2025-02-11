@@ -33,13 +33,13 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   const navigate = useNavigate()
   const { showMessage } = useSnackbar()
   const isAuthenticated = useAppSelector(
-    (state) => state.persistedReducer.isAuthenticated
+    (state) => state.isAuthenticated
   )
   const [userCredentials, setUserCredentials] = useState<UserCredentials>({
     email_address: '',
     password: '',
   })
-  const userState: User = useAppSelector((state) => state.persistedReducer.user)
+  const userState: User = useAppSelector((state) => state.user)
   const [errors, setErrors] = useState<Errors>({
     email_address: '',
     password: '',
@@ -57,7 +57,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
           if (userState.scholarship_provider.provider_name) {
             navigate('/provider/dashboard')
           } else {
-            navigate(`/provider/account/${userState.id}/view-profile`)
+            navigate(`/provider/account/${userState.scholarship_provider.id}/view-profile`)
           }
           break
         case ADMIN_ROLE_ID:
