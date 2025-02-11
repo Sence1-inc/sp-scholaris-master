@@ -22,6 +22,7 @@ interface ApiError {
   message: string
   status: number
   code?: string
+  response?: AxiosResponse
 }
 
 /**
@@ -46,6 +47,7 @@ export class CustomApiError extends Error {
     super(error.message);
     this.status = error.status;
     this.code = error.code;
+    this.response = error.response;
   }
 }
 
@@ -191,7 +193,8 @@ instance.interceptors.response.use(
       throw new CustomApiError({
         message: (error.response?.data as { message?: string })?.message || 'An unexpected error occurred',
         status: error.response?.status || 500,
-        code: error.code
+        code: error.code,
+        response: error.response
       })
     } catch (handledError) {
       return Promise.reject(handledError)

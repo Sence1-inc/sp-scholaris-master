@@ -11,13 +11,14 @@ import {
 } from '@mui/material'
 import React, { SyntheticEvent, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import axiosInstance from '../../axiosConfig'
+import axiosInstance, { CustomApiError } from '../../axiosConfig'
 import { useSnackbar } from '../../context/SnackBarContext'
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppSelector } from '../../redux/store'
 import { Profile, User } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
+import HelperText from '../HelperText/HelperText'
 
 /**
  * @interface ProfileData
@@ -55,6 +56,7 @@ const AccountViewProfile: React.FC = () => {
   const [details, setDetails] = useState<string>('')
   const [link, setLink] = useState<string>('')
   const [isEditting, setIsEditting] = useState<boolean>(false)
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
 
   /**
    * @function useEffect
@@ -90,20 +92,25 @@ const AccountViewProfile: React.FC = () => {
       const api = user.profile?.id
         ? await axiosInstance.put(
             `/api/v1/scholarship_provider_profiles/${user.profile?.id}`,
-            data,
-            { withCredentials: true }
+            data
           )
         : await axiosInstance.post(
             '/api/v1/scholarship_provider_profiles',
-            data,
-            { withCredentials: true }
+            data
           )
       const response = api
       showMessage('Successfully saved!', 'success')
       dispatch(initializeUser({ ...user, profile: response.data.profile }))
     } catch (error: any) {
       if (error) {
-        showMessage(error.response.data.message, 'success')
+        showMessage(error.message, 'error')
+        const formattedErrors = Object.fromEntries(
+          Object.entries(error.response.data).map(([key, value]) => [
+            key,
+            Array.isArray(value) ? value[0] : value
+          ])
+        )
+        setErrors(formattedErrors)
       }
     }
   }
@@ -201,6 +208,7 @@ const AccountViewProfile: React.FC = () => {
                 fullWidth
                 ListboxProps={{ style: { maxHeight: 150 } }}
               />
+              {errors.ph_address && <HelperText error={`Address ${errors.ph_address}`} />}
             </FormControl>
           </Box>
         )}
