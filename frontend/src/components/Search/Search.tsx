@@ -1,5 +1,4 @@
-import StarBorderIcon from '@mui/icons-material/StarBorder'
-import VisibilityIcon from '@mui/icons-material/Visibility'
+import { OpenInNew, Visibility } from '@mui/icons-material'
 import {
   Box,
   Button,
@@ -39,9 +38,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const dispatch = useAppDispatch()
   const params = useAppSelector((state) => state.searchParams)
   const navigate = useNavigate()
-  const data: any = useAppSelector(
-    (state) => state.scholarships
-  )
+  const data: any = useAppSelector((state) => state.scholarships)
   const { getScholarships } = useGetScholarships()
   const { name: nameParam, page, limit, ...restParams } = params.params
   const [name, setName] = useState<string>(nameParam as string)
@@ -179,10 +176,10 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   }
 
   const handleKeyDown = (e: { key: string }) => {
-    if (e.key === "Enter") {
-      handleSearch();
+    if (e.key === 'Enter') {
+      handleSearch()
     }
-  };
+  }
 
   const columns = [
     {

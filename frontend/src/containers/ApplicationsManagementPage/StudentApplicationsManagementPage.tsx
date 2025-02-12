@@ -125,7 +125,9 @@ const StudentApplicationsManagementPage = () => {
               scholarship_application.created_at
             ).toDateString(),
             student_email: scholarship_application.student_email,
-            status: formatStatus(APPLICATION_STATUSES[scholarship_application.status]),
+            status: formatStatus(
+              APPLICATION_STATUSES[scholarship_application.status]
+            ),
             updated_at: new Date(
               scholarship_application.updated_at
             ).toDateString(),
@@ -155,6 +157,8 @@ const StudentApplicationsManagementPage = () => {
     }
 
     getApplications()
+
+    // eslint-disable-next-line
   }, [page, pageSize, user.id])
 
   return (
