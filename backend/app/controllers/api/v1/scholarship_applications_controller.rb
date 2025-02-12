@@ -123,7 +123,7 @@ module Api
             Rails.logger.error("Failed to send email: #{e.message}")
           end
 
-          pdf_attachment.rewind
+          pdf_attachment.rewind if pdf_attachment
 
           begin
             ScholarshipApplicationStudentMailer.mail_to_student(
