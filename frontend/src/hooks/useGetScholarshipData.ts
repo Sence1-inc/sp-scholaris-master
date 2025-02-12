@@ -1,6 +1,5 @@
-import { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { useNavigate } from 'react-router-dom'
-import axiosInstance from '../axiosConfig'
 import { initializeScholarshipData } from '../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch } from '../redux/store'
 import { ScholarshipData } from '../redux/types'
@@ -28,7 +27,7 @@ const useGetScholarshipsData = () => {
   const getScholarshipData = async (id: string | undefined) => {
     try {
       const response: AxiosResponse<ScholarshipData | ErrorResponse> =
-        await axiosInstance.get(`api/v1/scholarships/${id}`, {
+        await axios.get(`api/v1/scholarships/${id}`, {
           withCredentials: true,
         })
 

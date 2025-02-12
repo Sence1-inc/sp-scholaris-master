@@ -1,8 +1,8 @@
-import { AxiosResponse } from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import queryString from 'query-string'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axiosInstance, { baseURL, CustomApiError } from '../axiosConfig'
+import { baseURL, CustomApiError } from '../axiosConfig'
 import {
   initializeScholarships,
   Scholarships,
@@ -26,7 +26,7 @@ const useGetScholarships = () => {
     try {
       setAreScholarshipsLoading(true)
       const response: AxiosResponse<Scholarships | ErrorResponse> =
-        await axiosInstance.get(`${baseURL}/api/v1/scholarships`, {
+        await axios.get(`${baseURL}/api/v1/scholarships`, {
           params: {
             ...params,
             limit: 10,
