@@ -339,6 +339,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           listings. We'll be updating them with real data soon, so stay tuned!
         </Alert> */}
         <DataGrid
+          autoHeight={rowData.length !== 0}
           onRowClick={handleRowClick}
           localeText={{ noRowsLabel: 'No saved data' }}
           rows={rowData}
