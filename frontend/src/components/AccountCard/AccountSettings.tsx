@@ -18,10 +18,8 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   handleUnsubscribe,
 }) => {
   const { showMessage } = useSnackbar()
-  const user = useAppSelector((state) => state.persistedReducer.user)
-  const subscribed = useAppSelector(
-    (state) => state.persistedReducer.subscriber
-  )
+  const user = useAppSelector((state) => state.user)
+  const subscribed = useAppSelector((state) => state.subscriber)
 
   const { id } = useParams()
   const dispatch = useAppDispatch()

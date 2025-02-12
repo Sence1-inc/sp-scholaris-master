@@ -32,7 +32,7 @@ type PhAddress = {
 
 const AccountViewProfile: React.FC = () => {
   const dispatch = useDispatch()
-  const user: User = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.user)
   const { showMessage } = useSnackbar()
   const [providerName, setProviderName] = useState<string>('')
   const [phAddresses, setPhAddresses] = useState<PhAddress[] | []>([])

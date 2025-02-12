@@ -33,9 +33,9 @@ const ProviderProfile: React.FC = () => {
   const { lastRoute, id } = useParams()
   const { showMessage } = useSnackbar()
   const subscr: any = useAppSelector(
-    (state) => state.persistedReducer.subscriber
+    (state) => state.subscriber
   )
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { getSubscriber, errorMessage: err } = useGetSubscriber()

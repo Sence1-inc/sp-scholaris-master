@@ -15,37 +15,57 @@ import reduxPersistMiddleware from './reduxPersistMiddleware'
 const persistConfig = {
   key: 'root',
   storage: encryptedStorage,
-  // whitelist: ['user', 'otherReducer'],
+  whitelist: [
+    'scholarships',
+    'subscriber',
+    'scholarshipData',
+    'profile',
+    'user',
+    'isAuthenticated',
+    'scholarshipApplicationForm'
+  ],
 }
 
-const persistedReducer = persistReducer(
-  persistConfig,
-  combineReducers({
-    scholarships: ScholarshipsReducer,
-    subscriber: SubscriberReducer,
-    scholarshipData: ScholarshipDataReducer,
-    profile: ProfileReducer,
-    user: UserReducer,
-    isAuthenticated: IsAuthenticatedReducer,
-    scholarshipApplicationForm: ScholarshipApplicationFormReducer,
-  })
-)
+const rootReducer = combineReducers({
+  scholarships: ScholarshipsReducer,
+  subscriber: SubscriberReducer,
+  scholarshipData: ScholarshipDataReducer,
+  profile: ProfileReducer,
+  user: UserReducer,
+  isAuthenticated: IsAuthenticatedReducer,
+  scholarshipApplicationForm: ScholarshipApplicationFormReducer,
+  searchParams: SearchParamsReducer
+})
+
+const persistedReducer = persistReducer<RootState>(persistConfig, rootReducer)
 
 const store = configureStore({
-  reducer: {
-    persistedReducer,
-    searchParams: SearchParamsReducer,
-  },
+  reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(reduxPersistMiddleware),
+    getDefaultMiddleware({
+      serializableCheck: {
+        ignoredActions: ['persist/PERSIST']
+      }
+    }).concat(reduxPersistMiddleware),
 })
 
 export const persistor = persistStore(store)
 
-export type RootState = ReturnType<typeof store.getState>
+interface RootState {
+  scholarships: ReturnType<typeof ScholarshipsReducer>;
+  subscriber: ReturnType<typeof SubscriberReducer>;
+  scholarshipData: ReturnType<typeof ScholarshipDataReducer>;
+  profile: ReturnType<typeof ProfileReducer>;
+  user: ReturnType<typeof UserReducer>;
+  isAuthenticated: ReturnType<typeof IsAuthenticatedReducer>;
+  scholarshipApplicationForm: ReturnType<typeof ScholarshipApplicationFormReducer>;
+  searchParams: ReturnType<typeof SearchParamsReducer>;
+}
+
 export type AppDispatch = typeof store.dispatch
+export type StoreState = ReturnType<typeof store.getState>
 
 export const useAppDispatch = () => useDispatch<AppDispatch>()
-export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector
+export const useAppSelector: TypedUseSelectorHook<StoreState> = useSelector
 
 export default store

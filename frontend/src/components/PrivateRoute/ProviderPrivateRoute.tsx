@@ -16,7 +16,7 @@ const ProviderPrivate: React.FC<ProviderPrivateProps> = ({
 }) => {
   const dispatch = useAppDispatch()
   const [authenticated, setAuthenticated] = useState<boolean | null>(null)
-  const user: User = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.user)
 
   useEffect(() => {
     const checkAuthentication = async () => {

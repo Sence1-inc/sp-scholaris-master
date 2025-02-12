@@ -11,7 +11,7 @@ interface ErrorResponse {
 
 const useGetProfile = () => {
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const getProfile = async (id: number | undefined) => {
     try {
       const response: AxiosResponse<Profile | ErrorResponse> =

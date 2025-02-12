@@ -70,6 +70,12 @@ interface GridRowDef {
   status: string
 }
 
+interface ValidationCondition {
+  condition: boolean
+  field: keyof Errors
+  message: string
+}
+
 export const ScholarshipDetailsPage: React.FC<
   ScholarshipDataResultsPageProps
 > = () => {
@@ -77,14 +83,12 @@ export const ScholarshipDetailsPage: React.FC<
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const user: User = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.user)
   const { getScholarshipData } = useGetScholarshipData()
   const applicationDetails = useAppSelector(
-    (state) => state.persistedReducer.scholarshipApplicationForm
+    (state) => state.scholarshipApplicationForm
   )
-  const result = useAppSelector(
-    (state) => state.persistedReducer.scholarshipData
-  ) as Results
+  const result = useAppSelector((state) => state.scholarshipData) as Results
   const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
@@ -298,7 +302,8 @@ export const ScholarshipDetailsPage: React.FC<
   }
 
   const handleApply = async () => {
-    const validationConditions = [
+    setIsModalOpen(true)
+    const validationConditions: ValidationCondition[] = [
       {
         condition: !studentEmail,
         field: 'student_email',
@@ -315,12 +320,12 @@ export const ScholarshipDetailsPage: React.FC<
         message: 'Please provide your message to the provider.',
       },
       {
-        condition: pdfFile && pdfFile.type !== 'application/pdf',
+        condition: Boolean(pdfFile) && pdfFile?.type !== 'application/pdf',
         field: 'pdf_file',
         message: 'Please provide a PDF file.',
       },
       {
-        condition: pdfFile && pdfFile.size > 2 * 1024 * 1024,
+        condition: Boolean(pdfFile) && (pdfFile?.size ?? 0) > 2 * 1024 * 1024,
         field: 'pdf_file',
         message: 'Please provide a PDF file with size less than 2 MB',
       },
@@ -361,6 +366,8 @@ export const ScholarshipDetailsPage: React.FC<
           }
         )
         showMessage(response.data.message, 'success')
+        // Only close modal and reset form after successful submission
+        setIsSendEmailModalOpen(false)
         setStudentEmail('')
         setStudentName('')
         setUserMessage('')
@@ -374,34 +381,37 @@ export const ScholarshipDetailsPage: React.FC<
             pdf_file: null,
           })
         )
-        setIsLoading(false)
         setErrors({
           student_email: '',
           student_name: '',
           user_message: '',
           pdf_file: '',
         })
+        setIsModalOpen(true)
       } catch (error: any) {
-        setIsLoading(false)
+        setIsModalOpen(true)
         showMessage(error.response?.data?.message ?? 'Email not sent.', 'error')
         if (
           error.response &&
           error.response.data &&
           Array.isArray(error.response.data.details)
         ) {
+          const newErrors = { ...errors }
           error.response.data.details.forEach((errorMessage: string) => {
             if (errorMessage.includes('Student email')) {
-              errors.student_email = errorMessage
+              newErrors.student_email = errorMessage
             } else if (errorMessage.includes('Student name')) {
-              errors.student_name = errorMessage
+              newErrors.student_name = errorMessage
             } else if (errorMessage.includes('User message')) {
-              errors.user_message = errorMessage
+              newErrors.user_message = errorMessage
             } else if (errorMessage.includes('file')) {
-              errors.pdf_file = errorMessage
+              newErrors.pdf_file = errorMessage
             }
           })
-          setErrors(errors)
+          setErrors(newErrors)
         }
+      } finally {
+        setIsLoading(false)
       }
     }
   }

@@ -15,7 +15,7 @@ const AdminPrivate: React.FC<AdminPrivateProps> = ({
 }) => {
   const dispatch = useAppDispatch()
   const [authenticated, setAuthenticated] = useState<boolean | null>(null)
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
 
   useEffect(() => {
     const logout = async () => {
