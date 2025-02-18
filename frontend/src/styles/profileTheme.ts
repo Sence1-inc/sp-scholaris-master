@@ -1,4 +1,3 @@
-import { Padding } from '@mui/icons-material'
 import theme from './theme'
 
 const profiletheme = {

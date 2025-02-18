@@ -36,7 +36,8 @@ const WelcomePageSearch: React.FC = () => {
   const { name: nameParam, page, limit, ...restParams } = params.params
   const [name, setName] = useState<string>(nameParam as string)
   const [hasScrolled, setHasScrolled] = useState(false)
-  const { hash } = useLocation()
+  const  { hash } = useLocation()
+  const location = useLocation()
   const searchRef = useRef<HTMLElement>(null)
   const { scholarships } = data.scholarships
   const [isLoading, setIsLoading] = useState<boolean>(false)

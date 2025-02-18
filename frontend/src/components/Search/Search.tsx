@@ -47,12 +47,12 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const [name, setName] = useState<string>(nameParam as string)
   const [hasScrolled, setHasScrolled] = useState(false)
   const { hash } = useLocation()
+  const location = useLocation()
   const searchRef = useRef<HTMLElement>(null)
   const isInitialLoad = useRef<boolean>(false)
-  const { scholarships, total_count } = data.scholarships
+  const { scholarships } = data.scholarships
   const { benefits, provider, start_date, due_date, type } = params.params
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [, setSearchParams] = useSearchParams();
 
@@ -80,7 +80,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     } else {
       setRowData([])
     }
-    setTotalCount(total_count)
     // eslint-disable-next-line
   }, [scholarships])
 
@@ -329,10 +328,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
         )}
       </Box>
     )
-  }
-
-  const handlePageChange = (par: { page: number; pageSize: number }) => {
-    setIsLoading(true)
   }
 
   const handleRowClick = (params: GridRowParams) => {
