@@ -27,7 +27,7 @@ const WelcomePage: React.FC = () => {
   const [articles, setArticles] = useState<Article[] | []>([])
   const [isLoading, setIsLoading] = useState(true)
   const APP_URL = process.env.REACT_APP_CMS_API_URL
-  const [isInitialLoad, setIsInitialLoad] = useState(true)
+  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
 
   useEffect(() => {
     const hasFilters = benefits || provider || start_date || due_date || type

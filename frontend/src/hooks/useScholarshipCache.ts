@@ -24,6 +24,8 @@ export const useScholarshipCache = () => {
 
   useEffect(() => {
     paramsRef.current = params
+    
+    // eslint-disable-next-line
   }, [params])
 
   const getCacheKey = (params: any) => {

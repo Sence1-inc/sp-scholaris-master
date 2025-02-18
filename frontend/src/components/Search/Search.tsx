@@ -423,10 +423,14 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
           <DataGrid
             onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}
+            columnVisibilityModel={{
+              startDate: xs,
+              dueDate: xs,
+            }}
             rows={rowData}
-            rowCount={totalCount}
+            rowCount={10}
             columns={columns}
-            onPaginationModelChange={handlePageChange}
+            autoPageSize
             initialState={{
               pagination: {
                 paginationModel: { page: 1, pageSize: 10 },
