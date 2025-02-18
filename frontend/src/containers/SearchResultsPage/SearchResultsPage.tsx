@@ -264,6 +264,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
     const hasUrlParams = Object.values(currentData).some(value => value !== undefined && value !== '')
     if (hasUrlParams) {
+      setIsLoading(true)
       dispatch(initializeParams({ ...params.params, ...currentData }))
       getScholarships(false)
     }
@@ -273,13 +274,14 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   // Combined effect for both initial load and page changes
   useEffect(() => {
     if (isInitialLoad) {
+      setIsLoading(true)
       getScholarships(false)
       setIsInitialLoad(false)
     } else if (page > 0) {
+      setIsLoading(true)
       dispatch(initializeParams({ ...params.params, page: Math.max(page, 1) }))
       getScholarships(false)
     }
-    setIsLoading(false)
      // eslint-disable-next-line
   }, [page, isInitialLoad])
 
@@ -288,8 +290,10 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     if (Array.isArray(result.scholarships.scholarships)) {
       formatScholarships(result.scholarships.scholarships)
       setTotalCount(result.scholarships.total_count)
+      setIsLoading(false)
     } else {
       setRowData([])
+      setIsLoading(false)
     }
      // eslint-disable-next-line
   }, [result.scholarships])
@@ -379,17 +383,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
               },
             },
             '& .MuiDataGrid-overlay': {
-              zIndex: '20',
-            },
-            '.MuiDataGrid-overlayWrapper': {
-              minHeight: '200px',
-              height:
-                rowData.length > 0 ? 'auto !important' : '200px !important',
-            },
-            '.MuiDataGrid-overlayWrapperInner': {
-              minHeight: '200px',
-              height:
-                rowData.length > 0 ? 'auto !important' : '200px !important',
+              zIndex: 20,
             },
             borderRadius: '16px',
             fontFamily: 'Outfit',
