@@ -16,11 +16,26 @@ import UserIcon from '../../public/images/users-solid.svg'
 import { Article } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
 import './WelcomePage.css'
+import { useAppSelector } from '../../redux/store'
+import { useScholarshipCache } from '../../hooks/useScholarshipCache'
+
 
 const WelcomePage: React.FC = () => {
+  const params = useAppSelector((state) => state.searchParams)
+  const { benefits, provider, start_date, due_date, type } = params.params
+  const { getScholarships } = useScholarshipCache()
   const [articles, setArticles] = useState<Article[] | []>([])
   const [isLoading, setIsLoading] = useState(true)
   const APP_URL = process.env.REACT_APP_CMS_API_URL
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
+
+  useEffect(() => {
+    const hasFilters = benefits || provider || start_date || due_date || type
+    if ((hasFilters || Object.keys(params.params).length === 0) && !isInitialLoad) {
+      getScholarships(false)
+    }
+    setIsInitialLoad(false)
+  }, [benefits, provider, start_date, due_date, type, params.params, getScholarships, isInitialLoad])
 
   useEffect(() => {
     const getArticles = async () => {
@@ -40,7 +55,7 @@ const WelcomePage: React.FC = () => {
     getArticles()
     // eslint-disable-next-line
   }, [])
-  console.log(articles)
+
   return (
     <>
       <Box sx={containerStyle}>
@@ -175,7 +190,7 @@ const WelcomePage: React.FC = () => {
               <br />
               <Typography variant="subtitle1" textAlign="center">
                 Choose Student if you are looking for scholarships, and choose
-                SGO if you want to list your organization’s scholarship and want
+                SGO if you want to list your organization's scholarship and want
                 to further look for a candidate
               </Typography>
             </div>

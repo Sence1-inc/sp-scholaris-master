@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipProvider } from '../../redux/types'
 import './Filter.css'
 import FilterOption from './FilterOption/FilterOption'
+import { useSearchParams } from 'react-router-dom'
 
 interface FilterProps {}
 
@@ -33,6 +34,7 @@ const Filter: React.FC<FilterProps> = () => {
   const [types, setTypes] = useState<Option[] | []>([])
   const [selectedParams, setSelectedParams] = useState<Params>({})
   const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null)
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const dropdownRef = useRef<HTMLDivElement | null>(null)
 
@@ -40,6 +42,7 @@ const Filter: React.FC<FilterProps> = () => {
     const key: string | null = activeDropdown
 
     if (activeDropdown) {
+      console.log(params.params)
       dispatch(
         initializeParams({
           ...params.params,
@@ -50,6 +53,15 @@ const Filter: React.FC<FilterProps> = () => {
         ...prevParams,
         [key as string]: option.label,
       }))
+      if (location.pathname === '/scholarships') {
+        setSearchParams(
+          Object.fromEntries(
+            Object.entries({ ...params.params, [key as string]: option.label })
+              .filter(([_, value]) => value != null)
+              .map(([k, v]) => [k, String(v)])
+          )
+        )
+      }
     }
   }
 

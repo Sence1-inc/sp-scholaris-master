@@ -113,20 +113,6 @@ const App: React.FC = () => {
   const { benefits, provider, start_date, due_date, type } = params.params
 
   useEffect(() => {
-    if (Object.keys(params.params).length > 0 && isInitialLoad) {
-      getScholarships()
-    }
-
-    setIsInitialLoad(false)
-    // eslint-disable-next-line
-  }, [params.params])
-
-  useEffect(() => {
-    getScholarships(false)
-    // eslint-disable-next-line
-  }, [benefits, provider, start_date, due_date, type])
-
-  useEffect(() => {
     const excludedPaths = [
       '/scholarships',
       '/student/survey',

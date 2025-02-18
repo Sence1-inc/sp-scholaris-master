@@ -18,6 +18,7 @@ import { Scholarship } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
 import theme from '../../styles/theme'
 import './SearchResultsPage.css'
+import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 
 interface GridRowDef {
   id: number
@@ -43,7 +44,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const isAuthenticated = useAppSelector(
     (state) => state.isAuthenticated
   )
-  const { getScholarships, areScholarshipsLoading } = useGetScholarships()
+  const { getScholarships } = useScholarshipCache()
   const [searchParams] = useSearchParams()
   const course = searchParams.get('course')
   const school = searchParams.get('school')
@@ -61,6 +62,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
 
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
   const user = useAppSelector((state) => state.user)
@@ -251,73 +253,63 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     setIsLoading(false)
   }
 
+  // Handle URL parameter changes
+  useEffect(() => {
+    const currentData = {
+      ...(course && { course }),
+      ...(school && { school }),
+      ...(benefits && { benefits }),
+      ...(location && { location }),
+      ...(start_date && { start_date }),
+      ...(due_date && { due_date }),
+      ...(provider && { provider }),
+      ...(name && { name }),
+    }
+
+    const hasUrlParams = Object.values(currentData).some(value => value !== undefined && value !== '')
+    if (hasUrlParams) {
+      dispatch(initializeParams({ ...params.params, ...currentData }))
+    }
+  }, [course, school, benefits, location, start_date, due_date, provider, name, dispatch])
+
+  // Handle params changes and trigger search
+  useEffect(() => {
+    if (!isInitialLoad) {
+      getScholarships(false)
+    }
+    setIsInitialLoad(false)
+  }, [params.params, getScholarships, isInitialLoad])
+
+  // Handle page changes
   useEffect(() => {
     if (page > 0) {
-      dispatch(initializeParams({ ...params.params, page: page }))
+      dispatch(initializeParams({ ...params.params, page }))
     }
-    // eslint-disable-next-line
-  }, [page])
+  }, [page, dispatch, params.params])
 
+  // Format scholarships when data changes
   useEffect(() => {
-    if (params.params.page) {
-      getScholarships()
-    }
-    // eslint-disable-next-line
-  }, [params.params.page])
-
-  useEffect(() => {
-    getScholarships()
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    if (
-      Array.isArray(result.scholarships.scholarships) &&
-      result.scholarships.scholarships.length > 0
-    ) {
+    if (Array.isArray(result.scholarships.scholarships)) {
       formatScholarships(result.scholarships.scholarships)
       setTotalCount(result.scholarships.total_count)
     } else {
       setRowData([])
     }
-    // eslint-disable-next-line
-  }, [result.scholarships.scholarships])
+  }, [result.scholarships])
 
+  // Handle pagination limits
   useEffect(() => {
-    if ((params?.params?.page as number) > result?.scholarships?.total_pages) {
-      setPage(result.scholarships.total_pages)
+    const totalPages = result?.scholarships?.total_pages
+    if (totalPages && (params?.params?.page as number) > totalPages) {
+      setPage(totalPages)
       dispatch(
         initializeParams({
           ...params.params,
-          page: result.scholarships.total_pages,
+          page: totalPages,
         })
       )
     }
-    // eslint-disable-next-line
-  }, [params.params.page, result.scholarships.total_pages])
-
-  useEffect(() => {
-    const initialData = {
-      ...params.params,
-      ...(course && { course: course }),
-      ...(school && { school: school }),
-      ...(benefits && { benefits: benefits }),
-      ...(location && { location: location }),
-      ...(start_date && { start_date: start_date }),
-      ...(due_date && { due_date: due_date }),
-      ...(provider && { provider: provider }),
-      ...(name && { name: name }),
-    }
-
-    dispatch(initializeParams(initialData))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [course, school, benefits, location, start_date, due_date, provider, name])
-
-  useEffect(() => {
-    const queryParams = queryString.stringify(params.params)
-    navigate(`/scholarships?${queryParams}`)
-    // eslint-disable-next-line
-  }, [params.params])
+  }, [result.scholarships.total_pages, dispatch, params.params])
 
   const handleRowClick = (params: GridRowParams) => {
     navigate(`/scholarships/${params.row.id}`)
@@ -357,7 +349,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         <Search isSection={false} />
         {/* <Alert severity="warning">
           All scholarship listings are currently test data and not actual
-          listings. We’ll be updating them with real data soon, so stay tuned!
+          listings. We'll be updating them with real data soon, so stay tuned!
         </Alert> */}
         <DataGrid
           onRowClick={handleRowClick}
@@ -374,7 +366,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           pageSizeOptions={[10]}
           pagination
           paginationMode="server"
-          loading={isLoading || areScholarshipsLoading}
+          loading={isLoading}
           sx={{
             height:
               Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,

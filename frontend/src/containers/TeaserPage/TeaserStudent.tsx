@@ -17,6 +17,7 @@ import {
 } from '../../data/StudentContent'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch } from '../../redux/store'
+import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 
 const jump = keyframes({
   '0%': { transform: 'translateY(0)' },
@@ -31,6 +32,7 @@ const HomePage: React.FC = () => {
   const navigate = useNavigate()
   const searchParams = new URLSearchParams(location.search)
   const query = searchParams.get('nl')
+  const { getScholarships } = useScholarshipCache()
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
@@ -43,8 +45,8 @@ const HomePage: React.FC = () => {
 
   useEffect(() => {
     dispatch(initializeParams({}))
-    // eslint-disable-next-line
-  }, [])
+    getScholarships(false)
+  }, [dispatch, getScholarships])
 
   return (
     <>

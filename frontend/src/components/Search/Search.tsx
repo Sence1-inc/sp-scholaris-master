@@ -14,7 +14,7 @@ import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import dayjs from 'dayjs'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -54,6 +54,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const xs = useMediaQuery(theme.breakpoints.up('xs'))
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
@@ -162,6 +163,15 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const handleChipDelete = (key: string) => {
     const { [key]: _, ...rest } = params.params
     dispatch(initializeParams(rest))
+    if (location.pathname === '/scholarships') {
+      setSearchParams(
+        Object.fromEntries(
+          Object.entries(rest)
+            .filter(([_, value]) => value != null)
+            .map(([k, v]) => [k, String(v)])
+        )
+      )
+    }
   }
 
   const formatScholarships = (data: Scholarship[]) => {
