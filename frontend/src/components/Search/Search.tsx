@@ -54,7 +54,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [, setSearchParams] = useSearchParams();
 
   const xs = useMediaQuery(theme.breakpoints.up('xs'))
   const sm = useMediaQuery(theme.breakpoints.up('sm'))

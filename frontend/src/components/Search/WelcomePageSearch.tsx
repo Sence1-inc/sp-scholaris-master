@@ -10,7 +10,7 @@ import {
 import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import useGetScholarships from '../../hooks/useGetScholarships'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -41,6 +41,7 @@ const WelcomePageSearch: React.FC = () => {
   const { scholarships } = data.scholarships
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [, setSearchParams] = useSearchParams();
 
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
   const xs = useMediaQuery(theme.breakpoints.up('xs'))
@@ -123,6 +124,15 @@ const WelcomePageSearch: React.FC = () => {
   const handleChipDelete = (key: string) => {
     const { [key]: _, ...rest } = params.params
     dispatch(initializeParams(rest))
+    if (location.pathname === '/') {
+      setSearchParams(
+        Object.fromEntries(
+          Object.entries(rest)
+            .filter(([_, value]) => value != null)
+            .map(([k, v]) => [k, String(v)])
+        )
+      )
+    }
   }
 
   const formatScholarships = (data: Scholarship[]) => {
@@ -283,7 +293,7 @@ const WelcomePageSearch: React.FC = () => {
             )}
           {/* <Alert severity="warning">
             All scholarship listings are currently test data and not actual
-            listings. We’ll be updating them with real data soon, so stay tuned!
+            listings. We'll be updating them with real data soon, so stay tuned!
           </Alert> */}
           <DataGrid
             onRowClick={handleRowClick}

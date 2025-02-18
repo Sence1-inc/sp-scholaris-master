@@ -5,20 +5,18 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import { Box, Button, Typography, useMediaQuery } from '@mui/material'
 import { DataGrid, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
 import Cookies from 'js-cookie'
-import queryString from 'query-string'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import Search from '../../components/Search/Search'
 import { useSnackbar } from '../../context/SnackBarContext'
-import useGetScholarships from '../../hooks/useGetScholarships'
+import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
 import theme from '../../styles/theme'
 import './SearchResultsPage.css'
-import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 
 interface GridRowDef {
   id: number
@@ -57,7 +55,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const result: any = useAppSelector(
     (state) => state.scholarships
   )
-  const [page, setPage] = useState<number>(0)
+  const [page, setPage] = useState<number>(1)
   const params = useAppSelector((state) => state.searchParams)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [totalCount, setTotalCount] = useState<number>(10)
@@ -248,12 +246,10 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
   const handlePageChange = (par: { page: number; pageSize: number }) => {
     setIsLoading(true)
-    setPage(par.page + 1)
-    dispatch(initializeParams({ ...params.params, limit: par.pageSize }))
-    setIsLoading(false)
+    setPage(Math.max(par.page + 1, 1))
   }
 
-  // Handle URL parameter changes
+  // Single effect to handle URL params
   useEffect(() => {
     const currentData = {
       ...(course && { course }),
@@ -269,23 +265,23 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     const hasUrlParams = Object.values(currentData).some(value => value !== undefined && value !== '')
     if (hasUrlParams) {
       dispatch(initializeParams({ ...params.params, ...currentData }))
-    }
-  }, [course, school, benefits, location, start_date, due_date, provider, name, dispatch])
-
-  // Handle params changes and trigger search
-  useEffect(() => {
-    if (!isInitialLoad) {
       getScholarships(false)
     }
-    setIsInitialLoad(false)
-  }, [params.params, getScholarships, isInitialLoad])
+     // eslint-disable-next-line
+  }, [course, school, benefits, location, start_date, due_date, provider, name])
 
-  // Handle page changes
+  // Combined effect for both initial load and page changes
   useEffect(() => {
-    if (page > 0) {
-      dispatch(initializeParams({ ...params.params, page }))
+    if (isInitialLoad) {
+      getScholarships(false)
+      setIsInitialLoad(false)
+    } else if (page > 0) {
+      dispatch(initializeParams({ ...params.params, page: Math.max(page, 1) }))
+      getScholarships(false)
     }
-  }, [page, dispatch, params.params])
+    setIsLoading(false)
+     // eslint-disable-next-line
+  }, [page, isInitialLoad])
 
   // Format scholarships when data changes
   useEffect(() => {
@@ -295,21 +291,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     } else {
       setRowData([])
     }
+     // eslint-disable-next-line
   }, [result.scholarships])
-
-  // Handle pagination limits
-  useEffect(() => {
-    const totalPages = result?.scholarships?.total_pages
-    if (totalPages && (params?.params?.page as number) > totalPages) {
-      setPage(totalPages)
-      dispatch(
-        initializeParams({
-          ...params.params,
-          page: totalPages,
-        })
-      )
-    }
-  }, [result.scholarships.total_pages, dispatch, params.params])
 
   const handleRowClick = (params: GridRowParams) => {
     navigate(`/scholarships/${params.row.id}`)
@@ -360,7 +343,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           onPaginationModelChange={handlePageChange}
           initialState={{
             pagination: {
-              paginationModel: { page: page, pageSize: 10 },
+              paginationModel: { page: Math.max(page - 1, 0), pageSize: 10 },
             },
           }}
           pageSizeOptions={[10]}

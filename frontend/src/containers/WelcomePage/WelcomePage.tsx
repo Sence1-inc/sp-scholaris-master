@@ -35,7 +35,8 @@ const WelcomePage: React.FC = () => {
       getScholarships(false)
     }
     setIsInitialLoad(false)
-  }, [benefits, provider, start_date, due_date, type, params.params, getScholarships, isInitialLoad])
+     // eslint-disable-next-line
+  }, [benefits, provider, start_date, due_date, type, params.params, isInitialLoad])
 
   useEffect(() => {
     const getArticles = async () => {
