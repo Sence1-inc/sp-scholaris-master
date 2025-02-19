@@ -1,6 +1,8 @@
-export const PROVIDER_TYPE: string = 'provider'
-export const STUDENT_TYPE: string = 'student'
-export const ADMIN_TYPE: string = 'admin'
+import { UserRole } from "../containers/SignUpPage/SignUpPage"
+
+export const PROVIDER_TYPE: UserRole = 'provider'
+export const STUDENT_TYPE: UserRole = 'student'
+export const ADMIN_TYPE: UserRole = 'admin'
 export const STUDENT_ROLE_ID: number = 3
 export const PROVIDER_ROLE_ID: number = 4
 export const ADMIN_ROLE_ID: number = 2
