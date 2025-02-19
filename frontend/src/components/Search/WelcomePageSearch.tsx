@@ -11,7 +11,7 @@ import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import useGetScholarships from '../../hooks/useGetScholarships'
+import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
@@ -32,7 +32,7 @@ const WelcomePageSearch: React.FC = () => {
   const data: any = useAppSelector(
     (state) => state.scholarships
   )
-  const { getScholarships } = useGetScholarships()
+  const { getScholarships } = useScholarshipCache()
   const { name: nameParam, page, limit, ...restParams } = params.params
   const [name, setName] = useState<string>(nameParam as string)
   const [hasScrolled, setHasScrolled] = useState(false)
@@ -133,6 +133,7 @@ const WelcomePageSearch: React.FC = () => {
             .map(([k, v]) => [k, String(v)])
         )
       )
+      getScholarships(false)
     }
   }
 

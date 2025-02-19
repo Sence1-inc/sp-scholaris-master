@@ -15,7 +15,7 @@ import dayjs from 'dayjs'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
-import useGetScholarships from '../../hooks/useGetScholarships'
+import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
@@ -42,7 +42,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const data: any = useAppSelector(
     (state) => state.scholarships
   )
-  const { getScholarships } = useGetScholarships()
+  const { getScholarships } = useScholarshipCache()
   const { name: nameParam, page, limit, ...restParams } = params.params
   const [name, setName] = useState<string>(nameParam as string)
   const [hasScrolled, setHasScrolled] = useState(false)
@@ -170,6 +170,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
             .map(([k, v]) => [k, String(v)])
         )
       )
+      getScholarships(false)
     }
   }
 
