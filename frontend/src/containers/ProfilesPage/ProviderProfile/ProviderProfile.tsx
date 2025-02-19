@@ -10,7 +10,7 @@ import {
 import axios from 'axios'
 import React, { useState } from 'react'
 import { useNavigate, useParams, Navigate } from 'react-router-dom'
-import axiosInstance, { initialUserState } from '../../../axiosConfig'
+import axiosInstance from '../../../axiosConfig'
 import AccountSettings from '../../../components/AccountCard/AccountSettings'
 import AccountSideBar, {
   sideItem,
@@ -21,7 +21,7 @@ import { useSnackbar } from '../../../context/SnackBarContext'
 import useGetSubscriber from '../../../hooks/useGetSubscriber'
 import ProfileImage from '../../../public/images/profile.png'
 import { initializeIsAuthenticated } from '../../../redux/reducers/IsAuthenticatedReducer'
-import { initializeUser } from '../../../redux/reducers/UserReducer'
+import { initializeUser, initialUserState } from '../../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import { ScholarshipProvider } from '../../../redux/types'
 import profileTheme from '../../../styles/profileTheme'

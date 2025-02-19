@@ -15,7 +15,7 @@ import { User } from '../types'
  * Contains user details such as birthdate, email, name, and other personal information.
  * It includes nested properties for role, scholarship provider, and student profile.
  */
-export const initialState = {
+export const initialUserState = {
   birthdate: '',
   email_address: '',
   first_name: '',
@@ -68,7 +68,7 @@ export const initialState = {
  */
 export const userSlice = createSlice({
   name: 'user',
-  initialState,
+  initialState: initialUserState,
   reducers: {
     /**
      * Initializes the user state with the provided user data.
