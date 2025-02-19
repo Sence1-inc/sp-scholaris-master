@@ -1,5 +1,8 @@
 import { UserRole } from "../containers/SignUpPage/SignUpPage"
 
+/**
+ * The type of user.
+ */
 export const PROVIDER_TYPE: UserRole = 'provider'
 export const STUDENT_TYPE: UserRole = 'student'
 export const ADMIN_TYPE: UserRole = 'admin'
