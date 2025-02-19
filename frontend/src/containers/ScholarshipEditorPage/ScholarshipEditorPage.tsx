@@ -465,13 +465,13 @@ const ScholarshipEditorPage = () => {
         }
       } catch (error: any) {
         setIsButtonLoading(false)
-        console.log(error)
+
         if (error) {
           if (error.response.status === 412) {
             showMessage(error.response.data.message, 'error')
           } else {
             setSuccessMessage('')
-            console.log(error)
+
             showMessage(error.response.data.errors.join(', '), 'error')
             const errorMessages: { [key: string]: string } = {
               scholarship_name: error.response.data.errors

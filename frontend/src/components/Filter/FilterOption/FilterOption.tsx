@@ -6,7 +6,6 @@ import React, { useState } from 'react'
 import DropdownArrow from '../../../public/images/dropdownArr.svg'
 import { initializeParams } from '../../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../../redux/store'
-import { BenefitData, ProviderData, ScholarshipType } from '../../../redux/types'
 
 /**
  * @type Option

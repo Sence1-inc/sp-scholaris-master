@@ -1,13 +1,13 @@
 import { Typography } from '@mui/material'
 import { Dayjs } from 'dayjs'
 import React, { useEffect, useRef, useState } from 'react'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { BenefitData, ProviderData, ScholarshipProvider, ScholarshipType } from '../../redux/types'
+import { ScholarshipProvider } from '../../redux/types'
 import './Filter.css'
 import FilterOption, { Option } from './FilterOption/FilterOption'
-import { useLocation, useSearchParams } from 'react-router-dom'
 
 /**
  * @interface Option
@@ -83,7 +83,6 @@ const Filter: React.FC<FilterProps> = () => {
 
   const mapToOptions = (response: any[], label: string): Option[] => {
     return response.map((item) => {
-      console.log(item)
       return ({
       label: item[label],
     })})
