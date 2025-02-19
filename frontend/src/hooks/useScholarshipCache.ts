@@ -8,6 +8,12 @@ import { debounce } from 'lodash'
 
 const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
 
+/**
+ * @interface CacheEntry
+ * @description Structure for cached scholarship data
+ * @property {any} data - The cached scholarship data
+ * @property {number} timestamp - Timestamp when the data was cached
+ */
 interface CacheEntry {
   data: any
   timestamp: number
@@ -15,6 +21,18 @@ interface CacheEntry {
 
 const cache: { [key: string]: CacheEntry } = {}
 
+/**
+ * @function useScholarshipCache
+ * @description Custom hook for managing scholarship data with caching
+ * @returns {Object} Object containing getScholarships and clearCache functions
+ * 
+ * @example
+ * const { getScholarships, clearCache } = useScholarshipCache();
+ * // Fetch scholarships with caching
+ * getScholarships();
+ * // Clear the cache when needed
+ * clearCache();
+ */
 export const useScholarshipCache = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()

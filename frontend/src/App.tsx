@@ -41,6 +41,11 @@ import { SnackbarProvider } from './context/SnackBarContext'
 import { useAppSelector } from './redux/store'
 import { User } from './redux/types'
 
+/**
+ * @component StudentRoutes
+ * @description Handles routing for student-specific pages
+ * @returns {JSX.Element} Student route configuration
+ */
 const StudentRoutes: React.FC = () => (
   <Routes>
     <Route path="/" element={<TeaserStudent />} />
@@ -60,7 +65,11 @@ const StudentRoutes: React.FC = () => (
     <Route path="*" element={<PageNotFoundPage />} />
   </Routes>
 )
-
+/**
+ * @component AdminRoutes
+ * @description Handles routing for admin-specific pages
+ * @returns {JSX.Element} Admin route configuration
+ */
 const AdminRoutes: React.FC = () => (
   <Routes>
     <Route
@@ -75,6 +84,11 @@ interface ProviderRoutesProps {
   isParent?: boolean
 }
 
+/**
+ * @component ProviderRoutes
+ * @description Handles routing for provider-specific pages
+ * @returns {JSX.Element} Provider route configuration
+ */
 const ProviderRoutes: React.FC<ProviderRoutesProps> = ({
   isParent = false,
 }) => (
@@ -103,6 +117,11 @@ const ProviderRoutes: React.FC<ProviderRoutesProps> = ({
   </Routes>
 )
 
+/**
+ * @component App
+ * @description Root component of the application that handles routing and layout
+ * @returns {JSX.Element} The main application component
+ */
 const App: React.FC = () => {
   const user: User = useAppSelector((state) => state.user)
   const location = useLocation()
