@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ctaButtonStyle } from '../../styles/globalStyles'
 import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
+import useGetSubscriber from '../../hooks/useGetSubscriber'
 
 /**
  * @interface AccountSettingsProps
@@ -61,6 +62,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ handleUnsubscribe }) 
   const subscribed = useAppSelector((state) => state.subscriber)
   const { id } = useParams()
   const dispatch = useAppDispatch()
+  const { getSubscriber } = useGetSubscriber()
 
   /**
    * @function handleSubscribe
@@ -89,6 +91,10 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({ handleUnsubscribe }) 
       handleSubscriptionError(error)
     }
   }
+
+  useEffect(() => {
+    getSubscriber()
+  }, [])
 
   const handleSubscriptionResponse = (response: any) => {
     if (response.status === 200 || response.status === 201) {
