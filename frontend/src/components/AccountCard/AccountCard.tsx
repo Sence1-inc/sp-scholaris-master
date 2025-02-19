@@ -2,6 +2,13 @@ import { Box, Card, Typography } from '@mui/material'
 import React from 'react'
 import profileTheme from '../../styles/profileTheme'
 
+/**
+ * Props for the {@link AccountCard} component.
+ *
+ * @property heading - The heading of the account card.
+ * @property subHeading - The subheading of the account card.
+ * @property children - The children of the account card.
+ */
 interface AccountCardProps {
   heading?: string
   subHeading?: string

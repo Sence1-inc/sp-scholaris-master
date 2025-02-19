@@ -8,6 +8,12 @@ import { debounce } from 'lodash'
 
 const CACHE_DURATION = 5 * 60 * 1000 // 5 minutes
 
+/**
+ * @interface CacheEntry
+ * @description Structure for cached scholarship data
+ * @property {any} data - The cached scholarship data
+ * @property {number} timestamp - Timestamp when the data was cached
+ */
 interface CacheEntry {
   data: any
   timestamp: number
@@ -15,6 +21,24 @@ interface CacheEntry {
 
 const cache: { [key: string]: CacheEntry } = {}
 
+/**
+ * A custom hook for managing scholarship data with caching.
+ *
+ * This hook provides functionality to fetch scholarships while caching the results
+ * for a specified duration. It also allows clearing the cache when needed.
+ *
+ * @returns {Object} An object containing the following functions:
+ * - `getScholarships(isRedirected: boolean)`: Fetches scholarships based on current parameters,
+ *   utilizing cached data if available and valid. If redirected, it navigates to the scholarships page.
+ * - `clearCache()`: Clears all cached scholarship data.
+ *
+ * @example
+ * const { getScholarships, clearCache } = useScholarshipCache();
+ * // Fetch scholarships with caching
+ * getScholarships();
+ * // Clear the cache when needed
+ * clearCache();
+ */
 export const useScholarshipCache = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()

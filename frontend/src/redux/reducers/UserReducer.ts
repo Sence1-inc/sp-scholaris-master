@@ -1,8 +1,21 @@
+/**
+ * @file UserReducer.ts
+ * @description Redux slice for managing user state.
+ * This file defines the initial state and reducer logic for user management using Redux Toolkit.
+ */
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import dayjs from 'dayjs'
 import { User } from '../types'
 
-export const initialState = {
+/**
+ * The initial state for the user.
+ *
+ * @remarks
+ * Contains user details such as birthdate, email, name, and other personal information.
+ * It includes nested properties for role, scholarship provider, and student profile.
+ */
+export const initialUserState = {
   birthdate: '',
   email_address: '',
   first_name: '',
@@ -47,16 +60,38 @@ export const initialState = {
   },
 }
 
+/**
+ * Redux slice for managing user state.
+ *
+ * @remarks
+ * This slice provides an action to initialize or update user state with the supplied user data.
+ */
 export const userSlice = createSlice({
   name: 'user',
-  initialState,
+  initialState: initialUserState,
   reducers: {
+    /**
+     * Initializes the user state with the provided user data.
+     *
+     * @param _state - The current user state.
+     * @param action - A payload action containing the complete user details.
+     * @returns The updated user state.
+     */
     initializeUser: (_state, action: PayloadAction<User>) => {
       return action.payload
     },
   },
 })
 
+/**
+ * Action creator for initializing user state.
+ */
 export const { initializeUser } = userSlice.actions
 
+/**
+ * The reducer function for user state management.
+ *
+ * @remarks
+ * Use this reducer when integrating user state management into the Redux store.
+ */
 export default userSlice.reducer

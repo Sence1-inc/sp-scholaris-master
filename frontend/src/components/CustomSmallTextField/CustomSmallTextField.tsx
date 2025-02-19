@@ -13,6 +13,22 @@ import { Dayjs } from 'dayjs'
 import React, { ChangeEvent } from 'react'
 import theme from '../../styles/theme'
 
+/**
+ * Props for the {@link CustomSmallTextField} component.
+ *
+ * @property {string} label - The label to display on the text field.
+ * @property {boolean} multiline - Indicates if the text field is multiline.
+ * @property {boolean} fullWidth - Indicates if the text field is full width.
+ * @property {number} minRows - The minimum number of rows for the text field.
+ * @property {string} type - The type of the text field.
+ * @property {boolean} isSelect - Indicates if the text field is a select.
+ * @property {any} options - The options for the select.
+ * @property {any} value - The value of the text field.
+ * @property {boolean} isDisabled - Indicates if the text field is disabled.
+ * @property {function} handleOnInputChange - The function to call when the input changes.
+ * @property {function} handleDateChange - The function to call when the date changes.
+ * @property {function} handleSelect - The function to call when the select changes.
+ */
 interface CustomSmallTextFieldProps {
   label: string
   multiline?: boolean
@@ -28,6 +44,12 @@ interface CustomSmallTextFieldProps {
   handleSelect?: (e: SelectChangeEvent<string>) => void
 }
 
+/**
+ * A customizable small text field component.
+ *
+ * @param {CustomSmallTextFieldProps} props - The properties for the CustomSmallTextField component.
+ * @returns {JSX.Element} The rendered CustomSmallTextField component.
+ */
 const CustomSmallTextField: React.FC<CustomSmallTextFieldProps> = ({
   label,
   multiline = false,
@@ -42,6 +64,11 @@ const CustomSmallTextField: React.FC<CustomSmallTextFieldProps> = ({
   value,
   isDisabled = false,
 }) => {
+  /**
+   * Checks if the screen is small (mobile).
+   *
+   * @returns {boolean} True if the screen is small, false otherwise.
+   */
   const isSm = useMediaQuery(() => theme.breakpoints.down('md'))
 
   return (

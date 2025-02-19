@@ -286,7 +286,7 @@ const ApplicationsManagementPage = () => {
         const response = await axiosInstance.get(
           `/api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarship_applications?page=${page + 1}&limit=${pageSize}`
         )
-        console.log(response.data)
+
         const row = response.data.scholarship_applications.map(
           (scholarship_application: ScholarshipApplication) => {
             return {

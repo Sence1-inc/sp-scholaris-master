@@ -1,3 +1,4 @@
+import React from 'react'
 import {
   Box,
   Button,
@@ -6,10 +7,17 @@ import {
   CardMedia,
   Typography,
 } from '@mui/material'
-import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Article, Tag } from '../../redux/types'
 
+/**
+ * Props for the {@link ArticleListSectionCard} component.
+ *
+ * @property article - The article object containing details to display.
+ * @property isRelated - Indicates if the card is related to another article.
+ * @property isSidebar - Indicates if the card is in a sidebar.
+ * @property isSearched - Indicates if the card is in a search result.
+ */
 interface ArticleListSectionCardProps {
   article: Article
   isRelated?: boolean
@@ -17,6 +25,20 @@ interface ArticleListSectionCardProps {
   isSearched?: boolean
 }
 
+/**
+ * A component that displays a single article in a card format.
+ *
+ * @remarks
+ * This component renders the article's title, image, and a brief description.
+ *
+ * @param props - The properties for the component.
+ * @param props.article - The article object containing details to display.
+ * @param props.isRelated - Indicates if the card is related to another article.
+ * @param props.isSidebar - Indicates if the card is in a sidebar.
+ * @param props.isSearched - Indicates if the card is in a search result.
+ *
+ * @returns A JSX element representing the article card.
+ */
 const ArticleListSectionCard: React.FC<ArticleListSectionCardProps> = ({
   article,
   isRelated = false,

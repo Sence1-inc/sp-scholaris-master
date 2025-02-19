@@ -263,8 +263,6 @@ const ArticleSearchListPage = () => {
                           variant="outlined"
                           onClick={() => {
                             if (type) {
-                              console.log(type)
-                              console.log(tag)
                               const updatedSearchParams = new URLSearchParams(
                                 searchParams
                               )
