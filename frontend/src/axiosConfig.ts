@@ -8,6 +8,7 @@
 import axios, { AxiosError, AxiosInstance, AxiosResponse } from 'axios'
 import { initializeUser, initialUserState } from './redux/reducers/UserReducer'
 import store from './redux/store'
+import { initializeIsAuthenticated } from './redux/reducers/IsAuthenticatedReducer'
 
 const LOCAL_API_URL = 'http://localhost:5001'
 
@@ -70,30 +71,14 @@ const getApiBaseUrl = (): string => {
 const handleAuthError = async (error: AxiosError) => {
   const { response } = error
 
-  if (response?.status === 498 || response?.status === 401) {
-    try {
-      const response = await axios.post(
-        `${baseURL}/api/v1/refresh`,
-        {},
-        {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-            'Access-Control-Allow-Origin': '*',
-          },
-        }
-      )
-
-      store.dispatch(initializeUser(response.data.user))
-      return true
-    } catch (refreshError) {
-      store.dispatch(initializeUser(initialUserState))
-      throw new CustomApiError({
-        message: 'Session expired. Please login again.',
-        status: 401,
-        code: 'SESSION_EXPIRED'
-      })
-    }
+  if (response?.status === 401) {
+    store.dispatch(initializeUser(initialUserState))
+    store.dispatch(initializeIsAuthenticated(false))
+    throw new CustomApiError({
+      message: 'Session expired. Please login again.',
+      status: 401,
+      code: 'SESSION_EXPIRED'
+    })
   }
   return false
 }
@@ -183,21 +168,27 @@ instance.interceptors.response.use(
     }
 
     try {
-      const isRefreshSuccessful = await handleAuthError(error)
-      if (isRefreshSuccessful) {
-        return instance.request(error.config!)
+      if (error.response?.status === 401) {
+        store.dispatch(initializeUser(initialUserState));
+        store.dispatch(initializeIsAuthenticated(false));
+        
+        throw new CustomApiError({
+          message: 'Session expired. Please login again.',
+          status: 401,
+          code: 'SESSION_EXPIRED'
+        });
       }
 
-      await handleForbiddenError(error)
+      await handleForbiddenError(error);
 
       throw new CustomApiError({
         message: (error.response?.data as { message?: string })?.message || 'An unexpected error occurred',
         status: error.response?.status || 500,
         code: error.code,
         response: error.response
-      })
+      });
     } catch (handledError) {
-      return Promise.reject(handledError)
+      return Promise.reject(handledError);
     }
   }
 )
