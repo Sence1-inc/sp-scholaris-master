@@ -9,7 +9,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material'
-import React, { useEffect, useState } from 'react'
+import React, { SyntheticEvent, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import axiosInstance from '../../axiosConfig'
 import { useSnackbar } from '../../context/SnackBarContext'
@@ -19,10 +19,23 @@ import { Profile, User } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
 
+/**
+ * @interface ProfileData
+ * @description Represents the profile data for the user.
+ * @property {Profile} profile - The profile data for the user.
+ */
 export interface ProfileData {
   profile: Profile
 }
 
+/**
+ * @type PhAddress
+ * @description Represents the profile data for the user.
+ * @property {number} id - The id of the address.
+ * @property {string} city - The city of the address.
+ * @property {string} province - The province of the address.
+ * @property {string} region - The region of the address.
+ */
 type PhAddress = {
   id: number
   city: string
@@ -43,6 +56,12 @@ const AccountViewProfile: React.FC = () => {
   const [link, setLink] = useState<string>('')
   const [isEditting, setIsEditting] = useState<boolean>(false)
 
+  /**
+   * @function useEffect
+   * @description Fetches the profile data of the user.
+   * @param {User} user - The user object.
+   * @returns {void}
+   */
   useEffect(() => {
     if (user) {
       setProviderName(user.profile?.scholarship_provider?.provider_name ?? '')
@@ -53,6 +72,11 @@ const AccountViewProfile: React.FC = () => {
     // eslint-disable-next-line
   }, [user])
 
+  /**
+   * @function handleSave
+   * @description Saves the profile data of the user.
+   * @returns {void}
+   */
   const handleSave = async () => {
     const data = {
       provider_link: link,
@@ -84,7 +108,13 @@ const AccountViewProfile: React.FC = () => {
     }
   }
 
+  /**
+   * @function useEffect
+   * @description Fetches the ph addresses of the user.
+   * @returns {void}
+   */
   useEffect(() => {
+    // Fetch the ph addresses
     const getPhAddresses = async () => {
       try {
         const response = await axiosInstance.get('/api/v1/ph_addresses', {
@@ -102,7 +132,14 @@ const AccountViewProfile: React.FC = () => {
     // eslint-disable-next-line
   }, [])
 
-  const handleAddressChange = (e: any, value: any) => {
+  /**
+   * @function handleAddressChange
+   * @description Handles the address change of the user.
+   * @param {React.ChangeEvent<HTMLInputElement>} e - The event object.
+   * @param {PhAddress | null} value - The selected address value.
+   * @returns {void}
+   */
+  const handleAddressChange = (_e: SyntheticEvent<Element, Event>, value: PhAddress | null) => {
     setSelectedPhAddress(value)
   }
 
@@ -150,7 +187,9 @@ const AccountViewProfile: React.FC = () => {
                   `${option.city}, ${option.province}, ${option.region}`
                 }
                 value={selectedPhAddress}
-                onChange={handleAddressChange}
+                onChange={(_e: SyntheticEvent<Element, Event>, value: PhAddress | null) =>
+                  handleAddressChange(_e, value)
+                }
                 renderOption={(props, option) => (
                   <li {...props} key={option.id}>
                     {option.city}, {option.province}, {option.region}

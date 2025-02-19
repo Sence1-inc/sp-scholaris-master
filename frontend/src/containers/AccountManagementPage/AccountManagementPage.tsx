@@ -52,18 +52,6 @@ interface UserCredentials {
 type Errors = { [key: string]: string }
 
 /**
- * @function handlePageChange
- * @description Updates the current page number and page size when the DataGrid pagination changes.
- * @param {{ page: number; pageSize: number }} params - An object containing the new page number and page size.
- * @returns {void}
- */
-const handlePageChange = (params: { page: number; pageSize: number }): void => {
-  // This function will be passed to the DataGrid pagination handler.
-  // It should update the state in the component that drives the page index and size.
-  // (Note: Actual state update is being handled within the component below.)
-}
-
-/**
  * @function handleUserCredentials
  * @description Updates a specific field in the user credentials state.
  * @param {string} inputValue - The new value for the field.

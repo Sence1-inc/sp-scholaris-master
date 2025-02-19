@@ -10,11 +10,21 @@ import { ctaButtonStyle } from '../../styles/globalStyles'
 import profileTheme from '../../styles/profileTheme'
 import AccountCard from './AccountCard'
 
-
+/**
+ * @interface AccountSettingsProps
+ * @description Represents the props for the AccountSettings component.
+ * @property {() => void} handleUnsubscribe - A function to handle the unsubscribe action.
+ */
 interface AccountSettingsProps {
   handleUnsubscribe: () => void
 }
 
+/**
+ * @function AccountSettings
+ * @description Displays user account settings.
+ * @param {AccountSettingsProps} props - The component props.
+ * @returns {JSX.Element} The rendered component.
+ */
 const AccountSettings: React.FC<AccountSettingsProps> = ({
   handleUnsubscribe,
 }) => {
@@ -28,6 +38,12 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
   const dispatch = useAppDispatch()
   const { getSubscriber, errorMessage } = useGetSubscriber()
 
+  /**
+   * @function useEffect
+   * @description Fetches the subscriber data when the user is authenticated.
+   * @param {Object} user - The authenticated user object.
+   * @returns {void}
+   */
   useEffect(() => {
     if (user) {
       getSubscriber()
@@ -40,6 +56,12 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
     // eslint-disable-next-line
   }, [user])
 
+  /**
+   * @function handleSubscribe
+   * @description Handles the subscribe action.
+   * @param {React.MouseEvent<HTMLButtonElement>} e - The event object.
+   * @returns {void}
+   */
   const handleSubscribe: (
     e: React.MouseEvent<HTMLButtonElement>
   ) => void = async (e) => {
@@ -98,7 +120,7 @@ const AccountSettings: React.FC<AccountSettingsProps> = ({
       }
     }
   }
-
+  
   return (
     <AccountCard
       heading="Account Settings"
