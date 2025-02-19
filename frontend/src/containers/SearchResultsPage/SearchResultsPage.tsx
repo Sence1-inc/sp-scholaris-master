@@ -5,13 +5,12 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import { Box, Button, Typography, useMediaQuery } from '@mui/material'
 import { DataGrid, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
 import Cookies from 'js-cookie'
-import queryString from 'query-string'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import Search from '../../components/Search/Search'
 import { useSnackbar } from '../../context/SnackBarContext'
-import useGetScholarships from '../../hooks/useGetScholarships'
+import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
@@ -43,7 +42,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const isAuthenticated = useAppSelector(
     (state) => state.isAuthenticated
   )
-  const { getScholarships, areScholarshipsLoading } = useGetScholarships()
+  const { getScholarships } = useScholarshipCache()
   const [searchParams] = useSearchParams()
   const course = searchParams.get('course')
   const school = searchParams.get('school')
@@ -56,11 +55,12 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const result: any = useAppSelector(
     (state) => state.scholarships
   )
-  const [page, setPage] = useState<number>(0)
+  const [page, setPage] = useState<number>(1)
   const params = useAppSelector((state) => state.searchParams)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
 
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
   const user = useAppSelector((state) => state.user)
@@ -246,78 +246,57 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
   const handlePageChange = (par: { page: number; pageSize: number }) => {
     setIsLoading(true)
-    setPage(par.page + 1)
-    dispatch(initializeParams({ ...params.params, limit: par.pageSize }))
-    setIsLoading(false)
+    setPage(Math.max(par.page + 1, 1))
   }
 
+  // Single effect to handle URL params
   useEffect(() => {
-    if (page > 0) {
-      dispatch(initializeParams({ ...params.params, page: page }))
-    }
-    // eslint-disable-next-line
-  }, [page])
-
-  useEffect(() => {
-    if (params.params.page) {
-      getScholarships()
-    }
-    // eslint-disable-next-line
-  }, [params.params.page])
-
-  useEffect(() => {
-    getScholarships()
-    // eslint-disable-next-line
-  }, [])
-
-  useEffect(() => {
-    if (
-      Array.isArray(result.scholarships.scholarships) &&
-      result.scholarships.scholarships.length > 0
-    ) {
-      formatScholarships(result.scholarships.scholarships)
-      setTotalCount(result.scholarships.total_count)
-    } else {
-      setRowData([])
-    }
-    // eslint-disable-next-line
-  }, [result.scholarships.scholarships])
-
-  useEffect(() => {
-    if ((params?.params?.page as number) > result?.scholarships?.total_pages) {
-      setPage(result.scholarships.total_pages)
-      dispatch(
-        initializeParams({
-          ...params.params,
-          page: result.scholarships.total_pages,
-        })
-      )
-    }
-    // eslint-disable-next-line
-  }, [params.params.page, result.scholarships.total_pages])
-
-  useEffect(() => {
-    const initialData = {
-      ...params.params,
-      ...(course && { course: course }),
-      ...(school && { school: school }),
-      ...(benefits && { benefits: benefits }),
-      ...(location && { location: location }),
-      ...(start_date && { start_date: start_date }),
-      ...(due_date && { due_date: due_date }),
-      ...(provider && { provider: provider }),
-      ...(name && { name: name }),
+    const currentData = {
+      ...(course && { course }),
+      ...(school && { school }),
+      ...(benefits && { benefits }),
+      ...(location && { location }),
+      ...(start_date && { start_date }),
+      ...(due_date && { due_date }),
+      ...(provider && { provider }),
+      ...(name && { name }),
     }
 
-    dispatch(initializeParams(initialData))
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    const hasUrlParams = Object.values(currentData).some(value => value !== undefined && value !== '')
+    if (hasUrlParams) {
+      setIsLoading(true)
+      dispatch(initializeParams({ ...params.params, ...currentData }))
+      getScholarships(false)
+    }
+     // eslint-disable-next-line
   }, [course, school, benefits, location, start_date, due_date, provider, name])
 
+  // Combined effect for both initial load and page changes
   useEffect(() => {
-    const queryParams = queryString.stringify(params.params)
-    navigate(`/scholarships?${queryParams}`)
-    // eslint-disable-next-line
-  }, [params.params])
+    if (isInitialLoad) {
+      setIsLoading(true)
+      getScholarships(false)
+      setIsInitialLoad(false)
+    } else if (page > 0) {
+      setIsLoading(true)
+      dispatch(initializeParams({ ...params.params, page: Math.max(page, 1) }))
+      getScholarships(false)
+    }
+     // eslint-disable-next-line
+  }, [page, isInitialLoad])
+
+  // Format scholarships when data changes
+  useEffect(() => {
+    if (Array.isArray(result.scholarships.scholarships)) {
+      formatScholarships(result.scholarships.scholarships)
+      setTotalCount(result.scholarships.total_count)
+      setIsLoading(false)
+    } else {
+      setRowData([])
+      setIsLoading(false)
+    }
+     // eslint-disable-next-line
+  }, [result.scholarships])
 
   const handleRowClick = (params: GridRowParams) => {
     navigate(`/scholarships/${params.row.id}`)
@@ -357,7 +336,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         <Search isSection={false} />
         {/* <Alert severity="warning">
           All scholarship listings are currently test data and not actual
-          listings. We’ll be updating them with real data soon, so stay tuned!
+          listings. We'll be updating them with real data soon, so stay tuned!
         </Alert> */}
         <DataGrid
           onRowClick={handleRowClick}
@@ -368,13 +347,13 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           onPaginationModelChange={handlePageChange}
           initialState={{
             pagination: {
-              paginationModel: { page: page, pageSize: 10 },
+              paginationModel: { page: Math.max(page - 1, 0), pageSize: 10 },
             },
           }}
           pageSizeOptions={[10]}
           pagination
           paginationMode="server"
-          loading={isLoading || areScholarshipsLoading}
+          loading={isLoading}
           sx={{
             height:
               Array.isArray(rowData) && rowData?.length > 0 ? 'auto' : 200,
@@ -404,17 +383,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
               },
             },
             '& .MuiDataGrid-overlay': {
-              zIndex: '20',
-            },
-            '.MuiDataGrid-overlayWrapper': {
-              minHeight: '200px',
-              height:
-                rowData.length > 0 ? 'auto !important' : '200px !important',
-            },
-            '.MuiDataGrid-overlayWrapperInner': {
-              minHeight: '200px',
-              height:
-                rowData.length > 0 ? 'auto !important' : '200px !important',
+              zIndex: 20,
             },
             borderRadius: '16px',
             fontFamily: 'Outfit',

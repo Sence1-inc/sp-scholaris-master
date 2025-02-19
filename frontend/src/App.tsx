@@ -1,6 +1,6 @@
 import { Box } from '@mui/material'
 import Cookies from 'js-cookie'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Route, Routes, useLocation } from 'react-router-dom'
 import Disclaimer from './components/Disclaimer/Disclaimer'
 import ErrorBoundary from './components/ErrorBoundary/ErrorBoundary'
@@ -18,6 +18,7 @@ import StudentApplicationsManagementPage from './containers/ApplicationsManageme
 import ArticleDetailPage from './containers/ArticleDetailPage/ArticleDetailPage'
 import ArticleListPage from './containers/ArticleListPage/ArticleListPage'
 import ArticleSearchListPage from './containers/ArticleListPage/ArticleSearchListPage'
+import BookmarksPage from './containers/BookmarksPage/BookmarksPage'
 import PageNotFoundPage from './containers/PageNotFoundPage/PageNotFoundPage'
 import PrivacyConsentPage from './containers/PrivacyConsentPage/PrivacyConsentPage'
 import ProviderProfile from './containers/ProfilesPage/ProviderProfile/ProviderProfile'
@@ -29,7 +30,6 @@ import { SearchResultsPage } from './containers/SearchResultsPage/SearchResultsP
 import SignInPage from './containers/SignInPage/SignInPage'
 import SignUpPage from './containers/SignUpPage/SignUpPage'
 import StudentDashboardPage from './containers/StudentDashboardPage/StudentDashboardPage'
-import BookmarksPage from './containers/BookmarksPage/BookmarksPage'
 import SurveyPage from './containers/SurveyPage/SurveyPage'
 import TeaserProvider from './containers/TeaserPage/TeaserProvider'
 import TeaserStudent from './containers/TeaserPage/TeaserStudent'
@@ -38,7 +38,6 @@ import ThankYouPage from './containers/ThankYouPage/ThankYouPage'
 import VerifyEmailPage from './containers/VerifyEmailPage/VerifyEmailPage'
 import WelcomePage from './containers/WelcomePage/WelcomePage'
 import { SnackbarProvider } from './context/SnackBarContext'
-import useGetScholarships from './hooks/useGetScholarships'
 import { useAppSelector } from './redux/store'
 import { User } from './redux/types'
 
@@ -105,26 +104,8 @@ const ProviderRoutes: React.FC<ProviderRoutesProps> = ({
 )
 
 const App: React.FC = () => {
-  const { getScholarships } = useGetScholarships()
-  const params = useAppSelector((state) => state.searchParams)
   const user: User = useAppSelector((state) => state.user)
-  const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
   const location = useLocation()
-  const { benefits, provider, start_date, due_date, type } = params.params
-
-  useEffect(() => {
-    if (Object.keys(params.params).length > 0 && isInitialLoad) {
-      getScholarships()
-    }
-
-    setIsInitialLoad(false)
-    // eslint-disable-next-line
-  }, [params.params])
-
-  useEffect(() => {
-    getScholarships(false)
-    // eslint-disable-next-line
-  }, [benefits, provider, start_date, due_date, type])
 
   useEffect(() => {
     const excludedPaths = [

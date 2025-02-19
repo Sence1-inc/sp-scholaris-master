@@ -155,6 +155,8 @@ const StudentApplicationsManagementPage = () => {
     }
 
     getApplications()
+
+    // eslint-disable-next-line
   }, [page, pageSize, user.id])
 
   return (
