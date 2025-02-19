@@ -10,9 +10,21 @@ interface ErrorResponse {
   details: string[]
 }
 
+/**
+ * A custom hook to fetch and manage scholarship data.
+ *
+ * @returns An object containing the `getScholarshipData` function to fetch scholarship data by ID.
+ */
 const useGetScholarshipsData = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
+  /**
+   * Fetches scholarship data by ID.
+   *
+   * @param id - The ID of the scholarship to fetch.
+   * @returns A promise that resolves when the scholarship data is fetched.
+   */
   const getScholarshipData = async (id: string | undefined) => {
     try {
       const response: AxiosResponse<ScholarshipData | ErrorResponse> =

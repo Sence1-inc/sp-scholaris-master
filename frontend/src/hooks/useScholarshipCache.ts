@@ -22,10 +22,16 @@ interface CacheEntry {
 const cache: { [key: string]: CacheEntry } = {}
 
 /**
- * @function useScholarshipCache
- * @description Custom hook for managing scholarship data with caching
- * @returns {Object} Object containing getScholarships and clearCache functions
- * 
+ * A custom hook for managing scholarship data with caching.
+ *
+ * This hook provides functionality to fetch scholarships while caching the results
+ * for a specified duration. It also allows clearing the cache when needed.
+ *
+ * @returns {Object} An object containing the following functions:
+ * - `getScholarships(isRedirected: boolean)`: Fetches scholarships based on current parameters,
+ *   utilizing cached data if available and valid. If redirected, it navigates to the scholarships page.
+ * - `clearCache()`: Clears all cached scholarship data.
+ *
  * @example
  * const { getScholarships, clearCache } = useScholarshipCache();
  * // Fetch scholarships with caching
