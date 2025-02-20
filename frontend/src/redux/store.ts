@@ -21,7 +21,6 @@ import ScholarshipsReducer from './reducers/ScholarshipsReducer'
 import SearchParamsReducer from './reducers/SearchParamsReducer'
 import SubscriberReducer from './reducers/SubscriberReducer'
 import UserReducer from './reducers/UserReducer'
-import reduxPersistMiddleware from './reduxPersistMiddleware'
 
 /**
  * Configuration object for redux-persist.
@@ -91,7 +90,7 @@ const store = configureStore({
       serializableCheck: {
         ignoredActions: ['persist/PERSIST']
       }
-    }).concat(reduxPersistMiddleware),
+    }),
 })
 
 /**

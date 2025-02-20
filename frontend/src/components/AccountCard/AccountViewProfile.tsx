@@ -11,12 +11,13 @@ import {
 } from '@mui/material'
 import React, { SyntheticEvent, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import axiosInstance from '../../axiosConfig'
+import axiosInstance, { CustomApiError } from '../../axiosConfig'
 import { useSnackbar } from '../../context/SnackBarContext'
 import { initializeUser } from '../../redux/reducers/UserReducer'
 import { useAppSelector } from '../../redux/store'
 import { Profile, User } from '../../redux/types'
 import profileTheme from '../../styles/profileTheme'
+import HelperText from '../HelperText/HelperText'
 import AccountCard from './AccountCard'
 
 /**
@@ -55,6 +56,9 @@ const AccountViewProfile: React.FC = () => {
   const [details, setDetails] = useState<string>('')
   const [link, setLink] = useState<string>('')
   const [isEditting, setIsEditting] = useState<boolean>(false)
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
+  const [loading, setLoading] = useState(false)
+  const [open, setOpen] = useState(false)
 
   /**
    * @function useEffect
@@ -90,56 +94,67 @@ const AccountViewProfile: React.FC = () => {
       const api = user.profile?.id
         ? await axiosInstance.put(
             `/api/v1/scholarship_provider_profiles/${user.profile?.id}`,
-            data,
-            { withCredentials: true }
+            data
           )
         : await axiosInstance.post(
             '/api/v1/scholarship_provider_profiles',
-            data,
-            { withCredentials: true }
+            data
           )
       const response = api
       showMessage('Successfully saved!', 'success')
       dispatch(initializeUser({ ...user, profile: response.data.profile }))
-    } catch (error: any) {
-      if (error) {
-        showMessage(error.response.data.message, 'success')
+    } catch (error) {
+      if (error instanceof CustomApiError) {
+        showMessage(error.message, 'error')
+        const formattedErrors = Object.fromEntries(
+          Object.entries(error.response?.data ?? {}).map(([key, value]) => [
+            key,
+            Array.isArray(value) ? value[0] : value
+          ])
+        )
+        setErrors(formattedErrors)
       }
     }
   }
 
   /**
-   * @function useEffect
-   * @description Fetches the ph addresses of the user.
+   * @function loadAddresses
+   * @description Loads the addresses of the user.
+   * @param {string} searchQuery - The search query.
    * @returns {void}
    */
-  useEffect(() => {
-    // Fetch the ph addresses
-    const getPhAddresses = async () => {
-      try {
-        const response = await axiosInstance.get('/api/v1/ph_addresses', {
-          withCredentials: true,
-        })
-        if (response) {
-          setPhAddresses(response.data)
+  const loadAddresses = async (searchQuery: string) => {
+    try {
+      setLoading(true)
+      const response = await axiosInstance.get('/api/v1/ph_addresses', {
+        params: {
+          search: searchQuery,
+          per_page: 20
         }
-      } catch (error: any) {
-        showMessage(error.response.data.error, 'error')
+      })
+      if (response?.data) {
+        setPhAddresses(response.data)
       }
+    } catch (error) {
+      if (error instanceof CustomApiError) {
+        showMessage(error.response?.data?.error ?? 'An error occurred', 'error')
+      }
+    } finally {
+      setLoading(false)
     }
-
-    getPhAddresses()
-    // eslint-disable-next-line
-  }, [])
+  }
 
   /**
    * @function handleAddressChange
    * @description Handles the address change of the user.
-   * @param {React.ChangeEvent<HTMLInputElement>} e - The event object.
+   * @param {React.SyntheticEvent} _event - The event object.
    * @param {PhAddress | null} value - The selected address value.
    * @returns {void}
    */
-  const handleAddressChange = (_e: SyntheticEvent<Element, Event>, value: PhAddress | null) => {
+  const handleAddressChange = (
+    _event: React.SyntheticEvent,
+    value: PhAddress | null
+  ) => {
     setSelectedPhAddress(value)
   }
 
@@ -180,27 +195,37 @@ const AccountViewProfile: React.FC = () => {
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <FormControl fullWidth>
               <Autocomplete
+                open={open}
+                onOpen={() => setOpen(true)}
+                onClose={() => setOpen(false)}
+                loading={loading}
                 disablePortal
-                id="combo-box-demo"
                 options={phAddresses}
                 getOptionLabel={(option: PhAddress) =>
                   `${option.city}, ${option.province}, ${option.region}`
                 }
                 value={selectedPhAddress}
-                onChange={(_e: SyntheticEvent<Element, Event>, value: PhAddress | null) =>
-                  handleAddressChange(_e, value)
-                }
+                onChange={handleAddressChange}
+                onInputChange={(_, newInputValue) => {
+                  if (newInputValue.length >= 3) {
+                    loadAddresses(newInputValue)
+                  }
+                }}
                 renderOption={(props, option) => (
                   <li {...props} key={option.id}>
                     {option.city}, {option.province}, {option.region}
                   </li>
                 )}
                 renderInput={(params) => (
-                  <TextField sx={{ padding: '0' }} {...params} fullWidth />
+                  <TextField 
+                    {...params} 
+                    fullWidth
+                    placeholder="Type at least 3 characters to search"
+                  />
                 )}
-                fullWidth
-                ListboxProps={{ style: { maxHeight: 150 } }}
+                ListboxProps={{ style: { maxHeight: 250 } }}
               />
+              {errors.ph_address && <HelperText error={`Address ${errors.ph_address}`} />}
             </FormControl>
           </Box>
         )}
