@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { initializeScholarshipData } from '../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch } from '../redux/store'
 import { ScholarshipData } from '../redux/types'
+import { baseURL } from '../axiosConfig'
 
 interface ErrorResponse {
   error: string
