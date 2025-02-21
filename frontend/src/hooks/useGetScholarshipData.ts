@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom'
 import { initializeScholarshipData } from '../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch } from '../redux/store'
 import { ScholarshipData } from '../redux/types'
+import { baseURL } from '../axiosConfig'
+
 
 interface ErrorResponse {
   error: string
@@ -27,7 +29,7 @@ const useGetScholarshipsData = () => {
   const getScholarshipData = async (id: string | undefined) => {
     try {
       const response: AxiosResponse<ScholarshipData | ErrorResponse> =
-        await axios.get(`api/v1/scholarships/${id}`, {
+        await axios.get(`${baseURL}/api/v1/scholarships/${id}`, {
           withCredentials: true,
         })
 
