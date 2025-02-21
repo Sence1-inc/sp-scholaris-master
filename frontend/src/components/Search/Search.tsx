@@ -14,8 +14,8 @@ import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import dayjs from 'dayjs'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import useGetScholarships from '../../hooks/useGetScholarships'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
@@ -42,18 +42,19 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const data: any = useAppSelector(
     (state) => state.scholarships
   )
-  const { getScholarships } = useGetScholarships()
+  const { getScholarships } = useScholarshipCache()
   const { name: nameParam, page, limit, ...restParams } = params.params
   const [name, setName] = useState<string>(nameParam as string)
   const [hasScrolled, setHasScrolled] = useState(false)
   const { hash } = useLocation()
+  const location = useLocation()
   const searchRef = useRef<HTMLElement>(null)
   const isInitialLoad = useRef<boolean>(false)
-  const { scholarships, total_count } = data.scholarships
+  const { scholarships } = data.scholarships
   const { benefits, provider, start_date, due_date, type } = params.params
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [, setSearchParams] = useSearchParams();
 
   const xs = useMediaQuery(theme.breakpoints.up('xs'))
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
@@ -79,7 +80,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     } else {
       setRowData([])
     }
-    setTotalCount(total_count)
     // eslint-disable-next-line
   }, [scholarships])
 
@@ -162,6 +162,16 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const handleChipDelete = (key: string) => {
     const { [key]: _, ...rest } = params.params
     dispatch(initializeParams(rest))
+    if (location.pathname === '/scholarships') {
+      setSearchParams(
+        Object.fromEntries(
+          Object.entries(rest)
+            .filter(([_, value]) => value != null)
+            .map(([k, v]) => [k, String(v)])
+        )
+      )
+      getScholarships(false)
+    }
   }
 
   const formatScholarships = (data: Scholarship[]) => {
@@ -321,10 +331,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     )
   }
 
-  const handlePageChange = (par: { page: number; pageSize: number }) => {
-    setIsLoading(true)
-  }
-
   const handleRowClick = (params: GridRowParams) => {
     navigate(`/scholarships/${params.row.id}`)
   }
@@ -413,10 +419,14 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
           <DataGrid
             onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}
+            columnVisibilityModel={{
+              startDate: xs,
+              dueDate: xs,
+            }}
             rows={rowData}
-            rowCount={totalCount}
+            rowCount={10}
             columns={columns}
-            onPaginationModelChange={handlePageChange}
+            autoPageSize
             initialState={{
               pagination: {
                 paginationModel: { page: 1, pageSize: 10 },

@@ -217,8 +217,8 @@ export const ScholarshipDetailsPage: React.FC<
       )
 
       setRowData(rows)
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      showMessage(error.response.data.message, 'error')
     }
   }
 

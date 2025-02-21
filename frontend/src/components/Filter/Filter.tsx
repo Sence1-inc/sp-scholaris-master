@@ -1,18 +1,29 @@
 import { Typography } from '@mui/material'
 import { Dayjs } from 'dayjs'
 import React, { useEffect, useRef, useState } from 'react'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipProvider } from '../../redux/types'
 import './Filter.css'
-import FilterOption from './FilterOption/FilterOption'
+import FilterOption, { Option } from './FilterOption/FilterOption'
+
+/**
+ * @interface Option
+ * @description Represents a selectable option in filter dropdowns
+ * @property {string} label - Display text for the option
+ */
+
+/**
+ * @interface DateRangeItem
+ * @description Represents a date range selection
+ * @property {Date} startDate - Beginning of the date range
+ * @property {Date} endDate - End of the date range
+ * @property {string} key - Unique identifier for the range
+ */
 
 interface FilterProps {}
-
-interface Option {
-  label: string
-}
 
 interface Params {
   [key: string]: string | null | Date | number | number
@@ -24,6 +35,12 @@ export interface DateRangeItem {
   key: string
 }
 
+/**
+ * @function Filter
+ * @description Component for filtering scholarship listings
+ * @param {FilterProps} props - Component properties
+ * @returns {JSX.Element} Rendered filter component
+ */
 const Filter: React.FC<FilterProps> = () => {
   const dispatch = useAppDispatch()
   const params = useAppSelector((state) => state.searchParams)
@@ -33,6 +50,8 @@ const Filter: React.FC<FilterProps> = () => {
   const [types, setTypes] = useState<Option[] | []>([])
   const [selectedParams, setSelectedParams] = useState<Params>({})
   const [selectedStartDate, setSelectedStartDate] = useState<Dayjs | null>(null)
+  const [, setSearchParams] = useSearchParams();
+  const location = useLocation();
 
   const dropdownRef = useRef<HTMLDivElement | null>(null)
 
@@ -50,13 +69,23 @@ const Filter: React.FC<FilterProps> = () => {
         ...prevParams,
         [key as string]: option.label,
       }))
+      if (location.pathname === '/scholarships') {
+        setSearchParams(
+          Object.fromEntries(
+            Object.entries({ ...params.params, [key as string]: option.label })
+              .filter(([_, value]) => value != null)
+              .map(([k, v]) => [k, String(v)])
+          )
+        )
+      }
     }
   }
 
   const mapToOptions = (response: any[], label: string): Option[] => {
-    return response.map((item) => ({
+    return response.map((item) => {
+      return ({
       label: item[label],
-    }))
+    })})
   }
 
   useEffect(() => {

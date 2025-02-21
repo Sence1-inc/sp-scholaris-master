@@ -23,6 +23,12 @@ type Errors = {
   password: string
 }
 
+/**
+ * @interface UserCredentials
+ * @description User login credentials structure
+ * @property {string} email_address - User's email address
+ * @property {string} password - User's password
+ */
 type UserCredentials = {
   email_address: string
   password: string
@@ -84,6 +90,12 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     }))
   }
 
+  /**
+   * @function handleSignIn
+   * @description Handles user authentication
+   * @async
+   * @throws {Error} When authentication fails
+   */
   const handleSignIn = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const isValidEmail = emailRegex.test(userCredentials.email_address)

@@ -8,6 +8,16 @@ import {
 } from '@mui/material'
 import React from 'react'
 
+/**
+ * Props for the {@link SnackbarComponent} component.
+ *
+ * @property {boolean} isOpen - Indicates if the snackbar is open.
+ * @property {string} message - The message to display in the snackbar.
+ * @property {AlertColor} severity - The severity of the snackbar.
+ * @property {number} duration - The duration of the snackbar.
+ * @property {function} handleWarningProceed - The function to call when the warning proceed button is clicked.
+ * @property {function} handleClose - The function to call when the snackbar is closed.
+ */
 interface SnackbarComponentProps {
   isOpen: boolean
   message: string
@@ -17,6 +27,12 @@ interface SnackbarComponentProps {
   handleClose: () => void
 }
 
+/**
+ * A customizable snackbar component.
+ *
+ * @param {SnackbarComponentProps} props - The properties for the SnackbarComponent component.
+ * @returns {JSX.Element} The rendered SnackbarComponent component.
+ */
 const styles = {
   warningBox: {
     display: 'flex',
@@ -47,6 +63,12 @@ const styles = {
   },
 }
 
+/**
+ * A customizable snackbar component.
+ *
+ * @param {SnackbarComponentProps} props - The properties for the SnackbarComponent component.
+ * @returns {JSX.Element} The rendered SnackbarComponent component.
+ */
 const SnackbarComponent: React.FC<SnackbarComponentProps> = ({
   isOpen,
   message,
@@ -55,6 +77,12 @@ const SnackbarComponent: React.FC<SnackbarComponentProps> = ({
   handleWarningProceed,
   handleClose,
 }) => {
+  /**
+   * A function that returns a warning message.
+   *
+   * @param {AlertColor} severity - The severity of the snackbar.
+   * @returns {JSX.Element} The rendered warning message.
+   */
   const warningMessage = (severity: AlertColor) => {
     if (severity === 'warning') {
       return (
@@ -86,6 +114,11 @@ const SnackbarComponent: React.FC<SnackbarComponentProps> = ({
     }
   }
 
+  /**
+   * A function that renders the snackbar component.
+   *
+   * @returns {JSX.Element} The rendered snackbar component.
+   */
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}

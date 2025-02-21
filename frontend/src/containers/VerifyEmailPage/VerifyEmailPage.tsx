@@ -1,7 +1,7 @@
 import { Button, Container, Typography } from '@mui/material'
 import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import axiosInstance from '../../axiosConfig'
+import axiosInstance, { CustomApiError } from '../../axiosConfig'
 import { User } from '../../redux/types'
 import { useSnackbar } from '../../context/SnackBarContext';
 
@@ -19,29 +19,42 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
   const handleVerifyEmail = async () => {
     try {
       const response = await axiosInstance.get(`/api/v1/verify_email/${token}`)
-      if (response.data.status === 'verified') {
-        navigate('/sign-in')
-      } else if (response.data.status === 'invalid link') {
-        setIsExpired(false)
-        showMessage('Invalid link. Your account may already be verified.', 'error')
-        setIsAlreadyVerified(true)
-      } else {
-        showMessage('Failed verifying account', 'error')
-        setIsExpired(false)
-        setIsAlreadyVerified(false)
-      }
-    } catch (error: any) {
-      if (error) {
-        if (error?.response?.data?.status === 'expired') {
-          setIsExpired(true)
-          setUser(error?.response?.data?.user)
-          setIsAlreadyVerified(false)
-          showMessage(error?.response?.data?.msg, 'error')
-        } else {
+      
+      switch (response.data.status) {
+        case 'verified':
+          navigate('/sign-in')
+          break
+        case 'error':
+          if (response.data.message === 'Invalid link') {
+            setIsExpired(false)
+            setIsAlreadyVerified(true)
+            showMessage('Invalid link. Your account may already be verified.', 'error')
+          } else {
+            showMessage('Failed verifying account', 'error')
+          }
+          break
+        default:
           setIsExpired(false)
           setIsAlreadyVerified(false)
           showMessage('Failed verifying account', 'error')
-        }
+      }
+    } catch (error) {
+      if (!(error instanceof CustomApiError)) {
+        showMessage('An unexpected error occurred', 'error')
+        return
+      }
+
+      const { status, user: userData, msg } = error.response?.data || {}
+      
+      if (status === 'expired') {
+        setIsExpired(true)
+        setUser(userData)
+        setIsAlreadyVerified(false)
+        showMessage(msg, 'error')
+      } else {
+        setIsExpired(false)
+        setIsAlreadyVerified(false)
+        showMessage('Failed verifying account', 'error')
       }
     }
   }
@@ -50,18 +63,16 @@ const VerifyEmailPage: React.FC<VerifyEmailProps> = () => {
     try {
       const response = await axiosInstance.post(
         '/api/v1/resend_verification',
-        {
-          token: token,
-          id: user?.id,
-        },
+        { token, id: user?.id },
         { withCredentials: true }
       )
-
-      if (response.status === 200) {
-        showMessage(response.data.msg, 'success')
+      showMessage(response.data.msg, 'success')
+    } catch (error) {
+      if (error instanceof CustomApiError) {
+        showMessage(error.response?.data?.msg || 'Failed to resend verification email', 'error')
+      } else {
+        showMessage('An unexpected error occurred', 'error')
       }
-    } catch (error: any) {
-      showMessage(error?.response?.data?.msg, 'error')
     }
   }
 

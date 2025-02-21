@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Navigate } from 'react-router-dom'
-import axiosInstance, { initialUserState } from '../../axiosConfig'
+import axiosInstance from '../../axiosConfig'
 import { ADMIN_ROLE_ID } from '../../constants/constants'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
-import { initializeUser } from '../../redux/reducers/UserReducer'
+import { initializeUser, initialUserState } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 
 interface AdminPrivateProps {
