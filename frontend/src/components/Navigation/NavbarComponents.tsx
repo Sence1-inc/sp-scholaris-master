@@ -1,7 +1,7 @@
 import { Button, List, ListItem, Typography, Box } from '@mui/material'
 import React, { ReactElement, useState, useEffect } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import instance, { initialUserState } from '../../axiosConfig'
+import instance from '../../axiosConfig'
 import {
   ADMIN_ROLE_ID,
   PROVIDER_ROLE_ID,
@@ -9,7 +9,7 @@ import {
   USER_TYPES,
 } from '../../constants/constants'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
-import { initializeUser } from '../../redux/reducers/UserReducer'
+import { initializeUser, initialUserState } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
 import CTAButton from '../CustomButton/CTAButton'
@@ -146,6 +146,16 @@ const AuthenticatedStudent: React.FC<AuthenticatedUserProps> = ({
         <Typography
           variant="body1"
           component={Link}
+          to="/student/bookmarks"
+          sx={profileTheme.navigation.mainNavListItemLink}
+        >
+          Bookmarks
+        </Typography>
+      </ListItem>
+      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+        <Typography
+          variant="body1"
+          component={Link}
           to="/student/applications"
           sx={profileTheme.navigation.mainNavListItemLink}
         >
@@ -178,7 +188,7 @@ const AuthenticatedStudent: React.FC<AuthenticatedUserProps> = ({
 }
 
 const AuthnticatedAdmin = () => {
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
 
@@ -188,7 +198,7 @@ const AuthnticatedAdmin = () => {
     })
     dispatch(initializeIsAuthenticated(false))
     dispatch(initializeUser(initialUserState))
-    navigate('/sign-in')
+    navigate('/sign-in', { replace: true })
   }
 
   return (
@@ -299,13 +309,13 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
           id="search-scholarships"
         />
       </ListItem>
-      <ListItem sx={profileTheme.navigation.mainNavListSignUp}>
+      <ListItem disablePadding>
         <Typography
           component={Link}
           to={`/sign-up`}
-          sx={profileTheme.navigation.mainNavListItemLink}
+          sx={profileTheme.navigation.mainNavListSignUp}
         >
-          <Box component="span" sx={profileTheme.navigation.mainNavListSignUpSpan}>Sign up is free</Box>
+          <Box component="span" sx={profileTheme.navigation.mainNavListSignUpSpan}>It's free</Box>
           Sign Up
         </Typography>
       </ListItem>

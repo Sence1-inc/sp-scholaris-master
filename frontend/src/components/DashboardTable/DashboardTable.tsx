@@ -2,10 +2,10 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
 import VisibilityIcon from '@mui/icons-material/Visibility'
 import { Box, IconButton, Tooltip } from '@mui/material'
-import { DataGrid } from '@mui/x-data-grid'
+import { DataGrid, GridRenderCellParams } from '@mui/x-data-grid'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axiosInstance from '../../axiosConfig'
+import axiosInstance, { CustomApiError } from '../../axiosConfig'
 import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
@@ -23,7 +23,7 @@ interface GridRowDef {
 export default function DataTable() {
   const navigate = useNavigate()
   const { showMessage } = useSnackbar()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
   const { getScholarshipData } = useGetScholarshipsData()
   const [rowData, setRowData] = useState<GridRowDef[]>([])
@@ -42,11 +42,7 @@ export default function DataTable() {
     setIsLoading(true)
     try {
       const response = await axiosInstance.delete(
-        `/api/v1/scholarships/${selectedRowId}?page=${page + 1}&limit=${pageSize}`,
-        {
-          timeout: 100000,
-          withCredentials: true,
-        }
+        `/api/v1/scholarships/${selectedRowId}?page=${page + 1}&limit=${pageSize}`
       )
       setIsLoading(false)
       if (response.data) {
@@ -55,8 +51,10 @@ export default function DataTable() {
       }
     } catch (error) {
       setIsLoading(false)
-      if (error) {
-        showMessage('Error deleting scholarship', 'error')
+      if (error instanceof CustomApiError) {
+        showMessage(error.response?.data?.message ?? 'An error occurred', 'error')
+      } else {
+        showMessage('An unexpected error occurred', 'error')
       }
     }
   }
@@ -86,11 +84,7 @@ export default function DataTable() {
       try {
         setIsLoading(true)
         const response = await axiosInstance.get(
-          `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships?page=${page + 1}&limit=${10}`,
-          {
-            timeout: 100000,
-            withCredentials: true,
-          }
+          `api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarships?page=${page + 1}&limit=${10}`
         )
 
         if (response.status === 200) {
@@ -98,9 +92,9 @@ export default function DataTable() {
           setRowCount(response.data.total_count)
           formatScholarships(response.data.scholarships)
         }
-      } catch (error: any) {
+      } catch (error) {
         setIsLoading(false)
-        if (error) {
+        if (error instanceof CustomApiError) {
           setRowData([])
           if (error.response && error.response.status === 403) {
             navigate('/')
@@ -169,7 +163,7 @@ export default function DataTable() {
       headerName: 'Actions',
       type: 'actions',
       flex: 1,
-      renderCell: (params: any) => renderActions(params),
+      renderCell: (params: GridRenderCellParams) => renderActions(params),
     },
   ]
 

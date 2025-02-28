@@ -3,10 +3,10 @@ import SettingsIcon from '@mui/icons-material/Settings'
 import { Box, Button, Card, List, ListItem, Typography } from '@mui/material'
 import React, { Dispatch, useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
-import axiosInstance, { initialUserState } from '../../axiosConfig'
+import axiosInstance from '../../axiosConfig'
 import ProfileImage from '../../public/images/profile.png'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
-import { initializeUser } from '../../redux/reducers/UserReducer'
+import { initializeUser, initialUserState } from '../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import profileTheme from '../../styles/profileTheme'
 import PrimaryButton from '../CustomButton/PrimaryButton'
@@ -42,7 +42,7 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
   const [activeButton, setActiveButton] = useState<string | undefined>('')
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const { lastRoute } = useParams()
 
   const handleDeleteCookie = async () => {
@@ -57,7 +57,7 @@ const AccountSideBar: React.FC<AccountSideBarProps> = ({
     if (response.data.deleted) {
       dispatch(initializeUser(initialUserState))
       dispatch(initializeIsAuthenticated(false))
-      navigate('/sign-in')
+      navigate('/sign-in', { replace: true })
     }
   }
 

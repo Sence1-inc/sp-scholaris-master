@@ -7,10 +7,35 @@ import DropdownArrow from '../../../public/images/dropdownArr.svg'
 import { initializeParams } from '../../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../../redux/store'
 
-interface Option {
+/**
+ * @type Option
+ * @description Represents an option
+ * @property {string} label - Label of the option
+ */
+export type Option = {
+  /**
+   * @description The display label for the option.
+   */
   label: string
 }
 
+/**
+ * @interface FilterOptionProps
+ * @description Represents the props for the FilterOption component.
+ * @property {React.ReactNode} children - The content of the option, typically a label or custom element.
+ * @property {string} [type] - The type of filter, e.g., "date" or "text", to dictate how options are rendered.
+ * @property {Option[]} [options] - List of selectable options.
+ * @property {boolean} [isVisible] - Flag indicating whether the options dropdown is visible.
+ * @property {() => void} onToggleVisibility - Callback to toggle the visibility of the filter options.
+ * @property {Option | null | string} [selectedOption] - The currently selected option value.
+ * @property {(option: Option) => void} [handleOptionClick] - Callback invoked when an option is selected.
+ * @property {Dayjs | null} [selectedStartDate] - The currently selected start date, if applicable.
+ * @property {(value: Dayjs) => void} [setSelectedStartDate] - Callback to update the selected start date.
+ * @property {Dayjs | null} [selectedDueDate] - The currently selected due date, if applicable.
+ * @property {(value: Dayjs) => void} [setSelectedDueDate] - Callback to update the selected due date.
+ * @property {any} [setSelectedParams] - Callback to update additional parameters associated with filtering.
+ * @property {() => void} [handleReset] - Callback invoked to reset the filter selection.
+ */
 interface FilterOptionProps {
   children: React.ReactNode
   type?: string
@@ -27,6 +52,27 @@ interface FilterOptionProps {
   handleReset?: () => void
 }
 
+/**
+ * @component FilterOption
+ * @description Functional component that renders a filter option. It displays a button to toggle
+ *              a list of options and optionally renders date pickers when the filter type is "date".
+ *              It also handles option selection and passes the selected option back via callback props.
+ *
+ * @param {FilterOptionProps} props - The component properties.
+ * @returns {JSX.Element} The rendered filter option component.
+ *
+ * @example
+ * <FilterOption
+ *   type="select"
+ *   options={[{ label: 'Option 1', value: '1' }, { label: 'Option 2', value: '2' }]}
+ *   isVisible={true}
+ *   onToggleVisibility={handleToggle}
+ *   selectedOption={{ label: 'Option 1', value: '1' }}
+ *   handleOptionClick={handleSelectOption}
+ * >
+ *   Select an Option
+ * </FilterOption>
+ */
 const FilterOption: React.FC<FilterOptionProps> = ({
   children,
   type,

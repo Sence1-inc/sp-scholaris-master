@@ -22,9 +22,9 @@ interface NavbarProps {
 const Navbar: React.FC<NavbarProps> = ({ window }) => {
   const location = useLocation()
   const pathname = location.pathname
-  const user: User = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.user)
   const isAuthenticated = useAppSelector(
-    (state) => state.persistedReducer.isAuthenticated
+    (state) => state.isAuthenticated
   )
   const [mobileOpen, setMobileOpen] = React.useState(false)
 

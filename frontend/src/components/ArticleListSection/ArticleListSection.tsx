@@ -12,6 +12,14 @@ import { useNavigate } from 'react-router-dom'
 import { Article, Tag } from '../../redux/types'
 import ArticleListSectionCard from './ArticleListSectionCard'
 
+/**
+ * Props for the {@link ArticleListSection} component.
+ *
+ * @property header - The main header for the article list section.
+ * @property subheader - The subheader for additional context.
+ * @property articles - An array of articles to display.
+ * @property type - The type of articles being displayed (e.g., popular, latest).
+ */
 interface ArticleListSectionProps {
   header: string
   subheader: string
@@ -19,6 +27,21 @@ interface ArticleListSectionProps {
   type: 'popular' | 'latest' | 'provider' | 'student'
 }
 
+/**
+ * A component that displays a list of articles in a structured layout.
+ *
+ * @remarks
+ * This component renders a header, subheader, and a list of articles.
+ * The first article is displayed prominently, while the rest are shown in a grid format.
+ *
+ * @param props - The properties for the component.
+ * @param props.header - The main header for the article list section.
+ * @param props.subheader - The subheader for additional context.
+ * @param props.articles - An array of articles to display.
+ * @param props.type - The type of articles being displayed.
+ *
+ * @returns A JSX element representing the article list section.
+ */
 const ArticleListSection: React.FC<ArticleListSectionProps> = ({
   header,
   subheader,
@@ -54,13 +77,13 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
             backgroundColor: 'white',
             boxShadow: 'none',
           }}
-          onClick={() => navigate(`/articles/${articles[0].slug}`)}
+          onClick={() => navigate(`/articles/${articles[0]?.slug}`)}
         >
           <CardMedia
             component="img"
             alt="green iguana"
             height="200"
-            image={articles[0].cover.formats.small?.url}
+            image={articles[0]?.cover.formats.small?.url}
             sx={{ borderRadius: '16px' }}
           />
           <CardContent sx={{ backgroundColor: 'white', padding: '16px 0' }}>
@@ -70,10 +93,10 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
               component="div"
               sx={{ lineHeight: 1.2 }}
             >
-              {articles[0].title}
+              {articles[0]?.title}
             </Typography>
             <Box sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}>
-              {articles[0].tags.map((tag: Tag, index: number) => {
+              {articles[0]?.tags.map((tag: Tag, index: number) => {
                 return (
                   <Button
                     key={`${tag.slug}-${index}`}
@@ -94,7 +117,7 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
               })}
             </Box>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {articles[0].description}
+              {articles[0]?.description}
             </Typography>
           </CardContent>
         </Card>

@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @api_v1_bookmark %>
+
+<div>
+  <%= link_to "Edit this bookmark", edit_api_v1_bookmark_path(@api_v1_bookmark) %> |
+  <%= link_to "Back to bookmarks", api_v1_bookmarks_path %>
+
+  <%= button_to "Destroy this bookmark", @api_v1_bookmark, method: :delete %>
+</div>

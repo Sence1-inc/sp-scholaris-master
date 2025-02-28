@@ -12,44 +12,75 @@ import { useSnackbar } from '../../context/SnackBarContext'
 import { useAppSelector } from '../../redux/store'
 import BannerButton from '../../components/Button/BannerButton'
 
-interface SignUpPageProps {}
+/**
+ * @type UserRole
+ * @description Represents the allowed user roles.
+ */
+export type UserRole = 'student' | 'provider' | 'admin'
 
-export type Errors = {
+/**
+ * @interface SignUpPageProps
+ * @description Represents the props for the SignUpPage component.
+ */
+export interface SignUpPageProps {}
+
+/**
+ * @interface UserCredentials
+ * @description Represents the user input data for registration.
+ * @property {string} email_address - The email address entered by the user.
+ * @property {string} password - The password entered by the user.
+ * @property {string} password2 - The password confirmation entered by the user.
+ * @property {string} first_name - The user's first name.
+ * @property {string} middle_name - The user's middle name.
+ * @property {string} last_name - The user's last name.
+ * @property {string} birthdate - The user's birthdate, in a format parseable by the Date constructor.
+ * @property {UserRole} role - The role to assign to the new user. Must be either "student", "provider", or "admin".
+ */
+export interface UserCredentials {
   email_address: string
   password: string
-  password2?: string
-  first_name?: string
-  last_name?: string
-  middle_name?: string
-  birthdate?: string
+  password2: string
+  first_name: string
+  middle_name: string
+  last_name: string
+  birthdate: string
+  role: UserRole
 }
 
+/**
+ * @component SignUpPage
+ * @description Component that renders a user registration form and handles form validation.
+ *
+ * The component validates user input as follows:
+ * - Validates if the email address is provided and meets criteria.
+ * - Checks if the password is at least 6 characters in length.
+ * - Ensures that password confirmation matches the entered password.
+ * - Validates that first name, middle name, and last name are provided.
+ * - Validates the birthdate to ensure it is a valid date, not in the future, and not before 1920.
+ * - Ensures that the role is either "student", "provider", or "admin".
+ *
+ * @returns {JSX.Element} The rendered SignUpPage component.
+ *
+ * @example
+ * <SignUpPage />
+ */
 const SignUpPage: React.FC<SignUpPageProps> = () => {
   const navigate = useNavigate()
   const { showMessage } = useSnackbar()
-  const [userCredentials, setUserCredentials] = useState({
+  const [userCredentials, setUserCredentials] = useState<UserCredentials>({
     email_address: '',
     password: '',
     password2: '',
     first_name: '',
-    last_name: '',
     middle_name: '',
-    birthdate: null,
-    is_active: 1,
-    role: 'provider',
+    last_name: '',
+    birthdate: '',
+    role: 'student'
   })
   const isAuthenticated = useAppSelector(
-    (state) => state.persistedReducer.isAuthenticated
+    (state) => state.isAuthenticated
   )
-  const [errors, setErrors] = useState<Errors>({
-    email_address: '',
-    password: '',
-    password2: '',
-    first_name: '',
-    last_name: '',
-    middle_name: '',
-    birthdate: '',
-  })
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [buttonLoading, setButtonLoading] = useState<boolean>(false)
   const [isInitialLoad, setIsInitialLoad] = useState<boolean>(true)
 
@@ -72,6 +103,13 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
   const isPasswordValid = userCredentials.password.length > 6
   const isPassword2 = userCredentials.password === userCredentials.password2
 
+  /**
+   * @description Array containing validation conditions for each form field.
+   * Each object in the array defines the following:
+   * - condition: Boolean indicating if the field is invalid.
+   * - field: The field name.
+   * - message: The error message for the field.
+   */
   const validationConditions = [
     {
       condition: !isValidEmail || !userCredentials.email_address,
@@ -116,18 +154,18 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
 
   useEffect(() => {
     if (!isInitialLoad) {
-      const errorMessages: any = validationConditions
+      const errorMessages: { [key: string]: string } = validationConditions
         .filter(({ condition }) => condition)
-        .reduce((acc: any, item) => {
+        .reduce((acc, item) => {
           acc[item.field] = item.message
           return acc
-        }, {})
+        }, {} as { [key: string]: string })
       setErrors(errorMessages)
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userCredentials, isInitialLoad])
 
-  const handleSignUp = async (role: string) => {
+  const handleSignUp = async (role: UserRole) => {
     userCredentials.role = role
     setIsInitialLoad(false)
 

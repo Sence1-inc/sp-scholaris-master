@@ -2,6 +2,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import { Box } from '@mui/material'
 import { keyframes } from '@mui/system'
 import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import FabButton from '../../components/FabButton/FabButton'
 import FeatureGuides from '../../components/Feature/FeatureGuides'
 import FloatingElement from '../../components/FloatingElement/FloatingElement'
@@ -14,8 +15,8 @@ import {
   STUDENT_WELCOME_SUBHEADER,
   STUDENT_WELCOME_THIRD_LEVEL_HEADING,
 } from '../../data/StudentContent'
-import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
-import { useAppDispatch } from '../../redux/store'
+import { useScholarshipCache } from '../../hooks/useScholarshipCache'
+import { useAppSelector } from '../../redux/store'
 
 const jump = keyframes({
   '0%': { transform: 'translateY(0)' },
@@ -24,21 +25,34 @@ const jump = keyframes({
 })
 
 const HomePage: React.FC = () => {
-  const dispatch = useAppDispatch()
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
+  const location = useLocation()
+  const navigate = useNavigate()
+  const searchParams = new URLSearchParams(location.search)
+  const query = searchParams.get('nl')
+  const { getScholarships } = useScholarshipCache()
+  const params = useAppSelector((state) => state.searchParams)
+  const { benefits, provider, start_date, due_date, type } = params.params
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget)
   }
 
   const handleClose = () => {
+    navigate(`/student`)
     setAnchorEl(null)
   }
 
   useEffect(() => {
-    dispatch(initializeParams({}))
+    const hasFilters = benefits || provider || start_date || due_date || type
+    if ((hasFilters || Object.keys(params.params).length === 0) && !isInitialLoad) {
+      getScholarships(false)
+    }
+    setIsInitialLoad(false)
+
     // eslint-disable-next-line
-  }, [])
+  }, [benefits, provider, start_date, due_date, type, params.params, isInitialLoad])
 
   return (
     <>
@@ -48,7 +62,11 @@ const HomePage: React.FC = () => {
       />
       <FeatureGuides features={FEATURES} contentType="studentFeatures" />
       <Search isSection />
-      <FloatingElement anchorEl={anchorEl} handleClose={handleClose}>
+      <FloatingElement
+        anchorEl={anchorEl}
+        handleClose={handleClose}
+        isOpenedFromEmail={Boolean(query)}
+      >
         <Newsletter
           user_type={STUDENT_TYPE}
           title_content={

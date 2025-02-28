@@ -1,4 +1,5 @@
-import { OpenInNew, Visibility } from '@mui/icons-material'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import {
   Box,
   Button,
@@ -13,8 +14,8 @@ import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import dayjs from 'dayjs'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import useGetScholarships from '../../hooks/useGetScholarships'
+import { Link, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
@@ -39,20 +40,21 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const params = useAppSelector((state) => state.searchParams)
   const navigate = useNavigate()
   const data: any = useAppSelector(
-    (state) => state.persistedReducer.scholarships
+    (state) => state.scholarships
   )
-  const { getScholarships } = useGetScholarships()
+  const { getScholarships } = useScholarshipCache()
   const { name: nameParam, page, limit, ...restParams } = params.params
   const [name, setName] = useState<string>(nameParam as string)
   const [hasScrolled, setHasScrolled] = useState(false)
   const { hash } = useLocation()
+  const location = useLocation()
   const searchRef = useRef<HTMLElement>(null)
   const isInitialLoad = useRef<boolean>(false)
-  const { scholarships, total_count } = data.scholarships
+  const { scholarships } = data.scholarships
   const { benefits, provider, start_date, due_date, type } = params.params
   const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [, setSearchParams] = useSearchParams();
 
   const xs = useMediaQuery(theme.breakpoints.up('xs'))
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
@@ -78,7 +80,6 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     } else {
       setRowData([])
     }
-    setTotalCount(total_count)
     // eslint-disable-next-line
   }, [scholarships])
 
@@ -106,9 +107,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     // eslint-disable-next-line
   }, [params.params])
 
-  const handleSearch: (e: React.MouseEvent<HTMLButtonElement>) => void = async (
-    e
-  ) => {
+  const handleSearch = async () => {
     const queryParams = queryString.stringify({ name })
     navigate(`/scholarships?${queryParams}`)
 
@@ -163,6 +162,16 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
   const handleChipDelete = (key: string) => {
     const { [key]: _, ...rest } = params.params
     dispatch(initializeParams(rest))
+    if (location.pathname === '/scholarships') {
+      setSearchParams(
+        Object.fromEntries(
+          Object.entries(rest)
+            .filter(([_, value]) => value != null)
+            .map(([k, v]) => [k, String(v)])
+        )
+      )
+      getScholarships(false)
+    }
   }
 
   const formatScholarships = (data: Scholarship[]) => {
@@ -178,6 +187,12 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
     setIsLoading(false)
     setRowData(row)
   }
+
+  const handleKeyDown = (e: { key: string }) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   const columns = [
     {
@@ -220,7 +235,45 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
             onClick={() => navigate(`/scholarships/${params.row.id}`)}
             sx={{ color: 'primary.main', display: 'flex', gap: '4px' }}
           >
-            <Typography variant="body1">View</Typography> <Visibility />
+            {/* <Typography variant="body1">View</Typography> <Visibility /> */}
+            <Button
+             onClick={() => navigate(`/scholarships/${params.row.id}`)}
+            variant="contained"
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              padding: "5px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minWidth: "50px",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+              },
+            }}
+          >
+            <VisibilityIcon fontSize="small" />
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              padding: "5px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minWidth: "50px",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+              },
+            }}
+          >
+            <StarBorderIcon fontSize="small" />
+          </Button>
           </IconButton>
         ) : (
           <Typography
@@ -235,16 +288,47 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               width: '150px',
             }}
           >
-            View
-            <OpenInNew fontSize="small" />
+            <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              padding: "5px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minWidth: "50px",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+              },
+            }}
+          >
+            <VisibilityIcon fontSize="small" />
+          </Button>
+          <Button
+            variant="contained"
+            sx={{
+              backgroundColor: "white",
+              color: "black",
+              padding: "5px",
+              borderRadius: "8px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              minWidth: "50px",
+              boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)",
+              "&:hover": {
+                backgroundColor: "#f0f0f0",
+              },
+            }}
+          >
+            <StarBorderIcon fontSize="small" />
+          </Button>
           </Typography>
         )}
       </Box>
     )
-  }
-
-  const handlePageChange = (par: { page: number; pageSize: number }) => {
-    setIsLoading(true)
   }
 
   const handleRowClick = (params: GridRowParams) => {
@@ -277,6 +361,7 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
               variant="outlined"
               onChange={(e) => handleChange(e.target.value)}
               value={name}
+              onKeyDown={handleKeyDown}
               placeholder="e.g. CHED Merit Scholarship"
               sx={{
                 width: {
@@ -334,10 +419,14 @@ const Search: React.FC<SearchProps> = ({ isSection }) => {
           <DataGrid
             onRowClick={handleRowClick}
             localeText={{ noRowsLabel: 'No saved data' }}
+            columnVisibilityModel={{
+              startDate: xs,
+              dueDate: xs,
+            }}
             rows={rowData}
-            rowCount={totalCount}
+            rowCount={10}
             columns={columns}
-            onPaginationModelChange={handlePageChange}
+            autoPageSize
             initialState={{
               pagination: {
                 paginationModel: { page: 1, pageSize: 10 },

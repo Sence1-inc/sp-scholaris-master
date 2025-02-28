@@ -9,9 +9,21 @@ interface ErrorResponse {
   details: string[]
 }
 
+/**
+ * A custom hook to fetch and manage the user profile.
+ *
+ * @returns An object containing the `getProfile` function to fetch the user profile.
+ */
 const useGetProfile = () => {
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
+
+  /**
+   * Fetches the user profile by ID.
+   *
+   * @param id - The ID of the user profile to fetch.
+   * @returns A promise that resolves when the profile is fetched.
+   */
   const getProfile = async (id: number | undefined) => {
     try {
       const response: AxiosResponse<Profile | ErrorResponse> =

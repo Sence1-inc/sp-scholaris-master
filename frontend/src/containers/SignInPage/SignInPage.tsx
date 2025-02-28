@@ -10,6 +10,11 @@ import { useSnackbar } from '../../context/SnackBarContext'
 import { User } from '../../redux/types'
 import { initializeIsAuthenticated } from '../../redux/reducers/IsAuthenticatedReducer'
 import BannerButton from '../../components/Button/BannerButton'
+import {
+  ADMIN_ROLE_ID,
+  PROVIDER_ROLE_ID,
+  STUDENT_ROLE_ID,
+} from '../../constants/constants'
 
 interface SignInPageProps {}
 
@@ -18,6 +23,12 @@ type Errors = {
   password: string
 }
 
+/**
+ * @interface UserCredentials
+ * @description User login credentials structure
+ * @property {string} email_address - User's email address
+ * @property {string} password - User's password
+ */
 type UserCredentials = {
   email_address: string
   password: string
@@ -28,13 +39,13 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   const navigate = useNavigate()
   const { showMessage } = useSnackbar()
   const isAuthenticated = useAppSelector(
-    (state) => state.persistedReducer.isAuthenticated
+    (state) => state.isAuthenticated
   )
   const [userCredentials, setUserCredentials] = useState<UserCredentials>({
     email_address: '',
     password: '',
   })
-  const userState: User = useAppSelector((state) => state.persistedReducer.user)
+  const userState: User = useAppSelector((state) => state.user)
   const [errors, setErrors] = useState<Errors>({
     email_address: '',
     password: '',
@@ -44,18 +55,18 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   useEffect(() => {
     if (isAuthenticated) {
       switch (userState?.role?.id) {
-        case 3:
+        case STUDENT_ROLE_ID:
           navigate('/student/account')
           break
 
-        case 4:
+        case PROVIDER_ROLE_ID:
           if (userState.scholarship_provider.provider_name) {
             navigate('/provider/dashboard')
           } else {
-            navigate(`/provider/account/${userState.id}/view-profile`)
+            navigate(`/provider/account/${userState.scholarship_provider.id}/view-profile`)
           }
           break
-        case 5:
+        case ADMIN_ROLE_ID:
           navigate('/admin/scholarships')
           break
         default:
@@ -79,6 +90,12 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     }))
   }
 
+  /**
+   * @function handleSignIn
+   * @description Handles user authentication
+   * @async
+   * @throws {Error} When authentication fails
+   */
   const handleSignIn = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     const isValidEmail = emailRegex.test(userCredentials.email_address)
@@ -156,11 +173,9 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         marginBlock: '40px',
       }}
     >
-      <Box
-         className='banner__container'
-        >
-          <BannerButton />
-        </Box>
+      <Box className="banner__container">
+        <BannerButton />
+      </Box>
       <Typography
         variant="h2"
         sx={{
@@ -175,6 +190,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       <CustomTextfield
         label="Email address"
         value={userCredentials.email_address.toLowerCase()}
+        handleOnKeyDonw={handleSignIn}
         handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleEmail(e.target.value)
         }
@@ -185,6 +201,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         type="password"
         label="Password"
         value={userCredentials.password}
+        handleOnKeyDonw={handleSignIn}
         handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handlePassword(e.target.value)
         }

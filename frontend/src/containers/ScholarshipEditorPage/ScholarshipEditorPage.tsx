@@ -26,7 +26,7 @@ import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipsData from '../../hooks/useGetScholarshipData'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { BenefitCategory, ScholarshipData } from '../../redux/types'
+import { BenefitCategory, ScholarshipData, User } from '../../redux/types'
 
 export interface ScholarshipType {
   id: number
@@ -55,8 +55,9 @@ const ScholarshipEditorPage = () => {
   const { id } = useParams<{ id: string }>()
   const { getScholarshipData } = useGetScholarshipsData()
   const dispatch = useAppDispatch()
-  const data = useAppSelector((state) => state.persistedReducer.scholarshipData)
+  const data = useAppSelector((state) => state.scholarshipData)
   const { scholarshipData } = data as { scholarshipData: ScholarshipData }
+  const user: User = useAppSelector((state) => state.user)
   const [scholarshipName, setScholarshipName] = useState<string>(
     scholarshipData?.scholarship_name ?? ''
   )
@@ -149,8 +150,8 @@ const ScholarshipEditorPage = () => {
   }
 
   useEffect(() => {
-    if (scholarshipData.scholarship_provider) {
-      setScholarshipProviderId(scholarshipData.scholarship_provider.id)
+    if (user.scholarship_provider) {
+      setScholarshipProviderId(user.scholarship_provider.id)
     }
 
     // eslint-disable-next-line
@@ -190,6 +191,7 @@ const ScholarshipEditorPage = () => {
       setScholarshipType(
         scholarshipData.scholarship_type?.scholarship_type_name
       )
+      setIsApplicationLinkActive(scholarshipData.is_application_link_active)
     }
     // eslint-disable-next-line
   }, [scholarshipData])
@@ -414,7 +416,7 @@ const ScholarshipEditorPage = () => {
           )
           if (response.data) {
             setIsButtonLoading(false)
-            dispatch(initializeScholarshipData(response.data.scholarship))
+            dispatch(initializeScholarshipData(response.data.scholarship_data))
             setSuccessMessage(response.data.message)
             showMessage(response.data.message, 'success')
           }
@@ -463,13 +465,13 @@ const ScholarshipEditorPage = () => {
         }
       } catch (error: any) {
         setIsButtonLoading(false)
-        console.log(error)
+
         if (error) {
           if (error.response.status === 412) {
             showMessage(error.response.data.message, 'error')
           } else {
             setSuccessMessage('')
-            console.log(error)
+
             showMessage(error.response.data.errors.join(', '), 'error')
             const errorMessages: { [key: string]: string } = {
               scholarship_name: error.response.data.errors
@@ -712,10 +714,11 @@ const ScholarshipEditorPage = () => {
               <FormControlLabel
                 control={
                   <Switch
-                    defaultChecked={scholarshipData.is_application_link_active}
-                    onClick={() =>
-                      setIsApplicationLinkActive(!isApplicationLinkActive)
-                    }
+                    defaultChecked={isApplicationLinkActive}
+                    checked={isApplicationLinkActive}
+                    onClick={() => {
+                      setIsApplicationLinkActive((prevState) => !prevState)
+                    }}
                   />
                 }
                 label="Activate?"

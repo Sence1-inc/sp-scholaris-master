@@ -4,38 +4,36 @@ import React, { useEffect, useState } from 'react'
 import ArticleListSection from '../../components/ArticleListSection/ArticleListSection'
 import Jumbotron from '../../components/Jumbotron/Jumbotron'
 import SubscribeJumbotron from '../../components/Jumbotron/SubscribeJumbotron'
+import { useSnackbar } from '../../context/SnackBarContext'
 import { Article } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
 
 const ArticleListPage: React.FC = () => {
+  const { showMessage } = useSnackbar()
   const [articles, setArticles] = useState<Article[]>([])
-  const [loading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const APP_URL = process.env.REACT_APP_CMS_API_URL
 
-  const getArticles = async () => {
-    try {
-      const response = await axios.get(
-        `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&sort[0]=publishedAt:desc&populate=*`
-      )
-
-      return response.data
-    } catch (error) {
-      console.error('Error fetching articles:', error)
-      return []
-    }
-  }
-
   useEffect(() => {
-    const fetchArticles = async () => {
-      const data = await getArticles()
-      setArticles(data.data)
-      setLoading(false)
+    setIsLoading(true)
+    const getArticles = async () => {
+      try {
+        const response = await axios.get(
+          `${APP_URL}/api/articles?filters[project][slug][$eq]=scholaris&sort[0]=publishedAt:desc&populate=*`
+        )
+
+        setArticles(response.data.data)
+        setIsLoading(false)
+      } catch (error) {
+        showMessage('Error fetching articles', 'error')
+      }
     }
-    fetchArticles()
+
+    getArticles()
     // eslint-disable-next-line
   }, [])
 
-  if (loading) {
+  if (isLoading) {
     return (
       <Container
         sx={{
@@ -63,7 +61,7 @@ const ArticleListPage: React.FC = () => {
       )}
       <ArticleListSection
         type="latest"
-        articles={articles.filter((article: Article) => !article.is_popular)}
+        articles={articles}
         header="Latest Articles"
         subheader="Articles"
       />

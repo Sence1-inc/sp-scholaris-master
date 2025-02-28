@@ -11,27 +11,72 @@ import { PROVIDER_TYPE } from '../../constants/constants'
 import { useSnackbar } from '../../context/SnackBarContext'
 import { useAppSelector } from '../../redux/store'
 import { User } from '../../redux/types'
-import { Errors } from '../SignUpPage/SignUpPage'
+import { UserRole } from '../SignUpPage/SignUpPage'
 
 dayjs.extend(utc)
 
+/**
+ * @interface GridRowDef
+ * @description Represents a single row of account data for the DataGrid.
+ * @property {number} id - The unique identifier of the account.
+ * @property {string} email_address - The email address of the account.
+ * @property {string} password - The (hashed) password of the account.
+ */
 interface GridRowDef {
   id: number
   email_address: string
   password: string
 }
 
+/**
+ * @interface UserCredentials
+ * @description Represents the credentials used to create or update an account.
+ * @property {string} email_address - The email address for the account.
+ * @property {string} password - The password for the account.
+ * @property {number} is_active - Indicates whether the account is active (1) or inactive (0).
+ * @property {number | null} parent_id - ID of the parent user (if applicable).
+ * @property {UserRole} role - The role assigned to the account.
+ */
 interface UserCredentials {
   email_address: string
   password: string
   is_active: number
   parent_id: number | null
-  role: string
+  role: UserRole
 }
 
+/**
+ * @typedef Errors
+ * @description Represents a collection of error messages keyed by form field names.
+ */
+type Errors = { [key: string]: string }
+
+/**
+ * @function handleUserCredentials
+ * @description Updates a specific field in the user credentials state.
+ * @param {string} inputValue - The new value for the field.
+ * @param {string} key - The field name to update.
+ * @returns {void}
+ */
+const handleUserCredentials = (inputValue: string, key: string, setUserCredentials: React.Dispatch<React.SetStateAction<UserCredentials>>, prevCredentials: UserCredentials): void => {
+  setUserCredentials({
+    ...prevCredentials,
+    [key]: inputValue,
+  })
+}
+
+/**
+ * @function handleAddAccount
+ * @description Adds a new account after validating the input fields.
+ *
+ * It attaches the current user's ID as the parent_id and sends a POST request to the API.
+ * If validation fails, it shows an error message; otherwise, the new account is added to the DataGrid.
+ *
+ * @returns {Promise<void>} A promise that resolves when the account creation process is complete.
+ */
 const AccountManagementPage = () => {
   const { showMessage } = useSnackbar()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isDataLoading, setIsDataLoading] = useState<boolean>(false)
@@ -70,6 +115,12 @@ const AccountManagementPage = () => {
     },
   ]
 
+  /**
+   * @function updateValidationErrors
+   * @description Updates the validation error messages based on the current user credentials.
+   * It recalculates errors for fields such as email and password.
+   * @returns {void}
+   */
   useEffect(() => {
     if (!isInitialLoad) {
       const errorMessages: any = validationConditions
@@ -80,46 +131,30 @@ const AccountManagementPage = () => {
         }, {})
       setErrors(errorMessages)
     }
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userCredentials, isInitialLoad])
 
-  const columns = [
-    {
-      field: 'email_address',
-      headerName: 'Email Address',
-      type: 'string',
-      editable: false,
-      flex: 1.5,
-    },
-    {
-      field: 'password',
-      headerName: 'Password',
-      type: 'string',
-      editable: false,
-      flex: 1,
-    },
-    {
-      field: 'actions',
-      headerName: 'Actions',
-      type: 'actions',
-      flex: 1,
-      renderCell: (params: GridRenderCellParams) => renderActions(params),
-    },
-  ]
-
-  const handlePageChange = (params: { page: number; pageSize: number }) => {
+  /**
+   * @function handlePageChangeWrapper
+   * @description Wrapper for handling page changes in the DataGrid.
+   * @param {{ page: number; pageSize: number }} params - The new page and page size.
+   * @returns {void}
+   */
+  const handlePageChangeWrapper = (params: { page: number; pageSize: number }): void => {
     setPage(params.page)
     setPageSize(params.pageSize)
   }
 
-  const handleUserCredentials = (inputValue: string, key: string) => {
-    setUserCredentials((prevUserCredentials) => ({
-      ...prevUserCredentials,
-      [key]: inputValue,
-    }))
-  }
-
-  const handleAddAccount = async () => {
+  /**
+   * @function handleAddAccount
+   * @description Adds a new account by validating the input fields and sending a POST request.
+   *
+   * It attaches the current user's ID as the parent_id, validates the fields,
+   * and updates the DataGrid with the new account on success.
+   *
+   * @returns {Promise<void>} A promise that resolves when the account creation process is complete.
+   */
+  const handleAddAccount = async (): Promise<void> => {
     userCredentials.parent_id = user.id as number
     setIsInitialLoad(false)
 
@@ -130,7 +165,6 @@ const AccountManagementPage = () => {
 
     if (hasErrors) {
       showMessage('Please fill in the required details.', 'error')
-
       const newErrors = validationConditions.reduce<{ [key: string]: string }>(
         (acc, { condition, field, message }) => {
           if (condition) {
@@ -140,7 +174,6 @@ const AccountManagementPage = () => {
         },
         {}
       )
-
       setErrors({ ...errors, ...newErrors })
     } else {
       try {
@@ -157,7 +190,6 @@ const AccountManagementPage = () => {
 
         setIsModalOpen(false)
         setIsLoading(false)
-        setIsModalOpen(false)
         setRowData([...rowData, data])
         showMessage(response.data.message, 'success')
       } catch (error: any) {
@@ -167,12 +199,21 @@ const AccountManagementPage = () => {
     }
   }
 
-  const handleEditAccount = async (params: GridRenderCellParams) => {
+  /**
+   * @function handleEditAccount
+   * @description Handles editing an account.
+   *
+   * It sends a PUT request with the updated data for the selected account.
+   * On success, it updates the local DataGrid row data and locks editing mode.
+   *
+   * @param {GridRenderCellParams} params - The grid cell parameters containing the row data.
+   * @returns {Promise<void>} A promise that resolves when the edit operation is complete.
+   */
+  const handleEditAccount = async (params: GridRenderCellParams): Promise<void> => {
     const data = params.row
 
     try {
       const response = await axiosInstance.put(`/api/v1/users/${data.id}`, data)
-
       const newRowData = rowData.map((row) => {
         if (row.id === response.data.user.id) {
           return {
@@ -184,7 +225,6 @@ const AccountManagementPage = () => {
             birthdate: new Date(response.data.user.birthdate).toDateString(),
           }
         }
-
         return row
       })
       setIsEditable(false)
@@ -195,22 +235,35 @@ const AccountManagementPage = () => {
     }
   }
 
-  const handleDeleteAccount = async (selectedRowId: number) => {
+  /**
+   * @function handleDeleteAccount
+   * @description Deletes an account by sending a DELETE request to the API.
+   *
+   * On successful deletion, the account is removed from the DataGrid and a success message is displayed.
+   *
+   * @param {number} selectedRowId - The ID of the account to delete.
+   * @returns {Promise<void>} A promise that resolves when the deletion process is complete.
+   */
+  const handleDeleteAccount = async (selectedRowId: number): Promise<void> => {
     try {
-      const response = await axiosInstance.delete(
-        `/api/v1/users/${selectedRowId}`
-      )
+      const response = await axiosInstance.delete(`/api/v1/users/${selectedRowId}`)
       showMessage(response.data.message, 'success')
-      setRowData((prevRowData) =>
-        prevRowData.filter((row) => row.id !== selectedRowId)
-      )
+      setRowData((prevRowData) => prevRowData.filter((row) => row.id !== selectedRowId))
     } catch (error: any) {
       showMessage(error.response.data.message, 'error')
     }
   }
 
+  /**
+   * @function getChildrenAccounts
+   * @description Fetches child accounts associated with the current user's ID.
+   *
+   * It sends a GET request including pagination parameters, and updates the DataGrid with the retrieved accounts.
+   *
+   * @returns {Promise<void>} A promise that resolves when the fetch process is complete.
+   */
   useEffect(() => {
-    const getChildren = async () => {
+    const getChildrenAccounts = async (): Promise<void> => {
       try {
         setIsDataLoading(true)
         const response = await axiosInstance.get(
@@ -234,11 +287,20 @@ const AccountManagementPage = () => {
       }
     }
 
-    getChildren()
+    getChildrenAccounts()
     // eslint-disable-next-line
   }, [page])
 
-  const renderActions = (params: GridRenderCellParams) => {
+  /**
+   * @function renderActions
+   * @description Renders the action buttons for each row in the DataGrid.
+   *
+   * Depending on the editing state, it displays either Save/Cancel buttons or Edit/Delete buttons.
+   *
+   * @param {GridRenderCellParams} params - The grid cell parameters containing the row data and metadata.
+   * @returns {JSX.Element} A JSX element containing the action buttons.
+   */
+  const renderActions = (params: GridRenderCellParams): JSX.Element => {
     const originalData = [...rowData]
     return isEditable ? (
       <Box>
@@ -267,10 +329,7 @@ const AccountManagementPage = () => {
     ) : (
       <Box>
         <Tooltip title="Edit">
-          <IconButton
-            onClick={() => setIsEditable(true)}
-            sx={{ color: '#1F4BEA' }}
-          >
+          <IconButton onClick={() => setIsEditable(true)} sx={{ color: '#1F4BEA' }}>
             <Edit />
           </IconButton>
         </Tooltip>
@@ -293,6 +352,16 @@ const AccountManagementPage = () => {
     )
   }
 
+  /**
+   * @component AccountManagementPage
+   * @description Renders the account management interface.
+   *
+   * This component allows administrators or providers to manage user accounts,
+   * including viewing, adding, editing, and deleting accounts. It displays the accounts in a DataGrid
+   * and provides a modal for adding new accounts.
+   *
+   * @returns {JSX.Element} The rendered AccountManagementPage component.
+   */
   return (
     <Box
       sx={{
@@ -387,10 +456,7 @@ const AccountManagementPage = () => {
             label="Email address"
             error={errors.email_address}
             handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleUserCredentials(
-                e.target.value.toLowerCase(),
-                'email_address'
-              )
+              handleUserCredentials(e.target.value.toLowerCase(), 'email_address', setUserCredentials, userCredentials)
             }
             value={userCredentials.email_address.toLowerCase()}
             placeholder="Input your email"
@@ -401,7 +467,7 @@ const AccountManagementPage = () => {
             label="Password"
             error={errors.password}
             handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-              handleUserCredentials(e.target.value, 'password')
+              handleUserCredentials(e.target.value, 'password', setUserCredentials, userCredentials)
             }
             value={userCredentials.password}
             placeholder="Input your password"
@@ -418,8 +484,30 @@ const AccountManagementPage = () => {
         localeText={{ noRowsLabel: 'No saved data' }}
         rows={rowData}
         rowCount={rowCount}
-        columns={columns}
-        onPaginationModelChange={handlePageChange}
+        columns={[
+          {
+            field: 'email_address',
+            headerName: 'Email Address',
+            type: 'string',
+            editable: false,
+            flex: 1.5,
+          },
+          {
+            field: 'password',
+            headerName: 'Password',
+            type: 'string',
+            editable: false,
+            flex: 1,
+          },
+          {
+            field: 'actions',
+            headerName: 'Actions',
+            type: 'actions',
+            flex: 1,
+            renderCell: (params: GridRenderCellParams) => renderActions(params),
+          },
+        ]}
+        onPaginationModelChange={handlePageChangeWrapper}
         initialState={{
           pagination: {
             paginationModel: { page: page, pageSize: 10 },
@@ -475,23 +563,12 @@ const AccountManagementPage = () => {
           '& .MuiDataGrid-overlay': {
             zIndex: '20',
           },
-          // '.MuiDataGrid-overlayWrapper': {
-          //   minHeight: '200px',
-          //   height: rowData.length > 0 ? 'auto !important' : '200px !important',
-          // },
-          // '.MuiDataGrid-overlayWrapperInner': {
-          //   minHeight: '200px',
-          //   height: rowData.length > 0 ? 'auto !important' : '200px !important',
-          // },
           borderRadius: '16px',
           fontFamily: 'Outfit',
           fontSize: {
             xs: '12px',
             md: '1rem',
           },
-          // '& .MuiDataGrid-row:hover': {
-          //   backgroundColor: 'secondary.main',
-          // },
         }}
       />
     </Box>

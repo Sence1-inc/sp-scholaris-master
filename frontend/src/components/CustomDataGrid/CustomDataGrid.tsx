@@ -1,6 +1,18 @@
 import React from 'react'
 import { DataGrid, GridColDef } from '@mui/x-data-grid'
 
+/**
+ * Props for the {@link CustomDataGrid} component.
+ *
+ * @property {any[]} rows - The data rows to display in the grid.
+ * @property {number} rowCount - The total number of rows in the grid.
+ * @property {GridColDef[]} columns - The columns to display in the grid.
+ * @property {boolean} isDataLoading - Indicates if the data is loading.
+ * @property {number} page - The current page number.
+ * @property {number} pageSize - The number of rows per page.
+ * @property {function} onPaginationModelChange - The function to call when the pagination model changes.
+ * @property {boolean} isEditable - Indicates if the grid is editable.
+ */
 interface CustomDataGridProps {
   rows: any[]
   rowCount: number

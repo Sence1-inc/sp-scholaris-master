@@ -35,7 +35,7 @@ interface GridRowDef {
 
 const ApplicationsManagementPage = () => {
   const { showMessage } = useSnackbar()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [selectedStatus, setSelectedStatus] = useState<{
     [key: number]: number
@@ -286,7 +286,7 @@ const ApplicationsManagementPage = () => {
         const response = await axiosInstance.get(
           `/api/v1/scholarship_providers/${user.scholarship_provider.id}/scholarship_applications?page=${page + 1}&limit=${pageSize}`
         )
-        console.log(response.data)
+
         const row = response.data.scholarship_applications.map(
           (scholarship_application: ScholarshipApplication) => {
             return {

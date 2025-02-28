@@ -1,5 +1,6 @@
-import { CloudUpload, Save } from '@mui/icons-material'
+import { CloseRounded, CloudUpload, Save } from '@mui/icons-material'
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
 import {
   Alert,
   Box,
@@ -11,6 +12,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
+import Grid from '@mui/material/Grid'
 import { DataGrid, GridRowModel } from '@mui/x-data-grid'
 import dayjs from 'dayjs'
 import { useEffect, useState } from 'react'
@@ -71,6 +73,12 @@ interface GridRowDef {
   status: string
 }
 
+interface ValidationCondition {
+  condition: boolean
+  field: keyof Errors
+  message: string
+}
+
 export const ScholarshipDetailsPage: React.FC<
   ScholarshipDataResultsPageProps
 > = () => {
@@ -78,13 +86,13 @@ export const ScholarshipDetailsPage: React.FC<
   const { id } = useParams()
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
-  const user: User = useAppSelector((state) => state.persistedReducer.user)
+  const user: User = useAppSelector((state) => state.user)
   const { getScholarshipData } = useGetScholarshipData()
   const applicationDetails = useAppSelector(
-    (state) => state.persistedReducer.scholarshipApplicationForm
+    (state) => state.scholarshipApplicationForm
   )
   const result = useAppSelector(
-    (state) => state.persistedReducer.scholarshipData
+    (state) => state.scholarshipData
   ) as Results
   const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -110,6 +118,9 @@ export const ScholarshipDetailsPage: React.FC<
     user_message: '',
     pdf_file: '',
   })
+  const isAuthenticated = useAppSelector(
+    (state) => state.isAuthenticated
+  )
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -217,8 +228,8 @@ export const ScholarshipDetailsPage: React.FC<
       )
 
       setRowData(rows)
-    } catch (error) {
-      console.log(error)
+    } catch (error: any) {
+      showMessage(error.response.data.message, 'error')
     }
   }
 
@@ -305,7 +316,8 @@ export const ScholarshipDetailsPage: React.FC<
   }
 
   const handleApply = async () => {
-    const validationConditions = [
+    setIsModalOpen(true)
+    const validationConditions: ValidationCondition[] = [
       {
         condition: !studentEmail,
         field: 'student_email',
@@ -322,7 +334,7 @@ export const ScholarshipDetailsPage: React.FC<
         message: 'Please provide your message to the provider.',
       },
       {
-        condition: pdfFile && pdfFile.type !== 'application/pdf',
+        condition: Boolean(pdfFile) && pdfFile?.type !== 'application/pdf',
         field: 'pdf_file',
         message: 'Please provide a PDF file.',
       },
@@ -363,6 +375,8 @@ export const ScholarshipDetailsPage: React.FC<
           }
         )
         showMessage(response.data.message, 'success')
+        // Only close modal and reset form after successful submission
+        setIsSendEmailModalOpen(false)
         setStudentEmail('')
         setStudentName('')
         setUserMessage('')
@@ -376,34 +390,37 @@ export const ScholarshipDetailsPage: React.FC<
             pdf_file: null,
           })
         )
-        setIsLoading(false)
         setErrors({
           student_email: '',
           student_name: '',
           user_message: '',
           pdf_file: '',
         })
+        setIsModalOpen(true)
       } catch (error: any) {
-        setIsLoading(false)
+        setIsModalOpen(true)
         showMessage(error.response?.data?.message ?? 'Email not sent.', 'error')
         if (
           error.response &&
           error.response.data &&
           Array.isArray(error.response.data.details)
         ) {
+          const newErrors = { ...errors }
           error.response.data.details.forEach((errorMessage: string) => {
             if (errorMessage.includes('Student email')) {
-              errors.student_email = errorMessage
+              newErrors.student_email = errorMessage
             } else if (errorMessage.includes('Student name')) {
-              errors.student_name = errorMessage
+              newErrors.student_name = errorMessage
             } else if (errorMessage.includes('User message')) {
-              errors.user_message = errorMessage
+              newErrors.user_message = errorMessage
             } else if (errorMessage.includes('file')) {
-              errors.pdf_file = errorMessage
+              newErrors.pdf_file = errorMessage
             }
           })
-          setErrors(errors)
+          setErrors(newErrors)
         }
+      } finally {
+        setIsLoading(false)
       }
     }
   }
@@ -460,6 +477,73 @@ export const ScholarshipDetailsPage: React.FC<
           setErrors(errors)
         }
       }
+    }
+  }
+
+  const handleSignin = () => {
+    navigate('/sign-in') // Replace with your desired path
+  }
+
+  const handleSaveButton = async (params: ScholarshipData) => {
+    if (!isAuthenticated) {
+      navigate('/sign-in')
+    }
+    const scholarshipData = {
+      user_id: user.id,
+      scholarship_id: params.id,
+    }
+    try {
+      const response = await axiosInstance.post(
+        `/api/v1/bookmarks`,
+        scholarshipData
+      )
+      const updatedScholarship = response.data.scholarship
+      const updatedRows = rowData.map((row) =>
+        row.id === updatedScholarship.id
+          ? {
+              ...row,
+              isBookmarked: updatedScholarship.is_bookmarked,
+              bookmarkId: updatedScholarship.bookmark_id,
+            }
+          : row
+      )
+      setScholarshipData({...params, 
+        is_bookmarked: updatedScholarship.is_bookmarked,
+        bookmark_id: updatedScholarship.bookmark_id}) 
+      setRowData([...updatedRows])
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.error, 'error')
+    }
+  }
+
+  const handleUnsaveButton = async (params: ScholarshipData) => {
+    try {
+      const response = await axiosInstance.post(
+        `api/v1/bookmarks/remove_bookmark`,
+        {
+          bookmark_id: Number(params.bookmark_id),
+          user_id: user.id,
+        }
+      )
+      const updatedScholarship = response.data.scholarship
+
+      const updatedRows = rowData.map((row) =>
+        row.id === updatedScholarship.id
+          ? {
+              ...row,
+              isBookmarked: updatedScholarship.is_bookmarked,
+              bookmarkId: updatedScholarship.bookmark_id,
+            }
+          : row
+      )
+      setScholarshipData({...params, 
+        is_bookmarked: updatedScholarship.is_bookmarked,
+        bookmark_id: updatedScholarship.bookmark_id}) 
+      setRowData([...updatedRows])
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.error, 'error')
     }
   }
 
@@ -562,7 +646,6 @@ export const ScholarshipDetailsPage: React.FC<
             All scholarship listings are currently test data and not actual
             listings. We’ll be updating them with real data soon, so stay tuned!
           </Alert> */}
-          
           {scholarshipData && (
             <div className="details-card">
               {(user.role_id === ADMIN_ROLE_ID ||
@@ -591,7 +674,57 @@ export const ScholarshipDetailsPage: React.FC<
               )}
               {!isLoading && (
                 <>
-                  <h3 className="title3">{scholarshipData.scholarship_name}</h3>
+                  <Grid
+                    container
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    spacing={2}
+                  >
+                    <Grid item xs={6}>
+                      <h3 className="title3">
+                        {scholarshipData.scholarship_name}
+                      </h3>
+                    </Grid>
+                    <Grid item xs={6} justifyItems="flex-end">
+                      <Button
+                        variant="contained"
+                        onClick={() =>
+                          !scholarshipData.is_bookmarked
+                            ? isAuthenticated ? handleSaveButton(scholarshipData) : handleSignin()
+                            : handleUnsaveButton(scholarshipData)
+                        }
+                        sx={{
+                          backgroundColor: !scholarshipData.is_bookmarked
+                            ? 'white'
+                            : '#002147',
+                          color: scholarshipData.is_bookmarked
+                            ? 'white'
+                            : '#002147',
+                          padding: '10px',
+                          borderRadius: '8px',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          minWidth: '100px',
+                          boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+                          '&:hover': {
+                            backgroundColor: '#f0f0f0',
+                          },
+                        }}
+                      >
+                        <StarBorderIcon
+                          fontSize="small"
+                          sx={{
+                            color: scholarshipData.is_bookmarked
+                              ? 'white'
+                              : '#002147',
+                          }}
+                        />
+                        { !scholarshipData.is_bookmarked ? 
+                        'Save' : 'Saved' }
+                      </Button>
+                    </Grid>
+                  </Grid>
                   <p
                     style={{
                       whiteSpace: 'pre-wrap',
@@ -744,8 +877,28 @@ export const ScholarshipDetailsPage: React.FC<
                         display: 'flex',
                         flexDirection: 'column',
                         gap: '10px',
+                        position: 'relative',
                       }}
                     >
+                      <CloseRounded
+                        onClick={() => {
+                          setIsModalOpen(false)
+                        }}
+                        sx={{
+                          position: 'absolute',
+                          width: { xs: '21px', sm: '23px', md: '30px' },
+                          height: { xs: '21px', sm: '23px', md: '30px' },
+                          right: { xs: '17px', md: '20px' },
+                          top: { xs: '14px', md: '16px' },
+                          opacity: '0.6',
+                          cursor: 'pointer',
+                          '&:hover': {
+                            borderRadius: '50%',
+                            backgroundColor: '#9A9A9A',
+                            color: '#FFFFFF',
+                          },
+                        }}
+                      />
                       <CustomTextfield
                         label="Student Email"
                         error={errors.student_email}

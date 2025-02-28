@@ -10,8 +10,8 @@ import {
 import { DataGrid, GridRowParams } from '@mui/x-data-grid'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
-import useGetScholarships from '../../hooks/useGetScholarships'
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
+import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
@@ -30,17 +30,19 @@ const WelcomePageSearch: React.FC = () => {
   const params: any = useAppSelector((state) => state.searchParams)
   const navigate = useNavigate()
   const data: any = useAppSelector(
-    (state) => state.persistedReducer.scholarships
+    (state) => state.scholarships
   )
-  const { getScholarships } = useGetScholarships()
+  const { getScholarships } = useScholarshipCache()
   const { name: nameParam, page, limit, ...restParams } = params.params
   const [name, setName] = useState<string>(nameParam as string)
   const [hasScrolled, setHasScrolled] = useState(false)
-  const { hash } = useLocation()
+  const  { hash } = useLocation()
+  const location = useLocation()
   const searchRef = useRef<HTMLElement>(null)
   const { scholarships } = data.scholarships
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [, setSearchParams] = useSearchParams();
 
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
   const xs = useMediaQuery(theme.breakpoints.up('xs'))
@@ -85,9 +87,7 @@ const WelcomePageSearch: React.FC = () => {
     // eslint-disable-next-line
   }, [params.params])
 
-  const handleSearch: (e: React.MouseEvent<HTMLButtonElement>) => void = async (
-    e
-  ) => {
+  const handleSearch = async () => {
     const queryParams = queryString.stringify({ name })
     navigate(`/scholarships?${queryParams}`)
 
@@ -125,6 +125,16 @@ const WelcomePageSearch: React.FC = () => {
   const handleChipDelete = (key: string) => {
     const { [key]: _, ...rest } = params.params
     dispatch(initializeParams(rest))
+    if (location.pathname === '/') {
+      setSearchParams(
+        Object.fromEntries(
+          Object.entries(rest)
+            .filter(([_, value]) => value != null)
+            .map(([k, v]) => [k, String(v)])
+        )
+      )
+      getScholarships(false)
+    }
   }
 
   const formatScholarships = (data: Scholarship[]) => {
@@ -168,6 +178,12 @@ const WelcomePageSearch: React.FC = () => {
   const handleRowClick = (params: GridRowParams) => {
     navigate(`/scholarships/${params.row.id}`)
   }
+
+  const handleKeyDown = (e: { key: string }) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
 
   return (
     <section
@@ -234,6 +250,7 @@ const WelcomePageSearch: React.FC = () => {
               variant="outlined"
               onChange={(e) => handleChange(e.target.value)}
               value={name}
+              onKeyDown={handleKeyDown}
               placeholder="e.g. CHED Merit Scholarship"
               sx={{
                 width: { xs: 'calc(95% - 20px)', sm: 'calc(80% - 20px)' },
@@ -278,7 +295,7 @@ const WelcomePageSearch: React.FC = () => {
             )}
           {/* <Alert severity="warning">
             All scholarship listings are currently test data and not actual
-            listings. We’ll be updating them with real data soon, so stay tuned!
+            listings. We'll be updating them with real data soon, so stay tuned!
           </Alert> */}
           <DataGrid
             onRowClick={handleRowClick}

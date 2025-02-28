@@ -28,7 +28,7 @@ const StudentDashboardPage = () => {
   const { showMessage } = useSnackbar()
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
 
   const [profileData, setProfileData] = useState<StudentProfile>({
     about: '',
@@ -122,7 +122,7 @@ const StudentDashboardPage = () => {
         })
       )
       dispatch(initializeIsAuthenticated(false))
-      navigate('/sign-in')
+      navigate('/sign-in', { replace: true })
     }
   }
 

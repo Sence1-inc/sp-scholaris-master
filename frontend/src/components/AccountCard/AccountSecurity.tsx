@@ -4,6 +4,12 @@ import profileTheme from '../../styles/profileTheme'
 import PrimaryButton from '../Button/PrimaryButton'
 import AccountCard from './AccountCard'
 
+/**
+ * The AccountSettings component.
+ *
+ * @remarks
+ * This component displays the account security settings.
+ */
 const AccountSettings: React.FC = () => {
   return (
     <AccountCard

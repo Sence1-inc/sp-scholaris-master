@@ -9,8 +9,8 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 import React, { useState } from 'react'
-import { useNavigate, useParams, Navigate } from 'react-router-dom'
-import axiosInstance, { initialUserState } from '../../../axiosConfig'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
+import axiosInstance from '../../../axiosConfig'
 import AccountSettings from '../../../components/AccountCard/AccountSettings'
 import AccountSideBar, {
   sideItem,
@@ -21,30 +21,34 @@ import { useSnackbar } from '../../../context/SnackBarContext'
 import useGetSubscriber from '../../../hooks/useGetSubscriber'
 import ProfileImage from '../../../public/images/profile.png'
 import { initializeIsAuthenticated } from '../../../redux/reducers/IsAuthenticatedReducer'
-import { initializeUser } from '../../../redux/reducers/UserReducer'
+import { initializeSubscirber } from '../../../redux/reducers/SubscriberReducer'
+import { initializeUser, initialUserState } from '../../../redux/reducers/UserReducer'
 import { useAppDispatch, useAppSelector } from '../../../redux/store'
 import { ScholarshipProvider } from '../../../redux/types'
 import profileTheme from '../../../styles/profileTheme'
 import theme from '../../../styles/theme'
-import { initializeSubscirber } from '../../../redux/reducers/SubscriberReducer'
 
 const ProviderProfile: React.FC = () => {
   const [activeContent, setActiveContent] = useState<string>('view-profile')
-  const { lastRoute } = useParams()
+  const { lastRoute, id } = useParams()
   const { showMessage } = useSnackbar()
   const subscr: any = useAppSelector(
-    (state) => state.persistedReducer.subscriber
+    (state) => state.subscriber
   )
-  const user = useAppSelector((state) => state.persistedReducer.user)
+  const user = useAppSelector((state) => state.user)
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const { getSubscriber, errorMessage: err } = useGetSubscriber()
-  const whitelistProfileRoutes = ['view-profile', 'account-settings'];
+  const whitelistProfileRoutes = ['view-profile', 'account-settings']
 
-  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'));
+  const isSm = useMediaQuery(() => theme.breakpoints.down('sm'))
 
   if (lastRoute && !whitelistProfileRoutes.includes(lastRoute)) {
-    return <Navigate to="/404" replace />;
+    return <Navigate to="/404" replace />
+  }
+
+  if (id && (!Number.isInteger(parseInt(id)) || user.scholarship_provider.id !== parseInt(id))) {
+    return <Navigate to="/404" replace />
   }
 
   const handleDeleteCookie = async () => {
