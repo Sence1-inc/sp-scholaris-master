@@ -99,7 +99,7 @@ export const ScholarshipDetailsPage: React.FC<
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
   const [isModalSignInOpen, setIsModalSignInOpen] = useState<boolean>(false)
   const handleModalSignInOpen = () => setIsModalSignInOpen(true);
-  const handleModalSignInClose = () => { console.log("hello"); setIsModalSignInOpen(false)};
+  const handleModalSignInClose = () => setIsModalSignInOpen(false);
   const [isSendEmailModalOpen, setIsSendEmailModalOpen] =
     useState<boolean>(false)
   const isAuthenticated = useAppSelector(
