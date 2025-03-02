@@ -30,7 +30,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   const navigate = useNavigate()
   const { showMessage } = useSnackbar()
   const isAuthenticated = useAppSelector(
-    (state) => state.persistedReducer.isAuthenticated
+    (state) => state.isAuthenticated
   )
   const [userCredentials, setUserCredentials] = useState<UserCredentials>({
     email_address: '',
