@@ -36,7 +36,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     email_address: '',
     password: '',
   })
-  const userState: User = useAppSelector((state) => state.persistedReducer.user)
+  const userState: User = useAppSelector((state) => state.user)
   const [errors, setErrors] = useState<Errors>({
     email_address: '',
     password: '',
