@@ -819,9 +819,6 @@ export const ScholarshipDetailsPage: React.FC<
                       user.role_id !== PROVIDER_ROLE_ID &&
                       user.role_id !== ADMIN_ROLE_ID)) ? (
                     <CTAButton
-                      // disabled={formattedDate(
-                      //   scholarshipData.due_date
-                      // ).isBefore(dayjs())}
                       handleClick={() => isAuthenticated ? setIsModalOpen(true) : 
                         handleModalSignInOpen() 
                       }
