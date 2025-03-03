@@ -1,6 +1,6 @@
 import { Box, Button, Container, Typography } from '@mui/material'
 import React, { useEffect, useState } from 'react'
-import { Link as RouterLink, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useLocation } from 'react-router-dom';
 import axiosInstance from '../../axiosConfig'
 import CTAButton from '../../components/CustomButton/CTAButton'
@@ -44,7 +44,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false)
   const [isSignUpClicked, setIsSignUpClicked] = useState<boolean>(false)
   const handleSignUpShow = () => {
-    location.pathname == '/sign-in' ?
+    location.pathname === '/sign-in' ?
     nav(('/sign-up')) : setIsSignUpClicked(true)  
   }
   const nav = useNavigate();

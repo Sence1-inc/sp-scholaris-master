@@ -58,7 +58,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
   const location = useLocation();
   const [isSignInClicked, setIsSignInClicked] = useState<boolean>(false)
   const handleSignInShow = () => {
-    location.pathname == '/sign-up' ?
+    location.pathname === '/sign-up' ?
     nav(('/sign-in')) : setIsSignInClicked(true)  
   }
 
