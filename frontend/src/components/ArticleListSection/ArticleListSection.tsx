@@ -54,13 +54,13 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
             backgroundColor: 'white',
             boxShadow: 'none',
           }}
-          onClick={() => navigate(`/articles/${articles[0].slug}`)}
+          onClick={() => navigate(`/articles/${articles[0]?.slug}`)}
         >
           <CardMedia
             component="img"
             alt="green iguana"
             height="200"
-            image={articles[0].cover.formats.small?.url}
+            image={articles[0]?.cover.formats.small?.url}
             sx={{ borderRadius: '16px' }}
           />
           <CardContent sx={{ backgroundColor: 'white', padding: '16px 0' }}>
@@ -70,10 +70,10 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
               component="div"
               sx={{ lineHeight: 1.2 }}
             >
-              {articles[0].title}
+              {articles[0]?.title}
             </Typography>
             <Box sx={{ backgroundColor: 'white', padding: 0, margin: '4px 0' }}>
-              {articles[0].tags.map((tag: Tag, index: number) => {
+              {articles[0]?.tags.map((tag: Tag, index: number) => {
                 return (
                   <Button
                     key={`${tag.slug}-${index}`}
@@ -94,7 +94,7 @@ const ArticleListSection: React.FC<ArticleListSectionProps> = ({
               })}
             </Box>
             <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {articles[0].description}
+              {articles[0]?.description}
             </Typography>
           </CardContent>
         </Card>
