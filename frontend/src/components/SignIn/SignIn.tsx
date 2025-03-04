@@ -15,6 +15,10 @@ import SignUp from '../../components/SignUp/SignUp'
 
 interface SignInPageProps {}
 
+// interface SignInChildProps {
+//   updateSignInClosedState: () => void;
+// }
+
 type Errors = {
   email_address: string
   password: string
@@ -52,9 +56,16 @@ const SignInPage: React.FC<SignInPageProps> = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
+      console.log(window.location.pathname);
       switch (userState?.role?.id) {
         case 3:
-          navigate('/student/account')
+          if(window.location.pathname != '/sign-in') {
+            // updateSignInClosedState();
+            navigate(window.location.pathname);
+          } else {
+            console.log('here in student profile')
+            navigate('/student/account')
+          }
           break
 
         case 4:
@@ -159,7 +170,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     <>
     {
     isSignUpClicked ? 
-    <SignUp/>:
+    <SignUp />:
     <Container
       maxWidth="md"
       sx={{

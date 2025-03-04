@@ -13,8 +13,13 @@ import { useAppSelector } from '../../redux/store'
 import BannerButton from '../../components/Button/BannerButton'
 import { useLocation } from 'react-router-dom'
 import SignIn from '../../components/SignIn/SignIn'
+import { User } from '../../redux/types'
 
 interface SignUpPageProps {}
+
+// interface SignInChildProps {
+//   updateSignInClosedState: () => void;
+// }
 
 export type Errors = {
   email_address: string
@@ -43,6 +48,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
   const isAuthenticated = useAppSelector(
     (state) => state.isAuthenticated
   )
+  const userState: User = useAppSelector((state) => state.user)
   const [errors, setErrors] = useState<Errors>({
     email_address: '',
     password: '',
@@ -57,17 +63,11 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
   const nav = useNavigate();
   const location = useLocation();
   const [isSignInClicked, setIsSignInClicked] = useState<boolean>(false)
+  const [isSignUpSuccessful, setIsSignUpSuccessful] = useState<boolean>(false)
   const handleSignInShow = () => {
     location.pathname === '/sign-up' ?
     nav(('/sign-in')) : setIsSignInClicked(true)  
   }
-
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/provider/dashboard')
-    }
-    // eslint-disable-next-line
-  }, [isAuthenticated])
 
   const handleUserCredentials = (inputValue: string, key: string) => {
     setUserCredentials((prevUserCredentials) => ({
@@ -174,8 +174,10 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
           setButtonLoading(false)
           showMessage(
             "We've sent you a verification email. Please confirm your email address before you log in.",
-            'success'
+            'success', 
+            5000
           )
+          setIsSignUpSuccessful(true);
           setErrors({
             email_address: '',
             password: '',
@@ -240,7 +242,7 @@ const SignUpPage: React.FC<SignUpPageProps> = () => {
   return (
     <>
     {
-      isSignInClicked ? <SignIn /> :
+      (isSignInClicked || isSignUpSuccessful) ? <SignIn/> :
     <Container
       maxWidth="md"
       sx={{

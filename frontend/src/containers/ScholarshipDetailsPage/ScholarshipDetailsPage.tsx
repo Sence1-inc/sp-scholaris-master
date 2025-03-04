@@ -26,9 +26,9 @@ import {
   CONTENT_STATUSES,
   PROVIDER_ROLE_ID,
 } from '../../constants/constants'
-import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
 import ProviderProfile from '../../public/images/pro-profile.png'
+import { useSnackbar } from '../../context/SnackBarContext'
 import { initializeScholarshipApplicationForm } from '../../redux/reducers/ScholarshipApplicationFormReducer'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
@@ -78,6 +78,10 @@ interface ValidationCondition {
   field: keyof Errors
   message: string
 }
+
+// interface SignInChildProps {
+//   updateSignInClosedState: () => void;
+// }
 
 export const ScholarshipDetailsPage: React.FC<
   ScholarshipDataResultsPageProps
@@ -229,6 +233,13 @@ export const ScholarshipDetailsPage: React.FC<
       showMessage(error.response.data.message, 'error')
     }
   }
+
+  useEffect(() => {
+    if(isAuthenticated) {
+      showMessage('You have successfully logged in', 'success')
+      handleModalSignInClose();
+    }
+  }, [isAuthenticated])
 
   useEffect(() => {
     if (user.role_id === ADMIN_ROLE_ID && scholarshipData) {
@@ -613,7 +624,9 @@ export const ScholarshipDetailsPage: React.FC<
           borderRadius: '32px',
           overflowY: 'scroll'
         }}>
-          <SignIn />
+          <SignIn 
+          // updateSignInClosedState={handleModalSignInClose} 
+          />
         </Box>
       </Modal>
       <section id="details">
