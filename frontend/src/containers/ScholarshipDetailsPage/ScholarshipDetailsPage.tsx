@@ -696,9 +696,11 @@ export const ScholarshipDetailsPage: React.FC<
                       <Button
                         variant="contained"
                         onClick={() =>
-                          !scholarshipData.is_bookmarked
-                            ? isAuthenticated ? handleSaveButton(scholarshipData) : handleSignin()
+                        isAuthenticated ?  
+                         ( !scholarshipData.is_bookmarked
+                            ? handleSaveButton(scholarshipData) 
                             : handleUnsaveButton(scholarshipData)
+                         ) : handleModalSignInOpen()
                         }
                         sx={{
                           backgroundColor: !scholarshipData.is_bookmarked

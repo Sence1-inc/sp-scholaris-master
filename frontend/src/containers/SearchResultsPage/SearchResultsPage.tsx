@@ -2,13 +2,14 @@ import ArrowBackIos from '@mui/icons-material/ArrowBackIos'
 import HomeIcon from '@mui/icons-material/Home'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
 import VisibilityIcon from '@mui/icons-material/Visibility'
-import { Box, Button, Typography, useMediaQuery } from '@mui/material'
+import { Box, Button, Typography, useMediaQuery, Modal } from '@mui/material'
 import { DataGrid, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
 import Cookies from 'js-cookie'
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import axiosInstance from '../../axiosConfig'
 import Search from '../../components/Search/Search'
+import SignIn from '../../components/SignIn/SignIn'
 import { useSnackbar } from '../../context/SnackBarContext'
 import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
@@ -61,7 +62,9 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const [totalCount, setTotalCount] = useState<number>(10)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [isInitialLoad, setIsInitialLoad] = useState(true)
-
+  const [isModalSignInOpen, setIsModalSignInOpen] = useState<boolean>(false)
+  const handleModalSignInOpen = () => setIsModalSignInOpen(true)
+  const handleModalSignInClose = () => setIsModalSignInOpen(false)
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
   const user = useAppSelector((state) => state.user)
 
@@ -161,6 +164,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     const isBookmarked = params.row.isBookmarked
 
     return (
+      
       <Box
         sx={{
           ...containerStyle,
@@ -172,6 +176,26 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
           width: '150px',
         }}
       >
+        <Modal
+          open={isModalSignInOpen}
+          onClose={handleModalSignInClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            margin: '2.5vh auto',
+            width: {xs: '95vw', sm: '60vw', lg: '40vw'},
+            height: 'auto',
+            maxHeight: '95vh',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '32px',
+            overflowY: 'scroll'
+          }}>
+            <SignIn />
+          </Box>
+        </Modal>      
         <Button
           onClick={() => navigate(`/scholarships/${params.row.id}`)}
           variant="contained"
@@ -195,9 +219,11 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         <Button
           variant="contained"
           onClick={() =>
-            !isBookmarked
-              ? handleSaveButton(params)
-              : handleUnsaveButton(params)
+            isAuthenticated ? 
+            (!isBookmarked
+                ? handleSaveButton(params)
+                : handleUnsaveButton(params)
+            ) : handleModalSignInOpen()        
           }
           sx={{
             backgroundColor: !isBookmarked ? 'white' : '#002147',
@@ -297,6 +323,13 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     }
      // eslint-disable-next-line
   }, [result.scholarships])
+
+  useEffect (() => {
+    if(isAuthenticated) {
+      showMessage('You have successfully logged in', 'success')
+      handleModalSignInClose();
+    }
+  }, [isAuthenticated])
 
   const handleRowClick = (params: GridRowParams) => {
     navigate(`/scholarships/${params.row.id}`)

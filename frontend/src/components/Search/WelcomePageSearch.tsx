@@ -7,7 +7,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material'
-import { DataGrid, GridRowParams } from '@mui/x-data-grid'
+import { DataGrid, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
@@ -15,7 +15,7 @@ import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { Scholarship } from '../../redux/types'
-import { ctaButtonStyle } from '../../styles/globalStyles'
+import { ctaButtonStyle, containerStyle } from '../../styles/globalStyles'
 import theme from '../../styles/theme'
 import Filter from '../Filter/Filter'
 import './Search.css'
@@ -173,6 +173,13 @@ const WelcomePageSearch: React.FC = () => {
       type: 'string',
       ...(sm ? { flex: 1.5 } : { width: 200 }),
     },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      ...(sm ? { flex: 1 } : {}),
+      renderCell: (params: GridRenderCellParams) => renderActions(params),
+    }
   ]
 
   const handleRowClick = (params: GridRowParams) => {
@@ -184,6 +191,99 @@ const WelcomePageSearch: React.FC = () => {
       handleSearch();
     }
   };
+
+  const renderActions = (params: GridRenderCellParams) => {
+    const isBookmarked = params.row.isBookmarked
+
+    return (
+      
+      <Box
+        sx={{
+          ...containerStyle,
+          padding: 0,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: '8px',
+          width: '150px',
+        }}
+      >
+        <Modal
+          open={isModalSignInOpen}
+          onClose={handleModalSignInClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            margin: '2.5vh auto',
+            width: {xs: '95vw', sm: '60vw', lg: '40vw'},
+            height: 'auto',
+            maxHeight: '95vh',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '32px',
+            overflowY: 'scroll'
+          }}>
+            <SignIn />
+          </Box>
+        </Modal>      
+        <Button
+          onClick={() => navigate(`/scholarships/${params.row.id}`)}
+          variant="contained"
+          sx={{
+            backgroundColor: 'white',
+            color: 'black',
+            padding: '5px',
+            borderRadius: '8px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            maxWidth: '50px',
+            maxHeight: '32px',
+            '&:hover': {
+              backgroundColor: '#f0f0f0',
+            },
+          }}
+        >
+          <VisibilityIcon fontSize="small" />
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() =>
+            isAuthenticated ? 
+            (!isBookmarked
+                ? handleSaveButton(params)
+                : handleUnsaveButton(params)
+            ) : handleModalSignInOpen()        
+          }
+          sx={{
+            backgroundColor: !isBookmarked ? 'white' : '#002147',
+            color: 'black',
+            padding: '5px',
+            borderRadius: '8px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            maxWidth: '50px',
+            maxHeight: '32px',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+            '&:hover': {
+              backgroundColor: '#f0f0f0',
+            },
+          }}
+          key={isBookmarked ? 'bookmarked' : 'not-bookmarked'}
+        >
+          <StarBorderIcon
+            fontSize="small"
+            sx={{
+              color: isBookmarked ? 'white' : '#002147',
+            }}
+          />
+        </Button>
+      </Box>
+    )
+  }
 
   return (
     <section
