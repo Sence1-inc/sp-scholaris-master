@@ -6,32 +6,46 @@ import {
   TextField,
   Typography,
   useMediaQuery,
+  Modal
 } from '@mui/material'
 import { DataGrid, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { Scholarship } from '../../redux/types'
+import { Scholarship, User } from '../../redux/types'
+import axiosInstance from '../../axiosConfig'
 import { ctaButtonStyle, containerStyle } from '../../styles/globalStyles'
+import { useSnackbar } from '../../context/SnackBarContext'
 import theme from '../../styles/theme'
 import Filter from '../Filter/Filter'
+import SignIn from '../../components/SignIn/SignIn'
 import './Search.css'
 
 interface GridRowDef {
+  id: number
+  bookmarkId: number
+  scholarshipId: number
   scholarshipName: string
+  startDate: string | Date
+  endDate: string | Date
   provider: string
+  isBookmarked: boolean
 }
 
 const WelcomePageSearch: React.FC = () => {
   const dispatch = useAppDispatch()
   const params: any = useAppSelector((state) => state.searchParams)
   const navigate = useNavigate()
+  const { showMessage } = useSnackbar()
   const data: any = useAppSelector(
     (state) => state.scholarships
   )
+  const user: User = useAppSelector((state) => state.user)
   const { getScholarships } = useScholarshipCache()
   const { name: nameParam, page, limit, ...restParams } = params.params
   const [name, setName] = useState<string>(nameParam as string)
@@ -43,7 +57,13 @@ const WelcomePageSearch: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [, setSearchParams] = useSearchParams();
-
+  const [isModalSignInOpen, setIsModalSignInOpen] = useState<boolean>(false)
+  // const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
+  const handleModalSignInOpen = () => setIsModalSignInOpen(true);
+  const handleModalSignInClose = () => setIsModalSignInOpen(false);
+  const isAuthenticated = useAppSelector(
+    (state) => state.isAuthenticated
+  )
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
   const xs = useMediaQuery(theme.breakpoints.up('xs'))
 
@@ -141,10 +161,13 @@ const WelcomePageSearch: React.FC = () => {
     const row = data.map((scholarship: Scholarship) => {
       return {
         id: scholarship.id,
+        bookmarkId: Number(scholarship.bookmark_id),
+        scholarshipId: Number(scholarship.id),
         scholarshipName: scholarship.scholarship_name,
         startDate: new Date(scholarship.start_date).toDateString(),
-        dueDate: new Date(scholarship.due_date).toDateString(),
+        endDate: new Date(scholarship.due_date).toDateString(),
         provider: scholarship.scholarship_provider.provider_name,
+        isBookmarked: scholarship.is_bookmarked,
       }
     })
     setRowData(row)
@@ -163,7 +186,7 @@ const WelcomePageSearch: React.FC = () => {
       ...(sm ? { flex: 1.5 } : { width: 150 }),
     },
     {
-      field: 'dueDate',
+      field: 'endDate',
       headerName: 'Due Date',
       ...(sm ? { flex: 1.5 } : { width: 150 }),
     },
@@ -191,10 +214,70 @@ const WelcomePageSearch: React.FC = () => {
       handleSearch();
     }
   };
+  const handleSaveButton = async (params: GridRenderCellParams) => {
+    const scholarshipData = {
+      user_id: user.id,
+      scholarship_id: params.id,
+    }
+    try {
+      const response = await axiosInstance.post(
+        `/api/v1/bookmarks`,
+        scholarshipData
+      )
+      const updatedScholarship = response.data.scholarship
+      const updatedRows = rowData.map((row) =>
+        row.id === updatedScholarship.id
+          ? {
+              ...row,
+              isBookmarked: updatedScholarship.is_bookmarked,
+              bookmarkId: updatedScholarship.bookmark_id,
+            }
+          : row
+      )
+      // setScholarshipData({...params, 
+      //   is_bookmarked: updatedScholarship.is_bookmarked,
+      //   bookmark_id: updatedScholarship.bookmark_id}) 
+      setRowData([...updatedRows])
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.error, 'error')
+    }
+  }
+
+  const handleUnsaveButton = async (params: GridRenderCellParams) => {
+    console.log(params);
+    try {
+      const response = await axiosInstance.post(
+        `api/v1/bookmarks/remove_bookmark`,
+        {
+          bookmark_id: Number(params.bookmark_id),
+          user_id: user.id,
+        }
+      )
+      const updatedScholarship = response.data.scholarship
+
+      const updatedRows = rowData.map((row) =>
+        row.id === updatedScholarship.id
+          ? {
+              ...row,
+              isBookmarked: updatedScholarship.is_bookmarked,
+              bookmarkId: updatedScholarship.bookmark_id,
+            }
+          : row
+      )
+      // setScholarshipData({...params, 
+      //   is_bookmarked: updatedScholarship.is_bookmarked,
+      //   bookmark_id: updatedScholarship.bookmark_id}) 
+      setRowData([...updatedRows])
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.error, 'error')
+    }
+  }
+
 
   const renderActions = (params: GridRenderCellParams) => {
     const isBookmarked = params.row.isBookmarked
-
     return (
       
       <Box
@@ -252,7 +335,7 @@ const WelcomePageSearch: React.FC = () => {
           variant="contained"
           onClick={() =>
             isAuthenticated ? 
-            (!isBookmarked
+            ( !isBookmarked
                 ? handleSaveButton(params)
                 : handleUnsaveButton(params)
             ) : handleModalSignInOpen()        

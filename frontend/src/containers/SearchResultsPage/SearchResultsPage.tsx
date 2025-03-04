@@ -100,9 +100,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   ]
 
   const handleSaveButton = async (params: GridRenderCellParams) => {
-    if (!isAuthenticated) {
-      navigate('/sign-in')
-    }
 
     const scholarshipData = {
       user_id: user.id,

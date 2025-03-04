@@ -493,9 +493,6 @@ export const ScholarshipDetailsPage: React.FC<
   }
 
   const handleSaveButton = async (params: ScholarshipData) => {
-    if (!isAuthenticated) {
-      navigate('/sign-in')
-    }
     const scholarshipData = {
       user_id: user.id,
       scholarship_id: params.id,
