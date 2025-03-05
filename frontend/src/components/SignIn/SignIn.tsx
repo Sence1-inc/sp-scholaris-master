@@ -56,18 +56,11 @@ const SignInPage: React.FC<SignInPageProps> = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      console.log(window.location.pathname);
       switch (userState?.role?.id) {
-        case 3:
-          if(window.location.pathname != '/sign-in') {
-            // updateSignInClosedState();
+        case 3:  
+            showMessage('You have successfully logged in', 'success')
             navigate(window.location.pathname);
-          } else {
-            console.log('here in student profile')
-            navigate('/student/account')
-          }
           break
-
         case 4:
           if (userState.scholarship_provider.provider_name) {
             navigate('/provider/dashboard')
@@ -199,6 +192,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
       <CustomTextfield
         label="Email address"
         value={userCredentials.email_address.toLowerCase()}
+        handleOnKeyDonw={handleSignIn}
         handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handleEmail(e.target.value)
         }
@@ -209,6 +203,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         type="password"
         label="Password"
         value={userCredentials.password}
+        handleOnKeyDonw={handleSignIn}
         handleChange={(e: React.ChangeEvent<HTMLInputElement>) =>
           handlePassword(e.target.value)
         }

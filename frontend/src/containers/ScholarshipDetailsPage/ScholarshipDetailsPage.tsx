@@ -115,6 +115,7 @@ export const ScholarshipDetailsPage: React.FC<
   const [emailMessage, setEmailMessage] = useState<string>('')
   const [pdfFile, setPdfFile] = useState<File | null>(null)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
+  const [lastSavedScholarship, setLastSavedScholarship] = useState<number>()
   const [page, setPage] = useState<number>(0)
   const [errors, setErrors] = useState<Errors>({
     student_email: '',
@@ -236,7 +237,7 @@ export const ScholarshipDetailsPage: React.FC<
 
   useEffect(() => {
     if(isAuthenticated) {
-      showMessage('You have successfully logged in', 'success')
+      saveLastScholarship(lastSavedScholarship);
       handleModalSignInClose();
     }
   }, [isAuthenticated])
@@ -492,10 +493,11 @@ export const ScholarshipDetailsPage: React.FC<
     navigate('/sign-in') // Replace with your desired path
   }
 
-  const handleSaveButton = async (params: ScholarshipData) => {
+  /* saveLastScholarship saves the last clicked scholarship of a user that was not logged in. It saves the clicked scholarship upon logging in through the sign in modal */
+  const saveLastScholarship = async (lastSavedScholarship?: Number) => {
     const scholarshipData = {
       user_id: user.id,
-      scholarship_id: params.id,
+      scholarship_id: lastSavedScholarship,
     }
     try {
       const response = await axiosInstance.post(
@@ -512,14 +514,48 @@ export const ScholarshipDetailsPage: React.FC<
             }
           : row
       )
-      setScholarshipData({...params, 
-        is_bookmarked: updatedScholarship.is_bookmarked,
-        bookmark_id: updatedScholarship.bookmark_id}) 
       setRowData([...updatedRows])
       showMessage(response.data.message, 'success')
     } catch (error: any) {
       showMessage(error.response.data.error, 'error')
     }
+  }
+
+  const handleSaveButton = async (params: ScholarshipData) => {
+    console.log(params);
+    if(isAuthenticated){
+      const scholarshipData = {
+        user_id: user.id,
+        scholarship_id: params.id,
+      }
+      try {
+        const response = await axiosInstance.post(
+          `/api/v1/bookmarks`,
+          scholarshipData
+        )
+        const updatedScholarship = response.data.scholarship
+        const updatedRows = rowData.map((row) =>
+          row.id === updatedScholarship.id
+            ? {
+                ...row,
+                isBookmarked: updatedScholarship.is_bookmarked,
+                bookmarkId: updatedScholarship.bookmark_id,
+              }
+            : row
+        )
+        setScholarshipData({...params, 
+          is_bookmarked: updatedScholarship.is_bookmarked,
+          bookmark_id: updatedScholarship.bookmark_id}) 
+        setRowData([...updatedRows])
+        showMessage(response.data.message, 'success')
+      } catch (error: any) {
+        showMessage(error.response.data.error, 'error')
+      }
+    } else {
+      // setLastSavedScholarship(params.id);
+      handleModalSignInOpen();
+    }
+    
   }
 
   const handleUnsaveButton = async (params: ScholarshipData) => {
@@ -692,12 +728,11 @@ export const ScholarshipDetailsPage: React.FC<
                     <Grid item xs={6} justifyItems="flex-end">
                       <Button
                         variant="contained"
-                        onClick={() =>
-                        isAuthenticated ?  
-                         ( !scholarshipData.is_bookmarked
-                            ? handleSaveButton(scholarshipData) 
-                            : handleUnsaveButton(scholarshipData)
-                         ) : handleModalSignInOpen()
+                        onClick={() =>{
+                            !scholarshipData.is_bookmarked
+                              ? handleSaveButton(scholarshipData) 
+                              : handleUnsaveButton(scholarshipData)
+                          }  
                         }
                         sx={{
                           backgroundColor: !scholarshipData.is_bookmarked

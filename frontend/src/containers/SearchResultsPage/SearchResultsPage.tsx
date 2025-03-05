@@ -18,6 +18,7 @@ import { Scholarship } from '../../redux/types'
 import { containerStyle } from '../../styles/globalStyles'
 import theme from '../../styles/theme'
 import './SearchResultsPage.css'
+import { resourceLimits } from 'worker_threads'
 
 interface GridRowDef {
   id: number
@@ -67,6 +68,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   const handleModalSignInClose = () => setIsModalSignInOpen(false)
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
   const user = useAppSelector((state) => state.user)
+  const [lastSavedScholarship, setLastSavedScholarship] = useState<number>()
 
   const columns = [
     {
@@ -99,11 +101,11 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     },
   ]
 
-  const handleSaveButton = async (params: GridRenderCellParams) => {
-
+    /* saveLastScholarship saves the last clicked scholarship of a user that was not logged in. It saves the clicked scholarship upon logging in through the sign in modal */
+  const saveLastScholarship = async (lastSavedScholarship?: Number) => {
     const scholarshipData = {
       user_id: user.id,
-      scholarship_id: params.row.id,
+      scholarship_id: lastSavedScholarship,
     }
     try {
       const response = await axiosInstance.post(
@@ -111,7 +113,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         scholarshipData
       )
       const updatedScholarship = response.data.scholarship
-
       const updatedRows = rowData.map((row) =>
         row.id === updatedScholarship.id
           ? {
@@ -121,7 +122,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
             }
           : row
       )
-
       setRowData([...updatedRows])
       showMessage(response.data.message, 'success')
     } catch (error: any) {
@@ -129,7 +129,44 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
     }
   }
 
+  const handleSaveButton = async (params: GridRenderCellParams) => {
+    console.log(params);
+    if(isAuthenticated) {
+      const scholarshipData = {
+        user_id: user.id,
+        scholarship_id: params.id,
+      }
+      try {
+        const response = await axiosInstance.post(
+          `/api/v1/bookmarks`,
+          scholarshipData
+        )
+        const updatedScholarship = response.data.scholarship
+        const updatedRows = rowData.map((row) =>
+          row.id === updatedScholarship.id
+            ? {
+                ...row,
+                isBookmarked: updatedScholarship.is_bookmarked,
+                bookmarkId: updatedScholarship.bookmark_id,
+              }
+            : row
+        )
+        // setScholarshipData({...params, 
+        //   is_bookmarked: updatedScholarship.is_bookmarked,
+        //   bookmark_id: updatedScholarship.bookmark_id}) 
+        setRowData([...updatedRows])
+        showMessage(response.data.message, 'success')
+      } catch (error: any) {
+        showMessage(error.response.data.error, 'error')
+      }
+    } else {
+      setLastSavedScholarship(params.row.scholarshipId);
+      handleModalSignInOpen();
+    }
+  }
+
   const handleUnsaveButton = async (params: GridRenderCellParams) => {
+    console.log(params);
     try {
       const response = await axiosInstance.post(
         `api/v1/bookmarks/remove_bookmark`,
@@ -323,7 +360,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
   useEffect (() => {
     if(isAuthenticated) {
-      showMessage('You have successfully logged in', 'success')
+      saveLastScholarship(lastSavedScholarship);
       handleModalSignInClose();
     }
   }, [isAuthenticated])

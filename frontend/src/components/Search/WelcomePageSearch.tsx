@@ -59,8 +59,9 @@ const WelcomePageSearch: React.FC = () => {
   const [, setSearchParams] = useSearchParams();
   const [isModalSignInOpen, setIsModalSignInOpen] = useState<boolean>(false)
   // const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
-  const handleModalSignInOpen = () => setIsModalSignInOpen(true);
-  const handleModalSignInClose = () => setIsModalSignInOpen(false);
+  const handleModalSignInOpen = () => setIsModalSignInOpen(true)
+  const handleModalSignInClose = () => setIsModalSignInOpen(false)
+  const [lastSavedScholarship, setLastSavedScholarship] = useState<number>()
   const isAuthenticated = useAppSelector(
     (state) => state.isAuthenticated
   )
@@ -142,6 +143,13 @@ const WelcomePageSearch: React.FC = () => {
     // eslint-disable-next-line
   }, [name])
 
+  useEffect (() => {
+    if(isAuthenticated) {
+      saveLastScholarship(lastSavedScholarship);
+      handleModalSignInClose();
+    }
+  }, [isAuthenticated])
+
   const handleChipDelete = (key: string) => {
     const { [key]: _, ...rest } = params.params
     dispatch(initializeParams(rest))
@@ -214,10 +222,12 @@ const WelcomePageSearch: React.FC = () => {
       handleSearch();
     }
   };
-  const handleSaveButton = async (params: GridRenderCellParams) => {
+
+   /* saveLastScholarship saves the last clicked scholarship of a user that was not logged in. It saves the clicked scholarship upon logging in through the sign in modal */
+  const saveLastScholarship = async (lastSavedScholarship?: Number) => {
     const scholarshipData = {
       user_id: user.id,
-      scholarship_id: params.id,
+      scholarship_id: lastSavedScholarship,
     }
     try {
       const response = await axiosInstance.post(
@@ -243,14 +253,47 @@ const WelcomePageSearch: React.FC = () => {
       showMessage(error.response.data.error, 'error')
     }
   }
+  const handleSaveButton = async (params: GridRenderCellParams) => {
+    if(isAuthenticated) {
+      const scholarshipData = {
+        user_id: user.id,
+        scholarship_id: params.id,
+      }
+      try {
+        const response = await axiosInstance.post(
+          `/api/v1/bookmarks`,
+          scholarshipData
+        )
+        const updatedScholarship = response.data.scholarship
+        const updatedRows = rowData.map((row) =>
+          row.id === updatedScholarship.id
+            ? {
+                ...row,
+                isBookmarked: updatedScholarship.is_bookmarked,
+                bookmarkId: updatedScholarship.bookmark_id,
+              }
+            : row
+        )
+        // setScholarshipData({...params, 
+        //   is_bookmarked: updatedScholarship.is_bookmarked,
+        //   bookmark_id: updatedScholarship.bookmark_id}) 
+        setRowData([...updatedRows])
+        showMessage(response.data.message, 'success')
+      } catch (error: any) {
+        showMessage(error.response.data.error, 'error')
+      }
+    } else {
+      setLastSavedScholarship(params.row.scholarshipId);
+      handleModalSignInOpen();
+    }
+  }
 
   const handleUnsaveButton = async (params: GridRenderCellParams) => {
-    console.log(params);
     try {
       const response = await axiosInstance.post(
         `api/v1/bookmarks/remove_bookmark`,
         {
-          bookmark_id: Number(params.bookmark_id),
+          bookmark_id: Number(params.row.bookmark_id),
           user_id: user.id,
         }
       )
@@ -333,12 +376,11 @@ const WelcomePageSearch: React.FC = () => {
         </Button>
         <Button
           variant="contained"
-          onClick={() =>
-            isAuthenticated ? 
-            ( !isBookmarked
-                ? handleSaveButton(params)
-                : handleUnsaveButton(params)
-            ) : handleModalSignInOpen()        
+          onClick={() => {
+            !isBookmarked
+              ? handleSaveButton(params)
+              : handleUnsaveButton(params)
+            }
           }
           sx={{
             backgroundColor: !isBookmarked ? 'white' : '#002147',
