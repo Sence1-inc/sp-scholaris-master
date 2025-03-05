@@ -235,10 +235,7 @@ export const ScholarshipDetailsPage: React.FC<
   }
 
   useEffect(() => {
-    if(isAuthenticated) {
-      showMessage('You have successfully logged in', 'success')
-      handleModalSignInClose();
-    }
+    handleModalSignInClose()
   }, [isAuthenticated])
 
   useEffect(() => {
@@ -493,32 +490,36 @@ export const ScholarshipDetailsPage: React.FC<
   }
 
   const handleSaveButton = async (params: ScholarshipData) => {
-    const scholarshipData = {
-      user_id: user.id,
-      scholarship_id: params.id,
-    }
-    try {
-      const response = await axiosInstance.post(
-        `/api/v1/bookmarks`,
-        scholarshipData
-      )
-      const updatedScholarship = response.data.scholarship
-      const updatedRows = rowData.map((row) =>
-        row.id === updatedScholarship.id
-          ? {
-              ...row,
-              isBookmarked: updatedScholarship.is_bookmarked,
-              bookmarkId: updatedScholarship.bookmark_id,
-            }
-          : row
-      )
-      setScholarshipData({...params, 
-        is_bookmarked: updatedScholarship.is_bookmarked,
-        bookmark_id: updatedScholarship.bookmark_id}) 
-      setRowData([...updatedRows])
-      showMessage(response.data.message, 'success')
-    } catch (error: any) {
-      showMessage(error.response.data.error, 'error')
+    if(isAuthenticated) {
+      const scholarshipData = {
+        user_id: user.id,
+        scholarship_id: params.id,
+      }
+      try {
+        const response = await axiosInstance.post(
+          `/api/v1/bookmarks`,
+          scholarshipData
+        )
+        const updatedScholarship = response.data.scholarship
+        const updatedRows = rowData.map((row) =>
+          row.id === updatedScholarship.id
+            ? {
+                ...row,
+                isBookmarked: updatedScholarship.is_bookmarked,
+                bookmarkId: updatedScholarship.bookmark_id,
+              }
+            : row
+        )
+        setScholarshipData({...params, 
+          is_bookmarked: updatedScholarship.is_bookmarked,
+          bookmark_id: updatedScholarship.bookmark_id}) 
+        setRowData([...updatedRows])
+        showMessage(response.data.message, 'success')
+      } catch (error: any) {
+        showMessage(error.response.data.error, 'error')
+      }
+    } else {
+      handleModalSignInOpen();
     }
   }
 
@@ -693,11 +694,10 @@ export const ScholarshipDetailsPage: React.FC<
                       <Button
                         variant="contained"
                         onClick={() =>
-                        isAuthenticated ?  
-                         ( !scholarshipData.is_bookmarked
-                            ? handleSaveButton(scholarshipData) 
-                            : handleUnsaveButton(scholarshipData)
-                         ) : handleModalSignInOpen()
+                          { !scholarshipData.is_bookmarked
+                              ? handleSaveButton(scholarshipData) 
+                              : handleUnsaveButton(scholarshipData)
+                          }
                         }
                         sx={{
                           backgroundColor: !scholarshipData.is_bookmarked

@@ -57,24 +57,18 @@ const SignInPage: React.FC<SignInPageProps> = () => {
 
   useEffect(()=>{
     if(isLoggedInViaModal === true) {
+      console.log('in useeffect')
       showMessage('You\'ve successfully logged in.', 'success');
     }
   }, [isLoggedInViaModal])
 
   useEffect(() => {
     if (isAuthenticated) {
-      console.log(window.location.pathname);
       switch (userState?.role?.id) {
         case 3:
-          if(window.location.pathname != '/sign-in') {
-            // updateSignInClosedState();
-            navigate(window.location.pathname);
-          } else {
-            console.log('here in student profile')
-            navigate('/student/account')
-          }
+          console.log('isloggedin value: ' , isLoggedInViaModal)
+          navigate(window.location.pathname);
           break
-
         case 4:
           if (userState.scholarship_provider.provider_name) {
             navigate('/provider/dashboard')
@@ -161,8 +155,8 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         dispatch(initializeIsAuthenticated(true))
         console.log(response.data)
         if(response.data) {
-          setIsLoggedInViaModal(true);
-        }
+          setIsLoggedInViaModal(true)
+        }   
       } catch (error: any) {
         setIsButtonLoading(false)
         if (error) {
