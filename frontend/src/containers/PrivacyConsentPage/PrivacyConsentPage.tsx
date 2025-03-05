@@ -46,15 +46,16 @@ const PrivacyConsentPage: React.FC = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          `https://api.jsonbin.io/v3/b/${process.env.REACT_APP_BIN_ID_PRIVACY_POLICY}/${process.env.REACT_APP_BIN_VERSION}`,
-          {
-            headers: {
-              'X-Master-Key': process.env.REACT_APP_BIN_API_KEY,
-              'X-Bin-Meta': false,
-            },
-          }
+          // `https://api.jsonbin.io/v3/b/${process.env.REACT_APP_BIN_ID_PRIVACY_POLICY}/${process.env.REACT_APP_BIN_VERSION}`,
+          // {
+          //   headers: {
+          //     'X-Master-Key': process.env.REACT_APP_BIN_API_KEY,
+          //     'X-Bin-Meta': false,
+          //   },
+          // }
+          `https://storage.googleapis.com/sence1-bucket-dev/privacy_policy.json`
         )
-        setData(response.data.record)
+        setData(response.data)
       } catch (error) {
         if (error) {
           console.error('Error:', error)
