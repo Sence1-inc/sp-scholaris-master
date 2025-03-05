@@ -47,12 +47,19 @@ const SignInPage: React.FC<SignInPageProps> = () => {
   })
   const [isButtonLoading, setIsButtonLoading] = useState<boolean>(false)
   const [isSignUpClicked, setIsSignUpClicked] = useState<boolean>(false)
+  const [isLoggedInViaModal, setIsLoggedInViaModal] = useState<boolean>(false)
   const handleSignUpShow = () => {
     location.pathname === '/sign-in' ?
     nav(('/sign-up')) : setIsSignUpClicked(true)  
   }
   const nav = useNavigate();
   const location = useLocation();
+
+  useEffect(()=>{
+    if(isLoggedInViaModal === true) {
+      showMessage('You\'ve successfully logged in.', 'success');
+    }
+  }, [isLoggedInViaModal])
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -152,6 +159,10 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         setIsButtonLoading(false)
         dispatch(initializeUser(response.data))
         dispatch(initializeIsAuthenticated(true))
+        console.log(response.data)
+        if(response.data) {
+          setIsLoggedInViaModal(true);
+        }
       } catch (error: any) {
         setIsButtonLoading(false)
         if (error) {
@@ -204,6 +215,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         }
         placeholder="Input your email"
         error={errors.email_address ?? ''}
+        handleOnKeyDonw={handleSignIn}
       />
       <CustomTextfield
         type="password"
@@ -214,6 +226,7 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         }
         placeholder="Input your password"
         error={errors.password ?? ''}
+        handleOnKeyDonw={handleSignIn}
       />
             <Box
         sx={{

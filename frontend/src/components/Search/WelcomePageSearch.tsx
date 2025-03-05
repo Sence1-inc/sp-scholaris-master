@@ -142,6 +142,10 @@ const WelcomePageSearch: React.FC = () => {
     // eslint-disable-next-line
   }, [name])
 
+  useEffect(() => {
+    handleModalSignInClose()
+  }, [isAuthenticated])
+
   const handleChipDelete = (key: string) => {
     const { [key]: _, ...rest } = params.params
     dispatch(initializeParams(rest))
@@ -215,33 +219,38 @@ const WelcomePageSearch: React.FC = () => {
     }
   };
   const handleSaveButton = async (params: GridRenderCellParams) => {
-    const scholarshipData = {
-      user_id: user.id,
-      scholarship_id: params.id,
+    if(isAuthenticated) {
+      const scholarshipData = {
+        user_id: user.id,
+        scholarship_id: params.id,
+      }
+      try {
+        const response = await axiosInstance.post(
+          `/api/v1/bookmarks`,
+          scholarshipData
+        )
+        const updatedScholarship = response.data.scholarship
+        const updatedRows = rowData.map((row) =>
+          row.id === updatedScholarship.id
+            ? {
+                ...row,
+                isBookmarked: updatedScholarship.is_bookmarked,
+                bookmarkId: updatedScholarship.bookmark_id,
+              }
+            : row
+        )
+        // setScholarshipData({...params, 
+        //   is_bookmarked: updatedScholarship.is_bookmarked,
+        //   bookmark_id: updatedScholarship.bookmark_id}) 
+        setRowData([...updatedRows])
+        showMessage(response.data.message, 'success')
+      } catch (error: any) {
+        showMessage(error.response.data.error, 'error')
+      }
+    } else {
+      handleModalSignInOpen();
     }
-    try {
-      const response = await axiosInstance.post(
-        `/api/v1/bookmarks`,
-        scholarshipData
-      )
-      const updatedScholarship = response.data.scholarship
-      const updatedRows = rowData.map((row) =>
-        row.id === updatedScholarship.id
-          ? {
-              ...row,
-              isBookmarked: updatedScholarship.is_bookmarked,
-              bookmarkId: updatedScholarship.bookmark_id,
-            }
-          : row
-      )
-      // setScholarshipData({...params, 
-      //   is_bookmarked: updatedScholarship.is_bookmarked,
-      //   bookmark_id: updatedScholarship.bookmark_id}) 
-      setRowData([...updatedRows])
-      showMessage(response.data.message, 'success')
-    } catch (error: any) {
-      showMessage(error.response.data.error, 'error')
-    }
+    
   }
 
   const handleUnsaveButton = async (params: GridRenderCellParams) => {
@@ -250,7 +259,7 @@ const WelcomePageSearch: React.FC = () => {
       const response = await axiosInstance.post(
         `api/v1/bookmarks/remove_bookmark`,
         {
-          bookmark_id: Number(params.bookmark_id),
+          bookmark_id: Number(params.row.bookmark_id),
           user_id: user.id,
         }
       )
@@ -333,12 +342,11 @@ const WelcomePageSearch: React.FC = () => {
         </Button>
         <Button
           variant="contained"
-          onClick={() =>
-            isAuthenticated ? 
-            ( !isBookmarked
+          onClick={() =>{
+              !isBookmarked
                 ? handleSaveButton(params)
                 : handleUnsaveButton(params)
-            ) : handleModalSignInOpen()        
+            }   
           }
           sx={{
             backgroundColor: !isBookmarked ? 'white' : '#002147',
