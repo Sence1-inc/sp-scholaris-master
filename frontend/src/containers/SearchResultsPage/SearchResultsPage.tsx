@@ -100,32 +100,35 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   ]
 
   const handleSaveButton = async (params: GridRenderCellParams) => {
+    if(isAuthenticated) {
+      const scholarshipData = {
+        user_id: user.id,
+        scholarship_id: params.row.id,
+      }
+      try {
+        const response = await axiosInstance.post(
+          `/api/v1/bookmarks`,
+          scholarshipData
+        )
+        const updatedScholarship = response.data.scholarship
 
-    const scholarshipData = {
-      user_id: user.id,
-      scholarship_id: params.row.id,
-    }
-    try {
-      const response = await axiosInstance.post(
-        `/api/v1/bookmarks`,
-        scholarshipData
-      )
-      const updatedScholarship = response.data.scholarship
+        const updatedRows = rowData.map((row) =>
+          row.id === updatedScholarship.id
+            ? {
+                ...row,
+                isBookmarked: updatedScholarship.is_bookmarked,
+                bookmarkId: updatedScholarship.bookmark_id,
+              }
+            : row
+        )
 
-      const updatedRows = rowData.map((row) =>
-        row.id === updatedScholarship.id
-          ? {
-              ...row,
-              isBookmarked: updatedScholarship.is_bookmarked,
-              bookmarkId: updatedScholarship.bookmark_id,
-            }
-          : row
-      )
-
-      setRowData([...updatedRows])
-      showMessage(response.data.message, 'success')
-    } catch (error: any) {
-      showMessage(error.response.data.error, 'error')
+        setRowData([...updatedRows])
+        showMessage(response.data.message, 'success')
+      } catch (error: any) {
+        showMessage(error.response.data.error, 'error')
+      }
+    } else {
+      handleModalSignInOpen();
     }
   }
 
@@ -215,12 +218,11 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
         </Button>
         <Button
           variant="contained"
-          onClick={() =>
-            isAuthenticated ? 
-            (!isBookmarked
+          onClick={() => 
+            { !isBookmarked
                 ? handleSaveButton(params)
                 : handleUnsaveButton(params)
-            ) : handleModalSignInOpen()        
+            }     
           }
           sx={{
             backgroundColor: !isBookmarked ? 'white' : '#002147',
@@ -321,11 +323,8 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
      // eslint-disable-next-line
   }, [result.scholarships])
 
-  useEffect (() => {
-    if(isAuthenticated) {
-      showMessage('You have successfully logged in', 'success')
-      handleModalSignInClose();
-    }
+  useEffect(() => {
+    handleModalSignInClose()
   }, [isAuthenticated])
 
   const handleRowClick = (params: GridRowParams) => {
