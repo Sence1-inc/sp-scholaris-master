@@ -8,17 +8,25 @@ import './index.css'
 import store, { persistor } from './redux/store'
 import reportWebVitals from './reportWebVitals'
 import './reset.css'
-import theme from './styles/theme'
+import { ThemeSettings } from './v2/utils/theme/Theme';
+
+const ThemedApp = () => {
+  const theme = ThemeSettings();
+  
+  return (
+    <ThemeProvider theme={theme}>
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
+    </ThemeProvider>
+  );
+};
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <PersistGate loading={null} persistor={persistor}>
-          <App />
-        </PersistGate>
-      </ThemeProvider>
+      <ThemedApp />
     </BrowserRouter>
   </Provider>
 )

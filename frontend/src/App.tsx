@@ -40,6 +40,7 @@ const ScholarshipManagement = React.lazy(() =>
 const SearchResultsPage = React.lazy(() => import('./containers/SearchResultsPage/SearchResultsPage').then(module => ({
   default: module.SearchResultsPage,
 })))
+const LoginPage = React.lazy(() => import('./v2/app/auth/auth1/login/page'))
 const SignInPage = React.lazy(() => import('./containers/SignInPage/SignInPage'))
 const SignUpPage = React.lazy(() => import('./containers/SignUpPage/SignUpPage'))
 const StudentDashboardPage = React.lazy(() => import('./containers/StudentDashboardPage/StudentDashboardPage'))
@@ -171,58 +172,59 @@ const App: React.FC = () => {
         >
           <ScrollToTop />
           <Navbar />
-          <ErrorBoundary>
             <Box sx={{ flexGrow: 1, postion: 'absolute' }}>
-              <Routes>
-                <Route path="/" element={<WelcomePage />} />
-                <Route path="/student/*" element={<StudentRoutes />} />
-                <Route
-                  path="/provider/*"
-                  element={<ProviderRoutes isParent={!user.parent_id} />}
-                />
-                <Route path="/admin/*" element={<AdminRoutes />} />
-                <Route
-                  path="/scholarships"
-                  element={<SearchResultsPage isASection={false} />}
-                />
-                <Route
-                  path="/scholarships/:id"
-                  element={<ScholarshipDetailsPage isASection={false} />}
-                />
-                <Route
-                  path="/scholarships/:id/update"
-                  element={<PrivateRoute component={ScholarshipEditorPage} />}
-                />
-                <Route
-                  path="/scholarships/create"
-                  element={<PrivateRoute component={ScholarshipEditorPage} />}
-                />
-                <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
-                <Route
-                  path="/terms-and-conditions"
-                  element={<TermsAndConditionsPage />}
-                />
-                <Route path="/thank-you" element={<ThankYouPage />} />
-                <Route path="/sign-in" element={<SignInPage />} />
-                <Route path="/sign-up" element={<SignUpPage />} />
-                <Route
-                  path="/verify-email/:token"
-                  element={<VerifyEmailPage />}
-                />
-                <Route path="/articles" element={<ArticleListPage />} />
-                <Route path="/articles/:slug" element={<ArticleDetailPage />} />
-                <Route
-                  path="/articles/search/:keyword"
-                  element={<ArticleSearchListPage />}
-                />
-                <Route path="*" element={<PageNotFoundPage />} />
-                <Route
-                  path="/scholarships/create/upload"
-                  element={<PrivateRoute component={AddScholarshipViaCSVPage} />}
-                />
-              </Routes>
+              <ErrorBoundary>
+                <Routes>
+                  <Route path="/login" element={<LoginPage />} />
+                  <Route path="/" element={<WelcomePage />} />
+                  <Route path="/student/*" element={<StudentRoutes />} />
+                  <Route
+                    path="/provider/*"
+                    element={<ProviderRoutes isParent={!user.parent_id} />}
+                  />
+                  <Route path="/admin/*" element={<AdminRoutes />} />
+                  <Route
+                    path="/scholarships"
+                    element={<SearchResultsPage isASection={false} />}
+                  />
+                  <Route
+                    path="/scholarships/:id"
+                    element={<ScholarshipDetailsPage isASection={false} />}
+                  />
+                  <Route
+                    path="/scholarships/:id/update"
+                    element={<PrivateRoute component={ScholarshipEditorPage} />}
+                  />
+                  <Route
+                    path="/scholarships/create"
+                    element={<PrivateRoute component={ScholarshipEditorPage} />}
+                  />
+                  <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
+                  <Route
+                    path="/terms-and-conditions"
+                    element={<TermsAndConditionsPage />}
+                  />
+                  <Route path="/thank-you" element={<ThankYouPage />} />
+                  <Route path="/sign-in" element={<SignInPage />} />
+                  <Route path="/sign-up" element={<SignUpPage />} />
+                  <Route
+                    path="/verify-email/:token"
+                    element={<VerifyEmailPage />}
+                  />
+                  <Route path="/articles" element={<ArticleListPage />} />
+                  <Route path="/articles/:slug" element={<ArticleDetailPage />} />
+                  <Route
+                    path="/articles/search/:keyword"
+                    element={<ArticleSearchListPage />}
+                  />
+                  <Route path="*" element={<PageNotFoundPage />} />
+                  <Route
+                    path="/scholarships/create/upload"
+                    element={<PrivateRoute component={AddScholarshipViaCSVPage} />}
+                  />
+                </Routes>
+              </ErrorBoundary>              
             </Box>
-          </ErrorBoundary>
           <Disclaimer />
           <Footer />
         </Box>
