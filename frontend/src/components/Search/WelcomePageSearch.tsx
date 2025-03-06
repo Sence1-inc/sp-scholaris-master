@@ -254,7 +254,6 @@ const WelcomePageSearch: React.FC = () => {
   }
 
   const handleUnsaveButton = async (params: GridRenderCellParams) => {
-    console.log(params);
     try {
       const response = await axiosInstance.post(
         `api/v1/bookmarks/remove_bookmark`,

@@ -57,7 +57,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
 
   useEffect(()=>{
     if(isLoggedInViaModal === true) {
-      console.log('in useeffect')
       showMessage('You\'ve successfully logged in.', 'success');
     }
   }, [isLoggedInViaModal])
@@ -66,7 +65,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     if (isAuthenticated) {
       switch (userState?.role?.id) {
         case 3:
-          console.log('isloggedin value: ' , isLoggedInViaModal)
           navigate(window.location.pathname);
           break
         case 4:
@@ -153,7 +151,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
         setIsButtonLoading(false)
         dispatch(initializeUser(response.data))
         dispatch(initializeIsAuthenticated(true))
-        console.log(response.data)
         if(response.data) {
           setIsLoggedInViaModal(true)
         }   
