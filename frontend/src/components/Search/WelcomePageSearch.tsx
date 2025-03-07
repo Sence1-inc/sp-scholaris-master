@@ -28,7 +28,7 @@ import './Search.css'
 
 interface GridRowDef {
   id: number
-  bookmarkId: number
+  bookmarkId: number | null
   scholarshipId: number
   scholarshipName: string
   startDate: string | Date
@@ -144,7 +144,19 @@ const WelcomePageSearch: React.FC = () => {
 
   useEffect(() => {
     handleModalSignInClose()
+
+    //the following code is for clearing the bookmark status
+    if(!isAuthenticated) {
+      clearBookmarkStatus();
+    }
   }, [isAuthenticated])
+
+  const clearBookmarkStatus = () => {
+    rowData.map((row) => {
+      row.isBookmarked = false;
+      row.bookmarkId = null;
+    })
+  }
 
   const handleChipDelete = (key: string) => {
     const { [key]: _, ...rest } = params.params
@@ -285,6 +297,9 @@ const WelcomePageSearch: React.FC = () => {
 
 
   const renderActions = (params: GridRenderCellParams) => {
+    if(!isAuthenticated) {
+      clearBookmarkStatus();
+    }
     const isBookmarked = params.row.isBookmarked
     return (
       
@@ -376,6 +391,7 @@ const WelcomePageSearch: React.FC = () => {
   }
 
   return (
+    
     <section
       ref={searchRef}
       id="search"
