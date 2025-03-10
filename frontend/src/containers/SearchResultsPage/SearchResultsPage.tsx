@@ -21,7 +21,7 @@ import './SearchResultsPage.css'
 
 interface GridRowDef {
   id: number
-  bookmarkId: number | null
+  bookmarkId: number
   scholarshipId: number
   scholarshipName: string
   startDate: string | Date
@@ -161,10 +161,6 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
   }
 
   const renderActions = (params: GridRenderCellParams) => {
-    if(!isAuthenticated) {
-      clearBookmarkStatus();
-    }
-    
     const isBookmarked = params.row.isBookmarked
 
     return (
@@ -329,19 +325,7 @@ export const SearchResultsPage: React.FC<SearchResultsPageProps> = ({
 
   useEffect(() => {
     handleModalSignInClose()
-
-    //the following code is for clearing the bookmark status
-    if(!isAuthenticated) {
-      clearBookmarkStatus();
-    }
   }, [isAuthenticated])
-
-  const clearBookmarkStatus = () => {
-    rowData.map((row) => {
-      row.isBookmarked = false;
-      row.bookmarkId = null;
-    })
-  }
 
   const handleRowClick = (params: GridRowParams) => {
     navigate(`/scholarships/${params.row.id}`)
