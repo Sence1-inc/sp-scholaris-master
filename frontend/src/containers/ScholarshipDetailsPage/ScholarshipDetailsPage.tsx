@@ -26,15 +26,16 @@ import {
   CONTENT_STATUSES,
   PROVIDER_ROLE_ID,
 } from '../../constants/constants'
-import { useSnackbar } from '../../context/SnackBarContext'
 import useGetScholarshipData from '../../hooks/useGetScholarshipData'
 import ProviderProfile from '../../public/images/pro-profile.png'
+import { useSnackbar } from '../../context/SnackBarContext'
 import { initializeScholarshipApplicationForm } from '../../redux/reducers/ScholarshipApplicationFormReducer'
 import { initializeScholarshipData } from '../../redux/reducers/ScholarshipDataReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
 import { ScholarshipData, ScholarshipFeedback, User } from '../../redux/types'
 import { formattedDate } from '../StudentDashboardPage/StudentDashboardPage'
 import './ScholarshipDetailsPage.css'
+import SignIn from '../../components/SignIn/SignIn'
 
 interface Results {
   scholarshipData: ScholarshipData
@@ -78,6 +79,10 @@ interface ValidationCondition {
   message: string
 }
 
+// interface SignInChildProps {
+//   updateSignInClosedState: () => void;
+// }
+
 export const ScholarshipDetailsPage: React.FC<
   ScholarshipDataResultsPageProps
 > = () => {
@@ -96,8 +101,14 @@ export const ScholarshipDetailsPage: React.FC<
   const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false)
+  const [isModalSignInOpen, setIsModalSignInOpen] = useState<boolean>(false)
+  const handleModalSignInOpen = () => setIsModalSignInOpen(true);
+  const handleModalSignInClose = () => setIsModalSignInOpen(false);
   const [isSendEmailModalOpen, setIsSendEmailModalOpen] =
     useState<boolean>(false)
+  const isAuthenticated = useAppSelector(
+    (state) => state.isAuthenticated
+  )
   const [studentEmail, setStudentEmail] = useState<string>('')
   const [studentName, setStudentName] = useState<string>('')
   const [userMessage, setUserMessage] = useState<string>('')
@@ -111,9 +122,6 @@ export const ScholarshipDetailsPage: React.FC<
     user_message: '',
     pdf_file: '',
   })
-  const isAuthenticated = useAppSelector(
-    (state) => state.isAuthenticated
-  )
 
   const columns = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -225,6 +233,10 @@ export const ScholarshipDetailsPage: React.FC<
       showMessage(error.response.data.message, 'error')
     }
   }
+
+  useEffect(() => {
+    handleModalSignInClose()
+  }, [isAuthenticated])
 
   useEffect(() => {
     if (user.role_id === ADMIN_ROLE_ID && scholarshipData) {
@@ -478,35 +490,36 @@ export const ScholarshipDetailsPage: React.FC<
   }
 
   const handleSaveButton = async (params: ScholarshipData) => {
-    if (!isAuthenticated) {
-      navigate('/sign-in')
-    }
-    const scholarshipData = {
-      user_id: user.id,
-      scholarship_id: params.id,
-    }
-    try {
-      const response = await axiosInstance.post(
-        `/api/v1/bookmarks`,
-        scholarshipData
-      )
-      const updatedScholarship = response.data.scholarship
-      const updatedRows = rowData.map((row) =>
-        row.id === updatedScholarship.id
-          ? {
-              ...row,
-              isBookmarked: updatedScholarship.is_bookmarked,
-              bookmarkId: updatedScholarship.bookmark_id,
-            }
-          : row
-      )
-      setScholarshipData({...params, 
-        is_bookmarked: updatedScholarship.is_bookmarked,
-        bookmark_id: updatedScholarship.bookmark_id}) 
-      setRowData([...updatedRows])
-      showMessage(response.data.message, 'success')
-    } catch (error: any) {
-      showMessage(error.response.data.error, 'error')
+    if(isAuthenticated) {
+      const scholarshipData = {
+        user_id: user.id,
+        scholarship_id: params.id,
+      }
+      try {
+        const response = await axiosInstance.post(
+          `/api/v1/bookmarks`,
+          scholarshipData
+        )
+        const updatedScholarship = response.data.scholarship
+        const updatedRows = rowData.map((row) =>
+          row.id === updatedScholarship.id
+            ? {
+                ...row,
+                isBookmarked: updatedScholarship.is_bookmarked,
+                bookmarkId: updatedScholarship.bookmark_id,
+              }
+            : row
+        )
+        setScholarshipData({...params, 
+          is_bookmarked: updatedScholarship.is_bookmarked,
+          bookmark_id: updatedScholarship.bookmark_id}) 
+        setRowData([...updatedRows])
+        showMessage(response.data.message, 'success')
+      } catch (error: any) {
+        showMessage(error.response.data.error, 'error')
+      }
+    } else {
+      handleModalSignInOpen();
     }
   }
 
@@ -592,6 +605,28 @@ export const ScholarshipDetailsPage: React.FC<
           </Box>
         </Modal>
       )}
+      <Modal
+        open={isModalSignInOpen}
+        onClose={handleModalSignInClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={{
+          display: 'flex',
+          justifyContent: 'center',
+          margin: '2.5vh auto',
+          width: {xs: '95vw', sm: '60vw', lg: '40vw'},
+          height: 'auto',
+          maxHeight: '95vh',
+          backgroundColor: '#FFFFFF',
+          borderRadius: '32px',
+          overflowY: 'scroll'
+        }}>
+          <SignIn 
+          // updateSignInClosedState={handleModalSignInClose} 
+          />
+        </Box>
+      </Modal>
       <section id="details">
         <div className="container" style={{ padding: '80px 20px' }}>
           <aside id="aside">
@@ -659,9 +694,10 @@ export const ScholarshipDetailsPage: React.FC<
                       <Button
                         variant="contained"
                         onClick={() =>
-                          !scholarshipData.is_bookmarked
-                            ? isAuthenticated ? handleSaveButton(scholarshipData) : handleSignin()
-                            : handleUnsaveButton(scholarshipData)
+                          { !scholarshipData.is_bookmarked
+                              ? handleSaveButton(scholarshipData) 
+                              : handleUnsaveButton(scholarshipData)
+                          }
                         }
                         sx={{
                           backgroundColor: !scholarshipData.is_bookmarked
@@ -795,10 +831,9 @@ export const ScholarshipDetailsPage: React.FC<
                       user.role_id !== PROVIDER_ROLE_ID &&
                       user.role_id !== ADMIN_ROLE_ID)) ? (
                     <CTAButton
-                      // disabled={formattedDate(
-                      //   scholarshipData.due_date
-                      // ).isBefore(dayjs())}
-                      handleClick={() => setIsModalOpen(true)}
+                      handleClick={() => isAuthenticated ? setIsModalOpen(true) : 
+                        handleModalSignInOpen() 
+                      }
                       label="Apply"
                       loading={false}
                       styles={{ fontSize: '24px' }}

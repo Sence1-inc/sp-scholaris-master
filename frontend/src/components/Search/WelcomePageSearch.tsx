@@ -6,32 +6,46 @@ import {
   TextField,
   Typography,
   useMediaQuery,
+  Modal
 } from '@mui/material'
-import { DataGrid, GridRowParams } from '@mui/x-data-grid'
+import { DataGrid, GridRenderCellParams, GridRowParams } from '@mui/x-data-grid'
+import StarBorderIcon from '@mui/icons-material/StarBorder'
+import VisibilityIcon from '@mui/icons-material/Visibility'
 import queryString from 'query-string'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import { useScholarshipCache } from '../../hooks/useScholarshipCache'
 import { initializeParams } from '../../redux/reducers/SearchParamsReducer'
 import { useAppDispatch, useAppSelector } from '../../redux/store'
-import { Scholarship } from '../../redux/types'
-import { ctaButtonStyle } from '../../styles/globalStyles'
+import { Scholarship, User } from '../../redux/types'
+import axiosInstance from '../../axiosConfig'
+import { ctaButtonStyle, containerStyle } from '../../styles/globalStyles'
+import { useSnackbar } from '../../context/SnackBarContext'
 import theme from '../../styles/theme'
 import Filter from '../Filter/Filter'
+import SignIn from '../../components/SignIn/SignIn'
 import './Search.css'
 
 interface GridRowDef {
+  id: number
+  bookmarkId: number
+  scholarshipId: number
   scholarshipName: string
+  startDate: string | Date
+  endDate: string | Date
   provider: string
+  isBookmarked: boolean
 }
 
 const WelcomePageSearch: React.FC = () => {
   const dispatch = useAppDispatch()
   const params: any = useAppSelector((state) => state.searchParams)
   const navigate = useNavigate()
+  const { showMessage } = useSnackbar()
   const data: any = useAppSelector(
     (state) => state.scholarships
   )
+  const user: User = useAppSelector((state) => state.user)
   const { getScholarships } = useScholarshipCache()
   const { name: nameParam, page, limit, ...restParams } = params.params
   const [name, setName] = useState<string>(nameParam as string)
@@ -43,7 +57,13 @@ const WelcomePageSearch: React.FC = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [rowData, setRowData] = useState<GridRowDef[]>([])
   const [, setSearchParams] = useSearchParams();
-
+  const [isModalSignInOpen, setIsModalSignInOpen] = useState<boolean>(false)
+  // const [scholarshipData, setScholarshipData] = useState<ScholarshipData>()
+  const handleModalSignInOpen = () => setIsModalSignInOpen(true);
+  const handleModalSignInClose = () => setIsModalSignInOpen(false);
+  const isAuthenticated = useAppSelector(
+    (state) => state.isAuthenticated
+  )
   const sm = useMediaQuery(theme.breakpoints.up('sm'))
   const xs = useMediaQuery(theme.breakpoints.up('xs'))
 
@@ -122,6 +142,10 @@ const WelcomePageSearch: React.FC = () => {
     // eslint-disable-next-line
   }, [name])
 
+  useEffect(() => {
+    handleModalSignInClose()
+  }, [isAuthenticated])
+
   const handleChipDelete = (key: string) => {
     const { [key]: _, ...rest } = params.params
     dispatch(initializeParams(rest))
@@ -141,10 +165,13 @@ const WelcomePageSearch: React.FC = () => {
     const row = data.map((scholarship: Scholarship) => {
       return {
         id: scholarship.id,
+        bookmarkId: Number(scholarship.bookmark_id),
+        scholarshipId: Number(scholarship.id),
         scholarshipName: scholarship.scholarship_name,
         startDate: new Date(scholarship.start_date).toDateString(),
-        dueDate: new Date(scholarship.due_date).toDateString(),
+        endDate: new Date(scholarship.due_date).toDateString(),
         provider: scholarship.scholarship_provider.provider_name,
+        isBookmarked: scholarship.is_bookmarked,
       }
     })
     setRowData(row)
@@ -163,7 +190,7 @@ const WelcomePageSearch: React.FC = () => {
       ...(sm ? { flex: 1.5 } : { width: 150 }),
     },
     {
-      field: 'dueDate',
+      field: 'endDate',
       headerName: 'Due Date',
       ...(sm ? { flex: 1.5 } : { width: 150 }),
     },
@@ -173,6 +200,13 @@ const WelcomePageSearch: React.FC = () => {
       type: 'string',
       ...(sm ? { flex: 1.5 } : { width: 200 }),
     },
+    {
+      field: 'actions',
+      headerName: 'Actions',
+      type: 'actions',
+      ...(sm ? { flex: 1 } : {}),
+      renderCell: (params: GridRenderCellParams) => renderActions(params),
+    }
   ]
 
   const handleRowClick = (params: GridRowParams) => {
@@ -184,6 +218,162 @@ const WelcomePageSearch: React.FC = () => {
       handleSearch();
     }
   };
+  const handleSaveButton = async (params: GridRenderCellParams) => {
+    if(isAuthenticated) {
+      const scholarshipData = {
+        user_id: user.id,
+        scholarship_id: params.id,
+      }
+      try {
+        const response = await axiosInstance.post(
+          `/api/v1/bookmarks`,
+          scholarshipData
+        )
+        const updatedScholarship = response.data.scholarship
+        const updatedRows = rowData.map((row) =>
+          row.id === updatedScholarship.id
+            ? {
+                ...row,
+                isBookmarked: updatedScholarship.is_bookmarked,
+                bookmarkId: updatedScholarship.bookmark_id,
+              }
+            : row
+        )
+        // setScholarshipData({...params, 
+        //   is_bookmarked: updatedScholarship.is_bookmarked,
+        //   bookmark_id: updatedScholarship.bookmark_id}) 
+        setRowData([...updatedRows])
+        showMessage(response.data.message, 'success')
+      } catch (error: any) {
+        showMessage(error.response.data.error, 'error')
+      }
+    } else {
+      handleModalSignInOpen();
+    }
+    
+  }
+
+  const handleUnsaveButton = async (params: GridRenderCellParams) => {
+    try {
+      const response = await axiosInstance.post(
+        `api/v1/bookmarks/remove_bookmark`,
+        {
+          bookmark_id: Number(params.row.bookmark_id),
+          user_id: user.id,
+        }
+      )
+      const updatedScholarship = response.data.scholarship
+
+      const updatedRows = rowData.map((row) =>
+        row.id === updatedScholarship.id
+          ? {
+              ...row,
+              isBookmarked: updatedScholarship.is_bookmarked,
+              bookmarkId: updatedScholarship.bookmark_id,
+            }
+          : row
+      )
+      // setScholarshipData({...params, 
+      //   is_bookmarked: updatedScholarship.is_bookmarked,
+      //   bookmark_id: updatedScholarship.bookmark_id}) 
+      setRowData([...updatedRows])
+      showMessage(response.data.message, 'success')
+    } catch (error: any) {
+      showMessage(error.response.data.error, 'error')
+    }
+  }
+
+
+  const renderActions = (params: GridRenderCellParams) => {
+    const isBookmarked = params.row.isBookmarked
+    return (
+      
+      <Box
+        sx={{
+          ...containerStyle,
+          padding: 0,
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: '8px',
+          width: '150px',
+        }}
+      >
+        <Modal
+          open={isModalSignInOpen}
+          onClose={handleModalSignInClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            margin: '2.5vh auto',
+            width: {xs: '95vw', sm: '60vw', lg: '40vw'},
+            height: 'auto',
+            maxHeight: '95vh',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '32px',
+            overflowY: 'scroll'
+          }}>
+            <SignIn />
+          </Box>
+        </Modal>      
+        <Button
+          onClick={() => navigate(`/scholarships/${params.row.id}`)}
+          variant="contained"
+          sx={{
+            backgroundColor: 'white',
+            color: 'black',
+            padding: '5px',
+            borderRadius: '8px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            maxWidth: '50px',
+            maxHeight: '32px',
+            '&:hover': {
+              backgroundColor: '#f0f0f0',
+            },
+          }}
+        >
+          <VisibilityIcon fontSize="small" />
+        </Button>
+        <Button
+          variant="contained"
+          onClick={() =>{
+              !isBookmarked
+                ? handleSaveButton(params)
+                : handleUnsaveButton(params)
+            }   
+          }
+          sx={{
+            backgroundColor: !isBookmarked ? 'white' : '#002147',
+            color: 'black',
+            padding: '5px',
+            borderRadius: '8px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            maxWidth: '50px',
+            maxHeight: '32px',
+            boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)',
+            '&:hover': {
+              backgroundColor: '#f0f0f0',
+            },
+          }}
+          key={isBookmarked ? 'bookmarked' : 'not-bookmarked'}
+        >
+          <StarBorderIcon
+            fontSize="small"
+            sx={{
+              color: isBookmarked ? 'white' : '#002147',
+            }}
+          />
+        </Button>
+      </Box>
+    )
+  }
 
   return (
     <section

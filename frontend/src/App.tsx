@@ -160,7 +160,9 @@ const App: React.FC = () => {
 
   return (
     <SnackbarProvider>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense 
+      // fallback={<div>Loading...</div>}
+      >
         <Box
           sx={{
             display: 'flex',
