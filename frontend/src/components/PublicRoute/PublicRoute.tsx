@@ -35,7 +35,6 @@ const PublicRoute: React.FC<PublicRouteProps> = ({
           dispatch(initializeUser(userData))
         }
       } catch (error) {
-        console.error('Authentication check error:', error)
         setAuthenticated(false)
         dispatch(initializeIsAuthenticated(false))
       } finally {
