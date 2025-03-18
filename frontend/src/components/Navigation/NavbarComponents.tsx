@@ -57,6 +57,15 @@ const AuthenticatedProvider: React.FC<AuthenticatedUserProps> = ({
       <ListItem sx={profileTheme.navigation.mainNavListItem}>
         <Typography
           component={Link}
+          to={`/articles/`}
+          sx={profileTheme.navigation.mainNavListItemLink}
+        >
+          Articles
+        </Typography>
+      </ListItem>
+      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+        <Typography
+          component={Link}
           to="/provider/dashboard"
           sx={profileTheme.navigation.mainNavListItemLink}
         >
@@ -293,7 +302,7 @@ export const Unauthenticated: React.FC<UnauthenticatedProps> = ({
       <ListItem sx={profileTheme.navigation.mainNavListItem}>
         <Typography
           component={Link}
-          to={`/articles`}
+          to={`/articles/`}
           sx={profileTheme.navigation.mainNavListItemLink}
         >
           Articles
