@@ -136,7 +136,7 @@ const AuthenticatedStudent: React.FC<AuthenticatedUserProps> = ({
       <ListItem sx={profileTheme.navigation.mainNavListItem}>
         <Typography
           component={Link}
-          to={`/articles`}
+          to={`/articles/`}
           sx={profileTheme.navigation.mainNavListItemLink}
         >
           Articles
