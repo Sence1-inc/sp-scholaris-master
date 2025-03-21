@@ -65,7 +65,6 @@ const SignInPage: React.FC<SignInPageProps> = () => {
     if (isAuthenticated) {
       switch (userState?.role?.id) {
         case 3:
-          navigate(window.location.pathname);
           break
         case 4:
           if (userState.scholarship_provider.provider_name) {

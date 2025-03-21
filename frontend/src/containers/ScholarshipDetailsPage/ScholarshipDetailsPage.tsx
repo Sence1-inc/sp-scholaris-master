@@ -236,6 +236,10 @@ export const ScholarshipDetailsPage: React.FC<
 
   useEffect(() => {
     handleModalSignInClose()
+    if(isModalSignInOpen) {
+      showMessage('You\'ve successfully logged in.', 'success');
+      handleModalSignInClose()
+    }   
   }, [isAuthenticated])
 
   useEffect(() => {
