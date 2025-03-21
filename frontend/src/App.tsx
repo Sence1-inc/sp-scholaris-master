@@ -12,7 +12,7 @@ const ErrorBoundary = React.lazy(() => import('./components/ErrorBoundary/ErrorB
 const Footer = React.lazy(() => import('./components/Footer/Footer'))
 const Navbar = React.lazy(() => import('./components/Navigation/Navbar'))
 const AdminPrivate = React.lazy(() => import('./components/PrivateRoute/AdminPrivateRoute'))
-const PrivateRoute = React.lazy(() => import('./components/PrivateRoute/PrivateRoute'))
+const PublicRoute = React.lazy(() => import('./components/PublicRoute/PublicRoute'))
 const ProviderPrivate = React.lazy(() => import('./components/PrivateRoute/ProviderPrivateRoute'))
 const StudentPrivate = React.lazy(() => import('./components/PrivateRoute/StudentPrivateRoute'))
 const ScrollToTop = React.lazy(() => import('./components/ScrollToTop/ScrollToTop'))
@@ -58,8 +58,8 @@ const WelcomePage = React.lazy(() => import('./containers/WelcomePage/WelcomePag
  */
 const StudentRoutes: React.FC = () => (
   <Routes>
-    <Route path="/" element={<TeaserStudent />} />
-    <Route path="survey" element={<SurveyPage user_type="student" />} />
+    <Route path="/" element={<PublicRoute component={TeaserStudent} redirectIfAuthenticated={false} />} />
+    <Route path="survey" element={<PublicRoute component={SurveyPage} componentProps={{ user_type: "student" }} redirectIfAuthenticated={false} />} />
     <Route
       path="/applications"
       element={<StudentPrivate component={StudentApplicationsManagementPage} />}
@@ -72,7 +72,7 @@ const StudentRoutes: React.FC = () => (
       path="/bookmarks"
       element={<StudentPrivate component={BookmarksPage} />}
     />
-    <Route path="*" element={<PageNotFoundPage />} />
+    <Route path="*" element={<PublicRoute component={PageNotFoundPage} redirectIfAuthenticated={false} />} />
   </Routes>
 )
 /**
@@ -86,7 +86,7 @@ const AdminRoutes: React.FC = () => (
       path="/scholarships"
       element={<AdminPrivate component={ScholarshipManagement} />}
     />
-    <Route path="*" element={<PageNotFoundPage />} />
+    <Route path="*" element={<PublicRoute component={PageNotFoundPage} redirectIfAuthenticated={false} />} />
   </Routes>
 )
 
@@ -108,6 +108,8 @@ interface ProviderRoutesProps {
  */
 const ProviderRoutes: React.FC<ProviderRoutesProps> = ({ isParent = false }) => (
   <Routes>
+    <Route path="/" element={<PublicRoute component={TeaserProvider} redirectIfAuthenticated={false} />} />
+    <Route path="survey" element={<PublicRoute component={SurveyPage} componentProps={{ user_type: "provider" }} redirectIfAuthenticated={false} />} />
     <Route
       path="/dashboard"
       element={<ProviderPrivate component={ProviderDashboardPage} />}
@@ -122,13 +124,11 @@ const ProviderRoutes: React.FC<ProviderRoutesProps> = ({ isParent = false }) => 
       path="/applications"
       element={<ProviderPrivate component={ApplicationsManagementPage} />}
     />
-    <Route path="/" element={<TeaserProvider />} />
-    <Route path="survey" element={<SurveyPage user_type="provider" />} />
     <Route
       path="account/:id/:lastRoute"
       element={<ProviderPrivate component={ProviderProfile} />}
     />
-    <Route path="*" element={<PageNotFoundPage />} />
+    <Route path="*" element={<PublicRoute component={PageNotFoundPage} redirectIfAuthenticated={false} />} />
   </Routes>
 )
 
@@ -176,52 +176,47 @@ const App: React.FC = () => {
           <ErrorBoundary>
             <Box sx={{ flexGrow: 1, postion: 'absolute' }}>
               <Routes>
-                <Route path="/" element={<WelcomePage />} />
+                <Route path="/" element={<PublicRoute component={WelcomePage} redirectIfAuthenticated={false} />} />
                 <Route path="/student/*" element={<StudentRoutes />} />
+                <Route path="/admin/*" element={<AdminRoutes />} />
                 <Route
                   path="/provider/*"
                   element={<ProviderRoutes isParent={!user.parent_id} />}
                 />
-                <Route path="/admin/*" element={<AdminRoutes />} />
                 <Route
                   path="/scholarships"
-                  element={<SearchResultsPage isASection={false} />}
+                  element={<PublicRoute component={SearchResultsPage} componentProps={{ isASection: false }} redirectIfAuthenticated={false} />}
                 />
                 <Route
                   path="/scholarships/:id"
-                  element={<ScholarshipDetailsPage isASection={false} />}
+                  element={<PublicRoute component={ScholarshipDetailsPage} componentProps={{ isASection: false }} redirectIfAuthenticated={false} />}
                 />
                 <Route
                   path="/scholarships/:id/update"
-                  element={<PrivateRoute component={ScholarshipEditorPage} />}
+                  element={<ProviderPrivate component={ScholarshipEditorPage} />}
                 />
                 <Route
                   path="/scholarships/create"
-                  element={<PrivateRoute component={ScholarshipEditorPage} />}
+                  element={<ProviderPrivate component={ScholarshipEditorPage} />}
                 />
-                <Route path="/privacy-consent" element={<PrivacyConsentPage />} />
-                <Route
-                  path="/terms-and-conditions"
-                  element={<TermsAndConditionsPage />}
-                />
-                <Route path="/thank-you" element={<ThankYouPage />} />
-                <Route path="/sign-in" element={<SignInPage />} />
-                <Route path="/sign-up" element={<SignUpPage />} />
-                <Route
-                  path="/verify-email/:token"
-                  element={<VerifyEmailPage />}
-                />
-                <Route path="/articles" element={<ArticleListPage />} />
-                <Route path="/articles/:slug" element={<ArticleDetailPage />} />
-                <Route
-                  path="/articles/search/:keyword"
-                  element={<ArticleSearchListPage />}
-                />
-                <Route path="*" element={<PageNotFoundPage />} />
                 <Route
                   path="/scholarships/create/upload"
-                  element={<PrivateRoute component={AddScholarshipViaCSVPage} />}
+                  element={<ProviderPrivate component={AddScholarshipViaCSVPage} />}
                 />
+                <Route path="/privacy-consent" element={<PublicRoute component={PrivacyConsentPage} redirectIfAuthenticated={false} />} />
+                <Route path="/terms-and-conditions" element={<PublicRoute component={TermsAndConditionsPage} redirectIfAuthenticated={false} />} />
+                <Route path="/thank-you" element={<PublicRoute component={ThankYouPage} redirectPath="/" redirectIfAuthenticated={true} />} />
+                <Route path="/sign-in" element={<PublicRoute component={SignInPage} redirectPath="/" redirectIfAuthenticated={true} />} />
+                <Route path="/sign-up" element={<PublicRoute component={SignUpPage} redirectPath="/" redirectIfAuthenticated={true} />} />
+                <Route path="/verify-email/:token" element={<PublicRoute component={VerifyEmailPage} redirectIfAuthenticated={false} />} />
+                <Route path="/articles" element={<PublicRoute component={ArticleListPage} redirectIfAuthenticated={false} />} />
+                <Route path="/articles/:slug" element={<PublicRoute component={ArticleDetailPage} redirectIfAuthenticated={false} />} />
+                <Route
+                  path="/articles/search/:keyword"
+                  element={<PublicRoute component={ArticleSearchListPage} redirectIfAuthenticated={false} />}
+                />
+                <Route path="*" element={<PublicRoute component={PageNotFoundPage} redirectIfAuthenticated={false} />} />
+
               </Routes>
             </Box>
           </ErrorBoundary>
