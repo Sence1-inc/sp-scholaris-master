@@ -221,12 +221,12 @@ const BookmarksPage: React.FC = () => {
     // eslint-disable-next-line
   }, [page])
 
-  useEffect(() => {
-    if (params.params.page) {
-      getScholarships()
-    }
-    // eslint-disable-next-line
-  }, [params.params.page])
+  // useEffect(() => {
+  //   if (params.params.page) {
+  //     getScholarships()
+  //   }
+  //   // eslint-disable-next-line
+  // }, [params.params.page])
 
   useEffect(() => {
     getBookmarkedScholarships()
