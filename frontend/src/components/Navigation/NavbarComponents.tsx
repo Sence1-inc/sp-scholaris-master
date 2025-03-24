@@ -127,7 +127,7 @@ const AuthenticatedStudent = memo<AuthenticatedUserProps>(({ user }) => {
       <ListItem sx={profileTheme.navigation.mainNavListItem}>
         <Typography
           component={Link}
-          to={`/articles/`}
+          to="/articles/"
           sx={profileTheme.navigation.mainNavListItemLink}
         >
           Articles
@@ -280,7 +280,7 @@ export const Unauthenticated = memo<UnauthenticatedProps>(({ userType }) => {
       <ListItem sx={profileTheme.navigation.mainNavListItem}>
         <Typography
           component={Link}
-          to={`/articles/`}
+          to="/articles/"
           sx={profileTheme.navigation.mainNavListItemLink}
         >
           Articles
