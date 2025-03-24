@@ -48,7 +48,7 @@ const AuthenticatedProvider = memo<AuthenticatedUserProps>(({ user }) => {
       <ListItem sx={profileTheme.navigation.mainNavListItem}>
         <Typography
           component={Link}
-          to={`/articles/`}
+          to="/articles/"
           sx={profileTheme.navigation.mainNavListItemLink}
         >
           Articles
