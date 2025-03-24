@@ -48,6 +48,15 @@ const AuthenticatedProvider = memo<AuthenticatedUserProps>(({ user }) => {
       <ListItem sx={profileTheme.navigation.mainNavListItem}>
         <Typography
           component={Link}
+          to="/articles/"
+          sx={profileTheme.navigation.mainNavListItemLink}
+        >
+          Articles
+        </Typography>
+      </ListItem>
+      <ListItem sx={profileTheme.navigation.mainNavListItem}>
+        <Typography
+          component={Link}
           to="/provider/dashboard"
           sx={profileTheme.navigation.mainNavListItemLink}
         >
@@ -118,7 +127,7 @@ const AuthenticatedStudent = memo<AuthenticatedUserProps>(({ user }) => {
       <ListItem sx={profileTheme.navigation.mainNavListItem}>
         <Typography
           component={Link}
-          to="/articles"
+          to="/articles/"
           sx={profileTheme.navigation.mainNavListItemLink}
         >
           Articles
@@ -271,7 +280,7 @@ export const Unauthenticated = memo<UnauthenticatedProps>(({ userType }) => {
       <ListItem sx={profileTheme.navigation.mainNavListItem}>
         <Typography
           component={Link}
-          to="/articles"
+          to="/articles/"
           sx={profileTheme.navigation.mainNavListItemLink}
         >
           Articles
